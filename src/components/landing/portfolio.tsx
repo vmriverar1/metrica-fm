@@ -154,7 +154,9 @@ export default function Portfolio() {
       
       // Store original dimensions
       let originalWidth = 0;
+      let originalHeight = 0;
       let originalMarginLeft = 0;
+      let originalMarginTop = 0;
       
       // Set initial state
       gsap.set(carouselWrapperRef.current, {
@@ -172,9 +174,17 @@ export default function Portfolio() {
           stagger: 0.05
         }, 0)
         
-        // Phase 2: Expand carousel width only (15-40%)
+        // Phase 2a: Start expanding project cards height (15-25%)
+        .to('.project-card', {
+          height: '100vh',
+          duration: 0.15,
+          ease: 'power2.inOut'
+        }, 0.15)
+        
+        // Phase 2b: Expand carousel width and height (15-40%)
         .to(carouselWrapperRef.current, {
           width: '100vw',
+          height: '100vh',
           marginLeft: () => {
             // Calculate negative margin to center horizontally
             const carousel = carouselWrapperRef.current;
@@ -183,10 +193,19 @@ export default function Portfolio() {
             
             // Store original values
             originalWidth = rect.width;
-            const leftOffset = rect.left;
+            originalHeight = rect.height;
             originalMarginLeft = -(window.innerWidth - rect.width) / 2;
             
             return originalMarginLeft;
+          },
+          marginTop: () => {
+            // Calculate negative margin to center vertically
+            const carousel = carouselWrapperRef.current;
+            if (!carousel) return 0;
+            const rect = carousel.getBoundingClientRect();
+            originalMarginTop = -(window.innerHeight - rect.height) / 2;
+            
+            return originalMarginTop;
           },
           borderRadius: 0,
           duration: 0.25,
@@ -205,10 +224,19 @@ export default function Portfolio() {
         // Phase 3: Hold expanded state (40-60%)
         .set({}, {}, "+=0.2")
         
-        // Phase 4: Contract back to original size (60-85%)
+        // Phase 4a: Start contracting project cards height (60-70%)
+        .to('.project-card', {
+          height: '60vh',
+          duration: 0.15,
+          ease: 'power2.inOut'
+        }, 0.6)
+        
+        // Phase 4b: Contract carousel back to original size (60-85%)
         .to(carouselWrapperRef.current, {
           width: () => originalWidth + 'px',
+          height: () => originalHeight + 'px',
           marginLeft: 0,
+          marginTop: 0,
           borderRadius: '0.5rem',
           duration: 0.25,
           ease: 'power3.inOut',
@@ -221,8 +249,15 @@ export default function Portfolio() {
                 pointerEvents: 'auto',
                 zIndex: 10,
                 width: '',
+                height: '',
                 marginLeft: '',
+                marginTop: '',
                 borderRadius: ''
+              });
+              
+              // Clear project cards height
+              gsap.set('.project-card', {
+                height: ''
               });
             }
           }
