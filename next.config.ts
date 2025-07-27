@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ['gsap', '@gsap/react'],
   images: {
     remotePatterns: [
       {

@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -174,14 +175,13 @@ export default function Header() {
                           </NavigationMenuContent>
                         </>
                       ) : (
-                        <NavigationMenuLink asChild>
-                          <a 
-                            href={`#${item.id}`}
-                            className={cn(navigationMenuTriggerStyle(), navLinkClasses)}
-                          >
-                            {item.label}
-                          </a>
-                        </NavigationMenuLink>
+                        <Link href={`#${item.id}`} passHref>
+                           <NavigationMenuLink asChild>
+                             <a className={cn(navigationMenuTriggerStyle(), navLinkClasses)}>
+                               {item.label}
+                             </a>
+                           </NavigationMenuLink>
+                        </Link>
                       )}
                     </NavigationMenuItem>
                   ))}
@@ -236,3 +236,5 @@ export default function Header() {
     </>
   );
 }
+
+    

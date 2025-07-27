@@ -1,5 +1,5 @@
 import Header from '@/components/landing/header';
-import HeroTransform from '@/components/landing/hero-transform';
+import Hero from '@/components/landing/hero';
 import Pillars from '@/components/landing/pillars';
 import Portfolio from '@/components/landing/portfolio';
 import Newsletter from '@/components/landing/newsletter';
@@ -14,7 +14,7 @@ export default function Home() {
     <div className="bg-background text-foreground min-h-screen overflow-x-hidden">
       <Header />
       <main>
-        <HeroTransform />
+        <Hero />
         <Stats />
         <Services />
         <Portfolio />

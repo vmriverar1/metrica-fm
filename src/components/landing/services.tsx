@@ -1,10 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
+import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 
 const mainService = {
   title: 'Dirección Integral de Proyectos (DIP)',
@@ -37,51 +40,179 @@ const secondaryServices = [
   },
 ];
 
-const ServiceCard = ({ service }: { service: (typeof secondaryServices)[0] & { isMain?: boolean, className?: string } }) => {
+const ServiceCard = ({ service, index }: { 
+  service: (typeof secondaryServices)[0] & { isMain?: boolean, className?: string },
+  index: number 
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<HTMLDivElement>(null);
+  
+  useGSAP(() => {
+    if (!cardRef.current) return;
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: cardRef.current,
+        start: 'top 90%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+    
+    // Card entrance animation - increased stagger for better effect
+    tl.from(cardRef.current, {
+      y: 100,
+      opacity: 0,
+      duration: 1,
+      delay: service.isMain ? 0 : index * 0.3,
+      ease: 'power3.out'
+    })
+    // Image animation
+    .from(imageRef.current, {
+      scale: 1.3,
+      duration: 1.2,
+      ease: 'power2.out'
+    }, '-=0.8')
+    // Content animation
+    .from(contentRef.current?.children || [], {
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power2.out'
+    }, '-=0.6');
+    
+    // Hover animations
+    const hoverTl = gsap.timeline({ paused: true });
+    hoverTl
+      .to(imageRef.current, {
+        scale: 1.1,
+        duration: 0.5,
+        ease: 'power2.out'
+      })
+      .to(arrowRef.current, {
+        x: 5,
+        scale: 1.2,
+        duration: 0.3,
+        ease: 'power2.out'
+      }, 0)
+      .to(cardRef.current, {
+        y: -5,
+        boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+        duration: 0.3,
+        ease: 'power2.out'
+      }, 0);
+    
+    cardRef.current.addEventListener('mouseenter', () => hoverTl.play());
+    cardRef.current.addEventListener('mouseleave', () => hoverTl.reverse());
+    
+  }, { scope: cardRef });
+  
   return (
-    <Card className={cn(
-      'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm transition-all duration-300 hover:shadow-xl',
-      service.isMain ? service.className : 'bg-card'
-    )}>
-      <CardContent className="p-6 flex flex-col flex-grow">
-        <h3 className={cn(
-          'font-headline text-2xl font-bold mb-2 line-clamp-3',
-           service.isMain ? 'text-white' : 'text-foreground'
-        )}>
-          {service.title}
-        </h3>
-        <p className={cn(
-          'mb-4 flex-grow',
-           service.isMain ? 'text-white/80' : 'text-foreground/70'
-        )}>
-          {service.description}
-        </p>
-        <div className="flex justify-end mt-auto">
-          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground group-hover:scale-110 transition-transform">
-            <ArrowRight className="h-5 w-5" />
+    <div ref={cardRef} className="h-full">
+      <Card className={cn(
+        'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full',
+        service.isMain ? service.className : 'bg-card'
+      )}>
+        <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
+          <h3 className={cn(
+            'font-headline text-2xl font-bold mb-2 line-clamp-3',
+             service.isMain ? 'text-white' : 'text-foreground'
+          )}>
+            {service.title}
+          </h3>
+          <p className={cn(
+            'mb-4 flex-grow',
+             service.isMain ? 'text-white/80' : 'text-foreground/70'
+          )}>
+            {service.description}
+          </p>
+          <div className="flex justify-end mt-auto">
+            <div ref={arrowRef} className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground">
+              <ArrowRight className="h-5 w-5" />
+            </div>
           </div>
+        </CardContent>
+        <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
+          <Image
+            src={service.imageUrl}
+            alt={service.title}
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
-      </CardContent>
-      <div className="relative h-48 w-full">
-        <Image
-          src={service.imageUrl}
-          alt={service.title}
-          layout="fill"
-          objectFit="cover"
-          className="transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
 const MainServiceCard = ({ service }: { service: typeof mainService }) => {
-    return (
+  const cardRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<HTMLDivElement>(null);
+  
+  useGSAP(() => {
+    if (!cardRef.current) return;
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: cardRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+    
+    // Main card special entrance
+    tl.from(cardRef.current, {
+      scale: 0.8,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power3.out'
+    })
+    .from(imageRef.current, {
+      scale: 1.5,
+      opacity: 0,
+      duration: 1.5,
+      ease: 'power2.out'
+    }, '-=1')
+    .from(contentRef.current?.children || [], {
+      x: -50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: 'power3.out'
+    }, '-=0.8');
+    
+    // Special hover for main card
+    const hoverTl = gsap.timeline({ paused: true });
+    hoverTl
+      .to(cardRef.current, {
+        scale: 1.02,
+        boxShadow: '0 30px 60px rgba(231, 78, 15, 0.3)',
+        duration: 0.4,
+        ease: 'power2.out'
+      })
+      .to(arrowRef.current, {
+        rotation: 45,
+        scale: 1.3,
+        duration: 0.3,
+        ease: 'power2.out'
+      }, 0);
+    
+    cardRef.current.addEventListener('mouseenter', () => hoverTl.play());
+    cardRef.current.addEventListener('mouseleave', () => hoverTl.reverse());
+    
+  }, { scope: cardRef });
+  
+  return (
+    <div ref={cardRef} className="h-full">
       <Card className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm transition-all duration-300 hover:shadow-xl',
+        'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full',
         service.className
       )}>
-        <CardContent className="p-6 flex flex-col flex-grow">
+        <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
           <h3 className="font-headline text-3xl font-bold mb-4 text-white">
             {service.title}
           </h3>
@@ -89,31 +220,62 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
             {service.description}
           </p>
           <div className="flex justify-start mt-auto">
-            <div className="flex items-center justify-center h-12 w-12 rounded-full bg-accent text-accent-foreground group-hover:scale-110 transition-transform">
+            <div ref={arrowRef} className="flex items-center justify-center h-12 w-12 rounded-full bg-accent text-accent-foreground">
               <ArrowRight className="h-6 w-6" />
             </div>
           </div>
         </CardContent>
-        <div className="relative h-64 w-full">
+        <div ref={imageRef} className="relative h-64 w-full overflow-hidden">
           <Image
             src={service.imageUrl}
             alt={service.title}
             layout="fill"
             objectFit="cover"
-            className="transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       </Card>
-    );
-  };
+    </div>
+  );
+};
 
 export default function Services() {
+  const sectionRef = useSectionAnimation();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  
+  useGSAP(() => {
+    // Animate section title
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: titleRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+    
+    tl.from(titleRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
+    })
+    .from(subtitleRef.current, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    }, '-=0.5');
+    
+  }, { scope: sectionRef });
+  
   return (
-    <section id="services" className="py-24 bg-background/95">
+    <section ref={sectionRef} id="services" className="py-24 bg-background/95 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold">Nuestros Servicios</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <h2 ref={titleRef} className="font-headline text-4xl md:text-5xl font-bold">
+            Nuestros Servicios
+          </h2>
+          <p ref={subtitleRef} className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
             Ofrecemos un portafolio de servicios especializados para asegurar el éxito de proyectos de infraestructura complejos.
           </p>
         </div>
@@ -122,7 +284,7 @@ export default function Services() {
             <MainServiceCard service={mainService} />
           </div>
           {secondaryServices.map((service, index) => (
-            <ServiceCard key={index} service={service} />
+            <ServiceCard key={index} service={service} index={index} />
           ))}
         </div>
       </div>
