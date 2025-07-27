@@ -163,3 +163,48 @@ body {
     }
   }
 }
+
+  /* Portfolio expansion optimization */
+  .carousel-wrapper {
+    contain: layout style paint;
+    transition: none !important;
+  }
+  
+  /* When sticky is applied via GSAP */
+  .carousel-wrapper[style*="position: sticky"] {
+    z-index: 10 !important;
+  }
+
+  .carousel-wrapper.is-expanding {
+    will-change: transform;
+    z-index: 9999 !important;
+  }
+  
+  /* When expanding, maintain proper layout */
+  .carousel-wrapper.is-expanding .project-card {
+    width: 100% !important;
+  }
+  
+  /* Ensure carousel items take full width */
+  [data-carousel-item] {
+    width: 100%;
+  }
+  
+  .carousel-wrapper.is-expanding .project-content {
+    /* Content remains normal size */
+  }
+  
+  .carousel-wrapper.is-expanding h3 {
+    /* Title remains normal size */
+  }
+
+  .project-card {
+    contain: layout style paint;
+    transform: translateZ(0);
+  }
+
+  /* Smooth scrolling optimization for pinned sections */
+  /* Only apply to Portfolio pin-spacer */
+  #portfolio + .pin-spacer {
+    will-change: transform;
+  }

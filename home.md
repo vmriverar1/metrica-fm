@@ -1,7 +1,41 @@
-Queremos que la sección hero actual de la web de Métrica —donde se muestra el mensaje central "Dirección Integral de Proyectos"— tenga un comportamiento interactivo al hacer scroll, inspirado en el flujo visual de sitios como el de Turner & Townsend. Al ingresar, el usuario verá el hero ocupando toda la pantalla (100vh), con el fondo visual de un proyecto en escala real, acompañado del texto central destacado y el botón de llamado a la acción. Sin embargo, al comenzar a hacer scroll, esta sección no desaparece de inmediato, sino que se transforma progresivamente. A medida que el usuario desciende, la altura del hero se va reduciendo suavemente hasta ocupar una franja superior mucho más pequeña (por ejemplo, 20–25% de la pantalla), como una cabecera visual compacta. Durante esta transición, el fondo se aleja ligeramente o se desenfoca de forma sutil, y los textos centrales se redimensionan o se recolocan hacia una posición superior o lateral, dando paso al contenido inferior. En paralelo, va emergiendo desde abajo la siguiente sección de la web (que podría ser la presentación detallada de DIP), generando un efecto de continuidad fluida, profesional y elegante. Todo este proceso debe percibirse como una transición coherente y suave, no como un cambio brusco de secciones, y transmite al usuario la idea de que Métrica transforma el entorno con orden, claridad y visión técnica. Esta experiencia de scroll crea una introducción visual impactante y moderna, alineada con el enfoque innovador que buscamos proyectar para la Dirección Integral de Proyectos.
+Fase 1: Detección del Centro
 
-1. la imagen del hero se reduce en tamaño en 70% en vertical y horizontal, pero se mantiene centrado horizontalmente y verticalmente se mantiene en la parte inferior de la pantalla.
-2. Desaparece el texto y contenido dentro del hero, incluso el botón de CTA.
-3. aparece por encima del espacio bacio que deja la imagen del hero en la parte superior ponemos el texto en dos lineas donde :
-Trabajamos juntos. 
-4.  A la derecha de este texto ponemos una pequeña explicación muy breve como por ejhemplo en ingles encontre algo asi "Working in partnership makes it possible to deliver the world’s most impactful projects and programmes across real estate, infrastructure, energy and natural resources."
+  1. ScrollTrigger start: Cuando el centro del carousel llegue al centro del viewport
+  2. Pin inmediato: Fijar la sección en ese punto exacto
+  3. Cálculo dinámico: start: "center center" para el trigger
+
+  Fase 2: Secuencia de Animación
+
+  1. Usuario hace scroll → Carousel llega al centro vertical
+  2. Pin activado → Sección se fija
+  3. Timeline de expansión:
+     - 0-20%: Fade out título/subtítulo
+     - 20-50%: Carousel crece desde centro a 100vw x 100vh
+     - 50-70%: Hold (mantener expandido mientras scrollea)
+     - 70-90%: Contracción de vuelta al tamaño original
+     - 90-100%: Fade in título/subtítulo
+  4. Unpin → Continúa scroll normal
+
+  Fase 3: Implementación Técnica
+
+  ScrollTrigger Configuration:
+  scrollTrigger: {
+    trigger: carouselRef,
+    start: "center center",    // Cuando centro del carousel = centro viewport
+    end: "+=300%",            // Duración del efecto
+    pin: true,                // Fijar sección
+    scrub: 1,                 // Suave con scroll
+    pinSpacing: true,         // Mantener espacio
+  }
+
+  Transform Strategy:
+  - Usar scale en lugar de width/height
+  - transform-origin: center center
+  - Calcular scale factor basado en viewport vs carousel size
+
+  Lo que necesitamos:
+
+  1. Ref del carousel wrapper específicamente
+  2. Medir dimensiones del carousel vs viewport
+  3. Z-index alto durante expansión
+  4. Desactivar interacciones del carousel durante animación
