@@ -190,6 +190,13 @@ body {
     width: 100%;
   }
   
+  /* Ensure carousel navigation buttons are always clickable */
+  .carousel-previous,
+  .carousel-next {
+    pointer-events: auto !important;
+    z-index: 50 !important;
+  }
+  
   .carousel-wrapper.is-expanding .project-content {
     /* Content remains normal size */
   }

@@ -214,7 +214,6 @@ export default function Portfolio() {
             if (carouselWrapperRef.current) {
               carouselWrapperRef.current.classList.add('is-expanding');
               gsap.set(carouselWrapperRef.current, { 
-                pointerEvents: 'none',
                 zIndex: 9999
               });
             }
@@ -246,7 +245,6 @@ export default function Portfolio() {
               
               // Clear inline styles but keep sticky positioning
               gsap.set(carouselWrapperRef.current, { 
-                pointerEvents: 'auto',
                 zIndex: 10,
                 width: '',
                 height: '',
@@ -447,8 +445,8 @@ export default function Portfolio() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="carousel-previous absolute left-4 top-1/2 -translate-y-1/2 z-20 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
-                    <CarouselNext className="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-20 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
+                    <CarouselPrevious className="carousel-previous absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
+                    <CarouselNext className="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
                 </Carousel>
             </div>
         </div>
