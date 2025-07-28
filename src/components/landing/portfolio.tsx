@@ -52,9 +52,9 @@ export default function Portfolio() {
     const mm = gsap.matchMedia();
     
     mm.add("(min-width: 768px)", () => {
-      // Desktop animations
+      // Animaciones de escritorio
       
-      // First, create entrance animations
+      // Primero, crear animaciones de entrada
       gsap.from(titleRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -92,20 +92,20 @@ export default function Portfolio() {
         ease: 'power3.out'
       });
       
-      // Check if all refs are available
+      // Verificar si todos los refs están disponibles
       if (!carouselWrapperRef.current || !sectionRef.current || !titleRef.current || !subtitleRef.current) {
         console.warn('Portfolio refs not ready');
         return;
       }
       
-      // First, create a trigger to make carousel sticky when it reaches center
+      // Primero, crear un trigger para hacer el carousel sticky cuando llegue al centro
       ScrollTrigger.create({
         trigger: carouselWrapperRef.current,
         start: "center center",
-        end: "+=300%",
+        end: "+=100%",
         markers: true,
         onEnter: () => {
-          // Make carousel sticky when entering
+          // Hacer el carousel sticky al entrar
           if (carouselWrapperRef.current) {
             gsap.set(carouselWrapperRef.current, {
               position: 'sticky',
@@ -115,7 +115,7 @@ export default function Portfolio() {
           }
         },
         onLeaveBack: () => {
-          // Return to normal position when scrolling back up
+          // Volver a la posición normal al hacer scroll hacia arriba
           if (carouselWrapperRef.current) {
             gsap.set(carouselWrapperRef.current, {
               position: 'relative',
@@ -125,7 +125,7 @@ export default function Portfolio() {
           }
         },
         onLeave: () => {
-          // Return to normal position when scrolling past
+          // Volver a la posición normal al pasar el scroll
           if (carouselWrapperRef.current) {
             gsap.set(carouselWrapperRef.current, {
               position: 'relative',
@@ -136,62 +136,62 @@ export default function Portfolio() {
         }
       });
       
-      // Then, create the expansion effect when carousel is centered
+      // Luego, crear el efecto de expansión cuando el carousel esté centrado
       const expansionTl = gsap.timeline({
         scrollTrigger: {
           trigger: carouselWrapperRef.current,
-          start: "center center",  // When carousel center hits viewport center
-          end: "+=300%",          // Effect duration
-          pin: sectionRef.current, // Pin the entire section
-          pinSpacing: true,       // Maintain spacing
-          scrub: 1,              // Smooth scrubbing
-          invalidateOnRefresh: true, // Recalculate on window resize
+          start: "center center",  // Cuando el centro del carousel llega al centro del viewport
+          end: "+=300%",          // Duración total aumentada para más tiempo expandido
+          pin: sectionRef.current, // Fijar toda la sección
+          pinSpacing: true,       // Mantener espaciado
+          scrub: 1,              // Desplazamiento suave
+          invalidateOnRefresh: true, // Recalcular al cambiar tamaño de ventana
           onUpdate: (self) => {
             console.log('Progress:', self.progress);
           }
         }
       });
       
-      // Store original dimensions
+      // Almacenar dimensiones originales
       let originalWidth = 0;
       let originalHeight = 0;
       let originalMarginLeft = 0;
       let originalMarginTop = 0;
       
-      // Set initial state
+      // Establecer estado inicial
       gsap.set(carouselWrapperRef.current, {
         position: 'relative',
         zIndex: 1,
       });
       
-      // Phase 1: Fade out title and subtitle (0-15%)
+      // Fase 1: Desvanecer título y subtítulo (0-15%)
       expansionTl
         .to([titleRef.current, subtitleRef.current], {
           opacity: 0,
           y: -30,
           duration: 0.15,
-          ease: 'power2.in',
+          ease: 'power3.in',
           stagger: 0.05
         }, 0)
         
-        // Phase 2a: Start expanding project cards height (15-25%)
+        // Fase 2a: Comenzar a expandir altura de tarjetas del proyecto (15-25%)
         .to('.project-card', {
           height: '100vh',
           duration: 0.15,
           ease: 'power2.inOut'
         }, 0.15)
         
-        // Phase 2b: Expand carousel width and height (15-40%)
+        // Fase 2b: Expandir ancho y alto del carousel (15-40%)
         .to(carouselWrapperRef.current, {
           width: '100vw',
           height: '100vh',
           marginLeft: () => {
-            // Calculate negative margin to center horizontally
+            // Calcular margen negativo para centrar horizontalmente
             const carousel = carouselWrapperRef.current;
             if (!carousel) return 0;
             const rect = carousel.getBoundingClientRect();
             
-            // Store original values
+            // Almacenar valores originales
             originalWidth = rect.width;
             originalHeight = rect.height;
             originalMarginLeft = -(window.innerWidth - rect.width) / 2;
@@ -199,7 +199,7 @@ export default function Portfolio() {
             return originalMarginLeft;
           },
           marginTop: () => {
-            // Calculate negative margin to center vertically
+            // Calcular margen negativo para centrar verticalmente
             const carousel = carouselWrapperRef.current;
             if (!carousel) return 0;
             const rect = carousel.getBoundingClientRect();
@@ -209,7 +209,7 @@ export default function Portfolio() {
           },
           borderRadius: 0,
           duration: 0.25,
-          ease: 'power3.inOut',
+          ease: 'power4.inOut',
           onStart: () => {
             if (carouselWrapperRef.current) {
               carouselWrapperRef.current.classList.add('is-expanding');
@@ -220,30 +220,30 @@ export default function Portfolio() {
           }
         }, 0.15)
         
-        // Phase 3: Hold expanded state (40-60%)
-        .set({}, {}, "+=0.2")
+        // Fase 3: Mantener estado expandido (40-85%)
+        .set({}, {}, "+=0.45")
         
-        // Phase 4a: Start contracting project cards height (60-70%)
+        // Fase 4a: Comenzar a contraer altura de tarjetas del proyecto (85-90%)
         .to('.project-card', {
           height: '60vh',
-          duration: 0.15,
-          ease: 'power2.inOut'
-        }, 0.6)
+          duration: 0.05,
+          ease: 'power4.out'
+        }, 0.85)
         
-        // Phase 4b: Contract carousel back to original size (60-85%)
+        // Fase 4b: Contraer carousel de vuelta al tamaño original (85-95%)
         .to(carouselWrapperRef.current, {
           width: () => originalWidth + 'px',
           height: () => originalHeight + 'px',
           marginLeft: 0,
           marginTop: 0,
           borderRadius: '0.5rem',
-          duration: 0.25,
-          ease: 'power3.inOut',
+          duration: 0.10,
+          ease: 'power4.out',
           onComplete: () => {
             if (carouselWrapperRef.current) {
               carouselWrapperRef.current.classList.remove('is-expanding');
               
-              // Clear inline styles but keep sticky positioning
+              // Limpiar estilos inline pero mantener posicionamiento sticky
               gsap.set(carouselWrapperRef.current, { 
                 zIndex: 10,
                 width: '',
@@ -253,25 +253,25 @@ export default function Portfolio() {
                 borderRadius: ''
               });
               
-              // Clear project cards height
+              // Limpiar altura de tarjetas del proyecto
               gsap.set('.project-card', {
                 height: ''
               });
             }
           }
-        }, 0.6)
+        }, 0.85)
         
-        // Phase 5: Fade in title and subtitle (85-100%)
+        // Fase 5: Aparecer título y subtítulo (95-100%)
         .to([titleRef.current, subtitleRef.current], {
           opacity: 1,
           y: 0,
-          duration: 0.15,
+          duration: 0.05,
           ease: 'power2.out',
           stagger: 0.05,
           clearProps: 'all'
-        }, 0.85);
+        }, 0.95);
       
-      // Individual project card animations
+      // Animaciones individuales de tarjetas de proyecto
       gsap.utils.toArray('.project-card').forEach((card: any, index) => {
         gsap.from(card, {
           scrollTrigger: {
@@ -286,10 +286,10 @@ export default function Portfolio() {
           ease: 'power3.out'
         });
         
-        // Image parallax effect - subtle movement
+        // Efecto parallax de imagen - movimiento sutil
         const image = card.querySelector('.project-image');
         if (image) {
-          // Set initial position to compensate for parallax
+          // Establecer posición inicial para compensar el parallax
           gsap.set(image, { yPercent: 5 });
           
           gsap.to(image, {
@@ -299,12 +299,12 @@ export default function Portfolio() {
               trigger: card,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: true
+              scrub: false
             }
           });
         }
         
-        // Hover effects
+        // Efectos hover
         const projectOverlay = card.querySelector('.project-overlay');
         const projectContent = card.querySelector('.project-content');
         
@@ -342,9 +342,21 @@ export default function Portfolio() {
           });
         });
       });
+      
+      // Animación de transición sutil a Pillars
+      gsap.to('.transition-gradient', {
+        scrollTrigger: {
+          trigger: '.portfolio-transition',
+          start: 'top 90%',
+          end: 'bottom 70%',
+          scrub: true
+        },
+        opacity: 1,
+        duration: 0.5
+      });
     });
     
-    // Mobile animations
+    // Animaciones móviles
     mm.add("(max-width: 767px)", () => {
       gsap.from('.portfolio-title', {
         scrollTrigger: {
@@ -374,7 +386,7 @@ export default function Portfolio() {
     
   }, { scope: containerRef });
   
-  // Animate carousel navigation buttons
+  // Animar botones de navegación del carousel
   useGSAP(() => {
     const prevButton = containerRef.current?.querySelector('.carousel-previous');
     const nextButton = containerRef.current?.querySelector('.carousel-next');
@@ -403,7 +415,7 @@ export default function Portfolio() {
   }, { scope: containerRef });
   
   return (
-    <section ref={sectionRef} id="portfolio" className="relative w-full py-24 bg-background">
+    <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <div className="text-center mb-12">
                 <h2 ref={titleRef} className="portfolio-title font-headline text-4xl md:text-5xl font-bold">Proyectos Destacados</h2>
@@ -449,6 +461,11 @@ export default function Portfolio() {
                     <CarouselNext className="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
                 </Carousel>
             </div>
+        </div>
+        
+        {/* Transición a Pillars */}
+        <div className="portfolio-transition absolute -bottom-10 left-0 right-0 h-20 pointer-events-none z-20">
+            <div className="transition-gradient w-full h-full bg-gradient-to-b from-transparent to-background/50"></div>
         </div>
     </section>
   );
