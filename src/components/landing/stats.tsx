@@ -80,10 +80,10 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => 
       <div ref={iconRef} className="inline-block">
         <stat.icon className="h-12 w-12 text-accent mx-auto mb-4" />
       </div>
-      <p ref={numberRef} className="text-4xl font-bold text-foreground">
+      <p ref={numberRef} className="text-4xl font-alliance-extrabold text-foreground">
         0{stat.suffix}
       </p>
-      <p className="text-foreground/70 mt-2">{stat.label}</p>
+      <p className="text-foreground/70 mt-2 font-alliance-medium">{stat.label}</p>
     </div>
   );
 };

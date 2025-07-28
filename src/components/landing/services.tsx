@@ -118,7 +118,7 @@ const ServiceCard = ({ service, index }: {
       )}>
         <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
           <h3 className={cn(
-            'font-headline text-2xl font-bold mb-2 line-clamp-3',
+            'text-2xl font-bold mb-2 line-clamp-3',
              service.isMain ? 'text-white' : 'text-foreground'
           )}>
             {service.title}
@@ -214,10 +214,10 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
         service.className
       )}>
         <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
-          <h3 className="font-headline text-3xl font-bold mb-4 text-white">
+          <h3 className="title-section text-3xl mb-4 text-white">
             {service.title}
           </h3>
-          <p className="mb-6 flex-grow text-white/80">
+          <p className="mb-6 flex-grow text-white/80 font-alliance-medium">
             {service.description}
           </p>
           <div className="flex justify-start mt-auto">
@@ -278,10 +278,10 @@ export default function Services() {
       
       <div className="container mx-auto px-4 relative z-10">
         <ParallaxWrapper speed={0.1} className="text-center mb-12">
-          <h2 ref={titleRef} className="font-headline text-4xl md:text-5xl font-bold">
+          <h2 ref={titleRef} className="title-section text-4xl md:text-5xl">
             Nuestros Servicios
           </h2>
-          <p ref={subtitleRef} className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <p ref={subtitleRef} className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
             Ofrecemos un portafolio de servicios especializados para asegurar el éxito de proyectos de infraestructura complejos.
           </p>
         </ParallaxWrapper>

@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Face Declarations */
+@font-face {
+  font-family: 'Marsek Demi';
+  src: url('/fonts/Marsek-Demi.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  src: url('/fonts/Alliance No.2 Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  src: url('/fonts/Alliance No.2 Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alliance No.2';
+  src: url('/fonts/Alliance No.2 ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Smooth Scroll Nativo Optimizado - Fase 2 */
 html {
   scroll-behavior: smooth;
@@ -14,12 +47,57 @@ html {
   }
 }
 
+/* Global font defaults */
+* {
+  font-family: 'Alliance No.2', sans-serif;
+}
+
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Alliance No.2', sans-serif;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-overflow-scrolling: touch; /* Momentum scrolling iOS */
   overscroll-behavior-y: contain; /* Overscroll personalizado */
+}
+
+/* All headings use Alliance No.2 ExtraBold */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Alliance No.2', sans-serif;
+  font-weight: 800;
+}
+
+/* Hero titles specifically */
+#hero h1,
+#hero h1 *,
+#hero h2,
+#hero h2 *,
+.hero-title,
+.hero-title *,
+[class*="hero"] h1,
+[class*="hero"] h1 *,
+[class*="hero"] h2,
+[class*="hero"] h2 * {
+  font-family: 'Alliance No.2', sans-serif !important;
+  font-weight: 800 !important;
+}
+
+/* Paragraphs and regular text */
+p, span, div, li, a {
+  font-family: 'Alliance No.2', sans-serif;
+  font-weight: 500;
+}
+
+/* Light text for info/details */
+.text-muted, .text-muted-foreground, 
+.text-foreground\/70, .text-white\/80,
+small, .text-sm {
+  font-weight: 300;
+}
+
+/* Bold text */
+strong, b, .font-bold {
+  font-weight: 800;
 }
 
 ::-webkit-scrollbar {
@@ -106,6 +184,47 @@ body {
 }
 
 @layer utilities {
+  /* Typography utilities */
+  .font-marsek {
+    font-family: 'Marsek Demi', sans-serif;
+    font-weight: 600;
+  }
+  
+  .font-alliance-light {
+    font-family: 'Alliance No.2', sans-serif;
+    font-weight: 300;
+  }
+  
+  .font-alliance-medium {
+    font-family: 'Alliance No.2', sans-serif;
+    font-weight: 500;
+  }
+  
+  .font-alliance-extrabold {
+    font-family: 'Alliance No.2', sans-serif;
+    font-weight: 800;
+  }
+  
+  /* Override classes for specific needs */
+  .title-hero {
+    font-family: 'Alliance No.2', sans-serif !important;
+    font-weight: 800 !important;
+  }
+  
+  .title-section {
+    font-family: 'Alliance No.2', sans-serif !important;
+    font-weight: 800 !important;
+  }
+  
+  .text-tagline {
+    font-family: 'Alliance No.2', sans-serif !important;
+    font-weight: 500 !important;
+  }
+  
+  .text-info {
+    font-family: 'Alliance No.2', sans-serif !important;
+    font-weight: 300 !important;
+  }
   .animation-delay-200 {
     animation-delay: 200ms;
   }
@@ -150,6 +269,15 @@ body {
                  0 0 10px hsl(var(--accent) / 0.6),
                  0 0 15px hsl(var(--accent) / 0.4),
                  0 0 20px hsl(var(--accent) / 0.2);
+  }
+  
+  .text-glow-orange {
+    text-shadow: 
+      0 0 10px #E84E0F,
+      0 0 20px #E84E0F,
+      0 0 30px #E84E0F;
+    filter: brightness(1.1) contrast(1.2);
+    color: #fff;
   }
 
   .perspective-1000 {

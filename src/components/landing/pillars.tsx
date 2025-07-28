@@ -54,7 +54,7 @@ const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: num
           <div className="p-3 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-colors duration-300">
             <pillar.icon className="h-12 w-12 text-accent transition-all duration-300 group-hover:text-white group-hover:scale-110" />
           </div>
-          <CardTitle className="font-headline text-xl text-foreground transition-colors duration-300 group-hover:text-white">{pillar.title}</CardTitle>
+          <CardTitle className="text-xl text-foreground transition-colors duration-300 group-hover:text-white">{pillar.title}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-center text-foreground/80 transition-colors duration-300 group-hover:text-white/90">{pillar.description}</p>
@@ -74,8 +74,8 @@ export default function Pillars() {
       
       <div className="container mx-auto px-4 relative z-10">
         <ParallaxWrapper speed={0.05} className="text-center mb-16">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold mb-4">¿Qué es DIP?</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <h2 className="title-section text-4xl md:text-5xl mb-4">¿Qué es DIP?</h2>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
             Nuestra Dirección Integral de Proyectos (DIP) se fundamenta en seis pilares clave para garantizar la excelencia.
           </p>
         </ParallaxWrapper>

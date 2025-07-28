@@ -43,3 +43,17 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Corregido z-index: nav z-50, dropdown z-[60] para estar sobre overlay z-40
   - Botón activo y hover ahora usan color accent (naranja) con texto blanco
   - Enlaces del submenú también con hover naranja
+
+- [2025-01-28] Configuración de fuentes personalizadas Marsek y Alliance No.2
+  - Creado archivo de configuración de fuentes en lib/fonts.ts
+  - Copiadas fuentes a carpeta public/fonts
+  - Definidas @font-face en globals.css
+  - Marsek Demi aplicada a títulos del hero (title-hero)
+  - Alliance No.2 ExtraBold para títulos de sección (title-section)
+  - Alliance No.2 Medium para párrafos y texto regular
+  - Alliance No.2 Light disponible para información y detalles
+  - Archivos: lib/fonts.ts, globals.css, hero.tsx, portfolio.tsx, services.tsx, pillars.tsx, stats.tsx
+  - Actualizado: Eliminadas todas las referencias a font-headline y Poppins
+  - CSS global configurado para aplicar automáticamente las fuentes
+  - Marsek Demi aplicada a todos los h1 y elementos en secciones hero
+  - Alliance No.2 configurada como fuente predeterminada para todo el sitio

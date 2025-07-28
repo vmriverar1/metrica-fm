@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { MoveRight } from 'lucide-react';
-import Image from 'next/image';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -242,14 +241,16 @@ const HeroTransform = () => {
               ref={heroBackgroundRef}
               className="hero-background absolute inset-0 z-0"
             >
-              <Image
-                src="https://metrica-dip.com/images/slider-inicio-es/01.jpg"
-                alt="Proyecto Métrica"
-                layout="fill"
-                objectFit="cover"
-                priority
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="w-full h-full object-cover"
-              />
+              >
+                <source src="https://statom.co.uk/assets/video/2024/Oct/rc-frame-video.mp4" type="video/mp4" />
+                Su navegador no soporta el elemento de video.
+              </video>
               <div 
                 ref={heroOverlayRef}
                 className="hero-overlay absolute inset-0 bg-black/40"
@@ -264,9 +265,9 @@ const HeroTransform = () => {
               <div className="hero-text-wrapper text-center px-4">
                 <h1 
                   ref={heroTitleRef}
-                  className="hero-title font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-4"
+                  className="hero-title text-5xl md:text-7xl tracking-tight text-white mb-4"
                 >
-                  <span className="block">Dirección Integral</span>
+                  <span className="block text-glow-orange">Dirección Integral</span>
                   <span className="block">de Proyectos</span>
                 </h1>
                 
@@ -281,7 +282,7 @@ const HeroTransform = () => {
                   <Link href="#stats">
                     <Button 
                       size="lg" 
-                      className="group relative overflow-hidden bg-white text-primary hover:bg-white/90"
+                      className="group relative overflow-hidden bg-primary text-white hover:bg-primary/90"
                     >
                       Descubre DIP
                       <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -301,7 +302,7 @@ const HeroTransform = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-4">
               <h2 
                 ref={newTitleRef}
-                className="text-4xl md:text-6xl font-headline font-bold"
+                className="text-4xl md:text-6xl"
               >
                 <span ref={wordRef} className="text-[#003f6f] inline-block">{words[currentWordIndex]}</span><br/>
                 <span className="text-[#e84e0f]">juntos.</span>

@@ -418,8 +418,8 @@ export default function Portfolio() {
     <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <div className="text-center mb-12">
-                <h2 ref={titleRef} className="portfolio-title font-headline text-4xl md:text-5xl font-bold">Proyectos Destacados</h2>
-                <p ref={subtitleRef} className="portfolio-subtitle mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+                <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">Proyectos Destacados</h2>
+                <p ref={subtitleRef} className="portfolio-subtitle mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
                     Conoce el impacto de nuestro trabajo a través de algunos de los proyectos que hemos dirigido.
                 </p>
             </div>
@@ -447,8 +447,8 @@ export default function Portfolio() {
                                     <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>
                                     <div className="project-content relative z-10 text-white text-center p-8 max-w-4xl mx-auto">
                                         <Badge variant="secondary" className="mb-4 bg-accent/80 text-accent-foreground border-transparent">{project.type}</Badge>
-                                        <h3 className="font-headline text-4xl md:text-6xl font-bold mb-4">{project.name}</h3>
-                                        <p className="text-lg md:text-xl text-white/80 mb-8">{project.description}</p>
+                                        <h3 className="title-section text-4xl md:text-6xl mb-4">{project.name}</h3>
+                                        <p className="text-lg md:text-xl text-white/80 mb-8 font-alliance-medium">{project.description}</p>
                                         <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-300">
                                             Ver más detalles
                                         </Button>
