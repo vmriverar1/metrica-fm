@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
+import ParallaxWrapper from '@/components/parallax-wrapper';
 
 const mainService = {
   title: 'Dirección Integral de Proyectos (DIP)',
@@ -269,16 +270,21 @@ export default function Services() {
   }, { scope: sectionRef });
   
   return (
-    <section ref={sectionRef} id="services" className="py-24 bg-background/95 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+    <section ref={sectionRef} id="services" className="py-24 bg-background/95 overflow-hidden relative">
+      {/* Background con efecto parallax */}
+      <ParallaxWrapper speed={0.3} className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-accent/5" />
+      </ParallaxWrapper>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <ParallaxWrapper speed={0.1} className="text-center mb-12">
           <h2 ref={titleRef} className="font-headline text-4xl md:text-5xl font-bold">
             Nuestros Servicios
           </h2>
           <p ref={subtitleRef} className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
             Ofrecemos un portafolio de servicios especializados para asegurar el éxito de proyectos de infraestructura complejos.
           </p>
-        </div>
+        </ParallaxWrapper>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <MainServiceCard service={mainService} />

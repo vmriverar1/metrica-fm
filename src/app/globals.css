@@ -2,14 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth Scroll Nativo Optimizado - Fase 2 */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Compensar header fijo */
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 60px;
+  }
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch; /* Momentum scrolling iOS */
+  overscroll-behavior-y: contain; /* Overscroll personalizado */
 }
 
 ::-webkit-scrollbar {
@@ -168,6 +178,19 @@ body {
   .carousel-wrapper {
     contain: layout style paint;
     transition: none !important;
+  }
+  
+  /* Scroll snap para Portfolio */
+  @supports (scroll-snap-type: y mandatory) {
+    #portfolio {
+      scroll-snap-type: y proximity;
+      scroll-padding-top: 80px;
+    }
+    
+    #portfolio .carousel-wrapper {
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
   }
   
   /* When sticky is applied via GSAP */

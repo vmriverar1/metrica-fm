@@ -3,6 +3,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Target, Users, Search, BarChart, Shield, UserCheck } from 'lucide-react';
+import ParallaxWrapper from '@/components/parallax-wrapper';
 
 const pillars = [
   {
@@ -65,14 +66,19 @@ const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: num
 
 export default function Pillars() {
   return (
-    <section id="pillars" className="py-24 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+    <section id="pillars" className="py-24 bg-background relative overflow-hidden">
+      {/* Background sutil con parallax */}
+      <ParallaxWrapper speed={0.2} className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5" />
+      </ParallaxWrapper>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <ParallaxWrapper speed={0.05} className="text-center mb-16">
           <h2 className="font-headline text-4xl md:text-5xl font-bold mb-4">¿Qué es DIP?</h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
             Nuestra Dirección Integral de Proyectos (DIP) se fundamenta en seis pilares clave para garantizar la excelencia.
           </p>
-        </div>
+        </ParallaxWrapper>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {pillars.map((pillar, index) => (
             <PillarCard key={index} pillar={pillar} index={index} />
