@@ -6,16 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { Separator } from '../ui/separator';
+import './header.css';
+import MegaMenu from '@/components/megamenu';
 
 const navItems = [
   { id: 'hero', label: 'Inicio', subItems: null },
@@ -77,37 +69,10 @@ const Logo = ({ isScrolled }: { isScrolled: boolean }) => (
   </Link>
 );
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -119,75 +84,19 @@ export default function Header() {
     };
   }, []);
 
-  const navLinkClasses = cn(
-    "bg-transparent hover:bg-accent/10",
-    isScrolled ? "text-foreground/80 hover:text-accent" : "text-white/90 hover:text-white hover:bg-white/10"
-  );
 
   return (
     <>
       <header className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent",
-        menuOpen ? "bg-background/80 backdrop-blur-sm" : ""
+        isScrolled ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <Logo isScrolled={isScrolled}/>
             
             {/* Desktop Menu */}
-            <nav className="hidden md:flex items-center gap-1">
-              <NavigationMenu onValueChange={(value) => setMenuOpen(!!value)}>
-                <NavigationMenuList>
-                  {navItems.map((item) => (
-                    <NavigationMenuItem key={item.id}>
-                      {item.subItems ? (
-                        <>
-                          <NavigationMenuTrigger className={navLinkClasses}>
-                            {item.label}
-                          </NavigationMenuTrigger>
-                          <NavigationMenuContent>
-                            <div className="container mx-auto px-4">
-                              <div className="grid grid-cols-3 gap-x-6 p-6">
-                                <div className="col-span-1 space-y-4">
-                                  <h3 className="font-bold text-lg text-primary">{item.subItems.section1.title}</h3>
-                                  <p className="text-sm text-foreground/70">{item.subItems.section1.description}</p>
-                                </div>
-                                <Separator orientation="vertical" className="h-full" />
-                                <ul className="col-span-1 grid gap-3">
-                                  {item.subItems.links.map((link) => (
-                                    <ListItem
-                                      key={link.title}
-                                      title={link.title}
-                                      href={link.href}
-                                    >
-                                      {link.description}
-                                    </ListItem>
-                                  ))}
-                                </ul>
-                                <div className="col-span-1 space-y-4 pl-6 border-l border-border/50">
-                                   <h3 className="font-bold text-lg text-accent">{item.subItems.section3.title}</h3>
-                                   <p className="text-sm text-foreground/70">{item.subItems.section3.description}</p>
-                                </div>
-                              </div>
-                            </div>
-                          </NavigationMenuContent>
-                        </>
-                      ) : (
-                        <NavigationMenuLink asChild>
-                          <a 
-                            href={`#${item.id}`}
-                            className={cn(navigationMenuTriggerStyle(), navLinkClasses)}
-                          >
-                            {item.label}
-                          </a>
-                        </NavigationMenuLink>
-                      )}
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </nav>
+            <MegaMenu items={navItems} isScrolled={isScrolled} />
 
             {/* Mobile Menu */}
             <div className="md:hidden">
@@ -229,10 +138,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-      <div className={cn(
-        "fixed inset-0 z-40 bg-black/40 transition-opacity",
-        menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      )} />
     </>
   );
 }

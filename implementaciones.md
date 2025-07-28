@@ -23,3 +23,12 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Scrollbar personalizado mejorado
   - Hero Transform NO modificado - funcionando perfectamente
   - Archivos: globals.css, parallax-wrapper.tsx, services.tsx, pillars.tsx
+
+- [2025-01-28] Megamenu personalizado implementado con posicionamiento desde borde izquierdo
+  - Creado componente MegaMenu.tsx con control total del posicionamiento
+  - Reemplazado NavigationMenu de Radix UI en header.tsx
+  - Megamenu ahora aparece desde el borde izquierdo de la pantalla
+  - Archivos: megamenu.tsx, header.tsx, header.css
+  - Corregido fondo transparente - ahora usa bg-background opaco
+  - Mejorado comportamiento de cierre con hover/click y overlay funcional
+  - Agregado timeout para mejor UX al navegar entre items
