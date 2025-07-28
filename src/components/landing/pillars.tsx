@@ -41,18 +41,19 @@ const pillars = [
 const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: number }) => {
   return (
     <Card
-      className="pillar-card group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className="pillar-card group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-500 hover:shadow-[0_20px_50px_rgba(232,78,15,0.3)] hover:-translate-y-2 hover:scale-[1.02] overflow-hidden"
       style={{ 
         animationDelay: `${index * 0.1}s`,
         animation: 'fadeInUp 0.8s ease-out forwards',
         opacity: 0
       }}
     >
-      <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-primary to-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+      <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-primary to-accent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
       <div className="relative">
         <CardHeader className="flex flex-col items-center text-center gap-4 pb-4">
-          <div className="p-3 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-colors duration-300">
-            <pillar.icon className="h-12 w-12 text-accent transition-all duration-300 group-hover:text-white group-hover:scale-110" />
+          <div className="p-3 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+            <pillar.icon className="h-12 w-12 text-accent transition-all duration-500 group-hover:text-white group-hover:scale-125 group-hover:drop-shadow-[0_0_20px_rgba(232,78,15,0.5)]" />
           </div>
           <CardTitle className="text-xl text-foreground transition-colors duration-300 group-hover:text-white">{pillar.title}</CardTitle>
         </CardHeader>
@@ -66,7 +67,7 @@ const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: num
 
 export default function Pillars() {
   return (
-    <section id="pillars" className="py-24 bg-background relative overflow-hidden">
+    <section id="pillars" className="py-24 bg-background overflow-hidden">
       {/* Background sutil con parallax */}
       <ParallaxWrapper speed={0.2} className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5" />

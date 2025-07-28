@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,13 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel"
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
+import { cn } from '@/lib/utils';
+import PortfolioProgress from '@/components/ui/portfolio-progress';
+import PortfolioTransition from '@/components/ui/portfolio-transition';
 
 const projects = [
   {
@@ -47,6 +51,22 @@ export default function Portfolio() {
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+ 
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+ 
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
   
   useGSAP(() => {
     const mm = gsap.matchMedia();
@@ -429,36 +449,90 @@ export default function Portfolio() {
                         align: "start",
                         loop: true,
                     }}
+                    setApi={setApi}
                     className="w-full"
                 >
                     <CarouselContent>
                         {projects.map((project, index) => (
                             <CarouselItem key={index}>
-                                <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group">
-                                    <div className="absolute inset-0 overflow-hidden">
-                                        <Image
-                                            src={project.imageUrl}
-                                            alt={project.name}
-                                            fill
-                                            sizes="100vw"
-                                            className="project-image object-cover z-0 transition-all duration-500 group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-110"
-                                        />
+                                <PortfolioTransition 
+                                    isActive={current === index} 
+                                    variant={index % 2 === 0 ? 'split' : 'mask'}
+                                    className="h-full"
+                                >
+                                    <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group" data-index={index}>
+                                        <div className="absolute inset-0 overflow-hidden">
+                                            <Image
+                                                src={project.imageUrl}
+                                                alt={project.name}
+                                                fill
+                                                sizes="100vw"
+                                                className="project-image object-cover z-0 transition-all duration-[20s] ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
+                                            />
+                                        </div>
+                                        <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>
+                                        <div className="project-content relative z-10 text-white text-center p-8 max-w-4xl mx-auto">
+                                            <Badge 
+                                                variant="secondary" 
+                                                className={cn(
+                                                    "mb-4 bg-accent/80 text-accent-foreground border-transparent transition-all duration-500",
+                                                    current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                                                )}
+                                                style={{
+                                                    transitionDelay: current === index ? '300ms' : '0ms'
+                                                }}
+                                            >
+                                                {project.type}
+                                            </Badge>
+                                            <h3 
+                                                className={cn(
+                                                    "title-section text-4xl md:text-6xl mb-4 transition-all duration-700",
+                                                    current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                                )}
+                                                style={{
+                                                    transitionDelay: current === index ? '500ms' : '0ms'
+                                                }}
+                                            >
+                                                {project.name}
+                                            </h3>
+                                            <p 
+                                                className={cn(
+                                                    "text-lg md:text-xl text-white/80 mb-8 font-alliance-medium transition-all duration-700",
+                                                    current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                                )}
+                                                style={{
+                                                    transitionDelay: current === index ? '700ms' : '0ms'
+                                                }}
+                                            >
+                                                {project.description}
+                                            </p>
+                                            <Button 
+                                                variant="outline" 
+                                                className={cn(
+                                                    "bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-700",
+                                                    current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                                )}
+                                                style={{
+                                                    transitionDelay: current === index ? '900ms' : '0ms'
+                                                }}
+                                            >
+                                                Ver más detalles
+                                            </Button>
+                                        </div>
                                     </div>
-                                    <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>
-                                    <div className="project-content relative z-10 text-white text-center p-8 max-w-4xl mx-auto">
-                                        <Badge variant="secondary" className="mb-4 bg-accent/80 text-accent-foreground border-transparent">{project.type}</Badge>
-                                        <h3 className="title-section text-4xl md:text-6xl mb-4">{project.name}</h3>
-                                        <p className="text-lg md:text-xl text-white/80 mb-8 font-alliance-medium">{project.description}</p>
-                                        <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-300">
-                                            Ver más detalles
-                                        </Button>
-                                    </div>
-                                </div>
+                                </PortfolioTransition>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="carousel-previous absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
-                    <CarouselNext className="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white bg-white/20 hover:bg-white/40 border-none transition-all duration-300" />
+                    <CarouselPrevious className="carousel-previous absolute left-8 top-1/2 -translate-y-1/2 z-50 text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-300 h-16 w-16 rounded-full backdrop-blur-sm" />
+                    <CarouselNext className="carousel-next absolute right-8 top-1/2 -translate-y-1/2 z-50 text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-300 h-16 w-16 rounded-full backdrop-blur-sm" />
+                    {count > 0 && (
+                      <PortfolioProgress 
+                        current={current} 
+                        total={count} 
+                        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50"
+                      />
+                    )}
                 </Carousel>
             </div>
         </div>

@@ -8,10 +8,12 @@ import Stats from '@/components/landing/stats';
 import Services from '@/components/landing/services';
 import Clients from '@/components/landing/clients';
 import Policies from '@/components/landing/policies';
+import CustomCursor from '@/components/custom-cursor';
 
 export default function Home() {
   return (
     <div className="bg-background text-foreground min-h-screen overflow-x-hidden">
+      <CustomCursor />
       <Header />
       <main>
         <HeroTransform />

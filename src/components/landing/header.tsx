@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X } from 'lucide-react';
@@ -69,15 +70,15 @@ const navItems = [
 ];
 
 const Logo = ({ isScrolled }: { isScrolled: boolean }) => (
-  <Link href="/" className="flex items-center space-x-2">
-    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M50 0L100 28.87V86.6L50 115.47L0 86.6V28.87L50 0Z" className={cn(isScrolled ? "fill-primary" : "fill-white")}/>
-      <path d="M50 18L77.5 33.5V64.5L50 79.5L22.5 64.5V33.5L50 18Z" className={cn(isScrolled ? "fill-accent" : "fill-gray-300")}/>
-    </svg>
-    <span className={cn(
-      "font-bold text-xl",
-      isScrolled ? "text-foreground" : "text-white"
-    )}>Métrica</span>
+  <Link href="/" className="flex items-center">
+    <Image 
+      src={isScrolled ? "/img/logo-color.png" : "/img/logo-blanco.png"}
+      alt="Métrica Logo"
+      width={150}
+      height={40}
+      priority
+      className="h-10 w-auto"
+    />
   </Link>
 );
 
@@ -128,7 +129,13 @@ export default function Header() {
                 <SheetContent side="right" className="bg-background w-[250px] sm:w-[300px]">
                   <div className="flex flex-col h-full">
                      <div className="flex items-center justify-between p-4 border-b">
-                       <Logo isScrolled={true} />
+                       <Image 
+                         src="/img/logo-color.png"
+                         alt="Métrica Logo"
+                         width={120}
+                         height={32}
+                         className="h-8 w-auto"
+                       />
                        <SheetTrigger asChild>
                          <Button variant="ghost" size="icon">
                             <X className="h-6 w-6" />

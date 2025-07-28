@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,11 +9,14 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 import ParallaxWrapper from '@/components/parallax-wrapper';
+import CanvasParticles from '@/components/canvas-particles';
+import TiltCard from '@/components/tilt-card';
 
 const mainService = {
   title: 'Dirección Integral de Proyectos (DIP)',
   description: 'Lideramos tu proyecto desde la concepción hasta la entrega, asegurando el cumplimiento de objetivos en tiempo, costo y calidad.',
   imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+  iconUrl: '/img/icono-logo-2.png',
   className: 'lg:col-span-2 bg-primary text-primary-foreground',
   isMain: true,
 };
@@ -23,20 +26,24 @@ const secondaryServices = [
     title: 'Gerencia de Proyectos (PMO)',
     description: 'Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia.',
     imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    iconUrl: '/img/ico-service-2.png',
   },
   {
     title: 'Supervisión de Obras',
     description: 'Vigilancia técnica y administrativa para que la construcción se ejecute según los planos y normativas.',
     imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    iconUrl: '/img/ico-service-3.png',
   },
   {
     title: 'Gestión de Contratos',
     description: 'Administramos los contratos de obra para prevenir conflictos y asegurar el cumplimiento de las obligaciones.',
     imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    iconUrl: '/img/ico-service-4.png',
   },
   {
     title: 'Control de Calidad',
     description: 'Aseguramos que todos los materiales y procesos constructivos cumplan con los más altos estándares.',
+    iconUrl: '/img/ico-service-5.png',
     imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
   },
 ];
@@ -49,6 +56,7 @@ const ServiceCard = ({ service, index }: {
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   
   useGSAP(() => {
     if (!cardRef.current) return;
@@ -112,38 +120,66 @@ const ServiceCard = ({ service, index }: {
   
   return (
     <div ref={cardRef} className="h-full">
-      <Card className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full',
-        service.isMain ? service.className : 'bg-card'
-      )}>
-        <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
-          <h3 className={cn(
-            'text-2xl font-bold mb-2 line-clamp-3',
-             service.isMain ? 'text-white' : 'text-foreground'
-          )}>
-            {service.title}
-          </h3>
-          <p className={cn(
-            'mb-4 flex-grow',
-             service.isMain ? 'text-white/80' : 'text-foreground/70'
-          )}>
-            {service.description}
-          </p>
-          <div className="flex justify-end mt-auto">
-            <div ref={arrowRef} className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground">
-              <ArrowRight className="h-5 w-5" />
-            </div>
-          </div>
-        </CardContent>
-        <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
-          <Image
-            src={service.imageUrl}
-            alt={service.title}
-            layout="fill"
-            objectFit="cover"
+      <TiltCard 
+        className="h-full"
+        maxTilt={10}
+        scale={1.02}
+      >
+        <Card 
+          className={cn(
+            'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full liquid-distortion',
+            service.isMain ? service.className : 'bg-card'
+          )}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Canvas particles overlay */}
+          <CanvasParticles 
+            isActive={isHovered}
+            particleCount={30}
+            color={service.isMain ? '#ffffff' : '#E84E0F'}
+            className="z-10"
           />
-        </div>
-      </Card>
+          <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow relative z-20">
+            <div className="flex items-start gap-3 mb-2">
+              {service.iconUrl && (
+                <Image 
+                  src={service.iconUrl}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 object-contain flex-shrink-0 mt-1"
+                />
+              )}
+              <h3 className={cn(
+                'text-2xl font-bold line-clamp-3',
+                 service.isMain ? 'text-white' : 'text-foreground'
+              )}>
+                {service.title}
+              </h3>
+            </div>
+            <p className={cn(
+              'mb-4 flex-grow',
+               service.isMain ? 'text-white/80' : 'text-foreground/70'
+            )}>
+              {service.description}
+            </p>
+            <div className="flex justify-end mt-auto">
+              <div ref={arrowRef} className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground">
+                <ArrowRight className="h-5 w-5" />
+              </div>
+            </div>
+          </CardContent>
+          <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
+            <Image
+              src={service.imageUrl}
+              alt={service.title}
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+        </Card>
+      </TiltCard>
     </div>
   );
 };
