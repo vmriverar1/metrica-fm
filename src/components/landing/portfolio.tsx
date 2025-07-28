@@ -103,7 +103,7 @@ export default function Portfolio() {
         trigger: carouselWrapperRef.current,
         start: "center center",
         end: "+=100%",
-        markers: true,
+        // markers: true,
         onEnter: () => {
           // Hacer el carousel sticky al entrar
           if (carouselWrapperRef.current) {

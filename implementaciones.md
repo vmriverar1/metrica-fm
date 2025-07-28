@@ -57,3 +57,11 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - CSS global configurado para aplicar automáticamente las fuentes
   - Marsek Demi aplicada a todos los h1 y elementos en secciones hero
   - Alliance No.2 configurada como fuente predeterminada para todo el sitio
+
+- [2025-01-28] Cambios de color y eliminación de marcadores GSAP
+  - Eliminado marcador ScrollTrigger en portfolio.tsx
+  - Fondo del hero cambiado a azul (bg-primary/60)
+  - Fondo del contador (stats) cambiado a azul con textos blancos
+  - "Dirección Integral" en color naranja (text-accent) con sombra sutil
+  - Ajustados colores de texto para legibilidad en fondos azules
+  - Archivos: portfolio.tsx, hero-transform.tsx, stats.tsx

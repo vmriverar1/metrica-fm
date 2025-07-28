@@ -270,9 +270,9 @@ export default function Services() {
   }, { scope: sectionRef });
   
   return (
-    <section ref={sectionRef} id="services" className="py-24 bg-background/95 overflow-hidden relative">
+    <section ref={sectionRef} id="services" className="py-24 bg-white overflow-hidden relative">
       {/* Background con efecto parallax */}
-      <ParallaxWrapper speed={0.3} className="absolute inset-0 z-0">
+      <ParallaxWrapper speed={0.3} className="inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-accent/5" />
       </ParallaxWrapper>
       

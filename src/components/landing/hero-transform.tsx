@@ -229,7 +229,7 @@ const HeroTransform = () => {
         {/* Hero Wrapper */}
         <div 
           ref={heroWrapperRef} 
-          className="hero-wrapper relative h-full w-full overflow-hidden"
+          className="hero-wrapper relative h-full w-full overflow-hidden bg-primary"
         >
           {/* Hero Image Wrapper - will transform */}
           <div 
@@ -267,7 +267,7 @@ const HeroTransform = () => {
                   ref={heroTitleRef}
                   className="hero-title text-5xl md:text-7xl tracking-tight text-white mb-4"
                 >
-                  <span className="block text-glow-orange">Dirección Integral</span>
+                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(232, 78, 15, 0.5)' }}>Dirección Integral</span>
                   <span className="block">de Proyectos</span>
                 </h1>
                 
@@ -304,12 +304,12 @@ const HeroTransform = () => {
                 ref={newTitleRef}
                 className="text-4xl md:text-6xl"
               >
-                <span ref={wordRef} className="text-[#003f6f] inline-block">{words[currentWordIndex]}</span><br/>
-                <span className="text-[#e84e0f]">juntos.</span>
+                <span ref={wordRef} className="text-accent inline-block">{words[currentWordIndex]}</span><br/>
+                <span className="text-white">juntos.</span>
               </h2>
               <p 
                 ref={newDescriptionRef}
-                className="text-lg md:text-xl text-foreground/80 mt-4 md:mt-0"
+                className="text-lg md:text-xl text-white mt-4 md:mt-0"
               >
                 Trabajar en colaboración nos permite ejecutar los proyectos de infraestructura más impactantes del Perú en los sectores de salud, educación, vialidad y saneamiento.
               </p>
