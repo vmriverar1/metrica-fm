@@ -22,7 +22,11 @@ const navItems = [
         { href: "/about/servicios", title: "Servicios", description: "Soluciones integrales que ofrecemos." },
         { href: "/about/clientes", title: "Clientes", description: "Quienes confían en nosotros." },
       ],
-      section3: { title: "Cultura Métrica", description: "Fomentamos un ambiente de innovación, integridad y excelencia." }
+      section3: { 
+        title: "Cultura Métrica", 
+        description: "Fomentamos un ambiente de innovación, integridad y excelencia.",
+        image: "/images/cultura-metrica.jpg"
+      }
     }
   },
   { id: 'iso', label: 'ISO 9001', subItems: null },
@@ -39,7 +43,11 @@ const navItems = [
         { href: "/portfolio/proyecto-4", title: "Saneamiento Urbano", description: "" },
         { href: "/portfolio/proyecto-5", title: "Complejo Residencial", description: "" },
       ],
-      section3: { title: "Innovación en Cada Obra", description: "Aplicamos las últimas tecnologías y metodologías para garantizar resultados superiores." }
+      section3: { 
+        title: "Innovación en Cada Obra", 
+        description: "Aplicamos las últimas tecnologías y metodologías para garantizar resultados superiores.",
+        image: "/images/innovacion-obra.jpg"
+      }
     }
   },
   { 
@@ -51,7 +59,11 @@ const navItems = [
         { href: "/contact", title: "Formulario de Contacto", description: "Envíanos tus preguntas directamente." },
         { href: "/contact/claims", title: "Libro de Reclamaciones", description: "Tu opinión es importante para nosotros." },
       ],
-      section3: { title: "Oficina Central", description: "Av. Principal 123, San Isidro, Lima, Perú." }
+      section3: { 
+        title: "Oficina Central", 
+        description: "Av. Principal 123, San Isidro, Lima, Perú.",
+        image: "/images/oficina-central.jpg"
+      }
     }
   },
 ];
@@ -73,6 +85,7 @@ const Logo = ({ isScrolled }: { isScrolled: boolean }) => (
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -88,15 +101,20 @@ export default function Header() {
   return (
     <>
       <header className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
+        "fixed top-0 left-0 right-0 transition-all duration-300",
+        menuOpen ? "z-[70]" : "z-50",
+        isScrolled || menuOpen ? "bg-background shadow-md" : "bg-transparent"
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <Logo isScrolled={isScrolled}/>
             
             {/* Desktop Menu */}
-            <MegaMenu items={navItems} isScrolled={isScrolled} />
+            <MegaMenu 
+              items={navItems} 
+              isScrolled={isScrolled} 
+              onMenuChange={setMenuOpen}
+            />
 
             {/* Mobile Menu */}
             <div className="md:hidden">

@@ -32,3 +32,14 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Corregido fondo transparente - ahora usa bg-background opaco
   - Mejorado comportamiento de cierre con hover/click y overlay funcional
   - Agregado timeout para mejor UX al navegar entre items
+
+- [2025-01-28] Rediseño del layout del megamenu en tres columnas
+  - Tres columnas iguales con grid-cols-3
+  - Primera columna: Título grande y descripción centrada
+  - Segunda columna: Enlaces del submenú con hover effect
+  - Tercera columna: Imagen con overlay, gradiente desde abajo y texto superpuesto
+  - Bordes redondeados y sombra inferior en la imagen
+  - Archivos: megamenu.tsx, header.tsx
+  - Corregido z-index: nav z-50, dropdown z-[60] para estar sobre overlay z-40
+  - Botón activo y hover ahora usan color accent (naranja) con texto blanco
+  - Enlaces del submenú también con hover naranja

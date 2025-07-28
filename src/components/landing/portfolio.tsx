@@ -349,7 +349,7 @@ export default function Portfolio() {
           trigger: '.portfolio-transition',
           start: 'top 90%',
           end: 'bottom 70%',
-          scrub: true
+          scrub: false
         },
         opacity: 1,
         duration: 0.5
