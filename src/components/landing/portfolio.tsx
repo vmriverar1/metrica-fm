@@ -167,7 +167,53 @@ export default function Portfolio() {
           scrub: 1,              // Desplazamiento suave
           invalidateOnRefresh: true, // Recalcular al cambiar tamaño de ventana
           onUpdate: (self) => {
-            console.log('Progress:', self.progress);
+            const progress = self.progress;
+            
+            // Aplicar clases CSS para transición de color
+            if (sectionRef.current) {
+              if (progress >= 0.3 && progress <= 0.85) {
+                // Agregar clase naranja
+                if (!sectionRef.current.classList.contains('overlay-orange-in')) {
+                  sectionRef.current.classList.add('overlay-orange-in');
+                  sectionRef.current.classList.remove('overlay-orange-out');
+                }
+              } else {
+                // Quitar clase naranja
+                if (sectionRef.current.classList.contains('overlay-orange-in')) {
+                  sectionRef.current.classList.remove('overlay-orange-in');
+                  sectionRef.current.classList.add('overlay-orange-out');
+                }
+              }
+            }
+            
+            // Parpadeo de flechas cuando está completamente expandido
+            if (progress >= 0.39 && progress <= 0.41) {
+              const arrows = carouselWrapperRef.current?.querySelectorAll('.carousel-previous, .carousel-next');
+              if (
+                arrows &&
+                carouselWrapperRef.current &&
+                !carouselWrapperRef.current.dataset.arrowsFlashed
+              ) {
+                carouselWrapperRef.current.dataset.arrowsFlashed = 'true';
+                arrows.forEach(arrow => {
+                  gsap.to(arrow, {
+                    opacity: 0,
+                    duration: 0.2,
+                    repeat: 5,
+                    yoyo: true,
+                    ease: 'power2.inOut',
+                    onComplete: () => {
+                      gsap.set(arrow, { opacity: 1 });
+                    }
+                  });
+                });
+              }
+            } else if (progress < 0.35 || progress > 0.45) {
+              // Reset flag cuando está fuera del rango
+              if (carouselWrapperRef.current) {
+                delete carouselWrapperRef.current.dataset.arrowsFlashed;
+              }
+            }
           }
         }
       });
@@ -435,7 +481,7 @@ export default function Portfolio() {
   }, { scope: containerRef });
   
   return (
-    <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background">
+    <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background transition-colors duration-1000">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <div className="text-center mb-12">
                 <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">Proyectos Destacados</h2>
@@ -455,12 +501,7 @@ export default function Portfolio() {
                     <CarouselContent>
                         {projects.map((project, index) => (
                             <CarouselItem key={index}>
-                                <PortfolioTransition 
-                                    isActive={current === index} 
-                                    variant={index % 2 === 0 ? 'split' : 'mask'}
-                                    className="h-full"
-                                >
-                                    <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group" data-index={index}>
+                                <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group" data-index={index}>
                                         <div className="absolute inset-0 overflow-hidden">
                                             <Image
                                                 src={project.imageUrl}
@@ -520,7 +561,6 @@ export default function Portfolio() {
                                             </Button>
                                         </div>
                                     </div>
-                                </PortfolioTransition>
                             </CarouselItem>
                         ))}
                     </CarouselContent>

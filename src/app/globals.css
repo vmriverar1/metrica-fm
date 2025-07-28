@@ -408,6 +408,17 @@ strong, b, .font-bold {
   .carousel-next:active {
     transform: translateY(-50%) scale(0.95);
   }
+
+  /* Portfolio Section Orange Overlay */
+  #portfolio.overlay-orange-in {
+    background-color: #E84E0F !important;
+    transition: background-color 1s ease-in-out;
+  }
+  
+  #portfolio.overlay-orange-out {
+    background-color: transparent;
+    transition: background-color 1s ease-in-out;
+  }
   
   /* Split screen reveal */
   .split-screen-left {

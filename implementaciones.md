@@ -106,3 +106,12 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Integración de Carousel API para tracking de slides
   - PortfolioTransition component con 3 variantes (split, mask, diagonal)
   - Archivos: portfolio.tsx, portfolio-progress.tsx, portfolio-transition.tsx, globals.css
+
+- [2025-01-28] Mejoras en navegación del slider de proyectos
+  - Flechas de navegación más grandes y minimalistas (64x64px, circulares)
+  - Transición a color naranja en toda la sección portfolio durante expansión del slider
+  - Efecto de parpadeo en flechas cuando slider ocupa toda la pantalla
+  - Implementación con clases CSS (overlay-orange-in/out) para mejor rendimiento
+  - Transición de 1 segundo para cambio de color de fondo
+  - Removido PortfolioTransition temporalmente para solucionar visibilidad de imágenes
+  - Archivos: portfolio.tsx, globals.css
