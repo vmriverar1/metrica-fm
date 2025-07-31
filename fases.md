@@ -1,328 +1,273 @@
-# Fases de ImplementaciÛn - MÈtrica DIP
+# Plan de Implementaci√≥n: Scroll Horizontal para DIP y Pol√≠ticas
 
-## Resumen Ejecutivo
+## Visi√≥n General
+Transformar las secciones "¬øQu√© es DIP?" (Pillars) y "Nuestras pol√≠ticas" (Policies) en carousels horizontales interactivos usando Swiper.js con GSAP ScrollTrigger, similar al ejemplo en html/horizontal-scroll.html pero adaptado a la identidad de M√©trica.
 
-Este documento detalla la implementaciÛn progresiva de mejoras interactivas en el home de MÈtrica DIP, dividida en 10 fases incrementales. Cada fase aÒade nuevas capacidades visuales e interactivas, permitiendo ver el progreso gradualmente.
+## Caracter√≠sticas Principales
+- **Scroll sincronizado**: El carousel avanza autom√°ticamente con el scroll del usuario
+- **Cards visuales**: Cada pilar/pol√≠tica tendr√° imagen + texto descriptivo
+- **Direcciones opuestas**: DIP de derecha a izquierda, Pol√≠ticas de izquierda a derecha
+- **Responsive**: Adaptaci√≥n m√≥vil con touch gestures
+- **Animaciones suaves**: Fade-in y movimiento ascendente en t√≠tulos
 
-## Fase 1: FundaciÛn GSAP y Animaciones B·sicas
+---
 
-### Objetivo
-Establecer la base de animaciones con GSAP y mejorar las animaciones de entrada existentes.
+## Fase 1: Preparaci√≥n y Estructura Base
+**Duraci√≥n estimada**: 3-4 horas
 
-### Implementaciones
-1. **Setup GSAP global**
-   - Crear contexto de animaciÛn principal
-   - Registrar plugins (ScrollTrigger, TextPlugin)
-   - Sistema de gestiÛn de timelines
+### Objetivos:
+- Instalar dependencias necesarias (Swiper)
+- Crear estructura HTML de cards
+- Establecer estilos base con colores de M√©trica
 
-2. **Hero mejorado**
-   - Timeline de entrada para textos con delays escalonados
-   - Efecto de fade-in m·s suave
-   - AnimaciÛn del botÛn CTA con hover mejorado
+### Tareas T√©cnicas:
 
-3. **Animaciones de entrada globales**
-   - Fade-in-up para todas las secciones
-   - Stagger animations en elementos de lista
-
-### Resultado visible
-- Entrada m·s fluida y profesional de todos los elementos
-- SincronizaciÛn perfecta entre animaciones
-- SensaciÛn de fluidez mejorada
-
-## Fase 2: Locomotive Scroll Integration
-
-### Objetivo
-Implementar scroll suave y parallax b·sico en toda la p·gina.
-
-### Implementaciones
-1. **Setup Locomotive Scroll**
-   - Wrapper principal con configuraciÛn
-   - Smooth scrolling activado
-   - SincronizaciÛn con GSAP ScrollTrigger
-
-2. **Parallax b·sico**
-   - data-scroll-speed en im·genes
-   - Diferentes velocidades por secciÛn
-   - Efecto de profundidad en Hero
-
-3. **NavegaciÛn mejorada**
-   - Scroll-to animado en enlaces
-   - Indicador de progreso de scroll
-
-### Resultado visible
-- Scroll extremadamente suave
-- SensaciÛn de profundidad con parallax
-- NavegaciÛn m·s fluida y agradable
-
-## Fase 3: Hero Section con Three.js
-
-### Objetivo
-Reemplazar el canvas de partÌculas actual con una escena Three.js interactiva.
-
-### Implementaciones
-1. **Escena Three.js b·sica**
-   - Setup de c·mara y renderer
-   - Sistema de partÌculas 3D
-   - InteracciÛn con mouse
-
-2. **Shader personalizado**
-   - Vertex shader para ondas
-   - Fragment shader con gradientes
-   - Efectos de profundidad
-
-3. **OptimizaciÛn**
-   - Render on demand
-   - Dispose de recursos
-   - Fallback para mÛviles
-
-### Resultado visible
-- Fondo din·mico y tridimensional
-- PartÌculas que reaccionan al mouse
-- Efecto de profundidad inmersivo
-
-## Fase 4: Stats Section 3D
-
-### Objetivo
-Transformar los contadores en visualizaciones 3D interactivas.
-
-### Implementaciones
-1. **Modelos 3D por estadÌstica**
-   - GeometrÌas personalizadas
-   - AnimaciÛn de entrada con GSAP
-   - RotaciÛn continua sutil
-
-2. **InteracciÛn hover**
-   - Zoom y rotaciÛn al hover
-   - PartÌculas emanando del modelo
-   - Tooltip 3D con informaciÛn
-
-3. **Contador animado mejorado**
-   - Morphing de n˙meros con GSAP
-   - Efecto de scramble text
-   - PartÌculas al completar
-
-### Resultado visible
-- EstadÌsticas como objetos 3D flotantes
-- InteracciÛn rica al hover
-- SensaciÛn futurista y tecnolÛgica
-
-## Fase 5: Services con PixiJS
-
-### Objetivo
-AÒadir efectos visuales avanzados a las tarjetas de servicios.
-
-### Implementaciones
-1. **Setup PixiJS por tarjeta**
-   - Canvas overlay en cada card
-   - Displacement maps
-   - Filtros personalizados
-
-2. **Efectos hover**
-   - DistorsiÛn lÌquida
-   - Color shift din·mico
-   - Blur y glow effects
-
-3. **Animaciones de entrada**
-   - Reveal con m·scara
-   - Stagger mejorado
-   - Efecto de construcciÛn
-
-### Resultado visible
-- Cards con efectos visuales ˙nicos
-- Hover extremadamente interactivo
-- SensaciÛn de alta tecnologÌa
-
-## Fase 6: Portfolio Cinematogr·fico
-
-### Objetivo
-Convertir el carousel en una experiencia de scroll vertical inmersiva.
-
-### Implementaciones
-1. **Scroll vertical fullscreen**
-   - Secciones de altura completa
-   - Snap scrolling
-   - Indicadores de progreso
-
-2. **Transiciones WebGL**
-   - Shader transitions entre im·genes
-   - Efectos de distorsiÛn
-   - Morphing de contenido
-
-3. **Parallax avanzado**
-   - M˙ltiples capas de profundidad
-   - Texto con velocidades diferentes
-   - Reveal progresivo
-
-### Resultado visible
-- Portfolio como experiencia cinematogr·fica
-- Transiciones fluidas y creativas
-- InmersiÛn total en cada proyecto
-
-## Fase 7: Pillars 3D Completo
-
-### Objetivo
-Transformar las cards en objetos 3D verdaderos con fÌsica.
-
-### Implementaciones
-1. **Cards como objetos 3D**
-   - GeometrÌa 3D real
-   - Texturas y materiales
-   - IluminaciÛn din·mica
-
-2. **FÌsica con gl-matrix**
-   - RotaciÛn realista con mouse
-   - Inercia y momentum
-   - Colisiones suaves
-
-3. **Efectos adicionales**
-   - Sombras en tiempo real
-   - Reflecciones
-   - PartÌculas al interactuar
-
-### Resultado visible
-- Cards que parecen flotar en el espacio
-- InteracciÛn fÌsica realista
-- Profundidad y dimensiÛn reales
-
-## Fase 8: Background Thread Global
-
-### Objetivo
-Crear un elemento visual que conecte todas las secciones.
-
-### Implementaciones
-1. **Sistema de lÌneas 3D**
-   - Spline curves entre secciones
-   - AnimaciÛn continua
-   - ReacciÛn al scroll
-
-2. **PartÌculas siguiendo paths**
-   - Flow de datos visual
-   - Velocidad variable
-   - Efectos de estela
-
-3. **SincronizaciÛn con contenido**
-   - Cambio de color por secciÛn
-   - Intensidad seg˙n interacciÛn
-   - ConexiÛn con elementos hover
-
-### Resultado visible
-- Flujo visual continuo en la p·gina
-- SensaciÛn de conectividad
-- Elemento unificador sutil
-
-## Fase 9: Efectos Especiales y Polish
-
-### Objetivo
-AÒadir los toques finales que elevan la experiencia.
-
-### Implementaciones
-1. **Glitch effects en textos**
-   - AnimaciÛn de glitch sutil
-   - Triggers en momentos clave
-   - Variaciones por secciÛn
-
-2. **Post-processing global**
-   - Bloom en elementos clave
-   - Chromatic aberration sutil
-   - Vignette din·mico
-
-3. **Micro-interacciones**
-   - Cursor personalizado
-   - Hover states avanzados
-   - Easter eggs interactivos
-
-### Resultado visible
-- Detalles que sorprenden
-- CohesiÛn visual perfecta
-- Experiencia pulida y profesional
-
-## Fase 10: OptimizaciÛn y Performance
-
-### Objetivo
-Asegurar rendimiento Ûptimo en todos los dispositivos.
-
-### Implementaciones
-1. **Lazy loading avanzado**
-   - Carga progresiva de recursos
-   - PriorizaciÛn por viewport
-   - Preload inteligente
-
-2. **VersiÛn mobile optimizada**
-   - DetecciÛn de capacidades
-   - Fallbacks elegantes
-   - Touch interactions
-
-3. **Performance monitoring**
-   - FPS tracking
-   - Memory management
-   - Analytics de interacciÛn
-
-### Resultado visible
-- 60fps consistentes
-- Carga r·pida
-- Experiencia fluida en todos los dispositivos
-
-## Cronograma Sugerido
-
-| Fase | DuraciÛn | Prioridad | Impacto Visual |
-|------|----------|-----------|----------------|
-| 1    | 3 dÌas   | Alta      | Medio          |
-| 2    | 4 dÌas   | Alta      | Alto           |
-| 3    | 5 dÌas   | Alta      | Muy Alto       |
-| 4    | 4 dÌas   | Media     | Alto           |
-| 5    | 5 dÌas   | Media     | Alto           |
-| 6    | 6 dÌas   | Alta      | Muy Alto       |
-| 7    | 5 dÌas   | Media     | Alto           |
-| 8    | 4 dÌas   | Baja      | Medio          |
-| 9    | 3 dÌas   | Baja      | Medio          |
-| 10   | 3 dÌas   | Alta      | Bajo           |
-
-**Total: 42 dÌas (6 semanas)**
-
-## Dependencias entre Fases
-
-```
-Fase 1 (GSAP) í Todas las dem·s fases
-    ì
-Fase 2 (Locomotive) í Fase 6 (Portfolio)
-    ì
-Fase 3 (Three.js Hero) í Fase 4 (Stats 3D) í Fase 7 (Pillars 3D) í Fase 8 (Background)
-    
-Fase 5 (PixiJS) í Independiente
-
-Fase 9 (Polish) í Requiere fases 1-8
-    ì
-Fase 10 (OptimizaciÛn) í Final
+#### 1.1 Instalaci√≥n de Swiper
+```bash
+npm install swiper
 ```
 
-## MÈtricas de …xito por Fase
+#### 1.2 Estructura de Cards para Pillars (¬øQu√© es DIP?)
+- Convertir los 6 pilares actuales en cards tipo Swiper
+- Estructura por card:
+  - Imagen representativa (aspect-ratio 8:5)
+  - T√≠tulo del pilar
+  - Descripci√≥n breve
+  - Indicador visual (√≠cono actual)
 
-### Fase 1-2: FundaciÛn
-- ReducciÛn del 30% en percepciÛn de tiempo de carga
-- Mejora en scroll smoothness
+#### 1.3 Estructura de Cards para Policies
+- Identificar y estructurar las pol√≠ticas existentes
+- Mismo formato que Pillars pero con diferentes im√°genes
+- Mantener coherencia visual
 
-### Fase 3-5: Interactividad Core
-- Aumento del 50% en interacciones por usuario
-- ReducciÛn del 25% en bounce rate
+#### 1.4 Estilos Base
+- Variables CSS para el carousel:
+  ```css
+  --swiper-column-gap: 1.5rem
+  --swiper-slides-perview: 2.25 (desktop) / 1.05 (mobile)
+  --media-aspect-ratio: 8/5
+  ```
+- Colores corporativos:
+  - Fondo cards: #1D1D1B con opacity
+  - Acentos: #E84E0F (naranja)
+  - Texto: #D7D3CB
+  - Hover effects con #003F6F (azul)
 
-### Fase 6-8: Experiencia Inmersiva
-- Aumento del 40% en tiempo en p·gina
-- Mejora del 35% en engagement metrics
+### Entregables:
+- Componente PillarsCarousel.tsx
+- Componente PoliciesCarousel.tsx
+- Estilos base integrados con Tailwind
+- Im√°genes placeholder para cada card
 
-### Fase 9-10: Polish y Performance
-- 60fps consistentes
-- Lighthouse score > 90
+---
 
-## Recomendaciones de ImplementaciÛn
+## Fase 2: Animaciones de Entrada
+**Duraci√≥n estimada**: 2 horas
 
-1. **Comenzar con Fase 1-2**: Establecen la base para todo lo dem·s
-2. **Fase 3 es crÌtica**: Define el tono visual del sitio
-3. **Fases 4-7 pueden paralelizarse**: Diferentes desarrolladores
-4. **Fase 10 es obligatoria**: No comprometer performance
+### Objetivos:
+- Implementar animaciones de aparici√≥n para t√≠tulos
+- Crear efectos de fade y movimiento
 
-## Notas TÈcnicas
+### Tareas T√©cnicas:
 
-- Cada fase debe incluir tests de regresiÛn
-- Mantener versiÛn anterior como fallback
-- Documentar cada implementaciÛn
-- Code reviews obligatorios entre fases
+#### 2.1 Fade-in para T√≠tulos
+- ScrollTrigger para detectar entrada en viewport
+- Animaci√≥n con GSAP:
+  ```javascript
+  gsap.from(titleRef.current, {
+    opacity: 0,
+    duration: 1.2,
+    ease: 'power3.out'
+  })
+  ```
+
+#### 2.2 Movimiento Ascendente
+- Combinar con fade-in:
+  ```javascript
+  gsap.from(titleRef.current, {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power4.out'
+  })
+  ```
+
+#### 2.3 Stagger para Subt√≠tulos
+- Delay progresivo en palabras del subt√≠tulo
+- Efecto de construcci√≥n del texto
+
+### Entregables:
+- Animaciones de entrada implementadas
+- Hooks personalizados para reutilizar
+
+---
+
+## Fase 3: Scroll Horizontal Sincronizado
+**Duraci√≥n estimada**: 4-5 horas
+
+### Objetivos:
+- Implementar scroll horizontal controlado por scroll vertical
+- Configurar direcciones opuestas para cada secci√≥n
+- Optimizar performance
+
+### Tareas T√©cnicas:
+
+#### 3.1 Configuraci√≥n de Swiper
+```javascript
+const swiperOptions = {
+  slidesPerView: 'auto',
+  centeredSlides: true,
+  spaceBetween: 0,
+  speed: 700,
+  grabCursor: true,
+  watchSlidesProgress: true
+}
+```
+
+#### 3.2 ScrollTrigger para Pillars (R‚ÜíL)
+```javascript
+gsap.to(proxy, {
+  progress: 1,
+  scrollTrigger: {
+    trigger: pillarsSection,
+    pin: true,
+    scrub: 1,
+    start: 'top top',
+    end: '+=200%' // 2x altura viewport
+  }
+})
+```
+
+#### 3.3 ScrollTrigger para Policies (L‚ÜíR)
+```javascript
+// scrubDir: -1 para direcci√≥n inversa
+```
+
+#### 3.4 Sincronizaci√≥n Swiper-Scroll
+- Traducir progreso de scroll a posici√≥n del carousel
+- Smooth transitions entre slides
+- Control de velocidad y easing
+
+### Optimizaciones:
+- `will-change: transform` en slides activos
+- Lazy loading de im√°genes fuera de viewport
+- RequestAnimationFrame para animaciones fluidas
+
+### Entregables:
+- Scroll horizontal funcional en ambas secciones
+- Direcciones configuradas (R‚ÜíL y L‚ÜíR)
+- Performance optimizada
+
+---
+
+## Fase 4: Interactividad y Polish
+**Duraci√≥n estimada**: 2-3 horas
+
+### Objetivos:
+- A√±adir navegaci√≥n manual opcional
+- Efectos hover y focus
+- Indicadores de progreso
+
+### Tareas:
+
+#### 4.1 Navegaci√≥n Manual (Desktop)
+- Flechas de navegaci√≥n que aparecen on hover
+- Click para avanzar/retroceder slides
+- Ocultar en m√≥viles
+
+#### 4.2 Efectos Visuales
+- Opacity gradient en slides no activos
+- Scale sutil en slide central
+- Glow effect en hover
+- Transiciones suaves
+
+#### 4.3 Indicadores
+- Dots de paginaci√≥n opcional
+- Progress bar sutil
+- Current/Total counter
+
+### Entregables:
+- Experiencia interactiva completa
+- Efectos visuales pulidos
+- Navegaci√≥n intuitiva
+
+---
+
+## Fase 5: Responsive y Testing
+**Duraci√≥n estimada**: 2 horas
+
+### Objetivos:
+- Adaptar para todos los dispositivos
+- Testing cross-browser
+- Optimizaci√≥n final
+
+### Tareas:
+
+#### 5.1 Mobile Adaptations
+- Touch gestures nativos
+- Reducir slides visibles (1.05)
+- Ajustar espaciados
+- Desactivar efectos pesados
+
+#### 5.2 Tablet Optimization
+- Slides intermedios (1.5-2)
+- Mantener interactividad
+- Balance visual
+
+#### 5.3 Testing
+- Chrome, Firefox, Safari, Edge
+- iOS Safari particularidades
+- Android Chrome
+- Performance metrics
+
+### Entregables:
+- Responsive perfecto
+- Cross-browser compatible
+- Documentation actualizada
+
+---
+
+## Consideraciones T√©cnicas
+
+### Dependencias
+- **Swiper**: ^11.x para el carousel
+- **GSAP**: Ya instalado (ScrollTrigger, DrawSVG)
+- **React**: Hooks para gesti√≥n de estado
+
+### Performance
+- Intersection Observer para lazy load
+- Transform3d para GPU acceleration
+- Debounce en resize events
+- Virtual slides si > 20 cards
+
+### Accesibilidad
+- Keyboard navigation
+- ARIA labels
+- Focus indicators
+- Reduced motion support
+
+### Integraci√≥n
+- Mantener consistencia con resto del sitio
+- Reusar componentes UI existentes
+- Seguir patrones de animaci√≥n establecidos
+
+---
+
+## Tiempo Total: 13-16 horas
+
+### Distribuci√≥n:
+- Fase 1: 25% (estructura base)
+- Fase 2: 15% (animaciones)
+- Fase 3: 35% (funcionalidad core)
+- Fase 4: 15% (polish)
+- Fase 5: 10% (responsive)
+
+### Riesgos:
+- Complejidad de sincronizaci√≥n scroll-swiper
+- Performance en m√≥viles antiguos
+- Compatibilidad con navegadores legacy
+
+### Mitigaci√≥n:
+- Fallback a scroll normal si no hay soporte
+- Progressive enhancement
+- Testing continuo durante desarrollo

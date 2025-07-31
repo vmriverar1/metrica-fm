@@ -508,3 +508,49 @@ strong, b, .font-bold {
   #portfolio + .pin-spacer {
     will-change: transform;
   }
+
+  /* Carousel Styles for Horizontal Scroll */
+  .carousel-container {
+    --swiper-column-gap: 1.5rem;
+    --swiper-slides-perview: 2.25;
+    --swiper-slides-perview-md-down: 1.05;
+    --swiper-col-width: calc(1 / var(--swiper-slides-perview));
+    --swiper-col-width-md-down: calc(1 / var(--swiper-slides-perview-md-down));
+    --media-aspect-ratio: 8 / 5;
+    --media-aspect-ratio-md-down: 4 / 3;
+  }
+
+  .swiper {
+    overflow: visible !important;
+  }
+
+  .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    height: auto !important;
+    display: flex;
+  }
+
+  .swiper-slide .card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Disable swiper touch events when controlled by scroll */
+  .swiper-no-swiping {
+    touch-action: pan-y;
+  }
+
+  .swiper-no-swiping .swiper-wrapper {
+    transition-timing-function: linear !important;
+  }
+
+  /* Pin spacer optimization for carousels */
+  #pillars .pin-spacer,
+  #policies .pin-spacer {
+    will-change: transform;
+  }

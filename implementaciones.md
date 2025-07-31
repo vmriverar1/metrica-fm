@@ -115,3 +115,82 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Transición de 1 segundo para cambio de color de fondo
   - Removido PortfolioTransition temporalmente para solucionar visibilidad de imágenes
   - Archivos: portfolio.tsx, globals.css
+
+- [2025-01-28] Fase 1: Setup inicial de Blueprint DIP
+  - Creado componente BlueprintDIP.tsx con estructura base
+  - SVG con path serpenteante y 6 estaciones del proceso DIP
+  - Grid de fondo técnico sutil para efecto blueprint
+  - Gradiente de colores corporativos (naranja → azul)
+  - Indicador móvil que sigue el path con el scroll
+  - Información dinámica de cada estación al activarse
+  - Integrado entre Portfolio y Pillars en page.tsx
+  - Archivos: blueprint-dip.tsx, page.tsx
+
+- [2025-01-28] Fase 2: Animación del título y transición desde Portfolio
+  - Título "¿Qué es DIP?" con ScrambleText effect (duración 1200ms)
+  - Animación de entrada con movimiento ascendente (translateY: 100px → 0)
+  - Subtítulo con palabras separadas para animación individual con delay
+  - Efecto de transformación del fondo con gradiente primary/accent
+  - Grid técnico con máscara radial y animación de escala
+  - Onda SVG decorativa en la parte superior para transición suave
+  - Timeline de entrada separado del timeline principal de scroll
+  - Archivos: blueprint-dip.tsx
+
+- [2025-01-28] Fase 3: Blueprint Animado con DrawSVG implementado
+  - ScrollTrigger mejorado con pin y anticipatePin para transiciones suaves
+  - Grid técnico SVG con líneas animadas con stagger effect
+  - DrawSVG implementado para path principal con strokeDasharray/offset
+  - Gradiente animado del path con transiciones de color (naranja → azul)
+  - Estaciones sincronizadas con el dibujo del path
+  - Indicador móvil mejorado con múltiples círculos y animaciones
+  - Filtro pathGlow para efecto de neón en el path principal
+  - Performance optimizada con will-change en elementos críticos
+  - Archivos: blueprint-dip.tsx
+
+- [2025-01-28] Fase 1: Scroll Horizontal para DIP y Políticas
+  - Instalado Swiper.js con --legacy-peer-deps
+  - Creado PillarsCarousel con 6 cards de pilares DIP
+  - Creado PoliciesCarousel con 8 cards de políticas
+  - Estructura de cards con imagen (aspect-ratio 8:5) + texto
+  - ScrollTrigger controla el movimiento del carousel con scroll vertical
+  - Dirección R→L para Pillars, L→R para Policies
+  - Estilos globales agregados en globals.css
+  - Integrados en page.tsx reemplazando componentes anteriores
+  - Archivos: pillars-carousel.tsx, policies-carousel.tsx, globals.css, page.tsx
+
+- [2025-01-28] Fase 2: Animaciones de Entrada para Carousels
+  - Implementado fade-in con movimiento ascendente para títulos
+  - Stagger animation para palabras del subtítulo en Pillars
+  - Animación escalonada para aparición de cards
+  - Hook reutilizable useCarouselAnimations creado
+  - ScrollTrigger detecta entrada en viewport (top 80%)
+  - ClearProps aplicado para limpiar estilos inline después
+  - Archivos: pillars-carousel.tsx, policies-carousel.tsx, use-carousel-animations.ts
+
+- [2025-01-28] Fase 3: Scroll Horizontal Sincronizado implementado
+  - ScrollTrigger controla Swiper basado en scroll vertical
+  - Pin de secciones durante scroll con 250% de duración
+  - Pillars: dirección R→L (derecha a izquierda)
+  - Policies: dirección L→R (izquierda a derecha) con initialSlide al final
+  - Desactivados controles táctiles (allowTouchMove: false)
+  - Transformaciones directas con setTranslate para control preciso
+  - Scrub: 1.5 para movimiento suave y anticipatePin: 1
+  - Performance optimizada con will-change en wrappers y slides
+  - Archivos: pillars-carousel.tsx, policies-carousel.tsx
+
+- [2025-01-28] Fase 4: Interactividad y Polish implementado
+  - Navegación manual con flechas para desktop (ocultas en móvil)
+  - Flechas aparecen solo cuando la sección está pineada
+  - Estados disabled cuando se alcanza el inicio/fin
+  - Glow effect animado en hover de cards con gradiente rotativo
+  - Opacity gradient en slides no activos (0.5 → 0.8 → 1)
+  - Indicador de progreso con porcentaje en tiempo real
+  - Efectos hover mejorados con scale, translateY y múltiples shadows
+  - Backdrop blur en elementos de navegación
+  - Archivos: pillars-carousel.tsx, policies-carousel.tsx
+
+- [2025-01-28] Fix: Carousels ahora permanecen visibles durante scroll
+  - Corregido problema donde carousels desaparecían al hacer scroll
+  - Cambiado trigger de pin de containerRef a sectionRef en ambos carousels
+  - Ahora las secciones completas se mantienen fijas durante scroll horizontal
+  - Archivos: pillars-carousel.tsx, policies-carousel.tsx

@@ -56,12 +56,21 @@ npm run genkit:watch
 - Custom animations include: glow, shine, glitch effects, and fade-in-up
 
 ### Design System
+
 Based on the blueprint.md, the design follows:
-- **Primary Color**: Deep blue (#003F6F)
-- **Accent Color**: Vibrant orange (#E84E0F)  
-- **Background**: Deep black (#1D1D1B)
-- **Typography**: Poppins font family for both headlines and body text
-- **Animations**: GSAP-style animations implemented via Tailwind keyframes
+
+* **Primary Colors**: Deep blue (#003F6F) and vibrant orange (#E84E0F)
+* **Secondary Colors**: Light gray (#D0D0D0), medium gray (#9D9D9C), dark gray (#646363), and deep black (#1D1D1B)
+* **Typography**:
+
+  * *Marsek Demi* for the Métrica logo
+  * *Alliance No.2* for all other uses:
+
+    * Light for metadata and contact info
+    * Medium for body text and UI elements
+    * ExtraBold for titles and section headers
+  * Fallback: Poppins font family
+* **Animations**: GSAP-style animations implemented via Tailwind keyframes
 
 ### Important Considerations
 
