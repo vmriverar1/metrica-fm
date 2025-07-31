@@ -291,17 +291,23 @@ export default function Portfolio() {
         
         // Fase 4a: Comenzar a contraer altura de tarjetas del proyecto (85-90%)
         .to('.project-card', {
-          height: '60vh',
+          height: '90vh',
           duration: 0.05,
           ease: 'power4.out'
         }, 0.85)
         
         // Fase 4b: Contraer carousel de vuelta al tamaño original (85-95%)
         .to(carouselWrapperRef.current, {
-          width: () => originalWidth + 'px',
-          height: () => originalHeight + 'px',
-          marginLeft: 0,
-          marginTop: 0,
+          width: '90vw',
+          height: '90vh',
+          marginLeft: () => {
+            // Calcular margen para centrar con 90vw
+            return -(window.innerWidth * 0.9 - originalWidth) / 2;
+          },
+          marginTop: () => {
+            // Calcular margen para centrar con 90vh
+            return -(window.innerHeight * 0.9 - originalHeight) / 2;
+          },
           borderRadius: '0.5rem',
           duration: 0.10,
           ease: 'power4.out',
@@ -309,19 +315,17 @@ export default function Portfolio() {
             if (carouselWrapperRef.current) {
               carouselWrapperRef.current.classList.remove('is-expanding');
               
-              // Limpiar estilos inline pero mantener posicionamiento sticky
+              // Mantener el tamaño al 90% con posicionamiento sticky
               gsap.set(carouselWrapperRef.current, { 
                 zIndex: 10,
-                width: '',
-                height: '',
-                marginLeft: '',
-                marginTop: '',
-                borderRadius: ''
+                width: '90vw',
+                height: '90vh',
+                borderRadius: '0.5rem'
               });
               
-              // Limpiar altura de tarjetas del proyecto
+              // Mantener altura de tarjetas del proyecto al 90%
               gsap.set('.project-card', {
-                height: ''
+                height: '90vh'
               });
             }
           }
