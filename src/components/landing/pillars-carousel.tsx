@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel, Navigation } from 'swiper/modules';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
@@ -18,7 +19,7 @@ const pillarsData = [
     icon: Compass,
     title: 'Planificación Estratégica',
     description: 'Definimos la hoja de ruta para el éxito del proyecto, optimizando plazos y recursos desde el inicio.',
-    image: '/images/pillars/planning.jpg', // Placeholder
+    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     color: '#E84E0F'
   },
   {
@@ -26,7 +27,7 @@ const pillarsData = [
     icon: Network,
     title: 'Coordinación Multidisciplinaria',
     description: 'Integramos equipos de diseño, construcción y fiscalización para una ejecución sin fisuras.',
-    image: '/images/pillars/coordination.jpg',
+    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     color: '#E84E0F'
   },
   {
@@ -34,32 +35,32 @@ const pillarsData = [
     icon: ScanSearch,
     title: 'Supervisión Técnica',
     description: 'Garantizamos que cada etapa de la construcción cumpla con los más altos estándares de ingeniería.',
-    image: '/images/pillars/supervision.jpg',
-    color: '#FF6B35'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    color: '#E84E0F'
   },
   {
     id: 4,
     icon: ChartBar,
     title: 'Control de Calidad y Costos',
     description: 'Implementamos un riguroso control para asegurar la calidad de los materiales y la eficiencia del presupuesto.',
-    image: '/images/pillars/quality.jpg',
-    color: '#1E5F8E'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    color: '#E84E0F'
   },
   {
     id: 5,
     icon: AlertTriangle,
     title: 'Gestión de Riesgos',
     description: 'Identificamos y mitigamos proactivamente los posibles riesgos que puedan afectar al proyecto.',
-    image: '/images/pillars/risks.jpg',
-    color: '#003F6F'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+    color: '#E84E0F'
   },
   {
     id: 6,
     icon: Building2,
     title: 'Representación del Cliente',
     description: 'Actuamos como sus ojos y oídos en el campo, defendiendo sus intereses en cada decisión.',
-    image: '/images/pillars/client.jpg',
-    color: '#003F6F'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    color: '#E84E0F'
   }
 ];
 
@@ -105,18 +106,7 @@ export default function PillarsCarousel() {
       }, '-=0.8');
     }
 
-    // Animación de las cards con fade-in
-    const cards = containerRef.current?.querySelectorAll('.swiper-slide');
-    if (cards) {
-      entryTl.from(cards, {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power2.out',
-        clearProps: 'all'
-      }, '-=0.4');
-    }
+    // Cards visibles desde el principio - sin fade-in
 
     // ScrollTrigger para controlar el carousel (R→L)
     const scrollTl = gsap.timeline({
@@ -234,38 +224,36 @@ export default function PillarsCarousel() {
           >
             {pillarsData.map((pillar, index) => (
               <SwiperSlide key={pillar.id} className="h-auto">
-                <div className="card group relative h-full bg-card/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02]">
+                <div className="card group relative h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-accent">
                   {/* Imagen */}
                   <div className="media-container relative aspect-[8/5] overflow-hidden">
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-br from-primary/50 to-accent/50"
-                      style={{
-                        background: `linear-gradient(135deg, ${pillar.color}66 0%, ${pillar.color}33 100%)`
-                      }}
+                    <Image 
+                      src={pillar.image}
+                      alt={pillar.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    {/* Placeholder para imagen - en producción usar next/image */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <pillar.icon className="h-24 w-24 text-white/20" />
-                    </div>
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+                    />
                   </div>
 
                   {/* Contenido */}
                   <div className="card-text p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <div 
-                        className="p-2 rounded-full"
-                        style={{ backgroundColor: `${pillar.color}20` }}
+                        className="p-2 rounded-full bg-white/20"
                       >
                         <pillar.icon 
-                          className="h-6 w-6"
-                          style={{ color: pillar.color }}
+                          className="h-6 w-6 text-white"
                         />
                       </div>
-                      <h3 className="text-xl font-alliance-extrabold text-foreground">
+                      <h3 className="text-xl font-alliance-extrabold text-white">
                         {pillar.title}
                       </h3>
                     </div>
-                    <p className="text-foreground/70 font-alliance-medium line-clamp-3">
+                    <p className="text-white/90 font-alliance-medium line-clamp-3">
                       {pillar.description}
                     </p>
                   </div>
@@ -296,18 +284,9 @@ export default function PillarsCarousel() {
 
         .pillars-swiper .swiper-slide {
           height: auto;
-          opacity: 0.5;
-          transition: opacity 0.5s ease;
-          will-change: opacity, transform;
-        }
-
-        .pillars-swiper .swiper-slide-active {
           opacity: 1;
-        }
-
-        .pillars-swiper .swiper-slide-next,
-        .pillars-swiper .swiper-slide-prev {
-          opacity: 0.8;
+          transition: opacity 0.5s ease;
+          will-change: transform;
         }
 
         .card {

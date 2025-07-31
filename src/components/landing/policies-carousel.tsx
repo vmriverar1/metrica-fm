@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
@@ -18,39 +19,39 @@ const policiesData = [
     icon: Award,
     title: 'Política de Calidad',
     description: 'Compromiso con la excelencia en cada proyecto, superando las expectativas de nuestros clientes.',
-    image: '/images/policies/quality.jpg',
-    color: '#003F6F'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+    color: '#E84E0F'
   },
   {
     id: 2,
     icon: Shield,
     title: 'Política de Seguridad y Salud en el Trabajo',
     description: 'Priorizamos la seguridad de nuestros trabajadores con protocolos estrictos y capacitación continua.',
-    image: '/images/policies/safety.jpg',
-    color: '#003F6F'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    color: '#E84E0F'
   },
   {
     id: 3,
     icon: Leaf,
     title: 'Política de Medio Ambiente',
     description: 'Construimos de manera sostenible, minimizando el impacto ambiental en cada etapa del proyecto.',
-    image: '/images/policies/environment.jpg',
-    color: '#1E5F8E'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    color: '#E84E0F'
   },
   {
     id: 4,
     icon: Heart,
     title: 'Política de Responsabilidad Social',
     description: 'Contribuimos al desarrollo de las comunidades donde operamos, generando valor compartido.',
-    image: '/images/policies/social.jpg',
-    color: '#FF6B35'
+    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    color: '#E84E0F'
   },
   {
     id: 5,
     icon: Scale,
     title: 'Política de Ética y Cumplimiento',
     description: 'Actuamos con integridad y transparencia, cumpliendo estrictamente las normativas vigentes.',
-    image: '/images/policies/ethics.jpg',
+    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     color: '#E84E0F'
   },
   {
@@ -58,7 +59,7 @@ const policiesData = [
     icon: AlertCircle,
     title: 'Política de Gestión de Riesgos',
     description: 'Identificamos y gestionamos proactivamente los riesgos para asegurar el éxito del proyecto.',
-    image: '/images/policies/risks.jpg',
+    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     color: '#E84E0F'
   },
   {
@@ -66,7 +67,7 @@ const policiesData = [
     icon: Lightbulb,
     title: 'Política de Innovación y Mejora Continua',
     description: 'Adoptamos tecnologías innovadoras y mejoramos constantemente nuestros procesos.',
-    image: '/images/policies/innovation.jpg',
+    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
     color: '#E84E0F'
   },
   {
@@ -74,7 +75,7 @@ const policiesData = [
     icon: Lock,
     title: 'Política de Confidencialidad y Protección de Datos',
     description: 'Protegemos la información confidencial de nuestros clientes con los más altos estándares.',
-    image: '/images/policies/privacy.jpg',
+    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
     color: '#E84E0F'
   }
 ];
@@ -113,18 +114,7 @@ export default function PoliciesCarousel() {
       });
     }
 
-    // Animación de las cards con fade-in
-    const cards = containerRef.current?.querySelectorAll('.swiper-slide');
-    if (cards) {
-      entryTl.from(cards, {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power2.out',
-        clearProps: 'all'
-      }, '-=0.6');
-    }
+    // Cards visibles desde el principio - sin fade-in
 
     // ScrollTrigger para controlar el carousel (L→R)
     const scrollTl = gsap.timeline({
@@ -241,36 +231,36 @@ export default function PoliciesCarousel() {
           >
             {policiesData.map((policy, index) => (
               <SwiperSlide key={policy.id} className="h-auto">
-                <div className="card group relative h-full bg-background/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02]">
+                <div className="card group relative h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-accent">
                   {/* Imagen */}
                   <div className="media-container relative aspect-[8/5] overflow-hidden">
-                    <div 
-                      className="absolute inset-0"
-                      style={{
-                        background: `linear-gradient(135deg, ${policy.color}66 0%, ${policy.color}33 100%)`
-                      }}
+                    <Image 
+                      src={policy.image}
+                      alt={policy.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    {/* Placeholder para imagen */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <policy.icon className="h-24 w-24 text-white/20" />
-                    </div>
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+                    />
                   </div>
 
                   {/* Contenido */}
                   <div className="card-text p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <div 
-                        className="p-2 rounded-full bg-white/10"
+                        className="p-2 rounded-full bg-white/20"
                       >
                         <policy.icon 
-                          className="h-6 w-6 text-accent"
+                          className="h-6 w-6 text-white"
                         />
                       </div>
                       <h3 className="text-xl font-alliance-extrabold text-white">
                         {policy.title}
                       </h3>
                     </div>
-                    <p className="text-white/70 font-alliance-medium line-clamp-3">
+                    <p className="text-white/90 font-alliance-medium line-clamp-3">
                       {policy.description}
                     </p>
                   </div>
@@ -294,18 +284,9 @@ export default function PoliciesCarousel() {
 
         .policies-swiper .swiper-slide {
           height: auto;
-          opacity: 0.5;
-          transition: opacity 0.5s ease;
-          will-change: opacity, transform;
-        }
-
-        .policies-swiper .swiper-slide-active {
           opacity: 1;
-        }
-
-        .policies-swiper .swiper-slide-next,
-        .policies-swiper .swiper-slide-prev {
-          opacity: 0.8;
+          transition: opacity 0.5s ease;
+          will-change: transform;
         }
 
         .policies-swiper .card {
