@@ -171,14 +171,14 @@ export default function Portfolio() {
             
             // Aplicar clases CSS para transición de color
             if (sectionRef.current) {
-              if (progress >= 0.3 && progress <= 0.85) {
-                // Agregar clase naranja
+              if (progress >= 0.3) {
+                // Agregar clase naranja y mantenerla
                 if (!sectionRef.current.classList.contains('overlay-orange-in')) {
                   sectionRef.current.classList.add('overlay-orange-in');
                   sectionRef.current.classList.remove('overlay-orange-out');
                 }
-              } else {
-                // Quitar clase naranja
+              } else if (progress < 0.3) {
+                // Solo quitar clase naranja cuando se hace scroll hacia arriba
                 if (sectionRef.current.classList.contains('overlay-orange-in')) {
                   sectionRef.current.classList.remove('overlay-orange-in');
                   sectionRef.current.classList.add('overlay-orange-out');
