@@ -18,61 +18,48 @@ const navItems = [
     subItems: {
       section1: { title: "Nuestra Esencia", description: "Conoce los pilares que definen a Métrica y nuestro compromiso con el desarrollo." },
       links: [
-        { href: "/about/quienes-somos", title: "Quiénes Somos", description: "Nuestra historia, misión y visión." },
-        { href: "/about/politicas", title: "Políticas", description: "Compromiso con la calidad y la gestión." },
-        { href: "/about/servicios", title: "Servicios", description: "Soluciones integrales que ofrecemos." },
-        { href: "/about/clientes", title: "Clientes", description: "Quienes confían en nosotros." },
+        { href: "/about/historia", title: "Nuestra Historia", description: "Desde nuestros inicios en 2010, hemos transformado el sector construcción con más de 200 proyectos exitosos." },
+        { href: "/services", title: "Qué Hacemos", description: "Especialistas en dirección integral de proyectos de infraestructura, supervisión técnica y gestión de calidad." },
+        { href: "/about/cultura", title: "Cultura y Personas", description: "Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo." },
+        { href: "/about/compromiso", title: "Compromiso Social y Medioambiental", description: "Construimos un futuro sostenible con responsabilidad social y las mejores prácticas ambientales." },
+        { href: "/about/clientes", title: "Clientes", description: "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo." },
       ],
       section3: { 
         title: "Cultura Métrica", 
         description: "Fomentamos un ambiente de innovación, integridad y excelencia.",
-        image: "/images/cultura-metrica.jpg"
+        image: "https://metrica-dip.com/images/slider-inicio-es/03.jpg"
       }
     }
   },
-  { id: 'iso', label: 'ISO 9001', subItems: null },
+  { id: 'iso', label: 'ISO 9001', href: '/iso', subItems: null },
   { 
     id: 'portfolio', 
     label: 'Portafolio',
     subItems: {
       section1: { title: "Proyectos que Transforman", description: "Explora la diversidad y el impacto de nuestro trabajo a nivel nacional." },
       links: [
-        { href: "/portfolio/clientes", title: "Nuestros Clientes", description: "" },
-        { href: "/portfolio/proyecto-1", title: "Proyecto Hospitalario", description: "" },
-        { href: "/portfolio/proyecto-2", title: "Infraestructura Vial", description: "" },
-        { href: "/portfolio/proyecto-3", title: "Edificación Educativa", description: "" },
-        { href: "/portfolio/proyecto-4", title: "Saneamiento Urbano", description: "" },
-        { href: "/portfolio/proyecto-5", title: "Complejo Residencial", description: "" },
+        { href: "/portfolio/oficina", title: "Proyectos de Oficina", description: "Espacios corporativos modernos y funcionales que potencian la productividad." },
+        { href: "/portfolio/retail", title: "Proyectos de Retail", description: "Centros comerciales y tiendas que crean experiencias de compra excepcionales." },
+        { href: "/portfolio/industria", title: "Proyectos de Industria", description: "Infraestructura industrial optimizada para procesos productivos eficientes." },
+        { href: "/portfolio/hoteleria", title: "Proyectos de Hotelería", description: "Hoteles y complejos turísticos que combinan confort y elegancia." },
+        { href: "/portfolio/educacion", title: "Proyectos de Educación", description: "Instituciones educativas que inspiran el aprendizaje y desarrollo." },
+        { href: "/portfolio/vivienda", title: "Proyectos de Vivienda", description: "Complejos residenciales que ofrecen calidad de vida y bienestar." },
+        { href: "/portfolio/salud", title: "Proyectos de Salud", description: "Infraestructura hospitalaria de vanguardia para el cuidado de la salud." },
       ],
       section3: { 
         title: "Innovación en Cada Obra", 
         description: "Aplicamos las últimas tecnologías y metodologías para garantizar resultados superiores.",
-        image: "/images/innovacion-obra.jpg"
+        image: "https://metrica-dip.com/images/slider-inicio-es/04.jpg"
       }
     }
   },
-  { 
-    id: 'contact', 
-    label: 'Contáctanos',
-    subItems: {
-      section1: { title: "Estamos para Ayudarte", description: "Ponte en contacto con nuestro equipo para cualquier consulta o requerimiento." },
-      links: [
-        { href: "/contact", title: "Formulario de Contacto", description: "Envíanos tus preguntas directamente." },
-        { href: "/contact/claims", title: "Libro de Reclamaciones", description: "Tu opinión es importante para nosotros." },
-      ],
-      section3: { 
-        title: "Oficina Central", 
-        description: "Av. Principal 123, San Isidro, Lima, Perú.",
-        image: "/images/oficina-central.jpg"
-      }
-    }
-  },
+  { id: 'contact', label: 'Contáctanos', href: '/contact', subItems: null },
 ];
 
-const Logo = ({ isScrolled }: { isScrolled: boolean }) => (
+const Logo = ({ isScrolled, menuOpen }: { isScrolled: boolean; menuOpen: boolean }) => (
   <Link href="/" className="flex items-center">
     <Image 
-      src={isScrolled ? "/img/logo-color.png" : "/img/logo-blanco.png"}
+      src={isScrolled || menuOpen ? "/img/logo-color.png" : "/img/logo-blanco.png"}
       alt="Métrica Logo"
       width={150}
       height={40}
@@ -108,7 +95,7 @@ export default function Header() {
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            <Logo isScrolled={isScrolled}/>
+            <Logo isScrolled={isScrolled} menuOpen={menuOpen}/>
             
             {/* Desktop Menu */}
             <MegaMenu 

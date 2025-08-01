@@ -65,7 +65,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
 
   const navLinkClasses = cn(
     "bg-transparent transition-all duration-200",
-    isScrolled ? "text-foreground/80" : "text-white/90"
+    isScrolled || activeItem ? "text-foreground/80" : "text-white/90"
   );
 
   return (
@@ -130,12 +130,12 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                                   <li key={link.title}>
                                     <a
                                       href={link.href}
-                                      className="block select-none space-y-1 rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-white hover:translate-x-1"
+                                      className="block select-none space-y-1 rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-white hover:translate-x-1 group"
                                       onClick={() => setActiveItem(null)}
                                     >
-                                      <div className="text-sm font-semibold leading-none text-foreground">{link.title}</div>
+                                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-white">{link.title}</div>
                                       {link.description && (
-                                        <p className="line-clamp-1 text-sm leading-snug text-muted-foreground mt-1">
+                                        <p className="line-clamp-1 text-sm leading-snug text-muted-foreground mt-1 group-hover:text-white/90">
                                           {link.description}
                                         </p>
                                       )}

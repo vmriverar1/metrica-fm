@@ -1,273 +1,157 @@
-# Plan de Implementación: Scroll Horizontal para DIP y Políticas
+# Plan de Desarrollo - Página "Qué Hacemos"
 
-## Visión General
-Transformar las secciones "¿Qué es DIP?" (Pillars) y "Nuestras políticas" (Policies) en carousels horizontales interactivos usando Swiper.js con GSAP ScrollTrigger, similar al ejemplo en html/horizontal-scroll.html pero adaptado a la identidad de Métrica.
+## Concepto General
+Experiencia cinematográfica inmersiva donde el usuario explora los servicios de Métrica DIP como si navegara por un universo visual en construcción. La narrativa visual se desarrolla a través del scroll, transformando una ciudad que cobra vida en una exploración profunda de servicios, con fragmentación de capas, mini-universos por servicio y convergencia final en un símbolo luminoso.
 
-## Características Principales
-- **Scroll sincronizado**: El carousel avanza automáticamente con el scroll del usuario
-- **Cards visuales**: Cada pilar/política tendrá imagen + texto descriptivo
-- **Direcciones opuestas**: DIP de derecha a izquierda, Políticas de izquierda a derecha
-- **Responsive**: Adaptación móvil con touch gestures
-- **Animaciones suaves**: Fade-in y movimiento ascendente en títulos
-
----
-
-## Fase 1: Preparación y Estructura Base
-**Duración estimada**: 3-4 horas
-
+## Fase 1: Hero Dinámico - Ciudad en Construcción (3-4 horas)
 ### Objetivos:
-- Instalar dependencias necesarias (Swiper)
-- Crear estructura HTML de cards
-- Establecer estilos base con colores de Métrica
+- Escena animada en bucle de una ciudad construyéndose
+- Partículas brillantes que forman iconos de servicios
+- Texto flotante con efecto escritura: "¿Cómo transformamos ideas en impacto?"
+- Al scrollar, la escena se fragmenta en capas 3D (edificios, iconos, fondo)
 
-### Tareas Técnicas:
+### Componentes:
+- `app/services/page.tsx` - Página principal
+- `components/services/HeroCity.tsx` - Ciudad animada con GSAP
+- `components/services/ParticleIcons.tsx` - Partículas que forman iconos
+- `components/services/FragmentLayers.tsx` - Sistema de capas fragmentables
 
-#### 1.1 Instalación de Swiper
-```bash
-npm install swiper
-```
+### Implementación:
+- Canvas 2D para partículas (sin Three.js para mejor performance)
+- GSAP timeline para construcción de edificios
+- ScrollTrigger para fragmentación en profundidad
+- Efecto zoom 0-3D con perspectiva CSS
 
-#### 1.2 Estructura de Cards para Pillars (¿Qué es DIP?)
-- Convertir los 6 pilares actuales en cards tipo Swiper
-- Estructura por card:
-  - Imagen representativa (aspect-ratio 8:5)
-  - Título del pilar
-  - Descripción breve
-  - Indicador visual (ícono actual)
-
-#### 1.3 Estructura de Cards para Policies
-- Identificar y estructurar las políticas existentes
-- Mismo formato que Pillars pero con diferentes imágenes
-- Mantener coherencia visual
-
-#### 1.4 Estilos Base
-- Variables CSS para el carousel:
-  ```css
-  --swiper-column-gap: 1.5rem
-  --swiper-slides-perview: 2.25 (desktop) / 1.05 (mobile)
-  --media-aspect-ratio: 8/5
-  ```
-- Colores corporativos:
-  - Fondo cards: #1D1D1B con opacity
-  - Acentos: #E84E0F (naranja)
-  - Texto: #D7D3CB
-  - Hover effects con #003F6F (azul)
-
-### Entregables:
-- Componente PillarsCarousel.tsx
-- Componente PoliciesCarousel.tsx
-- Estilos base integrados con Tailwind
-- Imágenes placeholder para cada card
-
----
-
-## Fase 2: Animaciones de Entrada
-**Duración estimada**: 2 horas
-
+## Fase 2: Universos de Servicios - Tour Aéreo (4-5 horas)
 ### Objetivos:
-- Implementar animaciones de aparición para títulos
-- Crear efectos de fade y movimiento
+- Cada servicio tiene su "mini-universo" panorámico
+- Vista que gira 180° al pasar al siguiente servicio
+- Cambios de fondos, luz y tonalidades entre servicios
+- Cards emergentes desde el centro con microanimaciones contextuales
 
-### Tareas Técnicas:
+### Componentes:
+- `components/services/ServiceUniverse.tsx` - Contenedor de universos
+- `components/services/PanoramicScene.tsx` - Escena 180° por servicio
+- `components/services/EmergentCard.tsx` - Cards con animaciones únicas
+- `components/services/ContextualAnimation.tsx` - Mini ilustraciones en bucle
 
-#### 2.1 Fade-in para Títulos
-- ScrollTrigger para detectar entrada en viewport
-- Animación con GSAP:
-  ```javascript
-  gsap.from(titleRef.current, {
-    opacity: 0,
-    duration: 1.2,
-    ease: 'power3.out'
-  })
-  ```
+### Efectos:
+- Transición de cámara fluida entre escenarios
+- Morphing de colores y ambiente
+- Iconos que se expanden con gráficos generativos
+- Fade-in y bounce para textos inspiradores
 
-#### 2.2 Movimiento Ascendente
-- Combinar con fade-in:
-  ```javascript
-  gsap.from(titleRef.current, {
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    ease: 'power4.out'
-  })
-  ```
-
-#### 2.3 Stagger para Subtítulos
-- Delay progresivo en palabras del subtítulo
-- Efecto de construcción del texto
-
-### Entregables:
-- Animaciones de entrada implementadas
-- Hooks personalizados para reutilizar
-
----
-
-## Fase 3: Scroll Horizontal Sincronizado
-**Duración estimada**: 4-5 horas
-
+## Fase 3: Políticas Full-Screen con Overlays Mutantes (3-4 horas)
 ### Objetivos:
-- Implementar scroll horizontal controlado por scroll vertical
-- Configurar direcciones opuestas para cada sección
-- Optimizar performance
+- Cada política es un slide full-screen fijado
+- Icono central con animación secuencial (trazo, color, escala)
+- Overlay de color dominante que evoluciona progresivamente
+- Halos giratorios con slogans alrededor del icono
 
-### Tareas Técnicas:
+### Componentes:
+- `components/services/PolicySlide.tsx` - Slide full-screen por política
+- `components/services/AnimatedPolicyIcon.tsx` - Icono con DrawSVG
+- `components/services/ColorOverlay.tsx` - Sistema de overlays mutantes
+- `components/services/RotatingHalos.tsx` - Textos orbitales
 
-#### 3.1 Configuración de Swiper
-```javascript
-const swiperOptions = {
-  slidesPerView: 'auto',
-  centeredSlides: true,
-  spaceBetween: 0,
-  speed: 700,
-  grabCursor: true,
-  watchSlidesProgress: true
-}
-```
+### Animaciones:
+- Pin-scroll con microanimaciones vectoriales
+- Parallax suave del fondo con sensación de profundidad
+- Cambio progresivo de colores dominantes
+- Rotación y aparición de halos textuales
 
-#### 3.2 ScrollTrigger para Pillars (R→L)
-```javascript
-gsap.to(proxy, {
-  progress: 1,
-  scrollTrigger: {
-    trigger: pillarsSection,
-    pin: true,
-    scrub: 1,
-    start: 'top top',
-    end: '+=200%' // 2x altura viewport
-  }
-})
-```
-
-#### 3.3 ScrollTrigger para Policies (L→R)
-```javascript
-// scrubDir: -1 para dirección inversa
-```
-
-#### 3.4 Sincronización Swiper-Scroll
-- Traducir progreso de scroll a posición del carousel
-- Smooth transitions entre slides
-- Control de velocidad y easing
-
-### Optimizaciones:
-- `will-change: transform` en slides activos
-- Lazy loading de imágenes fuera de viewport
-- RequestAnimationFrame para animaciones fluidas
-
-### Entregables:
-- Scroll horizontal funcional en ambas secciones
-- Direcciones configuradas (R→L y L→R)
-- Performance optimizada
-
----
-
-## Fase 4: Interactividad y Polish
-**Duración estimada**: 2-3 horas
-
+## Fase 4: Metodología Isométrica Explorable (3-4 horas)
 ### Objetivos:
-- Añadir navegación manual opcional
-- Efectos hover y focus
-- Indicadores de progreso
+- Escenario isométrico que rota revelando 5 etapas
+- Cada etapa se ilumina con haz de luz y microanimación
+- Perspectiva que gira suavemente mostrando diferentes ángulos
+- Tooltips flotantes con descripciones contextuales
 
-### Tareas:
+### Componentes:
+- `components/services/IsometricMethod.tsx` - Escenario 3D isométrico
+- `components/services/StageSpotlight.tsx` - Sistema de iluminación
+- `components/services/FloatingTooltip.tsx` - Tooltips animados
+- `components/services/PerspectiveController.tsx` - Control de rotación
 
-#### 4.1 Navegación Manual (Desktop)
-- Flechas de navegación que aparecen on hover
-- Click para avanzar/retroceder slides
-- Ocultar en móviles
+### Implementación:
+- CSS 3D transforms para isometría (sin WebGL)
+- GSAP para rotaciones suaves y sincronizadas
+- Partículas emergentes en cada etapa
+- Transiciones con easing personalizado
 
-#### 4.2 Efectos Visuales
-- Opacity gradient en slides no activos
-- Scale sutil en slide central
-- Glow effect en hover
-- Transiciones suaves
-
-#### 4.3 Indicadores
-- Dots de paginación opcional
-- Progress bar sutil
-- Current/Total counter
-
-### Entregables:
-- Experiencia interactiva completa
-- Efectos visuales pulidos
-- Navegación intuitiva
-
----
-
-## Fase 5: Responsive y Testing
-**Duración estimada**: 2 horas
-
+## Fase 5: Testimonios como Gotas Flotantes (2-3 horas)
 ### Objetivos:
-- Adaptar para todos los dispositivos
-- Testing cross-browser
-- Optimización final
+- Citas en burbujas que emergen como gotas ascendentes
+- Fotos de proyectos con efecto focus/blur dinámico
+- Bounce-in y rotación ligera al aparecer
+- Intensidad emocional con desenfoques contextuales
 
-### Tareas:
+### Componentes:
+- `components/services/TestimonialDrops.tsx` - Sistema de gotas
+- `components/services/BubbleQuote.tsx` - Burbujas con citas
+- `components/services/DynamicBlur.tsx` - Control de enfoque
+- `components/services/EmotionalIntensity.tsx` - Efectos visuales
 
-#### 5.1 Mobile Adaptations
-- Touch gestures nativos
-- Reducir slides visibles (1.05)
-- Ajustar espaciados
-- Desactivar efectos pesados
+### Efectos:
+- Animación de ascenso con física simulada
+- Rotación sutil durante el movimiento
+- Transición de blur según proximidad
+- Carrusel opcional para desktop
 
-#### 5.2 Tablet Optimization
-- Slides intermedios (1.5-2)
-- Mantener interactividad
-- Balance visual
+## Fase 6: Convergencia Cinemática Final (3-4 horas)
+### Objetivos:
+- Elementos de toda la página convergen hacia el centro
+- Partículas que se transforman en símbolo luminoso
+- Símbolo que explota revelando CTA pulsante
+- Degradado vibrante de fondo como cierre emocional
 
-#### 5.3 Testing
-- Chrome, Firefox, Safari, Edge
-- iOS Safari particularidades
-- Android Chrome
-- Performance metrics
+### Componentes:
+- `components/services/CinematicConvergence.tsx` - Orquestador de convergencia
+- `components/services/ParticleTransform.tsx` - Sistema de partículas
+- `components/services/LuminousSymbol.tsx` - Símbolo central animado
+- `components/services/PulsingCTA.tsx` - Botón con microanimación
 
-### Entregables:
-- Responsive perfecto
-- Cross-browser compatible
-- Documentation actualizada
+### Animaciones:
+- Trayectorias curvas para elementos convergentes
+- Morphing de partículas a símbolo
+- Explosión con timing preciso
+- Pulse animation continuo en CTA
 
----
+## Fase 7: Polish y Orquestación (2-3 horas)
+### Objetivos:
+- Sincronización perfecta entre todas las transiciones
+- Optimización de performance manteniendo fluidez
+- Versión reducida para prefers-reduced-motion
+- Testing en dispositivos reales
 
-## Consideraciones Técnicas
+### Implementación:
+- Master timeline con GSAP
+- Lazy loading inteligente de assets
+- Fallbacks elegantes para móviles básicos
+- Métricas de performance y ajustes
 
-### Dependencias
-- **Swiper**: ^11.x para el carousel
-- **GSAP**: Ya instalado (ScrollTrigger, DrawSVG)
-- **React**: Hooks para gestión de estado
+## Recursos Necesarios
 
-### Performance
-- Intersection Observer para lazy load
-- Transform3d para GPU acceleration
-- Debounce en resize events
-- Virtual slides si > 20 cards
+### Assets Visuales:
+- Sprites de edificios para ciudad animada
+- Texturas de fondos para cada universo de servicio
+- Iconos vectoriales animables para políticas
+- Modelos isométricos simplificados para metodología
+- Fotos de alta calidad para testimonios
+- Partículas y efectos visuales
 
-### Accesibilidad
-- Keyboard navigation
-- ARIA labels
-- Focus indicators
-- Reduced motion support
+### Contenido:
+- Textos inspiradores por servicio
+- Descripciones evocativas de políticas
+- Narrativa de metodología por etapas
+- Testimonios emotivos y concisos
+- Mensajes de cierre impactantes
 
-### Integración
-- Mantener consistencia con resto del sitio
-- Reusar componentes UI existentes
-- Seguir patrones de animación establecidos
+## Tiempo Total Estimado: 20-25 horas
 
----
-
-## Tiempo Total: 13-16 horas
-
-### Distribución:
-- Fase 1: 25% (estructura base)
-- Fase 2: 15% (animaciones)
-- Fase 3: 35% (funcionalidad core)
-- Fase 4: 15% (polish)
-- Fase 5: 10% (responsive)
-
-### Riesgos:
-- Complejidad de sincronización scroll-swiper
-- Performance en móviles antiguos
-- Compatibilidad con navegadores legacy
-
-### Mitigación:
-- Fallback a scroll normal si no hay soporte
-- Progressive enhancement
-- Testing continuo durante desarrollo
+### Notas Críticas:
+- Priorizar transform/opacity pero permitir efectos complejos en momentos clave
+- Balance entre inmersión y performance
+- Mobile-first pero sin sacrificar la experiencia desktop
+- Cada transición debe sentirse coreografiada y significativa
+- El usuario debe sentir que explora un mundo, no solo lee información

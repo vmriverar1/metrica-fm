@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: "Machinkly";
+            src: url("https://assets.codepen.io/383755/Machinkly.woff2") format("woff2");
+        }
+
+        @font-face {
+            font-family: "Avenir";
+            src: url("https://assets.codepen.io/383755/AvenirNextLTPro-Bold.woff") format("woff");
+        }
+
+        body {
+            --progress: 0;
+            --purple: #003F6F;
+            --blue: #E84E0F;
+            display: block;
+            width: 100vw;
+            font-family: "Avenir";
+            height: 2800vh;
+            min-height: 2800vh;
+            padding: 0;
+            margin: 0;
+            --velocity: 0;
+            background: #f5f5f5;
+        }
+
+        body .panelwrap {
+            position: fixed;
+            width: 100vw;
+            height: 2800vh;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            transform: translateY(calc(var(--progress) * -1%)) translateZ(0px);
+            z-index: -1;
+            background: #f5f5f5;
+            opacity: clamp(0.85, calc(1 - (var(--velocity) / 10)), 1);
+            filter: blur(calc((var(--velocity) * 2px) - 1px));
+        }
+
+        body .panelwrap .panel {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            box-shadow: inset 0 0 0 5vmin rgba(255, 255, 255, 0.9);
+        }
+
+        body .panelwrap .panel:before,
+        body .panelwrap .panel:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-shadow: inherit;
+            left: 0;
+            top: 0;
+        }
+
+        body .panelwrap .panel:before {
+            filter: saturate(1.2) brightness(1.1) contrast(1.1);
+        }
+
+        body .panelwrap .panel:after {
+            background: radial-gradient(circle at bottom, rgba(232, 78, 15, 0.1), rgba(0, 63, 111, 0.1) 50%);
+            mix-blend-mode: normal;
+            opacity: 0.5;
+        }
+
+        body .panelwrap .panel:nth-of-type(even):after {
+            transform: scaleY(-1);
+        }
+
+        body .panelwrap .panel:nth-of-type(1):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(2):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(3):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(4):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(5):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(6):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(7):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(8):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(9):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(10):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(11):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(12):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(13):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(14):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(15):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(16):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(17):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(18):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(19):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(20):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(21):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(22):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(23):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(24):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(25):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(26):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/04.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(27):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/05.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(28):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/06.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body .panelwrap .panel:nth-of-type(29):before {
+            background: url("https://metrica-dip.com/images/slider-inicio-es/03.jpg") 50% 50%/cover no-repeat;
+        }
+
+        body:before,
+        body:after {
+            content: "";
+            position: fixed;
+            width: clamp(15vw, 70vmin, 50vw);
+            height: 100vh;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            -webkit-mask: linear-gradient(to right, #fff 7.5%, transparent);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 5vmin 0 5vmin rgba(255, 255, 255, 0.8);
+        }
+
+        body:after {
+            -webkit-mask: linear-gradient(to left, #fff 7.5%, transparent);
+            right: 0;
+            left: auto;
+            box-shadow: inset -5vmin 0 5vmin rgba(255, 255, 255, 0.8);
+        }
+
+        body * {
+            box-sizing: border-box;
+            transform-style: preserve-3d;
+        }
+
+        body>h1,
+        body>p {
+            position: fixed;
+            top: 0;
+            z-index: 9;
+            color: #003F6F;
+            width: 100%;
+            text-align: center;
+            font-size: 3vmin;
+            margin: 2.5vmin 0;
+            text-transform: uppercase;
+        }
+
+        body p {
+            top: auto;
+            bottom: 0;
+            font-size: 1.5vmin;
+        }
+
+        body .wrap {
+            position: fixed;
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            z-index: 9;
+            perspective: 35vmin;
+            transform: scaleX(clamp(1, var(--velocity), 3)) translateZ(0px);
+            filter: blur(calc((var(--velocity) * 2px) - 1px));
+        }
+
+        body ul {
+            list-style-type: none;
+            width: 0vmin;
+            height: 0vmin;
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            top: calc(50% - 50vmin);
+            left: 50%;
+            margin: 0;
+            padding: 0;
+            transform: rotateX(-90deg) translateZ(50vmin);
+            transform-origin: 50% 50%;
+        }
+
+        body ul li {
+            position: absolute;
+            margin: 0px;
+            width: 50vmin;
+            height: 50vmin;
+            left: -25vmin;
+            top: -25vmin;
+            transform-origin: 50% -200vmin;
+            transform-style: preserve-3d;
+        }
+
+        body ul li:nth-of-type(1) {
+            transform: rotate(calc(0deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(2) {
+            transform: rotate(calc(-12.8571428571deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(3) {
+            transform: rotate(calc(-25.7142857143deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(4) {
+            transform: rotate(calc(-38.5714285714deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(5) {
+            transform: rotate(calc(-51.4285714286deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(6) {
+            transform: rotate(calc(-64.2857142857deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(7) {
+            transform: rotate(calc(-77.1428571429deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(8) {
+            transform: rotate(calc(-90deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(9) {
+            transform: rotate(calc(-102.8571428571deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(10) {
+            transform: rotate(calc(-115.7142857143deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(11) {
+            transform: rotate(calc(-128.5714285714deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(12) {
+            transform: rotate(calc(-141.4285714286deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(13) {
+            transform: rotate(calc(-154.2857142857deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(14) {
+            transform: rotate(calc(-167.1428571429deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(15) {
+            transform: rotate(calc(-180deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(16) {
+            transform: rotate(calc(-192.8571428571deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(17) {
+            transform: rotate(calc(-205.7142857143deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(18) {
+            transform: rotate(calc(-218.5714285714deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(19) {
+            transform: rotate(calc(-231.4285714286deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(20) {
+            transform: rotate(calc(-244.2857142857deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(21) {
+            transform: rotate(calc(-257.1428571429deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(22) {
+            transform: rotate(calc(-270deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(23) {
+            transform: rotate(calc(-282.8571428571deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(24) {
+            transform: rotate(calc(-295.7142857143deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(25) {
+            transform: rotate(calc(-308.5714285714deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(26) {
+            transform: rotate(calc(-321.4285714286deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(27) {
+            transform: rotate(calc(-334.2857142857deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(28) {
+            transform: rotate(calc(-347.1428571429deg + var(--progress) * 3.6deg));
+        }
+
+        body ul li:nth-of-type(even) time {
+            transform: rotateX(90deg) translateZ(-12.5vmin) translateY(15vmin);
+        }
+
+        body ul li:nth-of-type(even) time:after {
+            top: auto;
+            bottom: 100%;
+        }
+
+        body ul li span {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            color: transparent;
+            -webkit-text-stroke: 0.2vmin #003F6F;
+            text-transform: uppercase;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transform: rotateX(90deg) translateZ(-5vmin);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6.5vmin;
+            text-align: center;
+            line-height: 0.9;
+            padding: 2vmin;
+            word-break: break-word;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body ul li time {
+            position: absolute;
+            z-index: -1;
+            transform-style: preserve-3d;
+            transform: rotateX(90deg) translateZ(-12.5vmin) translateY(-15vmin);
+            width: 5vmin;
+            padding: 0.5vmin 0 0 0;
+            margin: 0;
+            height: 5vmin;
+            top: 0;
+            left: calc(50% - 2.5vmin);
+            box-shadow: inset 0 0 0 0.1vmin #003F6F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2vmin;
+            color: #003F6F;
+            border-radius: 100%;
+            font-weight: 100;
+        }
+
+        body ul li time:after {
+            content: "";
+            position: absolute;
+            width: 0.125vmin;
+            height: 5vmin;
+            top: 100%;
+            left: calc(50% - 0.0625vmin);
+            background: #003F6F;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- days sourced from: https://nationaldaycalendar.com/february/ -->
+    <h1>February 2022</h1>
+    <p>
+        Holidays and Daily Observances in the United States
+    </p>
+    <div class='wrap'>
+        <ul>
+            <li>
+                <time datetime='2022-02-01'>1</time>
+                <span>Dark Chocolate Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-02'>2</time>
+                <span>Groundhog Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-03'>3</time>
+                <span>Carrot Cake Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-04'>4</time>
+                <span>Wear Red Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-05'>5</time>
+                <span>Weatherperson's Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-06'>6</time>
+                <span>Chopsticks Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-07'>7</time>
+                <span>Periodic Table Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-08'>8</time>
+                <span>Kite Flying Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-09'>9</time>
+                <span>Pizza Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-10'>10</time>
+                <span>Umbrella Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-11'>11</time>
+                <span>Inventor's Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-12'>12</time>
+                <span>Global Movie Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-13'>13</time>
+                <span>Tortellini Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-14'>14</time>
+                <span>Valentine's Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-15'>15</time>
+                <span>Gumdrop Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-16'>16</time>
+                <span>Do a Grouch a Favor Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-17'>17</time>
+                <span>Cabbage Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-18'>18</time>
+                <span>Battery Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-19'>19</time>
+                <span>Chocolate Mint Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-20'>20</time>
+                <span>Love Your Pet Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-21'>21</time>
+                <span>President's Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-22'>22</time>
+                <span>Cook a Sweet Potato Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-23'>23</time>
+                <span>Tile Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-24'>24</time>
+                <span>Toast Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-25'>25</time>
+                <span>Clam Chowder Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-26'>26</time>
+                <span>Pistachio Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-27'>27</time>
+                <span>Polar Bear Day</span>
+            </li>
+            <li>
+                <time datetime='2022-02-28'>28</time>
+                <span>Tooth Fairy Day</span>
+            </li>
+        </ul>
+    </div>
+    <div class='panelwrap'>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+        <div class='panel'></div>
+    </div>
+
+    <!-- GSAP CDN -->
+     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        let body = document.body;
+        ScrollTrigger.create({
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.15,
+            snap: 1 / 28,
+            onUpdate: (self) => {
+                body.style.setProperty("--progress", self.progress * 100);
+                body.style.setProperty("--velocity", Math.abs(self.getVelocity() / 3500));
+            },
+            onScrubComplete: () => {
+                body.style.setProperty("--velocity", 0);
+            },
+            onEnter: () => {
+                body.style.setProperty("--velocity", 0);
+            },
+            onEnterBack: () => {
+                body.style.setProperty("--velocity", 0);
+            },
+            onLeave: () => {
+                body.style.setProperty("--velocity", 0);
+                window.scrollTo(0, 0);
+            },
+            onLeaveBack: () => {
+                body.style.setProperty("--velocity", 0);
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

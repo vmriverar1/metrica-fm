@@ -554,3 +554,120 @@ strong, b, .font-bold {
   #policies .pin-spacer {
     will-change: transform;
   }
+
+  /* Timeline 3D Styles */
+  .card-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .card-inner.flipped {
+    transform: rotateY(180deg);
+  }
+
+  /* Efecto glow para años activos */
+  .timeline-year-active {
+    color: #E84E0F;
+    text-shadow: 0 0 20px rgba(232, 78, 15, 0.8);
+    transform: scale(1.2) !important;
+    opacity: 1 !important;
+  }
+
+  /* Historia Timeline Animations */
+  @keyframes particle-float {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .particle-float {
+    animation: particle-float linear infinite;
+  }
+
+  /* Máscara de transición entre hitos */
+  .mask-transition {
+    -webkit-mask-image: linear-gradient(to right, 
+      transparent 0%, 
+      black 20%, 
+      black 80%, 
+      transparent 100%
+    );
+    mask-image: linear-gradient(to right, 
+      transparent 0%, 
+      black 20%, 
+      black 80%, 
+      transparent 100%
+    );
+  }
+
+  /* Efecto cinematográfico */
+  .cinematic-bars::before,
+  .cinematic-bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10%;
+    background: black;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .cinematic-bars::before {
+    top: 0;
+  }
+
+  .cinematic-bars::after {
+    bottom: 0;
+  }
+
+  /* Blur dinámico mejorado */
+  .dynamic-blur {
+    transition: filter 0.3s ease-out;
+  }
+
+  /* Efecto de profundidad con sombras */
+  .depth-shadow {
+    box-shadow: 
+      0 10px 30px -10px rgba(0, 0, 0, 0.3),
+      0 20px 60px -20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Animaciones para ciudad en construcción */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-20px) rotate(180deg);
+      opacity: 0.8;
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* Efectos 3D para fragmentación */
+  .city-layer-1,
+  .city-layer-2,
+  .city-layer-3 {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+
+  .fragment-overlay {
+    transition: opacity 0.3s ease-out;
+  }

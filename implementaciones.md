@@ -194,3 +194,42 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Cambiado trigger de pin de containerRef a sectionRef en ambos carousels
   - Ahora las secciones completas se mantienen fijas durante scroll horizontal
   - Archivos: pillars-carousel.tsx, policies-carousel.tsx
+
+- [2025-01-31] Fase 1 Nuestra Historia: Hero inicial con partículas
+  - Página creada en /about/historia con metadata SEO
+  - Hero con imagen de fondo, zoom-in y desenfoque radial animado
+  - 50 partículas doradas emergiendo con animación GSAP
+  - Título con animación letra por letra y efecto 3D
+  - Año 2010 como fondo sutil, scroll indicator animado
+  - Archivos: about/historia/page.tsx, components/historia/HeroHistoria.tsx
+
+- [2025-01-31] Fase 2 Nuestra Historia: Timeline 3D Rotativo
+  - Timeline circular 3D que rota sincronizado con scroll
+  - 6 hitos cronológicos: 2010, 2015, 2018, 2020, 2023, 2024
+  - Tarjetas con efecto flip al hacer clic (frente/reverso)
+  - Snap points para navegación precisa entre hitos
+  - Blur dinámico basado en velocidad, línea de progreso vertical
+  - Archivos: Timeline3D.tsx, TimelineCard.tsx, globals.css
+
+- [2025-01-31] Rediseñé timeline 3D para rotación vertical tipo cinta cinematográfica - Modificado: Timeline3D.tsx, TimelineCard.tsx
+- [2025-01-31] Cambié transform-origin a lateral y rotateX para simular cinta vertical - Modificado: TimelineCard.tsx
+- [2025-01-31] Actualicé fases.md con Timeline Horizontal corporativo en lugar de 3D rotativo - Modificado: fases.md
+- [2025-01-31] Implementé Timeline Horizontal con scroll snap y pantallas completas - Creado: TimelineHorizontal.tsx, HitoFullScreen.tsx, ProgressIndicator.tsx
+- [2025-01-31] Moví progress bar abajo, agregué header/footer y panel lateral con detalles - Modificado: ProgressIndicator.tsx, page.tsx, Creado: HitoPanel.tsx
+- [2025-01-31] Implementé Fase 4: Efectos cinematográficos con parallax multicapa y blur dinámico - Modificado: HitoFullScreen.tsx, TimelineHorizontal.tsx, globals.css, Creado: FloatingElements.tsx
+- [2025-01-31] Implementé Fase 5: Sección final con máscara circular, estadísticas animadas y CTA - Creado: CierreHistoria.tsx, EstadisticasAnimadas.tsx
+- [2025-01-31] Creé plan completo para página "Qué Hacemos" con 7 fases basado en contexto.md - Creado: fases.md
+- [2025-01-31] Completé página "Nuestra Historia" con todas las fases implementadas - Modificado: about/historia/page.tsx, Creado: HeroHistoria.tsx, TimelineHorizontal.tsx, HitoFullScreen.tsx, HitoPanel.tsx, ProgressIndicator.tsx, FloatingElements.tsx, CierreHistoria.tsx, EstadisticasAnimadas.tsx
+- [2025-01-31] Rediseñé plan "Qué Hacemos" con experiencia cinematográfica inmersiva - Modificado: fases.md
+- [2025-01-31] Implementé Fase 1 "Qué Hacemos": Hero con ciudad en construcción y partículas - Creado: services/page.tsx, HeroCity.tsx, ParticleIcons.tsx, FragmentLayers.tsx, Modificado: globals.css
+- [2025-01-31] Implementé Fase 2 "Qué Hacemos": Universos de servicios con tour aéreo y mini-animaciones - Creado: ServiceUniverse.tsx, PanoramicScene.tsx, EmergentCard.tsx, ContextualAnimation.tsx, Modificado: services/page.tsx
+- [2025-01-31] Creé UniversalHero reutilizable con animaciones completas - Creado: universal-hero.tsx, Modificado: services/page.tsx, historia/page.tsx, header.tsx, Eliminado: HeroCity.tsx, HeroHistoria.tsx, ParticleIcons.tsx, FragmentLayers.tsx
+- [2025-01-31] Mejoré UniversalHero con efectos de hero.html: overlay oscuro, parallax de imagen, movimiento de texto y overlay progresivo - Modificado: universal-hero.tsx
+- [2025-01-31] Actualicé UniversalHero con overlay general, fuente del hero de home y reducción de altura con scroll - Modificado: universal-hero.tsx
+- [2025-01-31] Creé páginas faltantes sección Nosotros con UniversalHero: Cultura, Compromiso y Clientes - Creado: about/cultura/page.tsx, about/compromiso/page.tsx, about/clientes/page.tsx
+- [2025-01-31] Creé página ISO 9001 con UniversalHero y contenido completo sobre certificación - Creado: iso/page.tsx, Modificado: header.tsx
+- [2025-01-31] Actualicé megamenu con 7 nuevos proyectos y creé todas las páginas con UniversalHero - Modificado: header.tsx, Creado: portfolio/oficina/page.tsx, portfolio/retail/page.tsx, portfolio/industria/page.tsx, portfolio/hoteleria/page.tsx, portfolio/educacion/page.tsx, portfolio/vivienda/page.tsx, portfolio/salud/page.tsx
+- [2025-01-27] Creado componente UniversalHero reutilizable con efectos de scroll - Modificado: universal-hero.tsx
+- [2025-01-27] Simplificado megamenú de contacto y creada página de contacto - Modificado: header.tsx, contact/page.tsx
+- [2025-01-27] Solucionado problema de navegación en timeline historia (cambio de vw a % en animación GSAP) - Modificado: TimelineHorizontal.tsx
+- [2025-01-27] Eliminado conflicto de transform scale vs translateX que causaba rebote en timeline - Modificado: TimelineHorizontal.tsx

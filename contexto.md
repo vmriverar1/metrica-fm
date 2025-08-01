@@ -1,115 +1,84 @@
-Aquí tienes una propuesta renovada, ampliada, y detallada al máximo nivel, que fortalece la narrativa visual, mejora el título y la hace perfectamente encajar con la identidad tecnológica que queremos proyectar:
+IDEA MENOS CREATTIVA PARA NUESTRA HISTORIA
 
----
+[![What we do | Web template design, Website design layout, Website design](https://tse2.mm.bing.net/th/id/OIP.ncMUIv1XJtj-190cYQAflQHaT3?pid=Api)](https://www.pinterest.jp/pin/378724649906951343/)
 
-## 🌟 Nueva Propuesta para Sección Interactiva DIP:
+Te propongo una experiencia de usuario para la página **“Qué Hacemos”** absolutamente inmersiva y creativa, diseñada con scroll, animaciones sincronizadas y micro-interacciones que aprovechan GSAP y ScrollTrigger para enganchar desde el primer scroll, al estilo de los ejemplos más innovadores([Forum One][1]).
 
-## “Blueprint DIP: El ciclo integral de un proyecto exitoso”
+Desde que entras, la pantalla se presenta con un hero dinámico: una escena animada en bucle de tus servicios en acción —una ciudad que se construye o un proyecto cobrando vida— con partículas en movimiento sutil y un texto central flotante, que aparece con efecto de escritura tipo “¿Cómo transformamos ideas en impacto?”. Al scrollar apenas, esa escena se fragmenta en planos: los edificios, los iconos y el fondo se separan levemente en profundidad (efecto 3D/zoom 0‑3D) inspirándose en animaciones de scroll que dan sensación de espacio([UX Planet][2], [Forum One][1]).
 
-### 🔥 Objetivo principal:
+A continuación, el scroll activa un escenario horizontal: pasas de ver la ciudad a un carrusel side‑scroll con paneles que representan cada servicio. Cada panel ocupa casi toda la pantalla vertical: cuando aparece el primer servicio, forma un ancho completo con imagen de fondo contextual y un bloque de texto deslizable desde abajo. Al desplazarte lateralmente, los iconos y textos animan con un pequeño rebote (ease) y se revelan en secuencia. Este carrusel está sincronizado con el scroll vertical: al bajar, se activa el siguiente servicio horizontal, generando una experiencia tipo “scroll dentro del scroll”.
 
-Transmitir claramente al usuario qué es DIP (Dirección Integral de Proyectos), destacando sus seis pilares estratégicos de forma interactiva, elegante y tecnológicamente innovadora, en línea con la identidad visual y digital del sitio web.
+Después del carrusel de servicios, el fondo se transforma con un overlay de color que evoluciona según cada política. La sección de políticas aparece como un scroll vertical inmersivo donde cada política es un “slide full‑screen” que se fija mientras lees. Durante ese scroll, un icono central empieza mini‑animado (línea que dibuja iconografías), el texto emerge con fade‑in y un color progresivo domina la pantalla. Cuando terminas una, el scroll desbloquea la siguiente con un suave efecto parallax del fondo y cambio de color de overlay.
 
----
+Más abajo, la sección de metodología rompe el patrón vertical: aparece un mock‑up visual de un proceso animado, estilo isométrico, con cinco etapas que se iluminan secuencialmente al hacer scroll. Cada etapa se resalta con un spotlight que se desplaza con scroll y un tooltip emergente con breve descripción, acompañado por una pequeña animación vectorial. El escenario cambia de perspectiva: gira sutilmente cada cierto scroll, mostrando el enfoque desde otro ángulo, creando una sensación de exploración multidimensional.
 
-## 🎬 Storytelling visual y narrativo:
+Los mini‑testimonios llegan con un gran golpe de creatividad: son citas sobre imágenes del proyecto en forma de gotas flotantes que emergen del fondo mientras el usuario baja. Cada cita aparece con bounce‑in en su burbuja, con fotografía desenfocada detrás que se enfoca momentáneamente. Estos testimonios pueden agruparse en un scroll horizontal interactivo o reaparecer secuenciales en scroll vertical, dependiendo del diseño que prefieras.
 
-**La sección "Blueprint DIP"** funcionará como un **recorrido interactivo**, inspirándose en la idea visual de planos técnicos (blueprints) para reflejar la esencia arquitectónica e ingenieril de Métrica.
+Finalmente, el CTA de cierre no es simplemente un botón. Conforme te acercas al final, los elementos principales de la página (iconos de servicios, gráficos del proceso, testimonios) giran en cámara lenta hacia adentro y convergen en un símbolo luminoso. Ese símbolo explota en partículas que forman un botón llamado “Contáctanos / Nuestros proyectos”. El fondo se funde en un degradado vibrante y el botón aparece emergiendo desde el centro con una pulsación leve (pulse animation), invitando a continuar navegando o contactar.
 
-El usuario comenzará viendo cómo desde un proyecto terminado (Portfolio), descendemos a los cimientos estratégicos y metodológicos de su ejecución. En lugar de utilizar un simple camino o línea, esta narrativa visual será representada como un **blueprint animado**, dibujándose en tiempo real mientras se hace scroll, dando la sensación de ir revelando la estructura técnica del proceso DIP.
+Cada transición —carrusel sincronizado, overlays mutantes, pin‑scroll con microanimaciones vectoriales, scroll horizontal conectado con vertical, perspectiva 3D y scatters finales— está coreografiada con GSAP (ScrollTrigger + ScrollSmoother + DrawSVG + SplitText) para lograr una narrativa no solo informativa sino cinematográfica, envolvente y memorable. El usuario fluye entre secciones como si explorara un recorrido visual y emocional de lo que realmente hacen, más allá de leer un listado: siente, descubre y quiere saber más.
 
----
+[1]: https://www.forumone.com/insights/blog/creating-delightful-experiences-with-immersive-scrolling/?utm_source=chatgpt.com "Creating Delightful Experiences with Immersive Scrolling and Micro ..."
+[2]: https://uxplanet.org/i-noticed-a-pattern-in-page-scroll-animation-on-websites-78d0c021b537?utm_source=chatgpt.com "I noticed a pattern in page scroll animation on websites… - UX Planet"
 
-## ⚙️ Explicación visual paso a paso del concepto mejorado:
 
-**1. Inicio y Transición desde Portfolio:**
-Al finalizar la visualización del portfolio, la pantalla realizará una transición elegante que transforma las imágenes finales de proyectos en un fondo semitransparente que imita el papel técnico (con grids finos, medidas arquitectónicas y detalles técnicos muy sutiles). Sobre este fondo aparecerá progresivamente el título:
+IDEA SUPER CREATIVA PARA NUESTRA HISTORIA
 
-> **“Blueprint DIP”**
-> *El ciclo integral detrás de proyectos exitosos.*
+[![15 Website Scroll Animations for a Captivating Experience \[Examples\]](https://tse2.mm.bing.net/th/id/OIP.tTMiFvv2eyvZHO3NuyssUQHaEc?r=0\&pid=Api)](https://www.creativecorner.studio/blog/website-scroll-animations)
 
-Este texto se animará suavemente desde abajo, con efecto de reveal progresivo, manteniendo la estética tecnológica y profesional.
+Imagina que al entrar en la sección **“Qué Hacemos”**, el hero no es estático: se abre como un universo interactivo. Empezamos con una cápsula gráfica tridimensional —una maqueta de ciudad emergiendo lentamente— cuyos elementos flotan en un espacio semitransparente mientras partículas brillantes se agrupan para formar iconos de servicios (con GSAP y morphing SVG). El texto aparece con efecto escritura: “Transformamos ideas en experiencias tangibles”. Cuando el usuario baja apenas el dedo, la maqueta se fragmenta en capas animadas: edificios se deslizan, iconos giran, el entorno 3D se expande simulando profundidad y escala; todo diseñado con ScrollTrigger y ScrollSmoother para un efecto inmersivo.
 
-**2. Blueprint animado interactivo:**
-Al hacer scroll hacia abajo, aparecerá un blueprint dibujándose en tiempo real. Líneas, curvas, y anotaciones técnicas se irán desplegando progresivamente (utilizando GSAP DrawSVG y MotionPath). A medida que estas líneas avanzan, se forman seis estaciones clave dentro del plano.
+Al seguir bajando, el scroll activa una secuencia de escenas horizontales sincronizadas verticalmente. Cada servicio tiene su “mini‑universo”: una vista panorámica que gira 180° al pasar al siguiente, cambiando fondos, luz y tonalidades. La cámara fluye de un escenario a otro, como si el usuario estuviera haciendo un tour aéreo por cada área de especialidad. Al momento de detenerse en cada servicio, aparecen cards emergentes desde el centro con iconos animados que se expanden y muestran una microanimación contextual del servicio (например, un gráfico generativo o mini ilustración en bucle). El texto complementario entra con efectos de fade‑in y bounce sutil, etiquetado con el nombre del servicio y una frase inspiradora. El ritmo visual transforma un simple listado en una experiencia narrativa envolvente.
 
-Un pequeño ícono animado (por ejemplo, un círculo luminoso o el cursor de un arquitecto dibujando) se moverá a lo largo del blueprint, representando visualmente el progreso del proyecto a través del ciclo DIP.
+Después de explorar los servicios, llega la sección de políticas, pero aquí no hay un acordeón común: cada política es un slide full‑screen fijado mientras lees, y el icono central se anima por secuencias (trazo que se dibuja, cambio de color, escala ligera). De fondo, un overlay de color dominante asociado a cada política domina la escena y cambia progresivamente según se avanza. Un parallax del fondo en tonos suaves acompaña la lectura: al deslizar, la cámara retrocede un poco generando sensación de profundidad. Algunos slogans breves se despliegan como halos giratorios alrededor del icono, reforzando el mensaje visual.
 
-**3. Las 6 estaciones del DIP en detalle:**
-Cada estación estará representada visualmente como un nodo dentro del blueprint, claramente marcado con un ícono distintivo que simbolice esa fase:
+Más abajo, la sección de metodología se convierte en un escenario isométrico animado. Mientras el usuario hace scroll, un diagrama en 3D rota lentamente revelando el siguiente paso del proceso. Cada etapa se ilumina al llegar, proyecta un haz de luz y realiza una microanimación (por ejemplo, ícono giratorio, partículas emergentes). Aparece un tooltip minimizado que flota sobre el escenario explicando brevemente esa fase, y la perspectiva gira suavemente entre scrolls, ofreciendo una sensación de exploración interactiva de un mundo diseñado. Todo con transiciones limpias, easing personalizadas y sincronización precisa gracias a GSAP.
 
-* **Estación 1: Planificación Estratégica**
-  *Iconografía:* Compás y regla técnica animados.
-  *Frase clave:* “Definimos objetivos claros, plazos y rutas críticas.”
+La parte de mini‑testimonios fusiona estrategias visuales: burbujas flotantes con citas clave emergen del fondo en forma de gotas que ascienden, animadas con bounce‑in y rotación ligera. A medida que aparecen en pantalla, el fondo adecuadamente se desenfoca y luego se enfoca tras la cita, brindando intensidad emocional. Algunas citas forman un carrusel horizontal que se oculta al hacer scroll vertical, permitiendo que cada testimonio tenga su propio instante visual destacado.
 
-* **Estación 2: Coordinación Multidisciplinaria**
-  *Iconografía:* Redes o puntos interconectados en animación.
-  *Frase clave:* “Integramos equipos diversos para una comunicación fluida.”
+El cierre es un colapso cinemático de todos los elementos visuales: desde cada universo de servicio emergen partículas que se agrupan y se transforman en un símbolo central luminoso. Ese símbolo gira en cámara lenta y se descompone para revelar un botón flotante con microanimación pulsante: “Descubre más / Contáctanos”. El fondo cambia suavemente a un degradado cálido y el usuario percibe una sensación de cierre emocional y apertura a la acción.
 
-* **Estación 3: Supervisión Técnica**
-  *Iconografía:* Lupa técnica con enfoque animado.
-  *Frase clave:* “Supervisamos y verificamos la ejecución en detalle.”
+A lo largo del recorrido, cada movimiento, cambio de perspectiva, animación SVG, zoom 3D y scroll horizontal están coreografiados para mantener al usuario sorprendido y conectado. El resultado es una narrativa visual donde el visitante no solo ve lo que hacen, sino lo vive, explorando un universo que responde al movimiento y revela capa tras capa de contenido con ritmo, color y emoción.
 
-* **Estación 4: Control de Calidad y Costos**
-  *Iconografía:* Gráficos técnicos, costos optimizados.
-  *Frase clave:* “Gestionamos eficazmente los recursos del proyecto.”
+Este enfoque lleva lo creativo al límite: un storytelling cinemático e interactivo que usa el scroll como motor de descubrimiento inmersivo.
 
-* **Estación 5: Gestión de Riesgos**
-  *Iconografía:* Señalización técnica (advertencias que aparecen y desaparecen).
-  *Frase clave:* “Anticipamos y mitigamos posibles contingencias.”
 
-* **Estación 6: Representación del Cliente**
-  *Iconografía:* Ícono visual del cliente integrado en el proyecto (usuario o edificio).
-  *Frase clave:* “Representamos fielmente sus intereses en cada etapa.”
+IDEA CREATIVA PERO UN POCO MAS REALISTA
 
-Cada estación revelará al pasar por encima (scroll-triggered) información complementaria breve, animada, y atractiva, acompañada de microanimaciones tecnológicas (brillos sutiles, líneas de neón delgadas en azul y naranja, etc.).
+Perfecto. Te propongo una experiencia “Qué Hacemos” altamente visual, mobile-first y técnicamente alcanzable, sin 3D pesado ni SVGs complejos. Todo se apoya en imágenes optimizadas, `transform/opacity`, snapping nativo y algunas animaciones con GSAP bien medidas para que rinda igual en celular y escritorio.
 
-**4. Cierre visual – conexión con los Pillars:**
-Al llegar al final del blueprint, todas las estaciones convergerán en una imagen conceptual que simbolice una “caja de herramientas metodológica”, visualmente fuerte, que luego se transforma en las tarjetas interactivas del siguiente componente ("Pillars"). Esta transición utilizará animaciones fluidas y morphing SVG para dar continuidad visual clara y profesional.
+Al entrar, el hero no es un póster estático, sino una escena de capas fotográficas que se acomodan con un leve parallax basado solo en `transform` y opacidad: una imagen principal del servicio estrella, un patrón suave encima y un titular que “respira” con un micro-fade al primer scroll. En móviles, el hero ocupa una viewport y, al deslizar, “hace snap” al siguiente bloque para que el paso sea nítido; en desktop, el mismo efecto funciona dentro de un contenedor alto con pin corto de GSAP que fija el titular mientras el fondo se atenua. Esto evita animar propiedades costosas y mantiene 60 fps en la mayoría de equipos. ([web.dev][1], [web.dev][2])
 
----
+Tras el hero, aparece el núcleo: un carrusel de servicios que no requiere librerías de scroll horizontal. En celular, cada servicio es una sección a pantalla completa con `scroll-snap` vertical: al terminar de leer, un pequeño empuje hace “encajar” el siguiente servicio con precisión. En desktop, el mismo set se muestra como carril horizontal dentro de un contenedor con `scroll-snap` X; el scroll vertical del usuario avanza sutilmente ese carril con un `scrub` muy corto para dar sensación de “tour”, pero la navegación primaria sigue siendo nativa (puedes deslizar con trackpad o arrastrar con el mouse). Los títulos y bullets clave entran con fade/translate de 12–24 px y un easing suave; los iconos solo hacen un scale del 0.95→1 para dar vida sin sobrecargar. Este patrón apalanca el snapping del navegador y minimiza JS. ([MDN Web Docs][3], [MDN Web Docs][4], [MDN Web Docs][5])
 
-## 🎯 ¿Cómo conecta mejor esta idea con la propuesta tecnológica general del sitio?
+Cada servicio trae una “mini-evidencia visual” que aparece cuando entra en viewport: una foto de proyecto o mock que se desvanece desde el 0. A nivel técnico, las imágenes están lazy-loaded para celulares; se cargan cuando el bloque cruza umbrales de visibilidad y se liberan cuando salen si son pesadas. Si el usuario se desplaza rápido, no se dispara nada: solo cuando el observador detecta intersección se inicia la animación y el fetch de la imagen. Esto reduce TTI y evita tirones. ([MDN Web Docs][6], [MDN Web Docs][7])
 
-* Usa efectos avanzados GSAP: DrawSVG (para blueprint), ScrollTrigger (para revelar contenido), MotionPath (para animar el indicador).
-* Genera interacción y exploración en tiempo real, alineada con la sensación tecnológica avanzada que queremos proyectar.
-* El lenguaje visual del blueprint (planos técnicos arquitectónicos) conecta de manera directa con el core business de Métrica y transmite profesionalismo y atención al detalle.
+Las políticas viven dentro del mismo flujo, sin acordeones complicados. Son “tarjetas apiladas” que van llegando con snap vertical: calidad, SST y MA, anticorrupción, etc. Cada tarjeta ocupa 80–90 % del alto y, al posarse, eleva su sombra y sube el contraste del texto; el fondo aplica un overlay de color asociado a la política. En desktop, puedes fijar el encabezado “Políticas” durante tres tarjetas y soltarlo para la siguiente, con un pin breve de GSAP; en móvil, se evita el pin largo para respetar el gesto natural y no romper la inercia del scroll. Este enfoque es robusto en dispositivos táctiles. ([gsap.com][8], [gsap.com][9], [gsap.com][10])
 
----
+La metodología se cuenta como un “stepper” de cinco pasos que no necesita 3D. Imagina una banda vertical con cinco checkpoints que “encienden” un halo y muestran un microtexto cuando el usuario hace snap en cada punto. El contenido a la derecha (o debajo, en móvil) cambia con transiciones de opacidad; el diagrama de fondo solo traslada 2–3 % para dar ilusión de profundidad. En pantallas anchas, puedes activar un pin corto que mantiene el diagrama visible durante dos pasos; en celular, cada paso se siente como slide independiente para no fatigar. Todo se anima con `transform/opacity` para mantener la fluidez. ([web.dev][1])
 
-## 🎨 Diseño visual acorde a identidad de marca:
+Los mini-testimonios no interrumpen: aparecen intercalados como “citas-burbuja” sobre fotos difuminadas que se enfocan suavemente cuando el snap cae en ellas. En móvil, cada testimonio es una tarjeta a pantalla casi completa; en desktop, un micro-carril de 2–3 tarjetas con snapping X dentro del bloque del servicio al que pertenecen, para que el contexto nunca se pierda. ([MDN Web Docs][3])
 
-* **Fondo de sección:** oscuro (#1D1D1B), simulando papel técnico oscuro con grid ligero.
-* **Blueprint:** líneas en neón naranja (#E84E0F) progresando hacia azul (#003F6F), simbolizando progreso desde la planificación hacia la ejecución.
-* **Textos:** Alliance No.2 en blanco y secundarios en gris claro (#D0D0D0), contrastando elegantemente.
-* **Estilo gráfico:** sobrio, elegante, tecnológico con toque futurista, pero siempre profesional y confiable.
+El cierre reúne todo sin “explosiones” complejas. Los íconos de cada servicio se alinean en una cuadrícula que se forma con un auto-layout animado (solo translate/opacity), el fondo vuelve al color de marca y aparece el CTA con un pulso sutil. Si el usuario tiene preferencia por menos movimiento, se sirve una versión estática: se desactiva el scrub, se reduce el parallax a un simple fade entre secciones y el snapping sigue activo para mantener claridad de lectura. Esto se habilita leyendo `prefers-reduced-motion` y, si se quiere, el client-hint en cabecera. ([MDN Web Docs][11], [web.dev][12], [MDN Web Docs][13])
 
----
+Para asegurar que rinda “igual de bien” en celular y escritorio, la pauta técnica es clara: animar sólo `transform` y `opacity`, medir el pin y el scrub para no “pegar” la interfaz, y probar siempre en dispositivo real. Si decides aplicar un suavizado de scroll, GSAP ScrollSmoother puede mejorar la sensación en desktop pero conviene desactivarlo en táctiles o limitar sus efectos a breakpoints amplios, manteniendo el scroll nativo en móvil. Así, la accesibilidad gestual y el rendimiento se conservan. ([web.dev][2], [gsap.com][14], [gsap.com][15], [gsap.com][16])
 
-## ✨ Experiencia del usuario mejorada:
+Este enfoque te da una experiencia scroll rica y memorable, pero con bloques totalmente realizables: imágenes responsive y perezosas, snapping nativo para “pasar página”, triggers sencillos con GSAP, y un plan B sin movimiento cuando el usuario lo pide. Si quieres, te preparo un wireflow con notas de breakpoints y prioridades de carga para que tu equipo lo aterrice directo a implementación. ([Chrome for Developers][17])
 
-* El usuario no solo entiende qué es DIP, sino que también lo experimenta de forma interactiva.
-* Refuerza la percepción de profesionalismo, organización y precisión técnica en Métrica.
-* La navegación es intuitiva y emocionante, impulsando engagement y aumentando el tiempo de permanencia en la página.
-
----
-
-## 🔑 Mensajes clave reforzados con esta propuesta:
-
-* **Metodología integral probada:** reflejada visualmente mediante blueprint.
-* **Confianza técnica:** mediante un lenguaje visual preciso y riguroso.
-* **Innovación tecnológica:** reflejada en las animaciones avanzadas que atraen e involucran al usuario.
-* **Claridad en el valor agregado:** cada estación muestra claramente el aporte tangible del DIP al proyecto.
-
----
-
-## 🏗️ Conclusión – Fortalezas principales de esta versión mejorada:
-
-* **Narrativa visual poderosa y alineada al rubro arquitectónico/ingenieril.**
-* **Integración total con la identidad tecnológica avanzada del sitio.**
-* **Mayor claridad y fuerza conceptual respecto al título original.**
-* **Potencial interactivo y engagement superior gracias a GSAP y ScrollTrigger.**
-
----
-
-Si quieres avanzar, puedo ayudarte a aterrizar esto en un brief claro para diseño o desarrollo, un storyboard detallado en Figma, o incluso un script inicial para las animaciones de esta sección. ¿Deseas que te apoye en alguno de esos siguientes pasos?
+[1]: https://web.dev/articles/animations-guide?utm_source=chatgpt.com "How to create high-performance CSS animations | Articles - web.dev"
+[2]: https://web.dev/articles/animations-and-performance?utm_source=chatgpt.com "Animations and performance | Articles - web.dev"
+[3]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap?utm_source=chatgpt.com "CSS scroll snap - MDN Web Docs"
+[4]: https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type?utm_source=chatgpt.com "scroll-snap-type - CSS - MDN Web Docs - Mozilla"
+[5]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap/Basic_concepts?utm_source=chatgpt.com "Basic concepts of scroll snap - CSS - MDN Web Docs"
+[6]: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API?utm_source=chatgpt.com "Intersection Observer API - MDN Web Docs"
+[7]: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading?utm_source=chatgpt.com "Lazy loading - Performance - MDN Web Docs - Mozilla"
+[8]: https://gsap.com/docs/v3/Plugins/ScrollTrigger/?utm_source=chatgpt.com "ScrollTrigger | GSAP | Docs & Learning"
+[9]: https://gsap.com/community/forums/topic/39412-scrolltrigger-mobile-responsiveness/?utm_source=chatgpt.com "ScrollTrigger & Mobile Responsiveness - GreenSock - GSAP"
+[10]: https://gsap.com/community/forums/topic/43145-scrolltrigger-for-mobile-vs-desktop-vs-ultrawide-best-practice/?utm_source=chatgpt.com "ScrollTrigger for Mobile vs. Desktop vs. Ultrawide best practice - GSAP"
+[11]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries_for_accessibility?utm_source=chatgpt.com "Using media queries for accessibility - CSS - MDN Web Docs"
+[12]: https://web.dev/articles/prefers-reduced-motion?utm_source=chatgpt.com "prefers-reduced-motion: Sometimes less movement is more | Articles"
+[13]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-CH-Prefers-Reduced-Motion?utm_source=chatgpt.com "Sec-CH-Prefers-Reduced-Motion header - HTTP - MDN Web Docs"
+[14]: https://gsap.com/docs/v3/Plugins/ScrollSmoother/?utm_source=chatgpt.com "ScrollSmoother | GSAP | Docs & Learning"
+[15]: https://gsap.com/community/forums/topic/33300-disable-scrollsmoother-effects-on-mobile/?utm_source=chatgpt.com "Disable ScrollSmoother effects on mobile - GSAP - GreenSock"
+[16]: https://gsap.com/community/forums/topic/33422-scrolltrigger-scrollsmoother-shaky-touch-scroll-using-scrub-and-pin/?utm_source=chatgpt.com "ScrollTrigger + ScrollSmoother shaky touch scroll using scrub and pin"
+[17]: https://developer.chrome.com/docs/devtools/css/animations?utm_source=chatgpt.com "Inspect and modify CSS animation effects | Chrome DevTools"
