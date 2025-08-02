@@ -157,6 +157,7 @@ const hitos = [
 export default function TimelineHorizontal() {
   const sectionRef = useRef<HTMLElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const revealRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showPanel, setShowPanel] = useState(false);
@@ -169,6 +170,42 @@ export default function TimelineHorizontal() {
     const section = sectionRef.current;
     const wrapper = wrapperRef.current;
     const totalWidth = (hitos.length - 1) * 100; // Porcentaje total de desplazamiento
+    
+    // Animación de revelado cuando entramos a la sección
+    if (revealRef.current) {
+      const revealTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%', // Empieza más tarde
+          end: 'top top',   // Termina cuando el timeline está completamente visible
+          scrub: 1,
+          onComplete: () => {
+            if (revealRef.current) {
+              gsap.set(revealRef.current, { display: 'none' });
+            }
+          },
+          onReverseComplete: () => {
+            if (revealRef.current) {
+              gsap.set(revealRef.current, { display: 'block', opacity: 1 });
+            }
+          }
+        }
+      });
+
+      // Primera parte: el overlay se mantiene negro sólido
+      revealTimeline
+        .set(revealRef.current, { opacity: 1, display: 'block' })
+        .to(revealRef.current, {
+          opacity: 0.9,
+          duration: 0.3,
+          ease: 'power2.in'
+        })
+        .to(revealRef.current, {
+          opacity: 0,
+          duration: 0.7,
+          ease: 'power2.out'
+        });
+    }
 
     // Timeline principal con ScrollTrigger
     const tl = gsap.timeline({
@@ -215,6 +252,7 @@ export default function TimelineHorizontal() {
       duration: 1
     });
     
+    
   }, { scope: sectionRef });
 
   const handleDotClick = (index: number) => {
@@ -237,8 +275,17 @@ export default function TimelineHorizontal() {
       className="relative bg-background overflow-hidden"
       style={{ height: '100vh' }}
     >
-      {/* Efectos de transición cinematográfica */}
-      <div className="fixed inset-0 pointer-events-none z-10">
+        {/* Capa de revelado negro con degradado que se desvanece */}
+        <div 
+          ref={revealRef}
+          className="absolute inset-0 z-40 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to top, transparent 0%, rgba(0,0,0,0.4) 15%, rgba(0,0,0,0.8) 30%, black 50%, black 100%)'
+          }}
+        />
+
+        {/* Efectos de transición cinematográfica */}
+        <div className="fixed inset-0 pointer-events-none z-10">
         {/* Barras cinematográficas */}
         <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/50 to-transparent" />
@@ -252,12 +299,14 @@ export default function TimelineHorizontal() {
       {/* Elementos flotantes que acompañan el movimiento */}
       <FloatingElements velocity={velocity} activeIndex={activeIndex} />
       {/* Progress Indicator */}
-      <ProgressIndicator 
-        progress={progress} 
-        hitos={hitos} 
-        activeIndex={activeIndex}
-        onDotClick={handleDotClick}
-      />
+      <div className="progress-indicator">
+        <ProgressIndicator 
+          progress={progress} 
+          hitos={hitos} 
+          activeIndex={activeIndex}
+          onDotClick={handleDotClick}
+        />
+      </div>
 
       {/* Timeline Wrapper con efecto de blur dinámico */}
       <div 
@@ -289,7 +338,6 @@ export default function TimelineHorizontal() {
           color={index % 2 === 0 ? '#E84E0F' : '#003F6F'}
         />
       ))}
-
     </section>
   );
 }

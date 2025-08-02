@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import UniversalHero from '@/components/ui/universal-hero';
 import TimelineHorizontal from '@/components/historia/TimelineHorizontal';
-import CierreHistoria from '@/components/historia/CierreHistoria';
+import CierreTransform from '@/components/historia/CierreTransform';
 import Footer from '@/components/landing/footer';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function HistoriaPage() {
           backgroundImage="https://metrica-dip.com/images/slider-inicio-es/06.jpg"
         />
         <TimelineHorizontal />
-        <CierreHistoria />
+        <CierreTransform />
       </main>
       <Footer />
     </div>
