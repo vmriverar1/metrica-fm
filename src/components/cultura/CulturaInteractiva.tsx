@@ -63,19 +63,25 @@ export default function CulturaInteractiva() {
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: wrapperRef.current,
       start: 'top top',
-      end: '+=400%',
+      end: `+=${culturaData.length * 100}%`, // Basado en número de slides
       pin: true,
       pinSpacing: true,
       scrub: false, // No scrub, we handle scroll manually
-      onLeave: () => {
-        // Permitir scroll normal cuando se sale del trigger hacia abajo
-        if (currentPage === culturaData.length) {
-          setIsScrolling(false);
-        }
+      onLeave: (self) => {
+        // Cuando sale del área pineada, asegurar que no bloquee el scroll
+        console.log('Leaving ScrollTrigger area');
+        setIsScrolling(false);
       },
-      onEnterBack: () => {
-        // Permitir scroll normal cuando se vuelve a entrar desde arriba
-        if (currentPage === 1) {
+      onEnterBack: (self) => {
+        // Cuando vuelve a entrar, restaurar funcionalidad
+        console.log('Entering back ScrollTrigger area');
+        setIsScrolling(false);
+      },
+      onUpdate: (self) => {
+        // Verificar si estamos en los límites y ajustar comportamiento
+        const progress = self.progress;
+        if (progress >= 1 && currentPage === culturaData.length) {
+          // Estamos al final, permitir scroll natural
           setIsScrolling(false);
         }
       }
@@ -125,18 +131,8 @@ export default function CulturaInteractiva() {
       setCurrentPage(newPage);
       updateMargins(newPage);
       setTimeout(() => setIsScrolling(false), 1000);
-    } else if (currentPage === 1) {
-      // Si está en la primera página, permitir scroll hacia arriba normalmente
-      // Esto deshabilitará temporalmente el ScrollTrigger
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.disable();
-        setTimeout(() => {
-          if (scrollTriggerRef.current) {
-            scrollTriggerRef.current.enable();
-          }
-        }, 100);
-      }
     }
+    // Si está en la primera página, no hacer nada - permitir scroll natural
   };
 
   const navigateDown = () => {
@@ -146,28 +142,30 @@ export default function CulturaInteractiva() {
       setCurrentPage(newPage);
       updateMargins(newPage);
       setTimeout(() => setIsScrolling(false), 1000);
-    } else if (currentPage === culturaData.length) {
-      // Si está en la última página, permitir scroll hacia abajo normalmente
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.disable();
-        setTimeout(() => {
-          if (scrollTriggerRef.current) {
-            scrollTriggerRef.current.enable();
-          }
-        }, 100);
-      }
     }
+    // Si está en la última página, no hacer nada - permitir scroll natural
   };
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (!isScrolling && activeContent === null) {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-          navigateUp();
-        } else if (e.deltaY > 0) {
-          navigateDown();
+        const isGoingUp = e.deltaY < 0;
+        const isGoingDown = e.deltaY > 0;
+        
+        // Solo interceptar si realmente podemos navegar
+        const canNavigateUp = currentPage > 1 && isGoingUp;
+        const canNavigateDown = currentPage < culturaData.length && isGoingDown;
+        
+        if (canNavigateUp || canNavigateDown) {
+          e.preventDefault();
+          
+          if (isGoingUp) {
+            navigateUp();
+          } else if (isGoingDown) {
+            navigateDown();
+          }
         }
+        // Si no puede navegar (está en límites), permite scroll natural
       }
     };
 
