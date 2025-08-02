@@ -179,16 +179,21 @@ export default function TimelineHorizontal() {
           start: 'top 80%', // Empieza más tarde
           end: 'top top',   // Termina cuando el timeline está completamente visible
           scrub: 1,
-          onComplete: () => {
+          onUpdate: undefined,
+          onEnter: () => {
+            // Optional: handle when entering the trigger
+          },
+          onLeave: () => {
             if (revealRef.current) {
               gsap.set(revealRef.current, { display: 'none' });
             }
           },
-          onReverseComplete: () => {
+          onEnterBack: () => {
             if (revealRef.current) {
               gsap.set(revealRef.current, { display: 'block', opacity: 1 });
             }
-          }
+          },
+          onLeaveBack: undefined
         }
       });
 
@@ -243,7 +248,7 @@ export default function TimelineHorizontal() {
     });
 
     // Guardar referencia al ScrollTrigger
-    scrollTriggerRef.current = tl.scrollTrigger;
+    scrollTriggerRef.current = tl.scrollTrigger ?? null;
 
     // Animación horizontal del timeline
     tl.to(wrapper, {
@@ -272,6 +277,7 @@ export default function TimelineHorizontal() {
   return (
     <section 
       ref={sectionRef} 
+      id="timeline-horizontal-section"
       className="relative bg-background overflow-hidden"
       style={{ height: '100vh' }}
     >

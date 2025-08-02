@@ -2,8 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import UniversalHero from '@/components/ui/universal-hero';
-import TimelineHorizontal from '@/components/historia/TimelineHorizontal';
-import CierreTransform from '@/components/historia/CierreTransform';
+import TimelineTransformWrapper from '@/components/historia/TimelineTransformWrapper';
 import Footer from '@/components/landing/footer';
 
 export const metadata: Metadata = {
@@ -21,8 +20,7 @@ export default function HistoriaPage() {
           subtitle="Más de una década transformando el Perú"
           backgroundImage="https://metrica-dip.com/images/slider-inicio-es/06.jpg"
         />
-        <TimelineHorizontal />
-        <CierreTransform />
+        <TimelineTransformWrapper />
       </main>
       <Footer />
     </div>

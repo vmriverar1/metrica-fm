@@ -1,209 +1,135 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import Image from 'next/image';
+import React, { useRef } from 'react';
 import Link from 'next/link';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { TrendingUp, Calendar, Users, Star, ArrowRight } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
-import { ArrowRight } from 'lucide-react';
+import { gsap } from '@/lib/gsap';
+
+const stats = [
+  { icon: TrendingUp, end: 200, label: 'Proyectos Exitosos', suffix: '+' },
+  { icon: Calendar, end: 14, label: 'Años de Experiencia', suffix: '' },
+  { icon: Users, end: 50, label: 'Profesionales Especializados', suffix: '+' },
+  { icon: Star, end: 98, label: 'Satisfacción del Cliente', suffix: '%' },
+];
+
+const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const numberRef = useRef<HTMLParagraphElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
+  
+  useGSAP(() => {
+    if (!cardRef.current || !numberRef.current) return;
+    
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: cardRef.current,
+        start: 'top 95%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+    
+    // Animate card entrance
+    tl.from(cardRef.current, {
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      delay: index * 0.1,
+      ease: 'power3.out'
+    })
+    // Animate icon
+    .from(iconRef.current, {
+      scale: 0,
+      rotation: 180,
+      duration: 0.6,
+      ease: 'back.out(1.7)'
+    }, '-=0.4')
+    // Counter animation
+    .to(numberRef.current, {
+      textContent: stat.end,
+      duration: 2,
+      ease: 'power2.out',
+      snap: { textContent: 1 },
+      onUpdate: function() {
+        if (numberRef.current) {
+          numberRef.current.textContent = Math.floor(Number(numberRef.current.textContent)) + stat.suffix;
+        }
+      }
+    }, '-=0.4');
+    
+    // Hover animation for icon
+    if (iconRef.current && cardRef.current) {
+      const iconElement = iconRef.current.querySelector('svg');
+      if (iconElement) {
+        const iconHover = gsap.to(iconElement, {
+          scale: 1.2,
+          duration: 0.3,
+          paused: true,
+          ease: 'power2.out'
+        });
+        
+        cardRef.current.addEventListener('mouseenter', () => iconHover.play());
+        cardRef.current.addEventListener('mouseleave', () => iconHover.reverse());
+      }
+    }
+    
+  }, { scope: cardRef });
+  
+  return (
+    <div ref={cardRef} className="text-center p-4 cursor-pointer transition-colors hover:bg-accent/5">
+      <div ref={iconRef} className="inline-block">
+        <stat.icon className="h-12 w-12 text-accent mx-auto mb-4" />
+      </div>
+      <p ref={numberRef} className="text-4xl font-alliance-extrabold text-foreground">
+        0{stat.suffix}
+      </p>
+      <p className="text-foreground/70 mt-2 font-alliance-medium">{stat.label}</p>
+    </div>
+  );
+};
 
 export default function CierreTransform() {
   const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroWrapperRef = useRef<HTMLDivElement>(null);
-  const heroImageWrapperRef = useRef<HTMLDivElement>(null);
-  const heroBackgroundRef = useRef<HTMLDivElement>(null);
-  const heroContentRef = useRef<HTMLDivElement>(null);
-  const heroOverlayRef = useRef<HTMLDivElement>(null);
-  const newContentRef = useRef<HTMLDivElement>(null);
-  const countersRef = useRef<HTMLDivElement>(null);
-  const [counters, setCounters] = useState({
-    proyectos: 0,
-    años: 0,
-    profesionales: 0,
-    satisfaccion: 0
-  });
-
+  
   useGSAP(() => {
-    if (!sectionRef.current || !heroImageWrapperRef.current) return;
-
-    // Configuración inicial
-    gsap.set(newContentRef.current, { opacity: 0 });
+    if (!sectionRef.current) return;
     
-    // Timeline principal con efecto hero transform
-    const tl = gsap.timeline({
+    // Animación de entrada para el título
+    gsap.from('.section-title', {
       scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "+=100%",
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      }
-    });
-    
-    // Configurar posición inicial
-    gsap.set(heroImageWrapperRef.current, {
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      transformOrigin: "center center"
-    });
-    
-    // Transformación del hero
-    tl.to(heroImageWrapperRef.current, {
-      scaleX: 0.6,
-      scaleY: 0.45,
-      yPercent: -27.5,
-      ease: "power2.inOut"
-    }, 0);
-    
-    // Zoom del fondo
-    tl.to(heroBackgroundRef.current, {
-      scale: 1.1,
-      ease: "none"
-    }, 0);
-    
-    // Fade out del contenido original
-    tl.to(heroContentRef.current, {
-      opacity: 0,
-      y: -50,
-      ease: "power2.in",
-      duration: 0.5
-    }, 0);
-    
-    // Fade in del nuevo contenido
-    tl.fromTo(newContentRef.current, 
-      {
-        opacity: 0,
-        y: 30
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
       },
-      {
-        opacity: 1,
-        y: 0,
-        ease: "power2.out",
-        duration: 0.8
-      }, 
-      0.3
-    );
-
-    // Animar contadores
-    ScrollTrigger.create({
-      trigger: countersRef.current,
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
-        gsap.to(counters, {
-          proyectos: 200,
-          años: 14,
-          profesionales: 50,
-          satisfaccion: 98,
-          duration: 2,
-          ease: 'power2.out',
-          onUpdate: function() {
-            setCounters({
-              proyectos: Math.floor(this.targets()[0].proyectos),
-              años: Math.floor(this.targets()[0].años),
-              profesionales: Math.floor(this.targets()[0].profesionales),
-              satisfaccion: Math.floor(this.targets()[0].satisfaccion)
-            });
-          }
-        });
-      }
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
     });
-
+    
   }, { scope: sectionRef });
-
+  
   return (
     <>
-      {/* Sección de transformación tipo hero */}
-      <section ref={sectionRef} className="relative">
-        <div ref={containerRef} className="relative min-h-screen bg-background">
-          <div ref={heroWrapperRef} className="relative h-screen w-full overflow-hidden">
-            <div ref={heroImageWrapperRef} className="w-full h-full">
-              <div ref={heroBackgroundRef} className="relative w-full h-full">
-                <Image
-                  src="https://metrica-dip.com/images/slider-inicio-es/05.jpg"
-                  alt="Métrica - Trayectoria"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div ref={heroOverlayRef} className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-              </div>
-              
-              {/* Contenido original que desaparece */}
-              <div ref={heroContentRef} className="absolute inset-0 flex items-center justify-center z-10">
-                <div className="text-center px-4">
-                  <h2 className="text-5xl md:text-7xl font-alliance-extrabold text-white mb-4">
-                    14 Años de Historia
-                  </h2>
-                  <p className="text-xl md:text-2xl text-white/80">
-                    Continuamos escribiendo nuevos capítulos
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Nuevo contenido con contadores */}
-          <div 
-            ref={newContentRef}
-            className="absolute inset-0 flex items-center justify-center z-20"
-          >
-            <div ref={countersRef} className="text-center">
-              <h2 className="text-5xl md:text-7xl font-alliance-extrabold text-primary mb-12">
-                Nuestra Trayectoria
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 px-8">
-                {/* Proyectos */}
-                <div className="text-center">
-                  <div className="text-6xl md:text-7xl font-alliance-extrabold text-primary mb-2">
-                    {counters.proyectos}+
-                  </div>
-                  <div className="text-lg md:text-xl text-muted-foreground font-alliance-medium">
-                    Proyectos<br />Exitosos
-                  </div>
-                </div>
-
-                {/* Años */}
-                <div className="text-center">
-                  <div className="text-6xl md:text-7xl font-alliance-extrabold text-primary mb-2">
-                    {counters.años}
-                  </div>
-                  <div className="text-lg md:text-xl text-muted-foreground font-alliance-medium">
-                    Años de<br />Experiencia
-                  </div>
-                </div>
-
-                {/* Profesionales */}
-                <div className="text-center">
-                  <div className="text-6xl md:text-7xl font-alliance-extrabold text-primary mb-2">
-                    {counters.profesionales}+
-                  </div>
-                  <div className="text-lg md:text-xl text-muted-foreground font-alliance-medium">
-                    Profesionales<br />Especializados
-                  </div>
-                </div>
-
-                {/* Satisfacción */}
-                <div className="text-center">
-                  <div className="text-6xl md:text-7xl font-alliance-extrabold text-primary mb-2">
-                    {counters.satisfaccion}%
-                  </div>
-                  <div className="text-lg md:text-xl text-muted-foreground font-alliance-medium">
-                    Satisfacción<br />del Cliente
-                  </div>
-                </div>
+      <section ref={sectionRef} id="cierre-transform-section" className="relative py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="section-title text-4xl md:text-5xl font-alliance-extrabold text-center text-primary mb-16">
+            Nuestra Trayectoria
+          </h2>
+          
+          <div className="w-[80vw] md:w-[65vw] mx-auto">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-border/10 shadow-lg">
+              <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border/50">
+                {stats.map((stat, index) => (
+                  <StatCard key={stat.label} stat={stat} index={index} />
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Final - Sección separada */}
+      {/* CTA Final */}
       <section className="relative bg-background py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl md:text-5xl font-alliance-extrabold text-primary mb-8">
