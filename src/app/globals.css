@@ -100,6 +100,49 @@ strong, b, .font-bold {
   font-weight: 800;
 }
 
+/* Portfolio Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(232, 78, 15, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(232, 78, 15, 0.8);
+  }
+}
+
+/* Utilities para efectos de portfolio */
+.animate-shimmer {
+  animation: shimmer 1.5s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -693,4 +736,293 @@ strong, b, .font-bold {
 
   .fragment-overlay {
     transition: opacity 0.3s ease-out;
+  }
+
+  /* Map markers styles - Portfolio */
+  .portfolio-marker {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .marker-main {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .marker-main:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .marker-inner {
+    background-color: white;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .marker-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #E84E0F;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  /* Portfolio Phase 3 - Advanced Effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Section transitions */
+  .section-transition-trigger {
+    overflow: hidden;
+  }
+
+  .section-transition-content {
+    will-change: transform, opacity, clip-path;
+  }
+
+  /* Project cards 3D effects */
+  .project-card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .project-card-3d:hover {
+    transform: rotateY(10deg) rotateX(-5deg) translateZ(20px);
+  }
+
+  /* Cinematic glow effects */
+  @keyframes cinematicGlow {
+    0% {
+      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(232, 78, 15, 0.6), 0 0 60px rgba(232, 78, 15, 0.3);
+    }
+    100% {
+      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+    }
+  }
+
+  .cinematic-glow {
+    animation: cinematicGlow 3s ease-in-out infinite;
+  }
+
+  /* Floating particles optimization */
+  .floating-particle {
+    pointer-events: none;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  /* Hero parallax layers */
+  .parallax-layer {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Enhanced shimmer effect for cards */
+  @keyframes enhancedShimmer {
+    0% {
+      transform: translateX(-100%) rotate(45deg);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .enhanced-shimmer {
+    animation: enhancedShimmer 2s ease-in-out infinite;
+  }
+
+  /* Magnetic attraction effect */
+  .magnetic-field {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Performance optimizations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Phase 4 - Advanced CSS animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 30px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0, 0) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translate3d(-30px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translate3d(30px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(232, 78, 15, 0.6);
+    }
+  }
+
+  @keyframes shimmerEffect {
+    0% {
+      transform: translateX(-100%) rotate(45deg);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* Animation classes */
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-fadeInScale {
+    animation: fadeInScale 0.6s ease-out forwards;
+  }
+
+  .animate-slideInLeft {
+    animation: slideInLeft 0.7s ease-out forwards;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.7s ease-out forwards;
+  }
+
+  .animate-pulseGlow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  .animate-shimmerEffect {
+    animation: shimmerEffect 2s ease-in-out infinite;
+  }
+
+  /* Responsive optimizations */
+  @media (max-width: 768px) {
+    .mobile-optimized {
+      will-change: transform;
+      transform: translateZ(0);
+    }
+    
+    /* Reduce animations on mobile for better performance */
+    .mobile-optimized * {
+      animation-duration: 0.3s !important;
+      transition-duration: 0.3s !important;
+    }
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .project-card {
+      border: 2px solid currentColor;
+    }
+    
+    .portfolio-marker {
+      border: 3px solid currentColor !important;
+    }
+  }
+
+  /* Dark mode optimizations */
+  @media (prefers-color-scheme: dark) {
+    .auto-dark {
+      filter: brightness(0.9) contrast(1.1);
+    }
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    .print-friendly {
+      background: white !important;
+      color: black !important;
+      box-shadow: none !important;
+    }
   }
