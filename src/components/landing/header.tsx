@@ -21,6 +21,8 @@ const navItems = [
         { href: "/about/historia", title: "Nuestra Historia", description: "Desde nuestros inicios en 2010, hemos transformado el sector construcción con más de 200 proyectos exitosos." },
         { href: "/services", title: "Qué Hacemos", description: "Especialistas en dirección integral de proyectos de infraestructura, supervisión técnica y gestión de calidad." },
         { href: "/about/cultura", title: "Cultura y Personas", description: "Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo." },
+        { href: "/blog", title: "Blog", description: "Insights, tendencias y casos de estudio del sector construcción e infraestructura en Perú." },
+        { href: "/careers", title: "Bolsa de Trabajo", description: "Únete a nuestro equipo y construye tu carrera en proyectos que transforman el país." },
         { href: "/about/compromiso", title: "Compromiso Social y Medioambiental", description: "Construimos un futuro sostenible con responsabilidad social y las mejores prácticas ambientales." },
         { href: "/about/clientes", title: "Clientes", description: "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo." },
       ],

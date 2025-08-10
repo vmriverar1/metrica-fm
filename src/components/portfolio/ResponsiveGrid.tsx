@@ -21,6 +21,7 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
   // Detect device type
   useEffect(() => {
     const updateDeviceType = () => {
+      if (typeof window === 'undefined') return;
       const width = window.innerWidth;
       if (width < 768) {
         setDeviceType('mobile');
@@ -34,8 +35,10 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
     };
 
     updateDeviceType();
-    window.addEventListener('resize', updateDeviceType);
-    return () => window.removeEventListener('resize', updateDeviceType);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', updateDeviceType);
+      return () => window.removeEventListener('resize', updateDeviceType);
+    }
   }, []);
 
   // Grid configurations for different devices and sizes

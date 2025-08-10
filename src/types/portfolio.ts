@@ -527,11 +527,59 @@ export const sampleProjects: Project[] = [
     gallery: [
       {
         id: '5-1',
+        url: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400',
+        caption: 'Diseño conceptual del centro comercial',
+        stage: 'inicio',
+        order: 1
+      },
+      {
+        id: '5-2',
+        url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400',
+        caption: 'Planos arquitectónicos y zonificación',
+        stage: 'inicio',
+        order: 2
+      },
+      {
+        id: '5-3',
+        url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400',
+        caption: 'Construcción de cimientos y estructura',
+        stage: 'proceso',
+        order: 1
+      },
+      {
+        id: '5-4',
+        url: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=400',
+        caption: 'Instalación de sistemas y acabados interiores',
+        stage: 'proceso',
+        order: 2
+      },
+      {
+        id: '5-5',
         url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
         thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
         caption: 'Mall del Sur completado',
         stage: 'final',
         order: 1
+      },
+      {
+        id: '5-6',
+        url: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=400',
+        caption: 'Área de tiendas y pasillo principal',
+        stage: 'final',
+        order: 2
+      },
+      {
+        id: '5-7',
+        url: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=400',
+        caption: 'Zona de entretenimiento familiar',
+        stage: 'final',
+        order: 3
       }
     ],
     description: 'Centro comercial regional con 180 tiendas, hipermercado, cines y zona de entretenimiento familiar.',
@@ -563,11 +611,51 @@ export const sampleProjects: Project[] = [
     gallery: [
       {
         id: '6-1',
+        url: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400',
+        caption: 'Planificación y diseño del outlet center',
+        stage: 'inicio',
+        order: 1
+      },
+      {
+        id: '6-2',
+        url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400',
+        caption: 'Planos de lifestyle center al aire libre',
+        stage: 'inicio',
+        order: 2
+      },
+      {
+        id: '6-3',
+        url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400',
+        caption: 'Construcción de las tiendas premium',
+        stage: 'proceso',
+        order: 1
+      },
+      {
+        id: '6-4',
+        url: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=400',
+        caption: 'Paisajismo y áreas comunes',
+        stage: 'proceso',
+        order: 2
+      },
+      {
+        id: '6-5',
         url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
         thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        caption: 'Outlet Premium en Callao',
+        caption: 'Outlet Premium en Callao completado',
         stage: 'final',
         order: 1
+      },
+      {
+        id: '6-6',
+        url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400',
+        caption: 'Tiendas premium y marcas internacionales',
+        stage: 'final',
+        order: 2
       }
     ],
     description: 'Centro de outlets al aire libre con marcas premium internacionales y arquitectura tipo lifestyle center.',
@@ -598,12 +686,60 @@ export const sampleProjects: Project[] = [
     thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     gallery: [
       {
-        id: '3-1',
+        id: '7-1',
+        url: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400',
+        caption: 'Planeación del complejo industrial',
+        stage: 'inicio',
+        order: 1
+      },
+      {
+        id: '7-2',
+        url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400',
+        caption: 'Diseños técnicos de naves industriales',
+        stage: 'inicio',
+        order: 2
+      },
+      {
+        id: '7-3',
+        url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400',
+        caption: 'Construcción de cimentación industrial',
+        stage: 'proceso',
+        order: 1
+      },
+      {
+        id: '7-4',
+        url: 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=400',
+        caption: 'Montaje de estructura metálica',
+        stage: 'proceso',
+        order: 2
+      },
+      {
+        id: '7-5',
         url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
         thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
         caption: 'Vista aérea del complejo industrial',
         stage: 'final',
         order: 1
+      },
+      {
+        id: '7-6',
+        url: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=400',
+        caption: 'Naves de manufactura terminadas',
+        stage: 'final',
+        order: 2
+      },
+      {
+        id: '7-7',
+        url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+        caption: 'Oficinas administrativas del complejo',
+        stage: 'final',
+        order: 3
       }
     ],
     description: 'Complejo industrial con naves de manufactura, oficinas administrativas y almacenes de alta rotación.',
@@ -672,11 +808,43 @@ export const sampleProjects: Project[] = [
     gallery: [
       {
         id: '9-1',
+        url: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400',
+        caption: 'Diseño del centro logístico',
+        stage: 'inicio',
+        order: 1
+      },
+      {
+        id: '9-2',
+        url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400',
+        caption: 'Construcción de almacenes',
+        stage: 'proceso',
+        order: 1
+      },
+      {
+        id: '9-3',
+        url: 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=400',
+        caption: 'Instalaciones logísticas',
+        stage: 'proceso',
+        order: 2
+      },
+      {
+        id: '9-4',
         url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
         thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        caption: 'Centro logístico en Ancón',
+        caption: 'Centro logístico completado',
         stage: 'final',
         order: 1
+      },
+      {
+        id: '9-5',
+        url: 'https://images.unsplash.com/photo-1606107557311-4f5e6f3c6c44?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1606107557311-4f5e6f3c6c44?w=400',
+        caption: 'Área de carga y descarga',
+        stage: 'final',
+        order: 2
       }
     ],
     description: 'Centro de distribución logística con sistemas WMS, 50 andenes de carga y tecnología de almacenaje automatizado.',
@@ -707,12 +875,60 @@ export const sampleProjects: Project[] = [
     thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     gallery: [
       {
-        id: '4-1',
+        id: '10-1',
+        url: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400',
+        caption: 'Diseño arquitectónico del hotel boutique',
+        stage: 'inicio',
+        order: 1
+      },
+      {
+        id: '10-2',
+        url: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400',
+        caption: 'Planos de habitaciones y espacios comunes',
+        stage: 'inicio',
+        order: 2
+      },
+      {
+        id: '10-3',
+        url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400',
+        caption: 'Construcción de estructura hotelera',
+        stage: 'proceso',
+        order: 1
+      },
+      {
+        id: '10-4',
+        url: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=400',
+        caption: 'Instalación de acabados de lujo',
+        stage: 'proceso',
+        order: 2
+      },
+      {
+        id: '10-5',
         url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
         thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
         caption: 'Fachada principal del hotel',
         stage: 'final',
         order: 1
+      },
+      {
+        id: '10-6',
+        url: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400',
+        caption: 'Suite presidencial con vista al mar',
+        stage: 'final',
+        order: 2
+      },
+      {
+        id: '10-7',
+        url: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200',
+        thumbnail: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400',
+        caption: 'Restaurante gourmet del hotel',
+        stage: 'final',
+        order: 3
       }
     ],
     description: 'Hotel boutique de lujo con vista al océano, 120 habitaciones, spa, restaurante gourmet y centro de eventos.',

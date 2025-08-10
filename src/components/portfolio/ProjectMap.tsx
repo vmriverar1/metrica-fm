@@ -180,7 +180,9 @@ export default function ProjectMap({ className }: ProjectMapProps) {
   };
 
   const handleViewProject = (project: Project) => {
-    window.open(`/portfolio/${project.category}/${project.slug}`, '_blank');
+    if (typeof window !== 'undefined') {
+      window.open(`/portfolio/${project.category}/${project.slug}`, '_blank');
+    }
   };
 
   return (

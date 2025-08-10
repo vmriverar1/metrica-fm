@@ -512,7 +512,7 @@ export default function Portfolio() {
                                                 alt={project.name}
                                                 fill
                                                 sizes="100vw"
-                                                className="project-image object-cover z-0 transition-all duration-[20s] ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
+                                                className="project-image object-cover z-0 transition-all ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
                                             />
                                         </div>
                                         <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>

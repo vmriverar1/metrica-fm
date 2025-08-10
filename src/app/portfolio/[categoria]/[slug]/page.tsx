@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 import { notFound } from 'next/navigation';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
@@ -11,21 +11,22 @@ import { PortfolioProvider, useProject } from '@/contexts/PortfolioContext';
 import { ProjectCategory } from '@/types/portfolio';
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     categoria: string;
     slug: string;
-  };
+  }>;
 }
 
 function ProjectPageContent({ params }: ProjectPageProps) {
-  const project = useProject(params.slug);
+  const resolvedParams = use(params);
+  const project = useProject(resolvedParams.slug);
 
   if (!project) {
     notFound();
   }
 
   // Verificar que la categoría coincida
-  if (project.category !== params.categoria) {
+  if (project.category !== resolvedParams.categoria) {
     notFound();
   }
 

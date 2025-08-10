@@ -236,7 +236,7 @@ export function usePerformanceRecommendations() {
       }
 
       // Check if user prefers reduced motion
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         recs.push('User prefers reduced motion - minimize animations');
       }
 

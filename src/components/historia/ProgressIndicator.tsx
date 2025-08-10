@@ -23,7 +23,7 @@ export default function ProgressIndicator({
 }: ProgressIndicatorProps) {
   
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 animate-[fadeInUp_1s_ease-out_1.5s_both]">
+    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-30 animate-[fadeInUp_1s_ease-out_1.5s_both]">
       <div className="relative">
         {/* Contenedor principal con diseño minimalista */}
         <div className="flex items-center gap-3 bg-black/20 backdrop-blur-xl rounded-full px-6 py-3 shadow-2xl border border-white/10 relative">

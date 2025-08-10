@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         hostname: 'metrica-dip.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

@@ -1,10 +1,46 @@
-684-86e4b641f493e0ee.js:1 Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
-    at rP (4bd1b696-c91a901cbe533159.js:1:34097)
-    at rN (4bd1b696-c91a901cbe533159.js:1:35142)
-    at 4bd1b696-c91a901cbe533159.js:1:115787
-    at im (4bd1b696-c91a901cbe533159.js:1:120134)
-    at ic (4bd1b696-c91a901cbe533159.js:1:112445)
-    at 4bd1b696-c91a901cbe533159.js:1:108432
-    at u5 (4bd1b696-c91a901cbe533159.js:1:108533)
-    at iH (4bd1b696-c91a901cbe533159.js:1:129977)
-    at MessagePort.w (684-86e4b641f493e0ee.js:1:25800)
+on-recoverable-error.js:28 Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <CareersPage>
+      <div className="bg-backgro...">
+        <Header>
+        ...
+          <main className="min-h-scre...">
+            <Suspense>
+            <SectionTransition>
+            <Suspense>
+            <section>
+            <SectionTransition>
+            <section className="py-16">
+              <div className="container ...">
+                <Suspense fallback={<OptimizedLoading>}>
+                  <CareerFilters>
+                    <div className="bg-backgro...">
+                      <div className="container ...">
+                        <div className="space-y-6">
+                          <div>
+                          <div>
+                          <div>
+                          <div className="space-y-3">
+                            <div className="flex items...">
+                              <DollarSign>
+                              <span className="text-sm fo...">
++                               20.000
+-                               20,000
+                            ...
+                          ...
+                  ...
+            ...
+        ...
+
+    at CareersPage (page.tsx:57:17)

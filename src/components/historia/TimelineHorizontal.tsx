@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import HitoFullScreen from './HitoFullScreen';
 import ProgressIndicator from './ProgressIndicator';
 import HitoPanel from './HitoPanel';
 import FloatingElements from './FloatingElements';
+import FinalImage from './FinalImage';
 
 // Datos extendidos para cada hito
 const hitosExtendidos = {
@@ -163,6 +164,9 @@ export default function TimelineHorizontal() {
   const [showPanel, setShowPanel] = useState(false);
   const [velocity, setVelocity] = useState(0);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  
+  // Referencias para funcionalidad auxiliar
+  const isInSectionRef = useRef(false);
 
   useGSAP(() => {
     if (!sectionRef.current || !wrapperRef.current) return;
@@ -212,32 +216,30 @@ export default function TimelineHorizontal() {
         });
     }
 
-    // Timeline principal con ScrollTrigger
+    // Timeline principal con ScrollTrigger - Scroll horizontal fluido
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: () => `+=${window.innerHeight * (hitos.length - 1)}`, // Altura correcta: n-1 transiciones
-        scrub: 1,
+        end: () => `+=${window.innerHeight * hitos.length}`, // Incluir imagen final: n transiciones
+        scrub: 1, // Scroll fluido sin interrupciones
         pin: true,
-        snap: {
-          snapTo: 1 / (hitos.length - 1),
-          duration: { min: 0.4, max: 0.8 },
-          delay: 0,
-          ease: "power2.inOut"
-        },
+        // SIN SNAP - movimiento completamente fluido
         onUpdate: (self) => {
           const newProgress = self.progress * 100;
           setProgress(newProgress);
           
-          // Actualizar índice activo
-          const newIndex = Math.round(self.progress * (hitos.length - 1));
-          const clampedIndex = Math.max(0, Math.min(newIndex, hitos.length - 1));
+          // Actualizar índice activo basado en progreso, incluyendo imagen final
+          const exactIndex = self.progress * hitos.length;
+          const roundedIndex = Math.round(exactIndex);
+          const clampedIndex = Math.max(0, Math.min(roundedIndex, hitos.length));
           
+          // Solo actualizar si cambió el índice redondeado
+          if (clampedIndex !== activeIndex) {
+            setActiveIndex(clampedIndex);
+          }
           
-          setActiveIndex(clampedIndex);
-          
-          // Calcular velocidad para efectos de blur
+          // Velocidad para otros efectos (sin blur)
           const currentVelocity = Math.abs(self.getVelocity() / 1000);
           setVelocity(Math.min(currentVelocity, 3));
         },
@@ -250,24 +252,26 @@ export default function TimelineHorizontal() {
     // Guardar referencia al ScrollTrigger
     scrollTriggerRef.current = tl.scrollTrigger ?? null;
 
-    // Animación horizontal del timeline
+    // Animación horizontal del timeline - Fluida y continua (incluye imagen final)
     tl.to(wrapper, {
-      x: () => `-${(hitos.length - 1) * window.innerWidth}px`, // Usar píxeles para precisión
-      ease: 'none',
+      x: () => `-${(hitos.length - 0.4) * window.innerWidth}px`, // Termina justo después de mostrar la imagen final completa
+      ease: 'none', // Linear para movimiento fluido constante
       duration: 1
     });
     
     
   }, { scope: sectionRef });
 
+
   const handleDotClick = (index: number) => {
+    // Navegación por dots - Permite saltar a cualquier hito específico
     const st = scrollTriggerRef.current;
     if (!st || index === activeIndex) return;
 
-    const targetProgress = index / (hitos.length - 1);
+    const targetProgress = index / hitos.length; // Ajustado para incluir imagen final
     const targetScroll = st.start + (st.end - st.start) * targetProgress;
     
-    // NO actualizar activeIndex aquí - dejar que ScrollTrigger lo maneje
+    // Scroll suave hacia la posición del hito seleccionado
     window.scrollTo({
       top: targetScroll,
       behavior: 'smooth'
@@ -304,7 +308,7 @@ export default function TimelineHorizontal() {
 
       {/* Elementos flotantes que acompañan el movimiento */}
       <FloatingElements velocity={velocity} activeIndex={activeIndex} />
-      {/* Progress Indicator */}
+      {/* Progress Indicator - Contenedor para animación de transformación */}
       <div className="progress-indicator">
         <ProgressIndicator 
           progress={progress} 
@@ -314,14 +318,11 @@ export default function TimelineHorizontal() {
         />
       </div>
 
-      {/* Timeline Wrapper con efecto de blur dinámico */}
+      {/* Timeline Wrapper - Sin efectos de blur */}
       <div 
         ref={wrapperRef}
         className="flex h-full"
-        style={{ 
-          filter: `blur(${velocity * 2}px)`
-          // Width se maneja automáticamente por flex y los hijos w-screen
-        }}
+        // Width se maneja automáticamente por flex y los hijos w-screen
       >
         {hitos.map((hito, index) => (
           <HitoFullScreen 
@@ -333,6 +334,11 @@ export default function TimelineHorizontal() {
             onTogglePanel={() => setShowPanel(!showPanel)}
           />
         ))}
+        
+        {/* Imagen final */}
+        <FinalImage 
+          isActive={activeIndex === hitos.length}
+        />
       </div>
 
       {/* Panel lateral con información detallada */}

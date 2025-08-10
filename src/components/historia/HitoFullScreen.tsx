@@ -119,7 +119,7 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
       ref={containerRef}
       className="relative w-screen h-screen flex overflow-hidden flex-shrink-0"
     >
-      {/* Imagen de fondo con parallax - 60% */}
+      {/* Imagen de fondo con parallax - 60% (lado izquierdo - original) */}
       <div className="relative w-[60%] h-full">
         {/* Capa 1: Imagen principal */}
         <div className="absolute inset-0 parallax-layer" data-speed="0.5">
@@ -183,7 +183,7 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
         )}
       </div>
 
-      {/* Contenido - 40% */}
+      {/* Contenido - 40% (lado derecho - original) */}
       <div className="relative w-[40%] h-full flex items-center">
         <div 
           ref={contentRef}

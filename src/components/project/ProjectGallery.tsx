@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ImageIcon } from 'lucide-react';
 import { Project, GalleryImage } from '@/types/portfolio';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -90,13 +90,13 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
     
     switch (stage) {
       case 'inicio':
-        return imageCount === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2';
+        return imageCount === 1 ? 'grid-cols-1 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 gap-6';
       case 'proceso':
-        return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4';
       case 'final':
-        return imageCount === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+        return imageCount === 1 ? 'grid-cols-1 max-w-4xl mx-auto' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
       default:
-        return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4';
     }
   };
 
@@ -166,7 +166,7 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
                 className={cn(
-                  "grid gap-4",
+                  "grid",
                   getGridLayout(activeTab, currentImages.length)
                 )}
               >
@@ -178,14 +178,11 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className={cn(
                       "relative group cursor-pointer overflow-hidden rounded-lg",
-                      "hover:shadow-xl transition-all duration-300",
-                      // Special sizing for different stages
-                      activeTab === 'inicio' && index === 0 && currentImages.length > 1 && "md:col-span-2 md:row-span-2",
-                      activeTab === 'final' && index === 0 && "lg:col-span-2 lg:row-span-2"
+                      "hover:shadow-xl transition-all duration-300"
                     )}
                     onClick={() => openLightbox(image, index)}
                   >
-                    <div className="relative aspect-square overflow-hidden">
+                    <div className="relative aspect-video overflow-hidden">
                       <Image
                         src={image.url}
                         alt={image.caption || `${project.title} - ${activeTab}`}
@@ -226,7 +223,7 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                 className="text-center py-16"
               >
                 <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
-                  <Image className="w-8 h-8 text-muted-foreground" />
+                  <ImageIcon className="w-8 h-8 text-muted-foreground" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">No hay imágenes disponibles</h3>
                 <p className="text-muted-foreground">
@@ -287,16 +284,16 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative max-w-7xl max-h-[90vh] mx-4"
+              className="relative max-w-5xl max-h-[80vh] mx-4"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
                 src={selectedImage.url}
                 alt={selectedImage.caption || project.title}
-                width={1200}
-                height={800}
-                className="object-contain w-full h-full"
+                fill
+                className="object-contain"
                 priority
+                sizes="(max-width: 768px) 90vw, 80vw"
               />
               
               {/* Caption */}
