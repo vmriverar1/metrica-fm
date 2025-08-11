@@ -228,10 +228,7 @@ export default function JobCard({
         className={cn(
           "group relative bg-card border border-border rounded-xl overflow-hidden",
           "hover:shadow-xl hover:border-primary/20 transition-all duration-500",
-          "cursor-pointer transform-gpu",
-          size === 'compact' && "h-80",
-          size === 'comfortable' && "h-96",
-          size === 'spacious' && "h-[28rem]",
+          "cursor-pointer transform-gpu flex flex-col h-auto",
           featured && "ring-2 ring-primary/20 ring-offset-2",
           className
         )}
@@ -243,7 +240,7 @@ export default function JobCard({
         }}
       >
       {/* Header Section */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 flex-shrink-0">
         {/* Badges */}
         <div className="flex items-center justify-between">
           <Badge className={getCategoryBgColor(job.category)}>
@@ -283,17 +280,17 @@ export default function JobCard({
 
         {/* Description */}
         <p className={cn(
-          "text-muted-foreground line-clamp-3",
-          size === 'compact' && "text-sm",
-          size === 'comfortable' && "text-base",
-          size === 'spacious' && "text-base"
+          "text-muted-foreground",
+          size === 'compact' && "text-sm line-clamp-2",
+          size === 'comfortable' && "text-base line-clamp-3", 
+          size === 'spacious' && "text-base line-clamp-4"
         )}>
           {job.description}
         </p>
       </div>
 
       {/* Content Section */}
-      <div className="px-6 space-y-4 flex-1">
+      <div className="px-6 pb-4 space-y-4 flex-1">
         {/* Salary */}
         {job.salary && (
           <div className="bg-primary/5 rounded-lg p-3">
@@ -331,7 +328,7 @@ export default function JobCard({
       </div>
 
       {/* Footer Section */}
-      <div className="p-6 border-t border-border space-y-4">
+      <div className="p-6 border-t border-border space-y-4 flex-shrink-0 mt-auto">
         {/* Metadata */}
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-1">

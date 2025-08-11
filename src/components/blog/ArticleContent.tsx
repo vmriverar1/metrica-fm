@@ -21,7 +21,6 @@ interface TableOfContentsItem {
 export default function ArticleContent({ content, className }: ArticleContentProps) {
   const [tableOfContents, setTableOfContents] = useState<TableOfContentsItem[]>([]);
   const [activeSection, setActiveSection] = useState<string>('');
-  const [readingProgress, setReadingProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
 
@@ -42,24 +41,6 @@ export default function ArticleContent({ content, className }: ArticleContentPro
     setTableOfContents(toc);
   }, [content]);
 
-  // Track reading progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const article = document.getElementById('article-content');
-      if (!article) return;
-
-      const rect = article.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const articleHeight = rect.height;
-      const scrolled = Math.max(0, -rect.top);
-      const progress = Math.min(100, (scrolled / (articleHeight - windowHeight)) * 100);
-      
-      setReadingProgress(Math.max(0, progress));
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Track active section for TOC highlighting
   useEffect(() => {
@@ -145,13 +126,6 @@ export default function ArticleContent({ content, className }: ArticleContentPro
 
   return (
     <div className={cn("relative", className)}>
-      {/* Reading Progress Bar */}
-      <div className="fixed top-20 left-0 w-full h-1 bg-muted z-50">
-        <div 
-          className="h-full bg-primary transition-all duration-150 ease-out"
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Table of Contents - Desktop */}

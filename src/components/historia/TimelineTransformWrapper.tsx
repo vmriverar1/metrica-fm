@@ -35,10 +35,9 @@ export default function TimelineTransformWrapper() {
         trigger: cierreSection,
         start: 'top 90%',     // Cuando el 10% superior de cierre es visible
         end: 'top 50%',       // Termina cuando llega a la mitad
-        scrub: 1,             // Sincronizado con scroll
-        markers: false,
+        scrub: true,          // Sincronizado con scroll - true es más robusto que 1
+        markers: false,       // Desactivado para reducir ruido
         id: 'shrink-timeline',
-        toggleActions: 'play none none reverse', // Asegura reversibilidad
         onUpdate: (self) => {
           console.log(`ScrollTrigger Progress: ${(self.progress * 100).toFixed(1)}%`);
         },
@@ -62,8 +61,13 @@ export default function TimelineTransformWrapper() {
       transformOrigin: 'center bottom'
     });
 
-    // Buscar el progress indicator
+    // Buscar el progress indicator y asegurar estado inicial
     const progressIndicator = timelineSection.querySelector('.progress-indicator');
+    
+    // Asegurar que el progress indicator esté visible inicialmente
+    if (progressIndicator) {
+      gsap.set(progressIndicator, { opacity: 1, y: 0 });
+    }
     
     // Animación usando scale en lugar de width para mantener el centrado
     tl.to(timelineSection, {
@@ -88,6 +92,43 @@ export default function TimelineTransformWrapper() {
         ease: 'power2.inOut'
       }, 0);
     }
+
+    // Crear un trigger separado para restaurar el progress indicator cuando regresamos
+    ScrollTrigger.create({
+      trigger: timelineSection,
+      start: 'bottom bottom', // Cuando el bottom del timeline toca el bottom del viewport
+      end: 'top top',         // Hasta que el top del timeline toca el top del viewport
+      onEnter: () => {
+        console.log('>>> RESTORE TRIGGER: Entrando al timeline desde abajo');
+        if (progressIndicator) {
+          gsap.to(progressIndicator, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        }
+      },
+      onLeave: () => {
+        console.log('>>> RESTORE TRIGGER: Saliendo del timeline hacia abajo');
+      },
+      onEnterBack: () => {
+        console.log('>>> RESTORE TRIGGER: Regresando al timeline desde arriba');
+        if (progressIndicator) {
+          gsap.to(progressIndicator, { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        }
+      },
+      onLeaveBack: () => {
+        console.log('>>> RESTORE TRIGGER: Saliendo del timeline hacia arriba');
+      },
+      markers: true,
+      id: 'restore-progress-indicator'
+    });
 
     // Verificar que ScrollTrigger esté funcionando
     console.log('ScrollTriggers activos:', ScrollTrigger.getAll().length);

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import NavigationLink from '@/components/ui/NavigationLink';
 import { Calendar, Clock, User, BookOpen } from 'lucide-react';
 import { BlogPost, getBlogCategoryLabel } from '@/types/blog';
 import { cn } from '@/lib/utils';
@@ -101,7 +101,10 @@ export default function ArticleCard({
   // List view rendering
   if (viewMode === 'list') {
     return (
-      <Link href={`/blog/${post.category}/${post.slug}`}>
+      <NavigationLink 
+        href={`/blog/${post.category}/${post.slug}`}
+        loadingMessage={`Cargando: ${post.title}...`}
+      >
         <div
           ref={cardRef}
           className={cn(
@@ -142,18 +145,18 @@ export default function ArticleCard({
               <Badge className={getCategoryBgColor(post.category)}>
                 {getBlogCategoryLabel(post.category)}
               </Badge>
-              <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
+              <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 overflow-hidden text-ellipsis leading-tight">
                 {post.title}
               </h3>
-              <p className="text-muted-foreground line-clamp-2">
+              <p className="text-muted-foreground line-clamp-2 overflow-hidden text-ellipsis leading-relaxed">
                 {post.excerpt}
               </p>
             </div>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <User className="w-4 h-4" />
-                {post.author.name}
+              <div className="flex items-center gap-1 min-w-0 flex-shrink">
+                <User className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{post.author.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
@@ -166,22 +169,25 @@ export default function ArticleCard({
             </div>
           </div>
         </div>
-      </Link>
+      </NavigationLink>
     );
   }
 
   // Grid/Masonry view rendering
   return (
-    <Link href={`/blog/${post.category}/${post.slug}`}>
+    <NavigationLink 
+      href={`/blog/${post.category}/${post.slug}`}
+      loadingMessage={`Cargando: ${post.title}...`}
+    >
       <div
         ref={cardRef}
         className={cn(
           "group relative bg-card border border-border rounded-xl overflow-hidden",
           "hover:shadow-xl hover:border-primary/20 transition-all duration-500",
-          "cursor-pointer transform-gpu",
-          size === 'compact' && "h-80",
-          size === 'comfortable' && "h-96",
-          size === 'spacious' && "h-[28rem]",
+          "cursor-pointer transform-gpu flex flex-col",
+          size === 'compact' && "h-[28rem]",
+          size === 'comfortable' && "h-[32rem]",
+          size === 'spacious' && "h-[36rem]",
           className
         )}
         onMouseEnter={handleMouseEnter}
@@ -192,7 +198,7 @@ export default function ArticleCard({
         }}
       >
         {/* Image Container */}
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-44 overflow-hidden flex-shrink-0">
           <Image
             src={post.featuredImage}
             alt={post.title}
@@ -223,10 +229,12 @@ export default function ArticleCard({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-4">
-          <div className="space-y-2">
+        <div className="p-6 flex flex-col flex-1">
+          <div className="space-y-3 flex-1">
             <h3 className={cn(
-              "font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2",
+              "font-semibold text-foreground group-hover:text-primary transition-colors",
+              "overflow-hidden text-ellipsis",
+              "line-clamp-2 leading-tight",
               size === 'compact' && "text-lg",
               size === 'comfortable' && "text-xl",
               size === 'spacious' && "text-xl"
@@ -235,21 +243,22 @@ export default function ArticleCard({
             </h3>
             
             <p className={cn(
-              "text-muted-foreground line-clamp-3",
-              size === 'compact' && "text-sm",
-              size === 'comfortable' && "text-base",
-              size === 'spacious' && "text-base"
+              "text-muted-foreground overflow-hidden text-ellipsis",
+              "leading-relaxed flex-1",
+              size === 'compact' && "text-sm line-clamp-2",
+              size === 'comfortable' && "text-base line-clamp-3",
+              size === 'spacious' && "text-base line-clamp-4"
             )}>
               {post.excerpt}
             </p>
           </div>
 
           {/* Metadata */}
-          <div className="space-y-3">
+          <div className="space-y-3 mt-4 flex-shrink-0">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <User className="w-4 h-4" />
-                {post.author.name}
+              <div className="flex items-center gap-1 min-w-0 flex-shrink">
+                <User className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{post.author.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
@@ -272,12 +281,17 @@ export default function ArticleCard({
 
             {/* Tags */}
             {post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {post.tags.slice(0, 3).map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
+              <div className="flex flex-wrap gap-1 overflow-hidden">
+                {post.tags.slice(0, 2).map((tag) => (
+                  <Badge key={tag} variant="outline" className="text-xs truncate max-w-20">
                     {tag}
                   </Badge>
                 ))}
+                {post.tags.length > 2 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{post.tags.length - 2}
+                  </Badge>
+                )}
               </div>
             )}
           </div>
@@ -292,6 +306,6 @@ export default function ArticleCard({
           )}
         />
       </div>
-    </Link>
+    </NavigationLink>
   );
 }

@@ -19,6 +19,10 @@ export default function BlogGrid({ className }: BlogGridProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 9; // 9 posts per page for good grid layout
 
   // Detect device type
   useEffect(() => {
@@ -103,6 +107,18 @@ export default function BlogGrid({ className }: BlogGridProps) {
 
   const gridConfig = getGridConfig();
 
+  // Pagination calculations
+  const totalPosts = filteredPosts.length;
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const endIndex = startIndex + postsPerPage;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredPosts]);
+
   if (!filteredPosts.length) {
     return (
       <div className={cn(
@@ -129,7 +145,7 @@ export default function BlogGrid({ className }: BlogGridProps) {
       {deviceType !== 'mobile' && (
         <div className="flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
-            {filteredPosts.length} {filteredPosts.length === 1 ? 'artículo' : 'artículos'}
+            {totalPosts} {totalPosts === 1 ? 'artículo' : 'artículos'} {totalPages > 1 && `• Página ${currentPage} de ${totalPages}`}
           </div>
           
           <div className="flex items-center gap-2">
@@ -167,7 +183,7 @@ export default function BlogGrid({ className }: BlogGridProps) {
           viewMode === 'list' && gridConfig.list
         )}
       >
-        {filteredPosts.map((post, index) => (
+        {currentPosts.map((post, index) => (
           <div
             key={post.id}
             className={cn(
@@ -190,12 +206,68 @@ export default function BlogGrid({ className }: BlogGridProps) {
         ))}
       </div>
 
-      {/* Load more functionality placeholder */}
-      {filteredPosts.length >= 9 && (
-        <div className="flex justify-center pt-8">
-          <Button variant="outline">
-            Cargar más artículos
-          </Button>
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex flex-col items-center gap-4 pt-8">
+          {/* Page Info */}
+          <div className="text-sm text-muted-foreground">
+            Mostrando {startIndex + 1}-{Math.min(endIndex, totalPosts)} de {totalPosts} artículos
+          </div>
+          
+          {/* Pagination buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </Button>
+            
+            {/* Page numbers */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                // Show first page, last page, current page, and adjacent pages
+                const showPage = 
+                  page === 1 ||
+                  page === totalPages ||
+                  Math.abs(page - currentPage) <= 1;
+                
+                if (!showPage) {
+                  // Show ellipsis
+                  if (page === 2 && currentPage > 4) {
+                    return <span key={page} className="px-2 text-muted-foreground">...</span>;
+                  }
+                  if (page === totalPages - 1 && currentPage < totalPages - 3) {
+                    return <span key={page} className="px-2 text-muted-foreground">...</span>;
+                  }
+                  return null;
+                }
+                
+                return (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(page)}
+                    className="w-10 h-10"
+                  >
+                    {page}
+                  </Button>
+                );
+              })}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </Button>
+          </div>
         </div>
       )}
 

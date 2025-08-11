@@ -1,13 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Header from '@/components/landing/header';
-import Footer from '@/components/landing/footer';
 import { BlogProvider } from '@/contexts/BlogContext';
 import { getBlogPost, sampleBlogPosts } from '@/types/blog';
 import UniversalHero from '@/components/ui/universal-hero';
 import ArticleContent from '@/components/blog/ArticleContent';
 import AuthorBio from '@/components/blog/AuthorBio';
-import ReadingProgress from '@/components/blog/ReadingProgress';
 import CommentSection from '@/components/blog/CommentSection';
 import ArticleSEO from '@/components/seo/ArticleSEO';
 import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
@@ -76,8 +73,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   return (
     <BlogProvider>
       <ArticleSEO article={post} />
-      <ReadingProgress article={post} />
-      <Header />
       
       <main className="min-h-screen bg-background">
         <UniversalHero 
@@ -116,8 +111,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           </div>
         </div>
       </main>
-      
-      <Footer />
     </BlogProvider>
   );
 }

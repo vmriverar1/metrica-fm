@@ -24,7 +24,7 @@ export default function CareersContent() {
 
       <SectionTransition variant="slide" />
 
-      <section className="py-16">
+      <section id="job-opportunities" className="py-16">
         <div className="container mx-auto px-4">
           <Suspense fallback={<OptimizedLoading type="search" />}>
             <CareerFilters />

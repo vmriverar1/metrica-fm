@@ -83,28 +83,47 @@ export function useGlobalLoading() {
 // Hook for page transition loading
 export function usePageTransition() {
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [startTime, setStartTime] = useState<number | null>(null);
   const { showLoading, hideLoading } = useGlobalLoading();
 
   const startTransition = (message?: string) => {
     setIsTransitioning(true);
+    setStartTime(Date.now());
     showLoading(message || 'Navegando...');
   };
 
   const endTransition = () => {
-    setIsTransitioning(false);
-    hideLoading();
+    if (!startTime) return;
+    
+    const elapsedTime = Date.now() - startTime;
+    const minLoadingTime = 1000; // Minimum 1 second
+    
+    if (elapsedTime < minLoadingTime) {
+      // Wait until minimum loading time is reached
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setStartTime(null);
+        hideLoading();
+      }, minLoadingTime - elapsedTime);
+    } else {
+      setIsTransitioning(false);
+      setStartTime(null);
+      hideLoading();
+    }
   };
 
   useEffect(() => {
-    // Auto-hide loading after 10 seconds as safety measure
-    if (isTransitioning) {
+    // Auto-hide loading after 15 seconds as safety measure
+    if (isTransitioning && startTime) {
       const timeout = setTimeout(() => {
-        endTransition();
-      }, 10000);
+        setIsTransitioning(false);
+        setStartTime(null);
+        hideLoading();
+      }, 15000);
       
       return () => clearTimeout(timeout);
     }
-  }, [isTransitioning]);
+  }, [isTransitioning, startTime, hideLoading]);
 
   return {
     isTransitioning,

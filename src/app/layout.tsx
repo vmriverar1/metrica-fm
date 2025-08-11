@@ -23,7 +23,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AppInitializer>
-          <LoadingProvider enableRouteLoading={false} minLoadingTime={800}>
+          <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
             {children}
           </LoadingProvider>
           <Toaster />

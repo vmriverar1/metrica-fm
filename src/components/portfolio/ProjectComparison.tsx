@@ -60,10 +60,18 @@ const comparisonItems: ComparisonItem[] = [
   }
 ];
 
-export default function ProjectComparison() {
+interface ProjectComparisonProps {
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export default function ProjectComparison({ 
+  isOpen: externalIsOpen, 
+  onOpenChange 
+}: ProjectComparisonProps = {}) {
   const { allProjects } = usePortfolio();
   const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(externalIsOpen || false);
   const [showSelector, setShowSelector] = useState(false);
   const maxProjects = 4;
 
@@ -100,60 +108,24 @@ export default function ProjectComparison() {
   const clearComparison = () => {
     setSelectedProjects([]);
     setIsOpen(false);
+    onOpenChange?.(false);
   };
 
-  if (!isOpen && selectedProjects.length === 0) {
-    return (
-      <motion.button
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 right-4 z-40 bg-accent text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-shadow"
-      >
-        <div className="flex items-center gap-2">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" 
-            />
-          </svg>
-          <span className="hidden md:inline">Comparar</span>
-        </div>
-      </motion.button>
-    );
-  }
+  // Sync external state
+  React.useEffect(() => {
+    if (externalIsOpen !== undefined) {
+      setIsOpen(externalIsOpen);
+    }
+  }, [externalIsOpen]);
+
+  // Notify parent of state changes
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    onOpenChange?.(open);
+  };
 
   return (
     <>
-      {/* Floating comparison button with counter */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-24 right-4 z-40"
-      >
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "bg-accent text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all",
-            selectedProjects.length > 0 && "pr-6"
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" 
-              />
-            </svg>
-            {selectedProjects.length > 0 && (
-              <span className="bg-white text-accent rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                {selectedProjects.length}
-              </span>
-            )}
-          </div>
-        </button>
-      </motion.div>
-
       {/* Comparison Panel */}
       <AnimatePresence>
         {isOpen && (
@@ -182,7 +154,7 @@ export default function ProjectComparison() {
                     </button>
                   )}
                   <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => handleOpenChange(false)}
                     className="p-2 hover:bg-white/20 rounded-lg transition-colors"
                   >
                     <X className="w-5 h-5" />

@@ -138,7 +138,7 @@ export default function UniversalHero({
       <div className="absolute inset-0 w-full h-full flex items-center justify-center" style={{ zIndex: 5 }}>
         <div 
           ref={textRef} 
-          className="relative text-center px-4 max-w-4xl mx-auto"
+          className="relative text-center px-4 max-w-6xl mx-auto"
           style={{ marginTop: '0px' }}
         >
           {/* Título con texto blanco */}
@@ -165,7 +165,7 @@ export default function UniversalHero({
           </h1>
           
           {subtitle && (
-            <p className="max-w-3xl mx-auto text-xl md:text-2xl text-white/90 font-bold border-t border-white/20 pt-4 mt-4">
+            <p className="max-w-5xl mx-auto text-xl md:text-2xl text-white/90 font-bold border-t border-white/20 pt-4 mt-4">
               {subtitle}
             </p>
           )}

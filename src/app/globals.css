@@ -984,6 +984,11 @@ strong, b, .font-bold {
     }
   }
 
+  /* Floating buttons - smooth transitions */
+  .presentation-button {
+    transition: transform 0.3s ease;
+  }
+
   /* Reduced motion preferences */
   @media (prefers-reduced-motion: reduce) {
     *,

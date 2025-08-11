@@ -43,31 +43,14 @@ export default function LoadingProvider({
   useEffect(() => {
     if (!enableRouteLoading) return;
 
-    const handleRouteStart = () => {
-      startTransition('Cargando página...');
-    };
+    // End loading when pathname changes (new page loaded)
+    // Wait for the page to actually finish loading
+    const timer = setTimeout(() => {
+      endTransition();
+    }, Math.max(minLoadingTime, 1200)); // Minimum 1.2 seconds
 
-    const handleRouteEnd = () => {
-      // Add minimum loading time for better UX
-      setTimeout(() => {
-        endTransition();
-      }, minLoadingTime);
-    };
-
-    // Listen for route changes (simplified approach)
-    const originalPush = router.push;
-    router.push = function(...args) {
-      handleRouteStart();
-      return originalPush.apply(this, args);
-    };
-
-    // Handle completion on pathname change
-    handleRouteEnd();
-
-    return () => {
-      router.push = originalPush;
-    };
-  }, [pathname, enableRouteLoading, minLoadingTime, router, startTransition, endTransition]);
+    return () => clearTimeout(timer);
+  }, [pathname, enableRouteLoading, minLoadingTime, endTransition]);
 
   // Loading methods
   const showLoading = (loadingMessage?: string) => {

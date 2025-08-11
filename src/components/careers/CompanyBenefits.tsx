@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { 
   Heart, 
   GraduationCap, 
@@ -18,6 +18,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import CVModal from './CVModal';
 
 interface Benefit {
   id: string;
@@ -46,13 +47,6 @@ const benefits: Benefit[] = [
     highlight: true
   },
   {
-    id: 'vacaciones',
-    title: 'Vacaciones Flexibles',
-    description: '30 días de vacaciones anuales con flexibilidad para tomarlas según tus necesidades.',
-    icon: <Plane className="w-6 h-6" />,
-    category: 'bienestar'
-  },
-  {
     id: 'work-life',
     title: 'Balance Vida-Trabajo',
     description: 'Horarios flexibles y opciones de trabajo remoto para mantener el equilibrio personal.',
@@ -61,60 +55,12 @@ const benefits: Benefit[] = [
     highlight: true
   },
   {
-    id: 'seguro-vida',
-    title: 'Seguro de Vida',
-    description: 'Protección financiera completa con cobertura de seguro de vida y accidentes.',
-    icon: <Shield className="w-6 h-6" />,
-    category: 'salud'
-  },
-  {
     id: 'bonos',
     title: 'Bonos por Performance',
     description: 'Reconocimiento económico adicional basado en el desempeño individual y de equipo.',
     icon: <Trophy className="w-6 h-6" />,
-    category: 'compensacion'
-  },
-  {
-    id: 'cafeteria',
-    title: 'Cafetería Gratuita',
-    description: 'Desayuno y refrigerios gratuitos en nuestras oficinas para todo el equipo.',
-    icon: <Coffee className="w-6 h-6" />,
-    category: 'bienestar'
-  },
-  {
-    id: 'trabajo-remoto',
-    title: 'Trabajo Remoto',
-    description: 'Flexibilidad para trabajar desde casa con todas las herramientas necesarias.',
-    icon: <Home className="w-6 h-6" />,
-    category: 'bienestar'
-  },
-  {
-    id: 'ambiente-colaborativo',
-    title: 'Ambiente Colaborativo',
-    description: 'Cultura de trabajo en equipo con espacios modernos y tecnología de vanguardia.',
-    icon: <Users className="w-6 h-6" />,
-    category: 'bienestar'
-  },
-  {
-    id: 'transporte',
-    title: 'Subsidio de Transporte',
-    description: 'Apoyo económico mensual para gastos de transporte y movilización.',
-    icon: <Car className="w-6 h-6" />,
-    category: 'compensacion'
-  },
-  {
-    id: 'eventos',
-    title: 'Eventos y Celebraciones',
-    description: 'Actividades de integración, celebraciones especiales y eventos de equipo.',
-    icon: <Gift className="w-6 h-6" />,
-    category: 'bienestar'
-  },
-  {
-    id: 'gimnasio',
-    title: 'Membresía de Gimnasio',
-    description: 'Subsidio para membresía de gimnasio y actividades deportivas.',
-    icon: <Dumbbell className="w-6 h-6" />,
-    category: 'salud'
+    category: 'compensacion',
+    highlight: true
   }
 ];
 
@@ -145,6 +91,24 @@ interface CompanyBenefitsProps {
 
 export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+
+  const scrollToJobs = () => {
+    // Scroll to the jobs section (assuming it has an id)
+    const jobsSection = document.getElementById('job-opportunities');
+    if (jobsSection) {
+      jobsSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      // Fallback: scroll down by viewport height
+      window.scrollBy({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -199,14 +163,6 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
 
   }, { scope: sectionRef });
 
-  const groupedBenefits = benefits.reduce((acc, benefit) => {
-    if (!acc[benefit.category]) {
-      acc[benefit.category] = [];
-    }
-    acc[benefit.category].push(benefit);
-    return acc;
-  }, {} as Record<string, Benefit[]>);
-
   return (
     <section 
       ref={sectionRef}
@@ -231,58 +187,41 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
         </div>
 
         {/* Benefits Grid */}
-        <div className="space-y-12">
-          {Object.entries(groupedBenefits).map(([category, categoryBenefits]) => (
-            <div key={category}>
-              {/* Category Header */}
-              <div className="mb-8">
-                <h3 className="text-2xl font-semibold text-foreground mb-2">
-                  {categoryLabels[category as keyof typeof categoryLabels]}
-                </h3>
-                <div className="w-20 h-1 bg-primary rounded-full"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {benefits.map((benefit) => (
+            <div
+              key={benefit.id}
+              className={cn(
+                "benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default",
+                "bg-gradient-to-br",
+                categoryColors[benefit.category],
+                "ring-2 ring-primary/20 ring-offset-2"
+              )}
+            >
+              {/* Highlight Badge */}
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+
+              {/* Icon */}
+              <div className={cn(
+                "w-12 h-12 rounded-lg flex items-center justify-center mb-4",
+                "bg-white/80 backdrop-blur-sm",
+                categoryIconColors[benefit.category]
+              )}>
+                {benefit.icon}
               </div>
 
-              {/* Benefits Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categoryBenefits.map((benefit) => (
-                  <div
-                    key={benefit.id}
-                    className={cn(
-                      "benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default",
-                      "bg-gradient-to-br",
-                      categoryColors[benefit.category],
-                      benefit.highlight && "ring-2 ring-primary/20 ring-offset-2"
-                    )}
-                  >
-                    {/* Highlight Badge */}
-                    {benefit.highlight && (
-                      <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-                    )}
-
-                    {/* Icon */}
-                    <div className={cn(
-                      "w-12 h-12 rounded-lg flex items-center justify-center mb-4",
-                      "bg-white/80 backdrop-blur-sm",
-                      categoryIconColors[benefit.category]
-                    )}>
-                      {benefit.icon}
-                    </div>
-
-                    {/* Content */}
-                    <div>
-                      <h4 className="text-xl font-semibold text-foreground mb-3">
-                        {benefit.title}
-                      </h4>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {benefit.description}
-                      </p>
-                    </div>
-
-                    {/* Decorative Element */}
-                    <div className="absolute bottom-4 right-4 w-8 h-8 bg-white/30 rounded-full opacity-50"></div>
-                  </div>
-                ))}
+              {/* Content */}
+              <div>
+                <h4 className="text-xl font-semibold text-foreground mb-3">
+                  {benefit.title}
+                </h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {benefit.description}
+                </p>
               </div>
+
+              {/* Decorative Element */}
+              <div className="absolute bottom-4 right-4 w-8 h-8 bg-white/30 rounded-full opacity-50"></div>
             </div>
           ))}
         </div>
@@ -299,10 +238,16 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
                 crecer profesionalmente mientras contribuyes a proyectos de impacto.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <button 
+                  onClick={scrollToJobs}
+                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                >
                   Ver Posiciones Abiertas
                 </button>
-                <button className="border border-border text-foreground hover:bg-muted px-6 py-3 rounded-lg font-medium transition-colors">
+                <button 
+                  onClick={() => setIsCVModalOpen(true)}
+                  className="border border-border text-foreground hover:bg-muted px-6 py-3 rounded-lg font-medium transition-colors"
+                >
                   Enviar CV Espontáneo
                 </button>
               </div>
@@ -310,26 +255,13 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
           </div>
         </div>
 
-        {/* Statistics */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold text-primary mb-2">98%</div>
-            <div className="text-sm text-muted-foreground">Satisfacción del Equipo</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary mb-2">4.8/5</div>
-            <div className="text-sm text-muted-foreground">Rating como Empleador</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary mb-2">15+</div>
-            <div className="text-sm text-muted-foreground">Años de Experiencia</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-primary mb-2">200+</div>
-            <div className="text-sm text-muted-foreground">Proyectos Completados</div>
-          </div>
-        </div>
       </div>
+
+      {/* CV Modal */}
+      <CVModal 
+        isOpen={isCVModalOpen}
+        onClose={() => setIsCVModalOpen(false)}
+      />
     </section>
   );
 }

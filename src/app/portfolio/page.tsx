@@ -15,6 +15,7 @@ import ProjectTimeline from '@/components/portfolio/ProjectTimeline';
 import ProjectComparison from '@/components/portfolio/ProjectComparison';
 import FavoritesShare from '@/components/portfolio/FavoritesShare';
 import PresentationMode from '@/components/portfolio/PresentationMode';
+import FloatingButtons from '@/components/portfolio/FloatingButtons';
 import PerformanceMonitor from '@/components/portfolio/PerformanceMonitor';
 import { PortfolioProvider } from '@/contexts/PortfolioContext';
 import { BarChart3, Calendar, Grid3x3, Map, Sparkles } from 'lucide-react';
@@ -22,6 +23,9 @@ import { cn } from '@/lib/utils';
 
 export default function PortfolioPage() {
   const [activeView, setActiveView] = useState<'grid' | 'timeline' | 'map' | 'stats'>('grid');
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [isPresentationOpen, setIsPresentationOpen] = useState(false);
+  const [selectedProjects, setSelectedProjects] = useState<any[]>([]);
 
   const viewOptions = [
     { id: 'grid', label: 'Galería', icon: <Grid3x3 className="w-4 h-4" /> },
@@ -121,9 +125,22 @@ export default function PortfolioPage() {
         <Footer />
         
         {/* Advanced Features - Floating Components */}
-        <ProjectComparison />
+        <ProjectComparison 
+          isOpen={isComparisonOpen}
+          onOpenChange={setIsComparisonOpen}
+        />
         <FavoritesShare />
-        <PresentationMode />
+        <PresentationMode 
+          isPresenting={isPresentationOpen}
+          onExitPresentation={() => setIsPresentationOpen(false)}
+        />
+        
+        {/* Floating Buttons Container */}
+        <FloatingButtons 
+          onCompareClick={() => setIsComparisonOpen(!isComparisonOpen)}
+          onPresentationClick={() => setIsPresentationOpen(true)}
+          selectedProjects={selectedProjects}
+        />
         
         {/* Performance monitoring for development */}
         {process.env.NODE_ENV === 'development' && <PerformanceMonitor />}

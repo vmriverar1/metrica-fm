@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import Link from 'next/link';
+import NavigationLink from '@/components/ui/NavigationLink';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -115,7 +115,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                       }}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <div className="w-screen bg-background backdrop-blur-md border-b border-border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="w-screen bg-background backdrop-blur-md shadow-lg animate-in fade-in slide-in-from-top-2 duration-300">
                         <div className="container mx-auto px-4">
                           <div className="grid grid-cols-3 gap-8 p-8">
                             {/* Primera columna - Título y descripción */}
@@ -129,9 +129,10 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                               <ul className="grid gap-2">
                                 {item.subItems.links.map((link) => (
                                   <li key={link.title}>
-                                    <Link
+                                    <NavigationLink
                                       href={link.href}
                                       className="block select-none space-y-1 rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-white hover:translate-x-1 group"
+                                      loadingMessage={`Navegando a ${link.title}...`}
                                       onClick={() => setActiveItem(null)}
                                     >
                                       <div className="text-sm font-semibold leading-none text-foreground group-hover:text-white">{link.title}</div>
@@ -140,7 +141,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                                           {link.description}
                                         </p>
                                       )}
-                                    </Link>
+                                    </NavigationLink>
                                   </li>
                                 ))}
                               </ul>
@@ -181,16 +182,17 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                 )}
               </>
             ) : (
-              <Link
+              <NavigationLink
                 href={item.href || `#${item.id}`}
                 className={cn(
                   navLinkClasses, 
                   "inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
                   "hover:bg-accent hover:text-white"
                 )}
+                loadingMessage={`Navegando a ${item.label}...`}
               >
                 {item.label}
-              </Link>
+              </NavigationLink>
             )}
           </li>
         ))}

@@ -192,8 +192,8 @@ export default function ServiceMatrix() {
             </motion.p>
           </div>
 
-          {/* Service Grid - 3x3 Matrix */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {/* Service Grid - Responsive Matrix */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
@@ -207,8 +207,8 @@ export default function ServiceMatrix() {
               >
                 <div 
                   className={cn(
-                    "relative h-80 rounded-2xl p-8 cursor-pointer transition-all duration-500",
-                    "bg-card border border-border",
+                    "relative min-h-80 rounded-2xl p-6 cursor-pointer transition-all duration-500",
+                    "bg-card border border-border flex flex-col",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-2",
                     "group-hover:border-primary/20"
                   )}
@@ -227,7 +227,7 @@ export default function ServiceMatrix() {
 
                   {/* Icon */}
                   <div className={cn(
-                    "relative z-10 mb-6 p-3 rounded-xl transition-all duration-300",
+                    "relative z-10 mb-4 p-3 rounded-xl transition-all duration-300 w-fit",
                     "bg-primary/10 text-primary",
                     hoveredService === service.id ? "scale-110 bg-primary text-primary-foreground" : ""
                   )}>
@@ -235,59 +235,49 @@ export default function ServiceMatrix() {
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-10 space-y-4">
-                    <div>
+                  <div className="relative z-10 flex-1 flex flex-col">
+                    <div className="flex-1">
                       <div className="text-xs font-medium text-primary mb-2 uppercase tracking-wide">
                         {service.category}
                       </div>
-                      <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                         {service.title}
                       </h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                         {service.description}
                       </p>
+
+                      {/* Benefits List - Always visible now */}
+                      <div className="space-y-2 mb-4">
+                        {service.benefits.map((benefit, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-xs">
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                            <span className="text-muted-foreground">{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Benefits Preview */}
-                    <AnimatePresence>
-                      {hoveredService === service.id && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="space-y-2 pt-4 border-t border-border/50"
-                        >
-                          {service.benefits.map((benefit, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-xs">
-                              <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                              <span className="text-muted-foreground">{benefit}</span>
-                            </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* CTA Button */}
-                  <div className="absolute bottom-6 right-6 left-6">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className={cn(
-                        "w-full opacity-0 group-hover:opacity-100 transition-all duration-300",
-                        "hover:bg-primary hover:text-primary-foreground"
-                      )}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (service.caseStudyLink) {
-                          trackCTAClick(`service-case-study-${service.id}`, 'Ver Casos de Éxito', service.caseStudyLink);
-                          window.location.href = service.caseStudyLink;
-                        }
-                      }}
-                    >
-                      Ver Casos de Éxito
-                    </Button>
+                    {/* CTA Button - Now properly positioned at bottom */}
+                    <div className="mt-auto pt-4">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className={cn(
+                          "w-full transition-all duration-300 border-primary/20 text-primary",
+                          "hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                        )}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (service.caseStudyLink) {
+                            trackCTAClick(`service-case-study-${service.id}`, 'Ver Casos de Éxito', service.caseStudyLink);
+                            window.location.href = service.caseStudyLink;
+                          }
+                        }}
+                      >
+                        Ver Casos de Éxito
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </motion.div>

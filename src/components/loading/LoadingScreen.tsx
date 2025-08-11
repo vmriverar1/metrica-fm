@@ -180,20 +180,6 @@ export default function LoadingScreen() {
           </motion.div>
         </div>
 
-        {/* Company Info */}
-        <motion.div
-          className="absolute bottom-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-        >
-          <p className="text-sm text-muted-foreground">
-            Dirección Integral de Proyectos
-          </p>
-          <p className="text-xs text-muted-foreground/70 mt-1">
-            Transformando ideas en impacto
-          </p>
-        </motion.div>
 
         {/* Floating Particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

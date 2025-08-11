@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { Search, Briefcase, MapPin, DollarSign, Clock, Building2, Star, Users } from 'lucide-react';
+import { Search, Briefcase, MapPin, DollarSign, Clock, Building2, Star, Users, Settings, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -35,6 +35,7 @@ export default function CareerFilters({ className }: CareerFiltersProps) {
   const [salaryRange, setSalaryRange] = useState<number[]>(
     filters.salaryRange ? [filters.salaryRange[0], filters.salaryRange[1]] : [0, 20000]
   );
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleCategoryChange = useCallback((category: JobCategory | 'all') => {
     setFilters({
@@ -147,29 +148,35 @@ export default function CareerFilters({ className }: CareerFiltersProps) {
             <div className="flex items-center gap-3">
               <Users className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">Explorar Oportunidades</h2>
-              <div className={cn(
-                "px-3 py-1 rounded-full text-sm font-medium transition-all duration-300",
-                "bg-primary/10 text-primary",
-                jobCount > 0 && "animate-pulse"
-              )}>
-                {jobCount} {jobCount === 1 ? 'oportunidad' : 'oportunidades'}
-              </div>
             </div>
 
-            {hasActiveFilters && (
+            <div className="flex items-center gap-2">
+              {hasActiveFilters && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Limpiar filtros
+                </Button>
+              )}
+              
               <Button
                 variant="outline"
                 size="sm"
-                onClick={clearFilters}
+                onClick={() => setShowAdvanced(!showAdvanced)}
                 className="text-muted-foreground hover:text-foreground"
               >
-                Limpiar filtros
+                <Settings className="w-4 h-4 mr-2" />
+                Filtros Avanzados
+                {showAdvanced ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
               </Button>
-            )}
+            </div>
           </div>
 
-          {/* Main Filters Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Basic Filters - Always Visible */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -222,146 +229,130 @@ export default function CareerFilters({ className }: CareerFiltersProps) {
                 ))}
               </SelectContent>
             </Select>
-
-            {/* Job Type Filter */}
-            <Select 
-              value={filters.type || 'all'} 
-              onValueChange={(value) => handleTypeChange(value as JobType | 'all')}
-            >
-              <SelectTrigger>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <SelectValue placeholder="Tipo" />
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos los tipos</SelectItem>
-                {Object.values(JobType).map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {getJobTypeLabel(type)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
-          {/* Secondary Filters Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Department Filter */}
-            <Select 
-              value={filters.department || 'all'} 
-              onValueChange={handleDepartmentChange}
-            >
-              <SelectTrigger>
-                <div className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  <SelectValue placeholder="Departamento" />
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos los departamentos</SelectItem>
-                {uniqueDepartments.map((dept) => (
-                  <SelectItem key={dept} value={dept}>
-                    {dept}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          {/* Advanced Filters - Collapsible */}
+          {showAdvanced && (
+            <div className="space-y-6 animate-in slide-in-from-top-5 duration-300">
+              {/* Advanced Selects */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Job Type Filter */}
+                <Select 
+                  value={filters.type || 'all'} 
+                  onValueChange={(value) => handleTypeChange(value as JobType | 'all')}
+                >
+                  <SelectTrigger>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <SelectValue placeholder="Tipo" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los tipos</SelectItem>
+                    {Object.values(JobType).map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {getJobTypeLabel(type)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            {/* Featured Toggle */}
-            <Button
-              variant={filters.featured ? "default" : "outline"}
-              onClick={toggleFeatured}
-              className="justify-start"
-            >
-              <Star className={cn(
-                "w-4 h-4 mr-2",
-                filters.featured ? "fill-current" : ""
-              )} />
-              Destacados
-            </Button>
+                {/* Department Filter */}
+                <Select 
+                  value={filters.department || 'all'} 
+                  onValueChange={handleDepartmentChange}
+                >
+                  <SelectTrigger>
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4" />
+                      <SelectValue placeholder="Departamento" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los departamentos</SelectItem>
+                    {uniqueDepartments.map((dept) => (
+                      <SelectItem key={dept} value={dept}>
+                        {dept}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-            {/* Remote Toggle */}
-            <Button
-              variant={filters.remote ? "default" : "outline"}
-              onClick={toggleRemote}
-              className="justify-start"
-            >
-              <MapPin className="w-4 h-4 mr-2" />
-              Remoto
-            </Button>
+                {/* Featured Toggle */}
+                <Button
+                  variant={filters.featured ? "default" : "outline"}
+                  onClick={toggleFeatured}
+                  className="justify-start"
+                >
+                  <Star className={cn(
+                    "w-4 h-4 mr-2",
+                    filters.featured ? "fill-current" : ""
+                  )} />
+                  Destacados
+                </Button>
 
-            {/* Urgent Toggle */}
-            <Button
-              variant={filters.urgent ? "default" : "outline"}
-              onClick={toggleUrgent}
-              className="justify-start"
-            >
-              <Clock className="w-4 h-4 mr-2" />
-              Urgente
-            </Button>
-          </div>
-
-          {/* Salary Range */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">
-                Rango salarial: S/ {salaryRange[0].toLocaleString('es-PE')} - S/ {salaryRange[1].toLocaleString('es-PE')}
-              </span>
-            </div>
-            <Slider
-              value={salaryRange}
-              onValueChange={handleSalaryChange}
-              max={20000}
-              min={0}
-              step={500}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>S/ 0</span>
-              <span>S/ 20.000+</span>
-            </div>
-          </div>
-
-          {/* Skills Section */}
-          {uniqueSkills.length > 0 && (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-muted-foreground">Habilidades:</span>
+                {/* Remote Toggle */}
+                <Button
+                  variant={filters.remote ? "default" : "outline"}
+                  onClick={toggleRemote}
+                  className="justify-start"
+                >
+                  <MapPin className="w-4 h-4 mr-2" />
+                  Remoto
+                </Button>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {uniqueSkills.slice(0, 15).map((skill) => (
-                  <Badge
-                    key={skill}
-                    variant={selectedSkills.includes(skill) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                    onClick={() => handleSkillToggle(skill)}
-                  >
-                    {skill}
-                  </Badge>
-                ))}
-                {uniqueSkills.length > 15 && (
-                  <Badge variant="secondary" className="cursor-default">
-                    +{uniqueSkills.length - 15} más
-                  </Badge>
-                )}
+
+              {/* Salary Range */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    Rango salarial: S/ {salaryRange[0].toLocaleString('es-PE')} - S/ {salaryRange[1].toLocaleString('es-PE')}
+                  </span>
+                </div>
+                <Slider
+                  value={salaryRange}
+                  onValueChange={handleSalaryChange}
+                  max={20000}
+                  min={0}
+                  step={500}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>S/ 0</span>
+                  <span>S/ 20.000+</span>
+                </div>
               </div>
+
+              {/* Skills Section */}
+              {uniqueSkills.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-muted-foreground">Habilidades:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {uniqueSkills.slice(0, 15).map((skill) => (
+                      <Badge
+                        key={skill}
+                        variant={selectedSkills.includes(skill) ? "default" : "outline"}
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                        onClick={() => handleSkillToggle(skill)}
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
+                    {uniqueSkills.length > 15 && (
+                      <Badge variant="secondary" className="cursor-default">
+                        +{uniqueSkills.length - 15} más
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Results and Clear Filters */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              {jobCount} {jobCount === 1 ? 'oportunidad encontrada' : 'oportunidades encontradas'}
-              {hasActiveFilters && (
-                <span className="ml-2">
-                  con filtros activos
-                </span>
-              )}
-            </div>
-          </div>
 
           {/* Active Filters Display */}
           {hasActiveFilters && (

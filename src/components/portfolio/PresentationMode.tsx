@@ -32,9 +32,19 @@ interface PresentationSettings {
   transition: 'fade' | 'slide' | 'zoom';
 }
 
-export default function PresentationMode() {
+interface PresentationModeProps {
+  isPresenting?: boolean;
+  onStartPresentation?: () => void;
+  onExitPresentation?: () => void;
+}
+
+export default function PresentationMode({ 
+  isPresenting: externalIsPresenting, 
+  onStartPresentation,
+  onExitPresentation 
+}: PresentationModeProps = {}) {
   const { allProjects } = usePortfolio();
-  const [isPresenting, setIsPresenting] = useState(false);
+  const [isPresenting, setIsPresenting] = useState(externalIsPresenting || false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(true);
@@ -98,7 +108,7 @@ export default function PresentationMode() {
           if (!showSettings) {
             setShowControls(false);
           }
-        }, 3000);
+        }, 4000); // Increased from 3s to 4s for better UX
       };
 
       if (typeof window !== 'undefined') {
@@ -155,6 +165,7 @@ export default function PresentationMode() {
     setCurrentIndex(0);
     setIsPlaying(settings.autoPlay);
     document.body.style.overflow = 'hidden';
+    onStartPresentation?.();
   };
 
   const exitPresentation = () => {
@@ -165,7 +176,15 @@ export default function PresentationMode() {
     if (fullscreen && document.exitFullscreen) {
       document.exitFullscreen();
     }
+    onExitPresentation?.();
   };
+
+  // Sync external state
+  React.useEffect(() => {
+    if (externalIsPresenting !== undefined) {
+      setIsPresenting(externalIsPresenting);
+    }
+  }, [externalIsPresenting]);
 
   const nextSlide = () => {
     setCurrentIndex(prev => 
@@ -220,21 +239,7 @@ export default function PresentationMode() {
   };
 
   if (!isPresenting) {
-    return (
-      <motion.button
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={startPresentation}
-        className="fixed bottom-24 right-24 z-40 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all"
-      >
-        <div className="flex items-center gap-2">
-          <Monitor className="w-6 h-6" />
-          <span className="hidden md:inline font-medium">Presentación</span>
-        </div>
-      </motion.button>
-    );
+    return null; // Floating button is now handled by FloatingButtons component
   }
 
   return (
@@ -263,14 +268,21 @@ export default function PresentationMode() {
           />
           
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
           
           {/* Project Info */}
           {settings.showInfo && (
             <motion.div
               initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0,
+                paddingBottom: showControls ? '200px' : '80px' // Extra space when controls are visible
+              }}
+              transition={{ 
+                delay: 0.3,
+                paddingBottom: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } // Smooth padding transition
+              }}
               className="absolute bottom-0 left-0 right-0 p-8 md:p-16"
             >
               <div className="max-w-4xl">
@@ -317,10 +329,12 @@ export default function PresentationMode() {
       <AnimatePresence>
         {showControls && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-x-0 bottom-0 p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/60 to-transparent"
+            style={{ backdropFilter: 'blur(12px)' }}
           >
             {/* Progress Bar */}
             {settings.showProgress && (

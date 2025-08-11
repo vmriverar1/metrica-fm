@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import NavigationLink from '@/components/ui/NavigationLink';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -59,7 +59,7 @@ const navItems = [
 ];
 
 const Logo = ({ isScrolled, menuOpen }: { isScrolled: boolean; menuOpen: boolean }) => (
-  <Link href="/" className="flex items-center">
+  <NavigationLink href="/" className="flex items-center" loadingMessage="Volviendo al inicio...">
     <Image 
       src={isScrolled || menuOpen ? "/img/logo-color.png" : "/img/logo-blanco.png"}
       alt="Métrica Logo"
@@ -68,7 +68,7 @@ const Logo = ({ isScrolled, menuOpen }: { isScrolled: boolean; menuOpen: boolean
       priority
       className="h-10 w-auto"
     />
-  </Link>
+  </NavigationLink>
 );
 
 
@@ -134,7 +134,12 @@ export default function Header() {
                      </div>
                     <nav className="flex flex-col items-start gap-2 p-4">
                       {navItems.map((item) => (
-                        <Link key={item.id} href={`#${item.id}`} className="w-full">
+                        <NavigationLink 
+                          key={item.id} 
+                          href={item.href || `#${item.id}`} 
+                          className="w-full"
+                          loadingMessage={`Navegando a ${item.label}...`}
+                        >
                           <Button
                             variant="ghost"
                             className="w-full justify-start text-lg"
@@ -142,7 +147,7 @@ export default function Header() {
                           >
                             {item.label}
                           </Button>
-                        </Link>
+                        </NavigationLink>
                       ))}
                     </nav>
                   </div>

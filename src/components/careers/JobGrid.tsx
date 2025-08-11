@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCareers } from '@/contexts/CareersContext';
 import JobCard from './JobCard';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,7 @@ export default function JobGrid({ className }: JobGridProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+  const gridRef = useRef<HTMLDivElement>(null);
 
   // Detect device type
   useEffect(() => {
@@ -103,6 +104,68 @@ export default function JobGrid({ className }: JobGridProps) {
 
   const gridConfig = getGridConfig();
 
+  // Function to equalize card heights in each row
+  const equalizeCardHeights = () => {
+    if (!gridRef.current || viewMode !== 'grid') return;
+
+    const cards = gridRef.current.querySelectorAll('[data-job-card]') as NodeListOf<HTMLElement>;
+    if (!cards.length) return;
+
+    // Get columns per row based on current grid config
+    const getColumnsPerRow = () => {
+      if (deviceType === 'mobile') return 1;
+      if (deviceType === 'tablet') {
+        if (gridSize === 'compact') return 3;
+        return 2;
+      }
+      // desktop
+      if (gridSize === 'compact') return 4;
+      if (gridSize === 'comfortable') return 3;
+      return 2; // spacious
+    };
+
+    const columnsPerRow = getColumnsPerRow();
+    
+    // Reset all heights first
+    cards.forEach(card => {
+      card.style.height = 'auto';
+    });
+
+    // Group cards by rows and find max height for each row
+    for (let i = 0; i < cards.length; i += columnsPerRow) {
+      const rowCards = Array.from(cards).slice(i, i + columnsPerRow);
+      
+      // Get the maximum height in this row
+      const maxHeight = Math.max(...rowCards.map(card => card.offsetHeight));
+      
+      // Apply the max height to all cards in this row
+      rowCards.forEach(card => {
+        card.style.height = `${maxHeight}px`;
+      });
+    }
+  };
+
+  // Equalize heights after render and on resize
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      equalizeCardHeights();
+    }, 100); // Small delay to ensure DOM is fully rendered
+
+    return () => clearTimeout(timer);
+  }, [filteredJobs, viewMode, gridSize, deviceType]);
+
+  // Re-equalize on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      equalizeCardHeights();
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   if (!filteredJobs.length) {
     return (
       <div className={cn(
@@ -180,6 +243,7 @@ export default function JobGrid({ className }: JobGridProps) {
 
       {/* Grid container */}
       <div
+        ref={gridRef}
         className={cn(
           "w-full transition-all duration-300",
           viewMode === 'grid' && `grid ${gridConfig.grid} ${gridConfig.gap}`,
@@ -190,6 +254,7 @@ export default function JobGrid({ className }: JobGridProps) {
         {filteredJobs.map((job, index) => (
           <div
             key={job.id}
+            data-job-card
             className={cn(
               "break-inside-avoid",
               viewMode === 'masonry' && "mb-6"
