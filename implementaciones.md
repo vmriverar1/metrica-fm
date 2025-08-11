@@ -447,6 +447,7 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
 - [2025-01-08] Fix errores TypeScript en AuditDashboard: removidas anotaciones de tipos explícitas que causaban errores de compilación, corregida sintaxis corrupta en componente AuditScopeBadges - Archivo: AuditDashboard.tsx
 - [2025-01-28] Sistema completo de Loading con logo centrado y spinner circular - Archivos: loading.tsx, LoadingScreen.tsx, SectionLoading.tsx, LoadingProvider.tsx, useGlobalLoading.ts
 - [2025-08-10] Resolución completa de errores de hidratación SSR en página ISO 9001
+- [2025-08-10] PageTransitionLoader implementado - Loading garantizado 2 segundos con logo y spinner circular animado - Archivos: PageTransitionLoader.tsx, InitialPageLoader.tsx, layout.tsx modificado
   - Problema: window undefined durante server-side rendering en ProcessMap autoplay
   - Solución: Componentes client-side con dynamic imports y ssr: false
   - ProcessMap, AuditDashboard y ClientBenefits convertidos a carga diferida

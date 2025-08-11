@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import LoadingProvider from '@/components/loading/LoadingProvider';
+import AppInitializer from '@/components/loading/AppInitializer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,10 +22,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <LoadingProvider enableRouteLoading={true} minLoadingTime={800}>
-          {children}
-        </LoadingProvider>
-        <Toaster />
+        <AppInitializer>
+          <LoadingProvider enableRouteLoading={false} minLoadingTime={800}>
+            {children}
+          </LoadingProvider>
+          <Toaster />
+        </AppInitializer>
       </body>
     </html>
   );
