@@ -123,9 +123,9 @@ export default function CareersHero() {
         }}
       />
 
-      {/* Overlay base inicial */}
+      {/* Overlay base inicial - más oscuro para mejor contraste */}
       <div 
-        className="absolute inset-0 w-full h-full bg-gradient-to-r from-black/60 via-black/40 to-transparent" 
+        className="absolute inset-0 w-full h-full bg-black/70" 
         style={{ zIndex: 2 }} 
       />
 
@@ -138,7 +138,7 @@ export default function CareersHero() {
         >
           {/* Badge principal */}
           <div className="mb-6">
-            <Badge className="bg-primary/20 text-primary border-primary/30 px-4 py-2 text-sm font-medium">
+            <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm font-medium">
               <Users className="w-4 h-4 mr-2" />
               Construye tu carrera con nosotros
             </Badge>
@@ -148,7 +148,7 @@ export default function CareersHero() {
           <h1 className="text-5xl md:text-7xl lg:text-8xl tracking-tight text-white mb-6 font-black">
             <span className="block text-white font-black" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
               {typedTitle}
-              <span className="animate-pulse text-primary">|</span>
+              <span className="animate-pulse text-white">|</span>
             </span>
           </h1>
           
@@ -160,15 +160,15 @@ export default function CareersHero() {
           {/* Estadísticas */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                {stats.totalJobs}
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {stats.totalPositions}
               </div>
               <div className="text-sm text-white/80 font-medium">
                 Posiciones Abiertas
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                 {stats.totalCategories}
               </div>
               <div className="text-sm text-white/80 font-medium">
@@ -176,15 +176,15 @@ export default function CareersHero() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                {stats.totalLocations}
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {stats.topLocations.length}
               </div>
               <div className="text-sm text-white/80 font-medium">
                 Ubicaciones
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                 15+
               </div>
               <div className="text-sm text-white/80 font-medium">
@@ -193,14 +193,15 @@ export default function CareersHero() {
             </div>
           </div>
 
-          {/* Call to Actions */}
+          {/* Call to Actions - Botónes mejorados */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+            <Button asChild size="lg" className="bg-gradient-to-r from-[#E84E0F] to-[#E84E0F]/80 hover:from-[#E84E0F]/90 hover:to-[#E84E0F] text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
               <Link href="#careers-content">
                 Ver Oportunidades
+                <span className="ml-2">→</span>
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-black px-8 py-3">
+            <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-black hover:border-white font-semibold px-8 py-4 transition-all duration-300">
               <Link href="#company-benefits">
                 Conoce los Beneficios
               </Link>
@@ -229,7 +230,7 @@ export default function CareersHero() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <Building2 className="w-5 h-5 text-primary" />
+                <Building2 className="w-5 h-5 text-white" />
                 <div>
                   <div className="text-white font-medium text-sm">Crecimiento Profesional</div>
                   <div className="text-white/70 text-xs">Desarrollo continuo de carrera</div>
@@ -238,7 +239,7 @@ export default function CareersHero() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-primary" />
+                <MapPin className="w-5 h-5 text-white" />
                 <div>
                   <div className="text-white font-medium text-sm">Proyectos de Impacto</div>
                   <div className="text-white/70 text-xs">Infraestructura que transforma</div>
@@ -247,7 +248,7 @@ export default function CareersHero() {
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-primary" />
+                <Clock className="w-5 h-5 text-white" />
                 <div>
                   <div className="text-white font-medium text-sm">Balance Vida-Trabajo</div>
                   <div className="text-white/70 text-xs">Flexibilidad y bienestar</div>

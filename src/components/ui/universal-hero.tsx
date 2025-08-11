@@ -26,21 +26,12 @@ export default function UniversalHero({
   const backgroundRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const shadeRef = useRef<HTMLDivElement>(null);
-  const [typedTitle, setTypedTitle] = useState('');
+  // SIMPLIFICADO: Mostrar el título completo sin animación de escritura
+  // Para evitar loops infinitos en el blog
+  const [typedTitle, setTypedTitle] = useState(title);
   
-  // Efecto de escritura para el título
   useEffect(() => {
-    let charIndex = 0;
-    const typeWriter = setInterval(() => {
-      if (charIndex < title.length) {
-        setTypedTitle(title.slice(0, charIndex + 1));
-        charIndex++;
-      } else {
-        clearInterval(typeWriter);
-      }
-    }, 80);
-
-    return () => clearInterval(typeWriter);
+    setTypedTitle(title);
   }, [title]);
 
 

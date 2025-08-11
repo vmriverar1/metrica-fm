@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -128,7 +129,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                               <ul className="grid gap-2">
                                 {item.subItems.links.map((link) => (
                                   <li key={link.title}>
-                                    <a
+                                    <Link
                                       href={link.href}
                                       className="block select-none space-y-1 rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-white hover:translate-x-1 group"
                                       onClick={() => setActiveItem(null)}
@@ -139,7 +140,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                                           {link.description}
                                         </p>
                                       )}
-                                    </a>
+                                    </Link>
                                   </li>
                                 ))}
                               </ul>
@@ -180,7 +181,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                 )}
               </>
             ) : (
-              <a
+              <Link
                 href={item.href || `#${item.id}`}
                 className={cn(
                   navLinkClasses, 
@@ -189,7 +190,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                 )}
               >
                 {item.label}
-              </a>
+              </Link>
             )}
           </li>
         ))}

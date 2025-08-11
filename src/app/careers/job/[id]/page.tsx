@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
-import { use } from 'react';
 import { notFound } from 'next/navigation';
+import Header from '@/components/landing/header';
+import Footer from '@/components/landing/footer';
 import { CareersProvider } from '@/contexts/CareersContext';
 import { getJobPosting, sampleJobPostings } from '@/types/careers';
 import UniversalHero from '@/components/ui/universal-hero';
@@ -12,9 +13,9 @@ import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 
 interface JobPageProps {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
 }
 
 export async function generateStaticParams() {
@@ -24,8 +25,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: JobPageProps): Promise<Metadata> {
-  const resolvedParams = await params;
-  const job = getJobPosting(resolvedParams.id);
+  const job = getJobPosting(params.id);
   
   if (!job) {
     return {
@@ -67,8 +67,7 @@ export async function generateMetadata({ params }: JobPageProps): Promise<Metada
 }
 
 export default function JobPage({ params }: JobPageProps) {
-  const resolvedParams = use(params);
-  const job = getJobPosting(resolvedParams.id);
+  const job = getJobPosting(params.id);
 
   if (!job) {
     notFound();
@@ -95,9 +94,14 @@ export default function JobPage({ params }: JobPageProps) {
   return (
     <CareersProvider>
       <JobSEO job={job} />
+      <Header />
       
       <main className="min-h-screen bg-background">
-        <UniversalHero type="job" {...heroProps} />
+        <UniversalHero 
+          title={job.title}
+          subtitle={`${job.location.city}, ${job.location.region} • ${job.type} • ${job.level}`}
+          backgroundImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630"
+        />
         
         <SectionTransition variant="fade" />
         
@@ -144,6 +148,8 @@ export default function JobPage({ params }: JobPageProps) {
           }}
         />
       </main>
+      
+      <Footer />
     </CareersProvider>
   );
 }

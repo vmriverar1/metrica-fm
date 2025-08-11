@@ -38,6 +38,7 @@ export default function TimelineTransformWrapper() {
         scrub: 1,             // Sincronizado con scroll
         markers: false,
         id: 'shrink-timeline',
+        toggleActions: 'play none none reverse', // Asegura reversibilidad
         onUpdate: (self) => {
           console.log(`ScrollTrigger Progress: ${(self.progress * 100).toFixed(1)}%`);
         },
@@ -78,13 +79,13 @@ export default function TimelineTransformWrapper() {
       }
     });
     
-    // Hacer desaparecer el progress indicator al mismo tiempo
+    // Hacer desaparecer el progress indicator al mismo tiempo - con reversibilidad
     if (progressIndicator) {
       tl.to(progressIndicator, {
         opacity: 0,
         y: 20,
         duration: 0.5,
-        ease: 'power2.in'
+        ease: 'power2.inOut'
       }, 0);
     }
 

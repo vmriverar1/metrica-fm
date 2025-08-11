@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
-import { use } from 'react';
 import { notFound } from 'next/navigation';
+import Header from '@/components/landing/header';
+import Footer from '@/components/landing/footer';
 import { BlogProvider } from '@/contexts/BlogContext';
 import { getBlogPost, sampleBlogPosts } from '@/types/blog';
 import UniversalHero from '@/components/ui/universal-hero';
@@ -14,10 +15,10 @@ import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 
 interface ArticlePageProps {
-  params: Promise<{
+  params: {
     categoria: string;
     slug: string;
-  }>;
+  };
 }
 
 export async function generateStaticParams() {
@@ -28,8 +29,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = getBlogPost(resolvedParams.slug);
+  const post = getBlogPost(params.slug);
   
   if (!post) {
     return {
@@ -67,37 +67,24 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default function ArticlePage({ params }: ArticlePageProps) {
-  const resolvedParams = use(params);
-  const post = getBlogPost(resolvedParams.slug);
+  const post = getBlogPost(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const heroProps = {
-    title: post.title,
-    subtitle: post.excerpt,
-    backgroundImage: post.featuredImage,
-    breadcrumbs: [
-      { label: 'Blog', href: '/blog' },
-      { label: post.category, href: `/blog/${post.category}` },
-      { label: post.title }
-    ],
-    metadata: {
-      author: post.author.name,
-      publishDate: post.publishedAt,
-      readingTime: post.readingTime,
-      category: post.category
-    }
-  };
-
   return (
     <BlogProvider>
       <ArticleSEO article={post} />
       <ReadingProgress article={post} />
+      <Header />
       
       <main className="min-h-screen bg-background">
-        <UniversalHero type="article" {...heroProps} />
+        <UniversalHero 
+          title={post.title}
+          subtitle={post.excerpt}
+          backgroundImage={post.featuredImage}
+        />
         
         <SectionTransition variant="fade" />
         
@@ -129,6 +116,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </BlogProvider>
   );
 }

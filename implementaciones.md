@@ -452,6 +452,7 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
   - Solución: Componentes client-side con dynamic imports y ssr: false
   - ProcessMap, AuditDashboard y ClientBenefits convertidos a carga diferida
   - ISOContentWrapper creado como client component para manejo de dynamic imports
+- [2025-08-10] FASE 1 Cultura Visual: ValuesGallery implementada - Grid masonry con GSAP ScrollTrigger, efectos parallax, modal fullscreen, hover effects con íconos - Archivos: ValuesGallery.tsx, cultura/page.tsx
   - Corregido setTimeout/clearTimeout para usar window.setTimeout en useEffect
   - Agregada verificación typeof window === 'undefined' para compatibilidad SSR
   - Build exitoso ✅: Página /iso compila sin errores de hidratación

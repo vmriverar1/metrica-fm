@@ -41,7 +41,7 @@ export default function ArticleCard({
   };
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !isHovered) return;
+    if (!cardRef.current) return;
     
     // Cancel any pending animation frame
     if (rafRef.current) {
@@ -67,7 +67,7 @@ export default function ArticleCard({
       
       setMousePosition({ x: offsetX, y: offsetY });
     });
-  }, [isHovered]);
+  }, []);
 
   // Get category colors (blog theme)
   const getCategoryColor = (category: string) => {

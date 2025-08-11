@@ -5,7 +5,6 @@ import CareersHero from '@/components/careers/CareersHero';
 import CompanyBenefits from '@/components/careers/CompanyBenefits';
 import JobGrid from '@/components/careers/JobGrid';
 import CareerFilters from '@/components/careers/CareerFilters';
-import JobMatching from '@/components/careers/JobMatching';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import OptimizedLoading from '@/components/loading/OptimizedLoading';
@@ -22,14 +21,6 @@ export default function CareersContent() {
       <Suspense fallback={<OptimizedLoading type="careers" message="Cargando beneficios de la empresa..." />}>
         <CompanyBenefits />
       </Suspense>
-      
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <Suspense fallback={<OptimizedLoading type="careers" message="Analizando compatibilidad de perfil..." />}>
-            <JobMatching jobs={[]} />
-          </Suspense>
-        </div>
-      </section>
 
       <SectionTransition variant="slide" />
 

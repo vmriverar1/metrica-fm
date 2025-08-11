@@ -109,22 +109,23 @@ export default function JobCard({
   // List view rendering
   if (viewMode === 'list') {
     return (
-      <div
-        ref={cardRef}
-        className={cn(
-          "group flex gap-6 p-6 bg-card border border-border rounded-xl",
-          "hover:shadow-lg hover:border-primary/20 transition-all duration-300",
-          "cursor-pointer",
-          featured && "ring-2 ring-primary/20 ring-offset-2",
-          className
-        )}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onMouseMove={handleMouseMove}
-        style={{
-          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`
-        }}
-      >
+      <Link href={`/careers/job/${job.id}`} className="block">
+        <div
+          ref={cardRef}
+          className={cn(
+            "group flex gap-6 p-6 bg-card border border-border rounded-xl",
+            "hover:shadow-lg hover:border-primary/20 transition-all duration-300",
+            "cursor-pointer",
+            featured && "ring-2 ring-primary/20 ring-offset-2",
+            className
+          )}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
+          style={{
+            transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`
+          }}
+        >
         {/* Left Side - Main Info */}
         <div className="flex-1 space-y-3">
           <div className="flex items-start justify-between">
@@ -209,38 +210,38 @@ export default function JobCard({
             )}
           </div>
           
-          <Link href={`/careers/job/${job.id}`}>
-            <Button className="group-hover:bg-primary group-hover:text-white transition-colors">
-              Ver Detalles
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Button>
-          </Link>
+          <Button className="group-hover:bg-primary group-hover:text-white transition-colors">
+            Ver Detalles
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </Button>
         </div>
       </div>
+      </Link>
     );
   }
 
   // Grid/Masonry view rendering
   return (
-    <div
-      ref={cardRef}
-      className={cn(
-        "group relative bg-card border border-border rounded-xl overflow-hidden",
-        "hover:shadow-xl hover:border-primary/20 transition-all duration-500",
-        "cursor-pointer transform-gpu",
-        size === 'compact' && "h-80",
-        size === 'comfortable' && "h-96",
-        size === 'spacious' && "h-[28rem]",
-        featured && "ring-2 ring-primary/20 ring-offset-2",
-        className
-      )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-      style={{
-        transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) scale(${isHovered ? 1.02 : 1})`
-      }}
-    >
+    <Link href={`/careers/job/${job.id}`} className="block">
+      <div
+        ref={cardRef}
+        className={cn(
+          "group relative bg-card border border-border rounded-xl overflow-hidden",
+          "hover:shadow-xl hover:border-primary/20 transition-all duration-500",
+          "cursor-pointer transform-gpu",
+          size === 'compact' && "h-80",
+          size === 'comfortable' && "h-96",
+          size === 'spacious' && "h-[28rem]",
+          featured && "ring-2 ring-primary/20 ring-offset-2",
+          className
+        )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+        style={{
+          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) scale(${isHovered ? 1.02 : 1})`
+        }}
+      >
       {/* Header Section */}
       <div className="p-6 space-y-4">
         {/* Badges */}
@@ -348,12 +349,10 @@ export default function JobCard({
         </div>
 
         {/* Action Button */}
-        <Link href={`/careers/job/${job.id}`} className="block">
-          <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
-            Ver Detalles y Aplicar
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </Button>
-        </Link>
+        <Button className="w-full group-hover:bg-primary group-hover:text-white transition-colors">
+          Ver Detalles y Aplicar
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </Button>
       </div>
 
       {/* Hover Effect Glow */}
@@ -364,6 +363,7 @@ export default function JobCard({
           isHovered ? "opacity-100" : "opacity-0"
         )}
       />
-    </div>
+      </div>
+    </Link>
   );
 }

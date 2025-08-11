@@ -1,68 +1,10 @@
- ⚡ root@localhost  ~/proyectos/freelos/metrica   master ±  npm run build
-
-> nextn@0.1.0 build
-> next build
-
-   ▲ Next.js 15.3.3
-
-   Creating an optimized production build ...
- ⚠ Compiled with warnings in 4.0s
-
-./src/app/blog/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/blog/page.tsx
-
-./src/app/blog/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/blog/page.tsx
-
-./src/app/careers/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/careers/page.tsx
-
-./src/app/careers/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/careers/page.tsx
-
-./src/app/careers/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/careers/page.tsx
-
-./src/app/careers/page.tsx
-Attempted import error: 'OptimizedLoading' is not exported from '@/components/loading/OptimizedLoading' (imported as 'OptimizedLoading').
-
-Import trace for requested module:
-./src/app/careers/page.tsx
-
- ✓ Compiled successfully in 9.0s
-   Skipping validation of types
-   Skipping linting
- ✓ Collecting page data    
- ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
-Error occurred prerendering page "/careers/job/1". Read more: https://nextjs.org/docs/messages/prerender-error
-Error: Event handlers cannot be passed to Client Component props.
-  {job: ..., onApply: function onApply}
-                      ^^^^^^^^^^^^^^^^
-If you need interactivity, consider converting part of this to a Client Component.
-    at e$ (/root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:23404)
-    at Object.toJSON (/root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:14854)
-    at stringify (<anonymous>)
-    at eF (/root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26079)
-    at eq (/root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26391)
-    at ez (/root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:26887)
-    at /root/proyectos/freelos/metrica/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:17:14528
-    at node:internal/process/task_queues:151:7
-    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
-    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)
-Export encountered an error on /careers/job/[id]/page: /careers/job/1, exiting the build.
- ⨯ Next.js build worker exited with code: 1 and signal: null
+Error: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at createConsoleError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/errors/console-error.js:27:71)
+    at handleConsoleError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/errors/use-error-handler.js:47:54)
+    at console.error (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/globals/intercept-console-error.js:47:57)
+    at getRootForUpdatedFiber (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:3868:17)
+    at enqueueConcurrentHookUpdate (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:3821:14)
+    at dispatchSetStateInternal (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:8122:18)
+    at dispatchSetState (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:8082:7)
+    at FloatingParticles.useEffect (webpack-internal:///(app-pages-browser)/./src/components/portfolio/FloatingParticles.tsx:43:13)
+    at BlogPage (rsc://React/Server/webpack-internal:///(rsc)/./src/app/blog/page.tsx?83:121:100)

@@ -69,28 +69,28 @@ const ServiceCard = ({ service, index }: {
       }
     });
     
-    // Card entrance animation - increased stagger for better effect
+    // Card entrance animation - faster and more responsive
     tl.from(cardRef.current, {
-      y: 100,
+      y: 60,
       opacity: 0,
-      duration: 1,
-      delay: service.isMain ? 0 : index * 0.3,
+      duration: 0.6,
+      delay: service.isMain ? 0 : index * 0.1,
       ease: 'power3.out'
     })
     // Image animation
     .from(imageRef.current, {
-      scale: 1.3,
-      duration: 1.2,
+      scale: 1.2,
+      duration: 0.7,
       ease: 'power2.out'
-    }, '-=0.8')
+    }, '-=0.5')
     // Content animation
     .from(contentRef.current?.children || [], {
-      y: 30,
+      y: 20,
       opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
+      duration: 0.4,
+      stagger: 0.05,
       ease: 'power2.out'
-    }, '-=0.6');
+    }, '-=0.4');
     
     // Hover animations
     const hoverTl = gsap.timeline({ paused: true });
@@ -201,26 +201,26 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
       }
     });
     
-    // Main card special entrance
+    // Main card special entrance - faster
     tl.from(cardRef.current, {
-      scale: 0.8,
+      scale: 0.9,
       opacity: 0,
-      duration: 1.2,
+      duration: 0.7,
       ease: 'power3.out'
     })
     .from(imageRef.current, {
-      scale: 1.5,
-      opacity: 0,
-      duration: 1.5,
-      ease: 'power2.out'
-    }, '-=1')
-    .from(contentRef.current?.children || [], {
-      x: -50,
+      scale: 1.3,
       opacity: 0,
       duration: 0.8,
-      stagger: 0.15,
+      ease: 'power2.out'
+    }, '-=0.6')
+    .from(contentRef.current?.children || [], {
+      x: -30,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.08,
       ease: 'power3.out'
-    }, '-=0.8');
+    }, '-=0.5');
     
     // Special hover for main card
     const hoverTl = gsap.timeline({ paused: true });

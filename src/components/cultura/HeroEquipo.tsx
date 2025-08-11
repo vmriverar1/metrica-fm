@@ -15,7 +15,7 @@ const teamImages = [
   // Columna 1
   [
     'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1494790108755-2616b332e234?w=500&h=700&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=face',
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face',
   ],
   // Columna 2

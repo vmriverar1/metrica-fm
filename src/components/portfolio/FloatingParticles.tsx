@@ -20,9 +20,13 @@ interface FloatingParticlesProps {
   animated?: boolean;
 }
 
+// Valores por defecto constantes para evitar recreación
+const DEFAULT_COLORS = ['#E84E0F', '#003F6F', '#ffffff'];
+const DEFAULT_COUNT = 20;
+
 export default function FloatingParticles({
-  count = 20,
-  colors = ['#E84E0F', '#003F6F', '#ffffff'],
+  count = DEFAULT_COUNT,
+  colors = DEFAULT_COLORS,
   className = '',
   animated = true
 }: FloatingParticlesProps) {
@@ -30,7 +34,7 @@ export default function FloatingParticles({
   const [particles, setParticles] = useState<Particle[]>([]);
   const particleRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Generate particles
+  // Generate particles - solo una vez al montar el componente
   useEffect(() => {
     const generateParticles = (): Particle[] => {
       return Array.from({ length: count }, (_, i) => ({
@@ -45,7 +49,7 @@ export default function FloatingParticles({
     };
 
     setParticles(generateParticles());
-  }, [count, colors]);
+  }, []); // Array vacío para ejecutar solo una vez
 
   // Animate particles
   useEffect(() => {

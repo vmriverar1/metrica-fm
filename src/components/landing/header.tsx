@@ -11,7 +11,7 @@ import './header.css';
 import MegaMenu from '@/components/megamenu';
 
 const navItems = [
-  { id: 'hero', label: 'Inicio', subItems: null },
+  { id: 'hero', label: 'Inicio', href: '/', subItems: null },
   { 
     id: 'about', 
     label: 'Nosotros',
