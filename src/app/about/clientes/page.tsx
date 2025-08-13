@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
 import UniversalHero from '@/components/ui/universal-hero';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
+
+export const metadata: Metadata = {
+  title: 'Nuestros Clientes | Métrica DIP',
+  description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos.',
+};
 
 export default function ClientesPage() {
   return (

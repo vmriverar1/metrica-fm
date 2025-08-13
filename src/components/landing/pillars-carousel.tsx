@@ -166,7 +166,7 @@ export default function PillarsCarousel() {
   };
 
   return (
-    <section ref={sectionRef} id="pillars" className="relative bg-background overflow-hidden">
+    <section ref={sectionRef} id="pillars" className="relative bg-background overflow-hidden h-screen">
       <div className="py-24">
         {/* Header */}
         <div className="container mx-auto px-4 mb-16 text-center">
@@ -240,7 +240,7 @@ export default function PillarsCarousel() {
                   </div>
 
                   {/* Contenido */}
-                  <div className="card-text p-6">
+                  <div className="card-text">
                     <div className="flex items-center gap-3 mb-4">
                       <div 
                         className="p-2 rounded-full bg-white/20"
@@ -283,7 +283,7 @@ export default function PillarsCarousel() {
         }
 
         .pillars-swiper .swiper-slide {
-          height: auto;
+          height: 45vh !important;
           opacity: 1;
           transition: opacity 0.5s ease;
           will-change: transform;
@@ -295,6 +295,9 @@ export default function PillarsCarousel() {
           transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
         }
 
         .card::before {
@@ -336,11 +339,15 @@ export default function PillarsCarousel() {
           position: relative;
           border-radius: 0.75rem 0.75rem 0 0;
           overflow: hidden;
+          flex: 1;
+          min-height: 0;
         }
 
         .card-text {
           background: rgba(29, 29, 27, 0.95);
           border-radius: 0 0 0.75rem 0.75rem;
+          flex-shrink: 0;
+          padding: 1.5rem;
         }
 
         @media (max-width: 821px) {
