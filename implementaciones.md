@@ -482,3 +482,4 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
 - [2025-01-15] Removed ProcessMap, ISOMetrics and AuditDashboard sections from ISO page - Modified: ISOContent.tsx
 - [2025-01-15] Fixed all button actions and added section IDs for navigation in ISO page - Modified: ISOContent.tsx, ISOHero.tsx, QualityPolicy.tsx, ClientBenefits.tsx
 - [2025-08-13] Eliminados todos los breadcrumbs de toda la web - Modified: universal-hero.tsx, BlogHero.tsx, CareersHero.tsx, services/page.tsx, careers/job/[id]/page.tsx, careers/profile/page.tsx, careers/apply/[id]/page.tsx, JobSEO.tsx, ArticleSEO.tsx, ServiceSchema.tsx
+- [2025-08-13] Cards con altura fija 60vh usando CSS puro - distribución flexbox imagen/texto - Modified: pillars-carousel.tsx, policies-carousel.tsx
