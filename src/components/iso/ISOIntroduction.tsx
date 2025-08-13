@@ -200,22 +200,22 @@ export default function ISOIntroduction() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Card className="bg-foreground text-background">
+              <Card className="bg-gradient-to-br from-[#E84E0F] to-[#D63D0A] border-none shadow-lg">
                 <CardContent className="p-6 text-center">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="text-3xl font-bold text-primary">
+                      <div className="text-3xl font-bold text-white">
                         7
                       </div>
-                      <div className="text-sm opacity-80">
+                      <div className="text-sm text-white/90">
                         Años Certificados
                       </div>
                     </div>
                     <div>
-                      <div className="text-3xl font-bold text-primary">
+                      <div className="text-3xl font-bold text-white">
                         100%
                       </div>
-                      <div className="text-sm opacity-80">
+                      <div className="text-sm text-white/90">
                         Conformidad Auditorías
                       </div>
                     </div>
@@ -226,92 +226,6 @@ export default function ISOIntroduction() {
           </motion.div>
         </div>
 
-        {/* Benefits Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold mb-4">
-              Beneficios para Nuestros Clientes
-            </h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              La certificación ISO 9001 se traduce en ventajas concretas para cada proyecto que gestionamos
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                whileHover={{ y: -5 }}
-                className="group"
-              >
-                <Card className="h-full bg-background border-2 border-transparent hover:border-primary/20 transition-all duration-300 hover:shadow-lg">
-                  <CardContent className="p-6 text-center">
-                    <div className="mb-4">
-                      <div className={cn(
-                        "w-16 h-16 mx-auto rounded-full flex items-center justify-center transition-all duration-300",
-                        "bg-muted group-hover:bg-primary/10"
-                      )}>
-                        <benefit.icon className={cn("w-8 h-8 transition-colors duration-300", benefit.color)} />
-                      </div>
-                    </div>
-                    
-                    <h4 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">
-                      {benefit.title}
-                    </h4>
-                    
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {benefit.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-16"
-        >
-          <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 inline-block">
-            <CardContent className="p-8">
-              <h4 className="text-xl font-semibold mb-4">
-                ¿Quieres conocer más sobre nuestros procesos de calidad?
-              </h4>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  className="bg-primary hover:bg-primary/90"
-                  onClick={() => {
-                    document.getElementById('process-map')?.scrollIntoView({ 
-                      behavior: 'smooth' 
-                    });
-                  }}
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Ver Procesos de Calidad
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-                <Button variant="outline">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Descargar Política de Calidad
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </section>
   );

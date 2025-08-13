@@ -260,7 +260,7 @@ export default function MomentsMosaic() {
   };
 
   return (
-    <section ref={containerRef} className="py-20 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+    <section ref={containerRef} className="py-20 bg-gradient-to-br from-[#003F6F] via-[#002A4D] to-[#001A33]">
       <style jsx>{`
         .line-clamp-2 {
           display: -webkit-box;
@@ -271,19 +271,14 @@ export default function MomentsMosaic() {
       `}</style>
       <div className="container mx-auto max-w-7xl px-4">
         
-        {/* Título */}
+        {/* Separador visual sin título repetido */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Mosaico de Momentos
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Una galería visual que captura la esencia de nuestra cultura empresarial
-          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#E84E0F] to-[#003F6F] mx-auto rounded-full"></div>
         </motion.div>
 
         {/* Filtros visuales */}

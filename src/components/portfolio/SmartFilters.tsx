@@ -91,7 +91,11 @@ interface SearchSuggestion {
   count?: number;
 }
 
-export default function SmartFilters() {
+interface SmartFiltersProps {
+  showOnlyButtons?: boolean;
+}
+
+export default function SmartFilters({ showOnlyButtons = false }: SmartFiltersProps = {}) {
   const { allProjects, filteredProjects, filters, setFilters, searchProjects } = usePortfolio();
   const [activeSmartFilters, setActiveSmartFilters] = useState<string[]>([]);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -222,6 +226,42 @@ export default function SmartFilters() {
     return recommendations;
   };
 
+  // Si solo queremos mostrar botones, devolver solo eso
+  if (showOnlyButtons) {
+    return (
+      <>
+        {smartFilters.map(filter => (
+          <motion.button
+            key={filter.id}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => toggleSmartFilter(filter.id)}
+            className={cn(
+              "relative overflow-hidden rounded-full px-4 py-2 transition-all",
+              activeSmartFilters.includes(filter.id)
+                ? "text-white shadow-lg"
+                : "bg-muted hover:bg-muted/80"
+            )}
+          >
+            {activeSmartFilters.includes(filter.id) && (
+              <div 
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-r",
+                  filter.color
+                )} 
+              />
+            )}
+            <div className="relative flex items-center gap-2">
+              {filter.icon}
+              <span className="text-sm font-medium">{filter.label}</span>
+            </div>
+          </motion.button>
+        ))}
+      </>
+    );
+  }
+
+  // Componente completo normal
   return (
     <div className="space-y-6">
       {/* Enhanced Search Bar */}
@@ -379,14 +419,11 @@ export default function SmartFilters() {
       </AnimatePresence>
 
       {/* Active Filters Summary */}
-      {(activeSmartFilters.length > 0 || filters.searchTerm) && (
+      {activeSmartFilters.length > 0 && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Mostrando {filteredProjects.length} proyectos</span>
-          {activeSmartFilters.length > 0 && (
-            <span className="text-accent">
-              con {activeSmartFilters.length} filtro(s) activo(s)
-            </span>
-          )}
+          <span className="text-accent">
+            {activeSmartFilters.length} filtro(s) inteligente(s) activo(s)
+          </span>
         </div>
       )}
     </div>

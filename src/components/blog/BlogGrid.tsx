@@ -191,8 +191,11 @@ export default function BlogGrid({ className }: BlogGridProps) {
               viewMode === 'masonry' && "mb-6"
             )}
             style={{
+              animationName: 'fadeInUp',
+              animationDuration: '0.6s',
+              animationTimingFunction: 'ease-out',
+              animationFillMode: 'forwards',
               animationDelay: `${index * 50}ms`,
-              animation: 'fadeInUp 0.6s ease-out forwards',
               opacity: 0
             }}
           >

@@ -1031,3 +1031,17 @@ strong, b, .font-bold {
       box-shadow: none !important;
     }
   }
+
+  /* Grid igual heights para careers */
+  .grid-auto-rows-fr {
+    grid-auto-rows: 1fr;
+  }
+
+  /* Forzar altura mínima uniforme en tarjetas de trabajo */
+  [data-job-card] > a > div {
+    min-height: 420px;
+  }
+  
+  [data-job-card] {
+    height: 100%;
+  }

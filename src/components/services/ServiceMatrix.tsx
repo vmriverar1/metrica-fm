@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, 
@@ -162,6 +162,62 @@ export default function ServiceMatrix() {
   const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const { trackServiceClick, trackCTAClick } = useServiceInteractionTracking();
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const equalizeCardHeights = () => {
+    if (!gridRef.current) return;
+
+    const cards = gridRef.current.querySelectorAll('[data-service-card]');
+    const cardArray = Array.from(cards) as HTMLElement[];
+    
+    if (cardArray.length === 0) return;
+
+    // Reset heights
+    cardArray.forEach(card => {
+      card.style.height = 'auto';
+    });
+
+    // Get grid computed style to determine columns
+    const gridStyles = window.getComputedStyle(gridRef.current);
+    const gridTemplateColumns = gridStyles.gridTemplateColumns;
+    const columnCount = gridTemplateColumns.split(' ').length;
+
+    // Group cards by rows
+    const rows: HTMLElement[][] = [];
+    for (let i = 0; i < cardArray.length; i += columnCount) {
+      rows.push(cardArray.slice(i, i + columnCount));
+    }
+
+    // Set equal heights for each row
+    rows.forEach(row => {
+      const maxHeight = Math.max(
+        ...row.map(card => card.offsetHeight)
+      );
+      row.forEach(card => {
+        card.style.height = `${maxHeight}px`;
+      });
+    });
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      equalizeCardHeights();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [services]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const timer = setTimeout(() => {
+        equalizeCardHeights();
+      }, 100);
+      return () => clearTimeout(timer);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -193,7 +249,7 @@ export default function ServiceMatrix() {
           </div>
 
           {/* Service Grid - Responsive Matrix */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {services.map((service, index) => (
               <motion.div
                 key={service.id}
@@ -204,10 +260,11 @@ export default function ServiceMatrix() {
                 viewport={{ once: true }}
                 onHoverStart={() => setHoveredService(service.id)}
                 onHoverEnd={() => setHoveredService(null)}
+                data-service-card
               >
                 <div 
                   className={cn(
-                    "relative min-h-80 rounded-2xl p-6 cursor-pointer transition-all duration-500",
+                    "relative min-h-80 rounded-2xl p-6 cursor-pointer transition-all duration-500 h-full",
                     "bg-card border border-border flex flex-col",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-2",
                     "group-hover:border-primary/20"

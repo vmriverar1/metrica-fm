@@ -2,8 +2,21 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
+import { Button } from '@/components/ui/button';
+import { ChevronRight } from 'lucide-react';
+
+interface ButtonProps {
+  text: string;
+  href: string;
+}
+
+
+interface MetadataProps {
+  stats?: string[];
+}
 
 interface UniversalHeroProps {
   title: string;
@@ -12,6 +25,9 @@ interface UniversalHeroProps {
   backgroundImage?: string;
   overlay?: boolean;
   className?: string;
+  primaryButton?: ButtonProps;
+  secondaryButton?: ButtonProps;
+  metadata?: MetadataProps;
 }
 
 export default function UniversalHero({ 
@@ -20,7 +36,10 @@ export default function UniversalHero({
   description,
   backgroundImage = 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
   overlay = true,
-  className = ''
+  className = '',
+  primaryButton,
+  secondaryButton,
+  metadata
 }: UniversalHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -134,6 +153,7 @@ export default function UniversalHero({
       )}
 
 
+
       {/* Contenido principal centrado */}
       <div className="absolute inset-0 w-full h-full flex items-center justify-center" style={{ zIndex: 5 }}>
         <div 
@@ -168,6 +188,38 @@ export default function UniversalHero({
             <p className="max-w-5xl mx-auto text-xl md:text-2xl text-white/90 font-bold border-t border-white/20 pt-4 mt-4">
               {subtitle}
             </p>
+          )}
+
+          {/* Buttons */}
+          {(primaryButton || secondaryButton) && (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+              {primaryButton && (
+                <Button size="lg" asChild className="px-8">
+                  <Link href={primaryButton.href}>
+                    {primaryButton.text}
+                    <ChevronRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              )}
+              {secondaryButton && (
+                <Button variant="outline" size="lg" asChild className="px-8 border-white text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-foreground">
+                  <Link href={secondaryButton.href}>
+                    {secondaryButton.text}
+                  </Link>
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* Stats */}
+          {metadata?.stats && (
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-8 border-t border-white/20">
+              {metadata.stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl font-bold text-white">{stat}</div>
+                </div>
+              ))}
+            </div>
           )}
 
           {/* Año de fondo sutil */}

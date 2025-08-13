@@ -42,20 +42,13 @@ export default function ApplyPage({ params }: ApplyPageProps) {
   const heroProps = {
     title: `Aplicar a ${job.title}`,
     subtitle: `${job.location.city}, ${job.location.region} • ${job.type} • ${job.level}`,
-    backgroundImage: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=630',
-    breadcrumbs: [
-      { label: 'Carreras', href: '/careers' },
-      { label: job.category, href: `/careers/${job.category}` },
-      { label: job.title, href: `/careers/job/${job.id}` },
-      { label: 'Aplicar' }
-    ],
-    showScrollIndicator: false
+    backgroundImage: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=630'
   };
 
   return (
     <CareersProvider>
       <main className="min-h-screen bg-background">
-        <UniversalHero type="application" {...heroProps} />
+        <UniversalHero {...heroProps} />
         
         <SectionTransition variant="fade" />
         

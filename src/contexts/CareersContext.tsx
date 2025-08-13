@@ -35,6 +35,7 @@ interface CareersContextType {
   filterByTags: (tags: string[]) => void;
   toggleFeatured: () => void;
   toggleUrgent: () => void;
+  clearFilters: () => void;
   
   // Computed values
   uniqueCategories: JobCategory[];
@@ -325,6 +326,21 @@ export function CareersProvider({ children }: CareersProviderProps) {
     setFilters(prev => ({ ...prev, urgent: !prev.urgent }));
   }, []);
 
+  const clearFilters = useCallback(() => {
+    setFilters({
+      searchTerm: '',
+      category: 'all',
+      location: 'all',
+      type: 'all',
+      level: 'all',
+      salaryRange: { min: 0, max: 50000 },
+      remote: null,
+      tags: [],
+      featured: false,
+      urgent: false
+    });
+  }, []);
+
   const contextValue: CareersContextType = {
     // Data
     allJobs,
@@ -348,6 +364,7 @@ export function CareersProvider({ children }: CareersProviderProps) {
     filterByTags,
     toggleFeatured,
     toggleUrgent,
+    clearFilters,
     
     // Computed values
     uniqueCategories,

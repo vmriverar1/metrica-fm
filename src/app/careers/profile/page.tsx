@@ -13,18 +13,13 @@ export default function ProfilePage() {
   const heroProps = {
     title: 'Mi Dashboard',
     subtitle: 'Seguimiento de aplicaciones y oportunidades recomendadas',
-    backgroundImage: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&h=630',
-    breadcrumbs: [
-      { label: 'Carreras', href: '/careers' },
-      { label: 'Mi Perfil' }
-    ],
-    showScrollIndicator: false
+    backgroundImage: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&h=630'
   };
 
   return (
     <CareersProvider>
       <main className="min-h-screen bg-background">
-        <UniversalHero type="profile" {...heroProps} />
+        <UniversalHero {...heroProps} />
         
         <SectionTransition variant="fade" />
         

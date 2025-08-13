@@ -208,14 +208,6 @@ export default function CareersHero() {
             </Button>
           </div>
 
-          {/* Breadcrumbs */}
-          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-white/70">
-            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
-            <span>/</span>
-            <Link href="/nosotros" className="hover:text-white transition-colors">Nosotros</Link>
-            <span>/</span>
-            <span className="text-white">Bolsa de Trabajo</span>
-          </div>
 
           {/* Año de fondo sutil */}
           <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 text-8xl lg:text-9xl font-alliance-extrabold text-white/5 pointer-events-none select-none -z-10">

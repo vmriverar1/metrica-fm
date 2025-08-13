@@ -2,10 +2,8 @@ import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 import HeroEquipo from '@/components/cultura/HeroEquipo';
 import ValuesGallery from '@/components/cultura/ValuesGallery';
-import TeamTimeline from '@/components/cultura/TeamTimeline';
+import TeamAndMoments from '@/components/cultura/TeamAndMoments';
 import CultureShowcase from '@/components/cultura/Culture3DSpace';
-import MomentsMosaic from '@/components/cultura/MomentsMosaic';
-import WorkflowGuide from '@/components/cultura/DNACanvas';
 import TechInnovationHub from '@/components/cultura/TechInnovationHub';
 
 export default function CulturaPage() {
@@ -23,17 +21,11 @@ export default function CulturaPage() {
         {/* FASE 1: Galería Inmersiva de Valores */}
         <ValuesGallery />
         
-        {/* FASE 2: Timeline Visual del Equipo */}
-        <TeamTimeline />
-        
-        {/* FASE 3: Cultura en Números */}
+        {/* FASE 2: Cultura en Números */}
         <CultureShowcase />
         
-        {/* FASE 4: Mosaico de Momentos */}
-        <MomentsMosaic />
-        
-        {/* FASE 5: Guía Visual del Proceso de Trabajo */}
-        <WorkflowGuide />
+        {/* FASE 3: Equipo y Momentos Unificados */}
+        <TeamAndMoments />
         
         {/* FASE 6: Centro de Innovación Tecnológica */}
         <TechInnovationHub />

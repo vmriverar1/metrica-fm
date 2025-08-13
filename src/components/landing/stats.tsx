@@ -92,7 +92,7 @@ export default function Stats() {
   const sectionRef = useSectionAnimation();
   
   return (
-    <section ref={sectionRef} className="relative -mt-[100px] z-30 overflow-hidden">
+    <section id="stats" ref={sectionRef} className="relative -mt-[100px] z-30 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="w-[80vw] md:w-[65vw] mx-auto">
           <div className="bg-white rounded-2xl p-6 md:p-8 border border-border/10">

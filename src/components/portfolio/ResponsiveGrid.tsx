@@ -4,6 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { usePortfolio } from '@/contexts/PortfolioContext';
 import ProjectCard from './ProjectCard';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Grid3X3, LayoutGrid, List, ChevronDown, Maximize } from 'lucide-react';
+import { ProjectCategory } from '@/types/portfolio';
 
 type ViewMode = 'grid' | 'masonry' | 'list';
 type GridSize = 'compact' | 'comfortable' | 'spacious';
@@ -13,7 +22,7 @@ interface ResponsiveGridProps {
 }
 
 export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
-  const { filteredProjects } = usePortfolio();
+  const { filteredProjects, filters, filterByCategory } = usePortfolio();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -101,63 +110,131 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
 
   const gridConfig = getGridConfig();
 
+  // Get view mode configuration
+  const getViewModeConfig = (mode: ViewMode) => {
+    switch (mode) {
+      case 'grid':
+        return { icon: <LayoutGrid className="w-4 h-4" />, label: 'Cuadrícula' };
+      case 'masonry':
+        return { icon: <Grid3X3 className="w-4 h-4" />, label: 'Mosaico' };
+      case 'list':
+        return { icon: <List className="w-4 h-4" />, label: 'Lista' };
+      default:
+        return { icon: <LayoutGrid className="w-4 h-4" />, label: 'Cuadrícula' };
+    }
+  };
+
+  // Get grid size configuration
+  const getGridSizeConfig = (size: GridSize) => {
+    switch (size) {
+      case 'compact':
+        return { icon: <Maximize className="w-4 h-4 scale-75" />, label: 'Compacto' };
+      case 'comfortable':
+        return { icon: <Maximize className="w-4 h-4" />, label: 'Cómodo' };
+      case 'spacious':
+        return { icon: <Maximize className="w-4 h-4 scale-125" />, label: 'Espacioso' };
+      default:
+        return { icon: <Maximize className="w-4 h-4" />, label: 'Cómodo' };
+    }
+  };
+
   // Render controls for non-mobile devices
   const renderControls = () => {
     if (deviceType === 'mobile') return null;
 
+    const currentViewMode = getViewModeConfig(viewMode);
+    const currentGridSize = getGridSizeConfig(gridSize);
+
+    // Configuración de categorías
+    const categories = [
+      { value: 'all', label: 'Todos' },
+      { value: ProjectCategory.OFICINA, label: 'Oficina' },
+      { value: ProjectCategory.RETAIL, label: 'Retail' },
+      { value: ProjectCategory.INDUSTRIA, label: 'Industria' },
+      { value: ProjectCategory.HOTELERIA, label: 'Hotelería' },
+      { value: ProjectCategory.EDUCACION, label: 'Educación' },
+      { value: ProjectCategory.VIVIENDA, label: 'Vivienda' },
+      { value: ProjectCategory.SALUD, label: 'Salud' }
+    ];
+
     return (
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-muted/30 rounded-lg">
-        {/* View Mode Controls */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Vista:</span>
-          <div className="flex bg-background rounded-md p-1">
-            {(['grid', 'masonry', 'list'] as ViewMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setViewMode(mode)}
-                className={cn(
-                  "px-3 py-1 text-xs font-medium rounded transition-colors",
-                  viewMode === mode
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {mode === 'grid' && 'Cuadrícula'}
-                {mode === 'masonry' && 'Mosaico'}
-                {mode === 'list' && 'Lista'}
-              </button>
-            ))}
-          </div>
+      <div className="flex items-center justify-between gap-6 mb-6">
+        {/* Categorías a la izquierda */}
+        <div className="flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <Button
+              key={category.value}
+              variant={filters.category === category.value ? "default" : "outline"}
+              size="sm"
+              onClick={() => filterByCategory(category.value as ProjectCategory | 'all')}
+              className="text-sm"
+            >
+              {category.label}
+            </Button>
+          ))}
         </div>
 
-        {/* Grid Size Controls */}
-        {viewMode !== 'masonry' && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground">Tamaño:</span>
-            <div className="flex bg-background rounded-md p-1">
-              {(['compact', 'comfortable', 'spacious'] as GridSize[]).map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setGridSize(size)}
+        {/* Controles de vista a la derecha */}
+        <div className="flex items-center gap-3">
+        {/* View Mode Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              {currentViewMode.icon}
+              {currentViewMode.label}
+              <ChevronDown className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            {(['grid', 'masonry', 'list'] as ViewMode[]).map((mode) => {
+              const config = getViewModeConfig(mode);
+              return (
+                <DropdownMenuItem
+                  key={mode}
+                  onClick={() => setViewMode(mode)}
                   className={cn(
-                    "px-3 py-1 text-xs font-medium rounded transition-colors",
-                    gridSize === size
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                    "flex items-center gap-2 cursor-pointer",
+                    viewMode === mode && "bg-primary/10"
                   )}
                 >
-                  {size === 'compact' && 'Compacto'}
-                  {size === 'comfortable' && 'Cómodo'}
-                  {size === 'spacious' && 'Espacioso'}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+                  {config.icon}
+                  <span>{config.label}</span>
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-        {/* Results count */}
-        <div className="text-sm text-muted-foreground">
-          {filteredProjects.length} proyecto{filteredProjects.length !== 1 ? 's' : ''}
+        {/* Grid Size Dropdown - Only show for grid and list modes */}
+        {viewMode !== 'masonry' && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                {currentGridSize.icon}
+                {currentGridSize.label}
+                <ChevronDown className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-36">
+              {(['compact', 'comfortable', 'spacious'] as GridSize[]).map((size) => {
+                const config = getGridSizeConfig(size);
+                return (
+                  <DropdownMenuItem
+                    key={size}
+                    onClick={() => setGridSize(size)}
+                    className={cn(
+                      "flex items-center gap-2 cursor-pointer",
+                      gridSize === size && "bg-primary/10"
+                    )}
+                  >
+                    {config.icon}
+                    <span>{config.label}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
         </div>
       </div>
     );

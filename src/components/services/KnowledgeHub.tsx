@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   BookOpen, 
@@ -390,15 +391,23 @@ export default function KnowledgeHub() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg"
-                  onClick={() => window.location.href = '/blog'}
-                  className="px-8"
+                  className="px-8 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  asChild
                 >
-                  Explorar Blog Completo
+                  <Link href="/blog">
+                    Explorar Blog Completo
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
                 <Button 
                   variant="outline"
                   size="lg"
                   className="px-8"
+                  onClick={() => {
+                    document.getElementById('contact-form')?.scrollIntoView({ 
+                      behavior: 'smooth' 
+                    });
+                  }}
                 >
                   Suscribirse al Newsletter
                 </Button>
@@ -425,8 +434,8 @@ export default function KnowledgeHub() {
         </div>
 
         {/* Background Elements */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
       </section>
     </>
   );

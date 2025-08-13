@@ -126,7 +126,7 @@ export default function TimelineTransformWrapper() {
       onLeaveBack: () => {
         console.log('>>> RESTORE TRIGGER: Saliendo del timeline hacia arriba');
       },
-      markers: true,
+      markers: false,
       id: 'restore-progress-indicator'
     });
 

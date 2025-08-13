@@ -45,73 +45,49 @@ export default function PortfolioPage() {
           {/* Featured Projects Section */}
           <FeaturedProjects />
           
-          {/* Enhanced Filters Section */}
-          <section className="py-8 px-4 border-b">
-            <div className="container mx-auto">
-              <div className="flex flex-col lg:flex-row gap-6">
-                {/* Smart Filters on the left */}
-                <div className="lg:w-2/3">
-                  <SmartFilters />
-                </div>
-                
-                {/* View Mode Selector on the right */}
-                <div className="lg:w-1/3">
-                  <div className="bg-card border rounded-xl p-4">
-                    <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-accent" />
-                      Modo de Vista
-                    </h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {viewOptions.map(option => (
-                        <button
-                          key={option.id}
-                          onClick={() => setActiveView(option.id as any)}
-                          className={cn(
-                            "flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                            activeView === option.id
-                              ? "bg-accent text-white shadow-lg"
-                              : "bg-muted hover:bg-muted/80"
-                          )}
-                        >
-                          {option.icon}
-                          <span>{option.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Original Filter Bar */}
-              <div className="mt-6">
-                <ProjectFilter />
-              </div>
-            </div>
-          </section>
-          
           {/* Dynamic Content Based on View */}
-          <section className="py-12">
+          <section className="pt-4 pb-16">
             <div className="container mx-auto px-4">
               {activeView === 'grid' && (
-                <div className="space-y-8">
+                <div className="space-y-3">
+                  <ProjectFilter 
+                    viewOptions={viewOptions}
+                    activeView={activeView}
+                    onViewChange={setActiveView}
+                  />
                   <ProjectGrid />
                 </div>
               )}
               
               {activeView === 'timeline' && (
-                <div className="space-y-8">
+                <div className="space-y-3">
+                  <ProjectFilter 
+                    viewOptions={viewOptions}
+                    activeView={activeView}
+                    onViewChange={setActiveView}
+                  />
                   <ProjectTimeline />
                 </div>
               )}
               
               {activeView === 'map' && (
-                <div className="space-y-8">
+                <div className="space-y-3">
+                  <ProjectFilter 
+                    viewOptions={viewOptions}
+                    activeView={activeView}
+                    onViewChange={setActiveView}
+                  />
                   <MapSection />
                 </div>
               )}
               
               {activeView === 'stats' && (
-                <div className="space-y-8">
+                <div className="space-y-3">
+                  <ProjectFilter 
+                    viewOptions={viewOptions}
+                    activeView={activeView}
+                    onViewChange={setActiveView}
+                  />
                   <DataVisualization />
                 </div>
               )}

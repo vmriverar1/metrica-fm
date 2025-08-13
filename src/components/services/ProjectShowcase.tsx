@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, 
@@ -168,11 +168,67 @@ const filters = [
 export default function ProjectShowcase() {
   const [activeFilter, setActiveFilter] = useState('todos');
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filteredProjects = projects.filter(project => {
     const filter = filters.find(f => f.id === activeFilter);
     return !filter?.serviceType || project.serviceType === filter.serviceType;
   });
+
+  const equalizeCardHeights = () => {
+    if (!gridRef.current) return;
+
+    const cards = gridRef.current.querySelectorAll('[data-project-card]');
+    const cardArray = Array.from(cards) as HTMLElement[];
+    
+    if (cardArray.length === 0) return;
+
+    // Reset heights
+    cardArray.forEach(card => {
+      card.style.height = 'auto';
+    });
+
+    // Get grid computed style to determine columns
+    const gridStyles = window.getComputedStyle(gridRef.current);
+    const gridTemplateColumns = gridStyles.gridTemplateColumns;
+    const columnCount = gridTemplateColumns.split(' ').length;
+
+    // Group cards by rows
+    const rows: HTMLElement[][] = [];
+    for (let i = 0; i < cardArray.length; i += columnCount) {
+      rows.push(cardArray.slice(i, i + columnCount));
+    }
+
+    // Set equal heights for each row
+    rows.forEach(row => {
+      const maxHeight = Math.max(
+        ...row.map(card => card.offsetHeight)
+      );
+      row.forEach(card => {
+        card.style.height = `${maxHeight}px`;
+      });
+    });
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      equalizeCardHeights();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [filteredProjects]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const timer = setTimeout(() => {
+        equalizeCardHeights();
+      }, 100);
+      return () => clearTimeout(timer);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -249,6 +305,7 @@ export default function ProjectShowcase() {
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeFilter}
+              ref={gridRef}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -264,9 +321,10 @@ export default function ProjectShowcase() {
                   className="group relative"
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
+                  data-project-card
                 >
                   <div className={cn(
-                    "relative bg-card rounded-2xl overflow-hidden shadow-lg transition-all duration-500",
+                    "relative bg-card rounded-2xl overflow-hidden shadow-lg transition-all duration-500 h-full flex flex-col",
                     "hover:shadow-2xl hover:-translate-y-2 cursor-pointer",
                     "border border-border hover:border-primary/20"
                   )}>
@@ -318,8 +376,8 @@ export default function ProjectShowcase() {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
-                      <div className="space-y-4">
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="space-y-4 flex-1 flex flex-col">
                         {/* Title & Category */}
                         <div>
                           <Badge variant="outline" className="text-xs mb-2">
@@ -358,7 +416,7 @@ export default function ProjectShowcase() {
                         </div>
 
                         {/* Achievements */}
-                        <div className="space-y-2">
+                        <div className="space-y-2 flex-1">
                           <div className="text-xs font-medium text-foreground">Logros destacados:</div>
                           <div className="flex flex-wrap gap-1">
                             {project.achievements.slice(0, 2).map((achievement, idx) => (
@@ -375,7 +433,7 @@ export default function ProjectShowcase() {
                         </div>
 
                         {/* CTA */}
-                        <div className="pt-4 border-t border-border">
+                        <div className="pt-4 border-t border-border mt-auto">
                           <Button 
                             variant="ghost" 
                             size="sm" 

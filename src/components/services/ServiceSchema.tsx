@@ -113,23 +113,6 @@ export default function ServiceSchema() {
     "description": "Servicios especializados en gestión, consultoría y supervisión de proyectos de infraestructura en Perú",
     "url": "https://metrica-dip.com/services",
     "mainEntity": servicesSchema,
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Inicio",
-          "item": "https://metrica-dip.com"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Servicios",
-          "item": "https://metrica-dip.com/services"
-        }
-      ]
-    },
     "about": {
       "@type": "Organization",
       "name": "Métrica DIP"

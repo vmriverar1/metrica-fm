@@ -3,9 +3,7 @@ import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import UniversalHero from '@/components/ui/universal-hero';
 import ServiceMatrix from '@/components/services/ServiceMatrix';
-import ValuePropsCanvas from '@/components/services/ValuePropsCanvas';
 import ProjectShowcase from '@/components/services/ProjectShowcase';
-import KnowledgeHub from '@/components/services/KnowledgeHub';
 import SmartContactForm from '@/components/services/SmartContactForm';
 import ServiceAnalytics from '@/components/services/ServiceAnalytics';
 import ServiceSchema from '@/components/services/ServiceSchema';
@@ -54,10 +52,6 @@ export default function ServicesPage() {
             title="Transformamos Ideas en Impacto"
             subtitle="15+ años liderando proyectos de infraestructura que transforman el Perú"
             backgroundImage="https://metrica-dip.com/images/slider-inicio-es/02.jpg"
-            breadcrumbs={[
-              { label: 'Inicio', href: '/' },
-              { label: 'Servicios' }
-            ]}
             metadata={{
               stats: [
                 'S/ 2.5B+ Gestionados',
@@ -76,9 +70,7 @@ export default function ServicesPage() {
           />
           
           <ServiceMatrix />
-          <ValuePropsCanvas />
           <ProjectShowcase />
-          <KnowledgeHub />
           <SmartContactForm />
           
           {/* Analytics and Performance Monitoring */}

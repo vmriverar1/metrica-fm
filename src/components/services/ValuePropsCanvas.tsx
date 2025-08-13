@@ -152,7 +152,7 @@ export default function ValuePropsCanvas() {
                 className="group relative"
               >
                 <div className={cn(
-                  "relative h-80 rounded-2xl p-8 transition-all duration-500",
+                  "relative h-96 rounded-2xl p-8 transition-all duration-500 flex flex-col",
                   "bg-card border-2 cursor-pointer",
                   "hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]",
                   prop.bgColor,
@@ -160,7 +160,7 @@ export default function ValuePropsCanvas() {
                 )}>
                   {/* Icon Container */}
                   <div className={cn(
-                    "relative z-10 mb-6 p-4 rounded-xl transition-all duration-300",
+                    "mb-6 p-4 rounded-xl transition-all duration-300 w-fit",
                     "bg-white/80 shadow-sm",
                     prop.color,
                     "group-hover:scale-110 group-hover:shadow-lg"
@@ -169,8 +169,8 @@ export default function ValuePropsCanvas() {
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-10 space-y-4">
-                    <div>
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex-1">
                       <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                         {prop.title}
                       </h3>
@@ -180,7 +180,7 @@ export default function ValuePropsCanvas() {
                           variant="secondary" 
                           className={cn(
                             "text-lg font-bold px-3 py-1.5",
-                            prop.color.replace('text-', 'text-'),
+                            prop.color,
                             "bg-white/90"
                           )}
                         >
@@ -188,18 +188,18 @@ export default function ValuePropsCanvas() {
                         </Badge>
                       </div>
 
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
                         {prop.description}
                       </p>
                     </div>
 
                     {/* Proof Link */}
-                    <div className="absolute bottom-6 left-8 right-8">
+                    <div className="mt-4 pt-4">
                       <Button
                         variant="ghost"
                         size="sm"
                         className={cn(
-                          "w-full opacity-0 group-hover:opacity-100 transition-all duration-300",
+                          "w-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0",
                           "hover:bg-primary hover:text-primary-foreground",
                           "text-xs"
                         )}

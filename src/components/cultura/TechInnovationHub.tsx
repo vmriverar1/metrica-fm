@@ -241,7 +241,7 @@ export default function TechInnovationHub() {
   };
 
   return (
-    <section ref={containerRef} className="py-20 bg-primary">
+    <section ref={containerRef} className="py-20 bg-white">
       <div className="container mx-auto max-w-7xl px-4">
         
         {/* Título principal */}
@@ -256,7 +256,7 @@ export default function TechInnovationHub() {
               Centro de Innovación Tecnológica
             </span>
           </h2>
-          <p className="text-xl text-primary-foreground/80 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
             Las tecnologías de vanguardia que aplicamos para revolucionar la industria de la construcción
           </p>
         </motion.div>

@@ -279,16 +279,23 @@ const HeroTransform = () => {
                 </p>
                 
                 <div ref={heroCTARef} className="hero-cta">
-                  <Link href="#stats">
-                    <Button 
-                      size="lg" 
-                      className="group relative overflow-hidden bg-primary text-white hover:bg-primary/90"
-                    >
-                      Descubre DIP
-                      <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 group-hover:animate-shine" />
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    className="group relative overflow-hidden bg-primary text-white hover:bg-primary/90"
+                    onClick={() => {
+                      const statsSection = document.getElementById('stats');
+                      if (statsSection) {
+                        statsSection.scrollIntoView({ 
+                          behavior: 'smooth',
+                          block: 'start'
+                        });
+                      }
+                    }}
+                  >
+                    Descubre DIP
+                    <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 group-hover:animate-shine" />
+                  </Button>
                 </div>
               </div>
             </div>

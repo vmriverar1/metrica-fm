@@ -341,6 +341,14 @@ export default function TimelineHorizontal() {
         />
       </div>
 
+      {/* Overlay oscuro cuando el panel está abierto */}
+      {showPanel && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] transition-opacity duration-300"
+          onClick={() => setShowPanel(false)}
+        />
+      )}
+
       {/* Panel lateral con información detallada */}
       {hitos.map((hito, index) => (
         <HitoPanel
@@ -348,6 +356,7 @@ export default function TimelineHorizontal() {
           isActive={index === activeIndex && showPanel}
           hitoData={hitosExtendidos[hito.id as keyof typeof hitosExtendidos]}
           color={index % 2 === 0 ? '#E84E0F' : '#003F6F'}
+          onClose={() => setShowPanel(false)}
         />
       ))}
     </section>

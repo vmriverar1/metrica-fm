@@ -226,11 +226,22 @@ export default function QualityPolicy() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button className="bg-primary hover:bg-primary/90">
+                  <Button 
+                    className="bg-primary hover:bg-primary/90"
+                    onClick={() => window.open('/documents/politica-calidad-metrica-dip.pdf', '_blank')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Descargar PDF
                   </Button>
-                  <Button variant="outline">
+                  <Button 
+                    variant="outline"
+                    onClick={() => {
+                      const element = document.querySelector('.policy-content');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                  >
                     <Eye className="w-4 h-4 mr-2" />
                     Ver Completa
                   </Button>
@@ -246,7 +257,7 @@ export default function QualityPolicy() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-20"
+          className="mb-20 policy-content"
         >
           <Card className="border-l-4 border-l-primary bg-gradient-to-r from-primary/5 to-transparent">
             <CardContent className="p-8">
@@ -282,208 +293,6 @@ export default function QualityPolicy() {
           </Card>
         </motion.div>
 
-        {/* Commitments Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold mb-4">Nuestros Compromisos</h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Seis pilares fundamentales que definen nuestra cultura de calidad y excelencia operativa
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {commitments.map((commitment, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                onMouseEnter={() => setExpandedCommitment(index)}
-                onMouseLeave={() => setExpandedCommitment(null)}
-                className="group"
-              >
-                <Card className={cn(
-                  "h-full border-2 transition-all duration-300 cursor-pointer",
-                  "hover:shadow-lg hover:border-primary/30",
-                  expandedCommitment === index && "border-primary/50 shadow-lg"
-                )}>
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className={cn(
-                          "flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300",
-                          expandedCommitment === index ? "bg-primary text-primary-foreground" : commitment.bgColor
-                        )}>
-                          <commitment.icon className={cn(
-                            "w-6 h-6 transition-colors duration-300",
-                            expandedCommitment === index ? "text-primary-foreground" : commitment.color
-                          )} />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className={cn(
-                            "font-semibold text-lg mb-2 transition-colors duration-300",
-                            expandedCommitment === index ? "text-primary" : "text-foreground"
-                          )}>
-                            {commitment.title}
-                          </h4>
-                        </div>
-                      </div>
-                      
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {commitment.description}
-                      </p>
-
-                      <AnimatePresence>
-                        {expandedCommitment === index && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="pt-4 border-t border-border"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs text-muted-foreground">Estado:</span>
-                              <Badge className="bg-green-100 text-green-800 border-green-200">
-                                <CheckCircle2 className="w-3 h-3 mr-1" />
-                                Activo
-                              </Badge>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Quality Objectives */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-20"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold mb-4">Objetivos de Calidad 2024</h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Metas cuantificables que demuestran nuestro compromiso con la excelencia operativa
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {objectives.map((objective, index) => (
-              <motion.div
-                key={objective.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-              >
-                <Card className="h-full border-l-4 border-l-green-500 bg-gradient-to-r from-green-50 to-transparent">
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-semibold text-lg text-foreground">
-                          {objective.title}
-                        </h4>
-                        <Badge className="bg-green-100 text-green-800 border-green-200">
-                          <CheckCircle2 className="w-3 h-3 mr-1" />
-                          Logrado
-                        </Badge>
-                      </div>
-                      
-                      <p className="text-sm text-muted-foreground">
-                        {objective.description}
-                      </p>
-
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Meta:</span>
-                          <span className="text-sm font-semibold text-primary">{objective.target}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Actual:</span>
-                          <span className="text-lg font-bold text-green-600">{objective.current}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Policy Structure */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mb-16"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold mb-4">Estructura del Documento</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Resumen de las secciones principales de nuestra política de calidad
-            </p>
-          </div>
-
-          <Card className="max-w-4xl mx-auto">
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {policyStructure.map((section, index) => (
-                  <div key={index} className="border-b border-border last:border-b-0 pb-4 last:pb-0">
-                    <motion.div
-                      className="flex items-start gap-4 cursor-pointer"
-                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
-                      whileHover={{ x: 5 }}
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mt-1">
-                        {expandedSection === index ? (
-                          <ChevronDown className="w-4 h-4 text-primary" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4 text-primary" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-lg text-foreground mb-2 hover:text-primary transition-colors">
-                          {section.section}
-                        </h4>
-                        <AnimatePresence>
-                          {expandedSection === index && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <p className="text-muted-foreground leading-relaxed">
-                                {section.content}
-                              </p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
         {/* CTA Section */}
         <motion.div
@@ -510,11 +319,21 @@ export default function QualityPolicy() {
                   <Button 
                     size="lg" 
                     className="bg-primary hover:bg-primary/90"
+                    onClick={() => window.open('/documents/politica-calidad-metrica-dip.pdf', '_blank')}
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Descargar Política Completa
                   </Button>
-                  <Button variant="outline" size="lg">
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={() => {
+                      const element = document.getElementById('introduccion');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                  >
                     <Shield className="w-4 h-4 mr-2" />
                     Ver Sistema de Gestión
                     <ArrowRight className="w-4 h-4 ml-2" />

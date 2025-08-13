@@ -455,7 +455,30 @@ Este archivo registra todas las implementaciones, cambios y mejoras realizadas e
 - [2025-08-10] FASE 1 Cultura Visual: ValuesGallery implementada - Grid masonry con GSAP ScrollTrigger, efectos parallax, modal fullscreen, hover effects con íconos - Archivos: ValuesGallery.tsx, cultura/page.tsx
 - [2025-01-27] Hero text width: Aumentado ancho horizontal en universal-hero para títulos y subtítulos - Modified: universal-hero.tsx
 - [2025-01-27] Navigation loading: Implementado loader para navegación en menú y cards con NavigationLink component - Modified: layout.tsx, NavigationLink.tsx, useNavigationLoading.ts, LoadingProvider.tsx, megamenu.tsx, ArticleCard.tsx, header.tsx
+- [2025-01-27] Landing page buttons: Agregada funcionalidad a botones no funcionales - Modified: newsletter.tsx, portfolio.tsx, services.tsx, footer.tsx
+- [2025-08-12] Completada reorganización SmartFilters: separé input (Filtros Inteligentes) de botones (Filtros Adicionales) - Modified: SmartFilters.tsx, ProjectFilter.tsx
+- [2025-08-12] Eliminada separación visual entre filtros básicos y galería: integrados en misma sección, solo filtros avanzados se separan - Modified: page.tsx, ProjectFilter.tsx
+- [2025-08-12] Reubicados botones SmartFilters a fila principal junto a "Filtros avanzados" y reducido espaciado general - Modified: ProjectFilter.tsx, page.tsx
+- [2025-08-12] Reubicados botones de categorías (Todos, Oficina, etc.) a la fila de controles Vista/Tamaño en galería - Modified: ResponsiveGrid.tsx, ProjectFilter.tsx
+- [2025-08-12] Reducido espaciado entre filtros y galería de space-y-6 a space-y-3 para mejor flujo visual - Modified: page.tsx
+- [2025-08-12] Ajustado padding sección galería: py-6 → pt-4 pb-16 (menos espacio arriba, más abajo) - Modified: page.tsx
+- [2025-08-12] Solucionado problema de alturas desiguales en tarjetas careers: CSS Grid auto-rows + flex h-full - Modified: JobGrid.tsx, JobCard.tsx, globals.css
+- [2025-08-12] Corregidos todos los botones y anclas en página careers: agregada función clearFilters, IDs de navegación, enlaces validados - Modified: CareersContext.tsx, JobGrid.tsx, CareersContent.tsx, CareersHero.tsx
+- [2025-08-12] Mejorada UX timeline página historia: overlay oscuro, botón X, z-index correcto para panel lateral - Modified: TimelineHorizontal.tsx, HitoPanel.tsx
+- [2025-08-12] Corregido z-index del panel lateral: z-[9999] para estar definitivamente por encima del menú - Modified: HitoPanel.tsx, TimelineHorizontal.tsx
+- [2025-08-12] Agregado padding-top al panel lateral para evitar ocultamiento del contenido detrás del header fijo - Modified: HitoPanel.tsx
+- [2025-08-12] Reemplazadas imágenes problemáticas en página cultura por nuevas URLs de Unsplash - Modified: TeamAndMoments.tsx
+- [2025-08-12] Corregidas proporciones de imágenes en grid de cultura: cambiado a aspect-ratio y grid-flow-dense para eliminar huecos - Modified: TeamAndMoments.tsx
+- [2025-08-12] Eliminada sección "Nuestro Proceso de Trabajo" y componente DNACanvas.tsx innecesario - Modified: page.tsx, deleted DNACanvas.tsx
+- [2025-08-12] Cambiado fondo de sección "Centro de Innovación Tecnológica" de azul a blanco - Modified: TechInnovationHub.tsx
+- [2025-08-12] Eliminada línea divisoria entre filtros y galería de blog, y removido texto repetido "artículos encontrados" - Modified: BlogFilters.tsx
+- [2025-08-12] Corregido error de sintaxis en BlogFilters.tsx simplificando className - Modified: BlogFilters.tsx
+- [2025-08-12] Corregido conflicto animation/animationDelay en BlogGrid: separadas propiedades shorthand - Modified: BlogGrid.tsx
   - Corregido setTimeout/clearTimeout para usar window.setTimeout en useEffect
   - Agregada verificación typeof window === 'undefined' para compatibilidad SSR
   - Build exitoso ✅: Página /iso compila sin errores de hidratación
   - Archivos: ProcessMap.tsx, ISOContent.tsx, ISOContentWrapper.tsx, iso/page.tsx
+- [2025-01-15] Removed Timeline and QualitySystem sections from ISO page - Modified: ISOContent.tsx
+- [2025-01-15] Removed ProcessMap, ISOMetrics and AuditDashboard sections from ISO page - Modified: ISOContent.tsx
+- [2025-01-15] Fixed all button actions and added section IDs for navigation in ISO page - Modified: ISOContent.tsx, ISOHero.tsx, QualityPolicy.tsx, ClientBenefits.tsx
+- [2025-08-13] Eliminados todos los breadcrumbs de toda la web - Modified: universal-hero.tsx, BlogHero.tsx, CareersHero.tsx, services/page.tsx, careers/job/[id]/page.tsx, careers/profile/page.tsx, careers/apply/[id]/page.tsx, JobSEO.tsx, ArticleSEO.tsx, ServiceSchema.tsx

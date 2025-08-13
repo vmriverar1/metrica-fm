@@ -222,13 +222,13 @@ export default function JobCard({
 
   // Grid/Masonry view rendering
   return (
-    <Link href={`/careers/job/${job.id}`} className="block">
+    <Link href={`/careers/job/${job.id}`} className="block h-full">
       <div
         ref={cardRef}
         className={cn(
           "group relative bg-card border border-border rounded-xl overflow-hidden",
           "hover:shadow-xl hover:border-primary/20 transition-all duration-500",
-          "cursor-pointer transform-gpu flex flex-col h-auto",
+          "cursor-pointer transform-gpu flex flex-col h-full",
           featured && "ring-2 ring-primary/20 ring-offset-2",
           className
         )}

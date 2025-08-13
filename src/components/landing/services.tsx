@@ -11,6 +11,7 @@ import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 import ParallaxWrapper from '@/components/parallax-wrapper';
 import CanvasParticles from '@/components/canvas-particles';
 import TiltCard from '@/components/tilt-card';
+import NavigationLink from '@/components/ui/NavigationLink';
 
 const mainService = {
   title: 'Dirección Integral de Proyectos (DIP)',
@@ -120,19 +121,20 @@ const ServiceCard = ({ service, index }: {
   
   return (
     <div ref={cardRef} className="h-full">
-      <TiltCard 
-        className="h-full"
-        maxTilt={10}
-        scale={1.02}
-      >
-        <Card 
-          className={cn(
-            'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full liquid-distortion',
-            service.isMain ? service.className : 'bg-card'
-          )}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+      <NavigationLink href="/services" loadingMessage="Navegando a Servicios...">
+        <TiltCard 
+          className="h-full"
+          maxTilt={10}
+          scale={1.02}
         >
+          <Card 
+            className={cn(
+              'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full liquid-distortion cursor-pointer',
+              service.isMain ? service.className : 'bg-card'
+            )}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
           {/* Canvas particles overlay */}
           <CanvasParticles 
             isActive={isHovered}
@@ -180,6 +182,7 @@ const ServiceCard = ({ service, index }: {
           </div>
         </Card>
       </TiltCard>
+      </NavigationLink>
     </div>
   );
 };
@@ -245,10 +248,11 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
   
   return (
     <div ref={cardRef} className="h-full">
-      <Card className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full',
-        service.className
-      )}>
+      <NavigationLink href="/services" loadingMessage="Navegando a Servicios...">
+        <Card className={cn(
+          'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full cursor-pointer',
+          service.className
+        )}>
         <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow">
           <h3 className="title-section text-3xl mb-4 text-white">
             {service.title}
@@ -271,6 +275,7 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
           />
         </div>
       </Card>
+      </NavigationLink>
     </div>
   );
 };

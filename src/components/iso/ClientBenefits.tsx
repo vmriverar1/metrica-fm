@@ -553,11 +553,19 @@ export default function ClientBenefits() {
                 certificación ISO 9001 para sus proyectos más importantes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button 
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90"
+                  onClick={() => window.open('/contact', '_blank')}
+                >
                   <Building2 className="w-4 h-4 mr-2" />
                   Solicitar Propuesta
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => window.open('/portfolio', '_blank')}
+                >
                   <Eye className="w-4 h-4 mr-2" />
                   Ver Casos de Éxito
                   <ArrowRight className="w-4 h-4 ml-2" />

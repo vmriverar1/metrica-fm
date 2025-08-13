@@ -91,7 +91,7 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
                           filters.searchQuery;
 
   return (
-    <div className={cn("bg-background/95 backdrop-blur-sm border-b border-border sticky top-20 z-40", className)}>
+    <div className="bg-background/95 backdrop-blur-sm sticky top-20 z-40">
       <div className="container mx-auto px-4 py-6">
         <div className="space-y-6">
           {/* Main Filters Row */}
@@ -190,17 +190,8 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
             </div>
           )}
 
-          {/* Results and Clear Filters */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              {postCount} {postCount === 1 ? 'artículo encontrado' : 'artículos encontrados'}
-              {hasActiveFilters && (
-                <span className="ml-2">
-                  con filtros activos
-                </span>
-              )}
-            </div>
-
+          {/* Clear Filters */}
+          <div className="flex justify-end">
             {hasActiveFilters && (
               <Button
                 variant="ghost"

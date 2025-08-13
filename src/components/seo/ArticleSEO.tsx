@@ -94,32 +94,6 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         "primaryImageOfPage": {
           "@id": `${url}#primaryimage`
         },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Blog",
-              "item": "https://metricadip.com/blog"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": article.category === 'industria-tendencias' ? 'Industria & Tendencias' :
-                      article.category === 'casos-estudio' ? 'Casos de Estudio' :
-                      article.category === 'guias-tecnicas' ? 'Guías Técnicas' :
-                      'Liderazgo & Visión',
-              "item": `https://metricadip.com/blog/${article.category}`
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": article.title,
-              "item": url
-            }
-          ]
-        },
         "isPartOf": {
           "@type": "WebSite",
           "@id": "https://metricadip.com#website"

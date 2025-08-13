@@ -77,11 +77,6 @@ export default function JobPage({ params }: JobPageProps) {
     title: job.title,
     subtitle: `${job.location.city}, ${job.location.region} • ${job.type} • ${job.level}`,
     backgroundImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630',
-    breadcrumbs: [
-      { label: 'Carreras', href: '/careers' },
-      { label: job.category, href: `/careers/${job.category}` },
-      { label: job.title }
-    ],
     metadata: {
       location: `${job.location.city}, ${job.location.region}`,
       type: job.type,

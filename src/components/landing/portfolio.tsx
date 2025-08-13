@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import NavigationLink from '@/components/ui/NavigationLink';
 import {
   Carousel,
   CarouselContent,
@@ -551,18 +552,23 @@ export default function Portfolio() {
                                             >
                                                 {project.description}
                                             </p>
-                                            <Button 
-                                                variant="outline" 
-                                                className={cn(
-                                                    "bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-700",
-                                                    current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                                                )}
-                                                style={{
-                                                    transitionDelay: current === index ? '900ms' : '0ms'
-                                                }}
+                                            <NavigationLink 
+                                                href="/portfolio"
+                                                loadingMessage="Cargando portafolio completo..."
                                             >
-                                                Ver más detalles
-                                            </Button>
+                                                <Button 
+                                                    variant="outline" 
+                                                    className={cn(
+                                                        "bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-700",
+                                                        current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                                    )}
+                                                    style={{
+                                                        transitionDelay: current === index ? '900ms' : '0ms'
+                                                    }}
+                                                >
+                                                    Ver más detalles
+                                                </Button>
+                                            </NavigationLink>
                                         </div>
                                     </div>
                             </CarouselItem>

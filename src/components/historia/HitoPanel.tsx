@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, X } from 'lucide-react';
 
 interface HitoExtendido {
   longDescription: string;
@@ -19,9 +19,10 @@ interface HitoPanelProps {
   isActive: boolean;
   hitoData: HitoExtendido;
   color: string;
+  onClose?: () => void;
 }
 
-export default function HitoPanel({ isActive, hitoData, color }: HitoPanelProps) {
+export default function HitoPanel({ isActive, hitoData, color, onClose }: HitoPanelProps) {
   const [currentImage, setCurrentImage] = useState(0);
 
   const nextImage = () => {
@@ -35,8 +36,16 @@ export default function HitoPanel({ isActive, hitoData, color }: HitoPanelProps)
   if (!isActive) return null;
 
   return (
-    <div className="fixed right-0 top-0 h-screen w-[500px] bg-background/95 backdrop-blur-lg border-l border-border transform translate-x-0 transition-transform duration-500 z-40">
-      <div className="h-full overflow-y-auto p-8">
+    <div className="fixed right-0 top-0 h-screen w-[500px] bg-background/95 backdrop-blur-lg border-l border-border transform translate-x-0 transition-transform duration-500 z-[9999]">
+      <div className="h-full overflow-y-auto px-8 pb-8 pt-32">
+        {/* Botón de cerrar */}
+        <button
+          onClick={onClose}
+          className="absolute top-24 right-4 w-8 h-8 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-background/90 transition-colors z-10"
+          aria-label="Cerrar panel"
+        >
+          <X className="w-4 h-4" />
+        </button>
         {/* Descripción extendida */}
         <div className="mb-8">
           <h3 className="text-2xl font-alliance-extrabold mb-4" style={{ color }}>

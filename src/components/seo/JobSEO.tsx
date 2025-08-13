@@ -122,29 +122,6 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         "description": job.description,
         "datePublished": postedDate,
         "dateModified": postedDate,
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Carreras",
-              "item": "https://metricadip.com/careers"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": getJobCategoryLabel(job.category),
-              "item": `https://metricadip.com/careers/${job.category}`
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": job.title,
-              "item": url
-            }
-          ]
-        },
         "isPartOf": {
           "@type": "WebSite",
           "@id": "https://metricadip.com#website"
