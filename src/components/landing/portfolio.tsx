@@ -429,30 +429,135 @@ export default function Portfolio() {
     
     // Animaciones móviles
     mm.add("(max-width: 767px)", () => {
-      gsap.from('.portfolio-title', {
+      // Animaciones de entrada móvil
+      gsap.from(titleRef.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 90%',
+          start: 'top 80%',
+          toggleActions: 'play none none reverse'
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out'
+      });
+      
+      gsap.from(subtitleRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
           toggleActions: 'play none none reverse'
         },
         y: 50,
         opacity: 0,
         duration: 0.8,
-        ease: 'power3.out'
-      });
-      
-      gsap.from('.portfolio-subtitle', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
         delay: 0.2,
         ease: 'power3.out'
       });
+      
+      gsap.from(carouselWrapperRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power3.out'
+      });
+      
+      // Verificar si todos los refs están disponibles
+      if (!carouselWrapperRef.current || !sectionRef.current || !titleRef.current || !subtitleRef.current) {
+        return;
+      }
+      
+      // ScrollTrigger para mobile expansion
+      const expansionTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: carouselWrapperRef.current,
+          start: "center center",
+          end: "+=200%",
+          pin: sectionRef.current,
+          pinSpacing: true,
+          scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            if (sectionRef.current) {
+              if (progress >= 0.3) {
+                if (!sectionRef.current.classList.contains('overlay-orange-in')) {
+                  sectionRef.current.classList.add('overlay-orange-in');
+                  sectionRef.current.classList.remove('overlay-orange-out');
+                }
+              } else if (progress < 0.3) {
+                if (sectionRef.current.classList.contains('overlay-orange-in')) {
+                  sectionRef.current.classList.remove('overlay-orange-in');
+                  sectionRef.current.classList.add('overlay-orange-out');
+                }
+              }
+            }
+          }
+        }
+      });
+      
+      // Animación de expansión móvil
+      expansionTl
+        .to([titleRef.current, subtitleRef.current], {
+          opacity: 0,
+          y: -20,
+          duration: 0.15,
+          ease: 'power3.in'
+        }, 0)
+        .to(carouselWrapperRef.current, {
+          width: '100vw',
+          height: '100vh',
+          marginLeft: () => {
+            const carousel = carouselWrapperRef.current;
+            if (!carousel) return 0;
+            const rect = carousel.getBoundingClientRect();
+            return -(window.innerWidth - rect.width) / 2;
+          },
+          marginTop: () => {
+            const carousel = carouselWrapperRef.current;
+            if (!carousel) return 0;
+            const rect = carousel.getBoundingClientRect();
+            return -(window.innerHeight - rect.height) / 2;
+          },
+          borderRadius: 0,
+          duration: 0.25,
+          ease: 'power2.inOut',
+          onStart: () => {
+            if (carouselWrapperRef.current) {
+              gsap.set(carouselWrapperRef.current, { zIndex: 9999 });
+            }
+          }
+        }, 0.15)
+        .to('.project-card', {
+          height: '100vh',
+          duration: 0.15,
+          ease: 'power2.inOut'
+        }, 0.15)
+        .set({}, {}, "+=0.3")
+        .to('.project-card', {
+          height: '70vh',
+          duration: 0.1,
+          ease: 'power2.out'
+        }, 0.7)
+        .to(carouselWrapperRef.current, {
+          width: '90vw',
+          height: '70vh',
+          marginLeft: () => -(window.innerWidth * 0.9 - (carouselWrapperRef.current?.getBoundingClientRect().width || 0)) / 2,
+          marginTop: () => -(window.innerHeight * 0.7 - (carouselWrapperRef.current?.getBoundingClientRect().height || 0)) / 2,
+          borderRadius: '0.5rem',
+          duration: 0.1,
+          ease: 'power2.out'
+        }, 0.7)
+        .to([titleRef.current, subtitleRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.2,
+          ease: 'power2.out'
+        }, 0.8);
     });
     
   }, { scope: containerRef });

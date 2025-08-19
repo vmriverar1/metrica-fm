@@ -1,0 +1,219 @@
+{
+  "page": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Soluciones integrales para cada etapa de tu proyecto",
+    "hero_image": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
+    "hero_image_fallback": "/img/services-hero.jpg",
+    "description": "Ofrecemos un portafolio completo de servicios especializados en dirección integral de proyectos, diseñados para asegurar el éxito de proyectos de infraestructura de cualquier escala y complejidad.",
+    "url": "/services"
+  },
+  "introduction": {
+    "text": "En Métrica DIP, entendemos que cada proyecto es único y requiere un enfoque personalizado. Nuestros servicios están diseñados para adaptarse a las necesidades específicas de cada cliente, desde la conceptualización hasta la entrega final.",
+    "value_proposition": "Nos convertimos en tu socio estratégico, aportando experiencia, metodología y tecnología para garantizar que tu proyecto se ejecute con excelencia, puntualidad y dentro del presupuesto establecido."
+  },
+  "service_philosophy": {
+    "title": "Nuestra Filosofía de Servicio",
+    "principles": [
+      {
+        "title": "Cliente Primero",
+        "description": "Cada decisión que tomamos tiene como prioridad los intereses y objetivos de nuestro cliente."
+      },
+      {
+        "title": "Excelencia Técnica",
+        "description": "Aplicamos los más altos estándares técnicos y las mejores prácticas internacionales."
+      },
+      {
+        "title": "Transparencia Total",
+        "description": "Comunicación clara, reportes detallados y acceso completo a la información del proyecto."
+      },
+      {
+        "title": "Innovación Continua",
+        "description": "Adoptamos las últimas tecnologías y metodologías para optimizar resultados."
+      }
+    ]
+  },
+  "main_service": {
+    "dip": {
+      "title": "Dirección Integral de Proyectos (DIP)",
+      "subtitle": "El Servicio Principal que Define Nuestra Excelencia",
+      "icon": "Building2",
+      "color": "#E84E0F",
+      "featured": true,
+      "overview": {
+        "description": "La Dirección Integral de Proyectos es nuestro servicio insignia, donde actuamos como el cerebro estratégico y operativo de tu proyecto. Nos convertimos en tus ojos, oídos y representantes técnicos, asumiendo la responsabilidad completa de coordinar, supervisar y dirigir todas las actividades para garantizar el éxito del proyecto.",
+        "key_value": "No somos solo consultores, somos tu socio estratégico que asume la responsabilidad del éxito de tu proyecto.",
+        "differentiator": "Mientras otros supervisan, nosotros dirigimos. Mientras otros reportan, nosotros resolvemos. Mientras otros consultan, nosotros ejecutamos."
+      },
+      "pillars": [
+        {
+          "id": 1,
+          "name": "Planificación Estratégica",
+          "description": "Definimos la hoja de ruta para el éxito, optimizando plazos y recursos desde el inicio.",
+          "tools": ["MS Project", "Primavera P6", "BIM 4D/5D"],
+          "outcomes": ["Cronograma optimizado", "Recursos balanceados", "Riesgos identificados"]
+        },
+        {
+          "id": 2,
+          "name": "Coordinación Multidisciplinaria",
+          "description": "Integramos equipos de diseño, construcción y fiscalización para una ejecución sin fisuras.",
+          "tools": ["BIM 360", "Aconex", "Slack Teams"],
+          "outcomes": ["Comunicación fluida", "Decisiones ágiles", "Cero interferencias"]
+        },
+        {
+          "id": 3,
+          "name": "Supervisión Técnica",
+          "description": "Garantizamos que cada etapa cumpla con los más altos estándares de ingeniería.",
+          "tools": ["Drones de inspección", "IoT sensors", "Mobile reporting"],
+          "outcomes": ["Calidad garantizada", "Cumplimiento normativo", "Cero reprocesos"]
+        },
+        {
+          "id": 4,
+          "name": "Control de Calidad y Costos",
+          "description": "Implementamos control riguroso de materiales y eficiencia presupuestaria.",
+          "tools": ["SAP", "Cost control dashboards", "Material tracking"],
+          "outcomes": ["Presupuesto optimizado", "Materiales certificados", "Costos bajo control"]
+        },
+        {
+          "id": 5,
+          "name": "Gestión de Riesgos",
+          "description": "Identificamos y mitigamos proactivamente los riesgos del proyecto.",
+          "tools": ["Risk assessment matrices", "Monte Carlo simulation", "Contingency planning"],
+          "outcomes": ["Riesgos mitigados", "Contingencias planificadas", "Proyecto protegido"]
+        },
+        {
+          "id": 6,
+          "name": "Representación del Cliente",
+          "description": "Actuamos como tus ojos y oídos, defendiendo tus intereses en cada decisión.",
+          "tools": ["Executive dashboards", "Real-time reporting", "Decision matrices"],
+          "outcomes": ["Intereses protegidos", "Decisiones informadas", "Transparencia total"]
+        }
+      ],
+      "benefits": {
+        "quantitative": [
+          {
+            "metric": "Reducción de Tiempos",
+            "value": "15-25%",
+            "description": "Optimización de cronogramas mediante planificación estratégica"
+          },
+          {
+            "metric": "Ahorro en Costos", 
+            "value": "8-15%",
+            "description": "Control riguroso y optimización de recursos"
+          },
+          {
+            "metric": "Reducción de Riesgos",
+            "value": "80%",
+            "description": "Identificación temprana y mitigación proactiva"
+          },
+          {
+            "metric": "Satisfacción del Cliente",
+            "value": "98%",
+            "description": "Basado en encuestas post-proyecto"
+          }
+        ],
+        "qualitative": [
+          "Tranquilidad total para el inversionista",
+          "Comunicación transparente y continua",
+          "Equipo técnico especializado y experimentado",
+          "Metodología probada en 200+ proyectos",
+          "Garantía de calidad respaldada por ISO 9001",
+          "Acceso a tecnología de vanguardia"
+        ]
+      }
+    }
+  },
+  "additional_services": {
+    "pmo": {
+      "title": "Gerencia de Proyectos (PMO)",
+      "description": "Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia organizacional.",
+      "scope": [
+        "Establecimiento de metodologías de gestión",
+        "Implementación de herramientas de control",
+        "Capacitación de equipos internos",
+        "Reporting ejecutivo y dashboards"
+      ]
+    },
+    "supervision": {
+      "title": "Supervisión de Obras",
+      "description": "Vigilancia técnica y administrativa para que la construcción se ejecute según los planos, especificaciones y normativas vigentes.",
+      "scope": [
+        "Supervisión técnica especializada",
+        "Control de calidad de materiales",
+        "Seguimiento de cronogramas",
+        "Verificación de cumplimiento normativo"
+      ]
+    },
+    "contracts": {
+      "title": "Gestión de Contratos",
+      "description": "Administramos los contratos de obra para prevenir conflictos y asegurar el cumplimiento de todas las obligaciones contractuales.",
+      "scope": [
+        "Administración contractual integral",
+        "Gestión de cambios y adicionales",
+        "Resolución de disputas",
+        "Optimización de términos contractuales"
+      ]
+    },
+    "quality": {
+      "title": "Control de Calidad",
+      "description": "Aseguramos que todos los materiales y procesos constructivos cumplan con los más altos estándares de la industria.",
+      "scope": [
+        "Planes de control de calidad",
+        "Inspecciones y ensayos",
+        "Certificación de materiales",
+        "Auditorías de proceso"
+      ]
+    }
+  },
+  "methodology": {
+    "title": "Metodología DIP Propietaria",
+    "description": "Nuestra metodología propietaria DIP integra las mejores prácticas internacionales con la experiencia local, garantizando resultados superiores en cada proyecto.",
+    "phases": [
+      {
+        "phase": "Análisis y Planificación",
+        "description": "Evaluación integral del proyecto y definición de estrategias de ejecución",
+        "duration": "15-20% del tiempo total"
+      },
+      {
+        "phase": "Diseño y Coordinación",
+        "description": "Coordinación multidisciplinaria y optimización de diseños técnicos",
+        "duration": "20-25% del tiempo total"
+      },
+      {
+        "phase": "Ejecución y Supervisión",
+        "description": "Dirección técnica y supervisión continua de todas las actividades",
+        "duration": "50-60% del tiempo total"
+      },
+      {
+        "phase": "Entrega y Cierre",
+        "description": "Entrega técnica, documentación final y transferencia de conocimiento",
+        "duration": "5-10% del tiempo total"
+      }
+    ]
+  },
+  "quality_assurance": {
+    "title": "Aseguramiento de Calidad",
+    "certifications": [
+      {
+        "name": "ISO 9001:2015",
+        "description": "Sistema de gestión de calidad certificado",
+        "year_obtained": 2018
+      },
+      {
+        "name": "PMI Registered Education Provider",
+        "description": "Proveedor registrado de educación en gestión de proyectos",
+        "year_obtained": 2020
+      },
+      {
+        "name": "LEED AP BD+C",
+        "description": "Acreditación en construcción sostenible",
+        "year_obtained": 2021
+      }
+    ],
+    "processes": [
+      "Control de calidad en cada etapa",
+      "Auditorías internas regulares",
+      "Mejora continua de procesos",
+      "Capacitación continua del equipo"
+    ]
+  }
+}

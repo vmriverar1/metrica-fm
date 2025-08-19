@@ -150,7 +150,7 @@ const HeroTransform = () => {
       tl.to(heroImageWrapperRef.current, {
         scaleX: 0.8,
         scaleY: 0.35,
-        yPercent: -32.5, // Adjust vertical position to align at bottom
+        yPercent: -20, // Adjusted to lower the image further
         ease: "power2.inOut"
       }, 0);
       
@@ -304,7 +304,7 @@ const HeroTransform = () => {
           {/* New Content that appears */}
           <div 
             ref={newContentRef}
-            className="new-content absolute left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] z-20 pointer-events-none bottom-[calc(35vh+100px)] md:bottom-[calc(45vh+100px)]"
+            className="new-content absolute left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] z-20 pointer-events-none bottom-[calc(21vh+100px)] md:bottom-[calc(45vh+100px)]"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-4">
               <h2 

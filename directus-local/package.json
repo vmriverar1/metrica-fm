@@ -1,0 +1,21 @@
+{
+  "name": "directus-local",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "directus start",
+    "init": "directus bootstrap",
+    "dev": "directus start",
+    "prod": "NODE_ENV=production directus start",
+    "migrate": "directus schema apply",
+    "backup": "directus schema snapshot"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "directus": "^11.10.2",
+    "node-fetch": "^3.3.2"
+  }
+}

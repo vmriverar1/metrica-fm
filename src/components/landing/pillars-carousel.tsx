@@ -73,6 +73,19 @@ export default function PillarsCarousel() {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useGSAP(() => {
     if (!sectionRef.current || !swiperRef.current) return;
@@ -205,11 +218,11 @@ export default function PillarsCarousel() {
             slidesPerView={1.05}
             centeredSlides={true}
             freeMode={false}
-            grabCursor={false}
-            allowTouchMove={false} // Desactivar touch/drag
-            simulateTouch={false}
-            touchRatio={0}
-            speed={0} // Sin transiciones propias de Swiper
+            grabCursor={isMobile}
+            allowTouchMove={isMobile} // Habilitar touch solo en móvil
+            simulateTouch={isMobile}
+            touchRatio={isMobile ? 1 : 0}
+            speed={isMobile ? 300 : 0} // Velocidad condicional
             breakpoints={{
               640: {
                 slidesPerView: 1.5,

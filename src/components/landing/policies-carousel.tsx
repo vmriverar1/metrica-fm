@@ -88,6 +88,19 @@ export default function PoliciesCarousel() {
   const [isBeginning, setIsBeginning] = useState(false);
   const [isEnd, setIsEnd] = useState(true);
   const [isPinned, setIsPinned] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useGSAP(() => {
     if (!sectionRef.current || !swiperRef.current) return;
@@ -212,11 +225,11 @@ export default function PoliciesCarousel() {
             centeredSlides={true}
             initialSlide={policiesData.length - 1} // Empezar desde el final
             freeMode={false}
-            grabCursor={false}
-            allowTouchMove={false}
-            simulateTouch={false}
-            touchRatio={0}
-            speed={0}
+            grabCursor={isMobile}
+            allowTouchMove={isMobile} // Habilitar touch solo en móvil
+            simulateTouch={isMobile}
+            touchRatio={isMobile ? 1 : 0}
+            speed={isMobile ? 300 : 0} // Velocidad condicional
             breakpoints={{
               640: {
                 slidesPerView: 1.5,

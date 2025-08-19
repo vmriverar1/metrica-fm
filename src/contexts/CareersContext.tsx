@@ -7,21 +7,21 @@ import {
   JobCategory, 
   JobType, 
   JobLevel, 
-  sampleJobPostings,
-  sampleBenefits,
   JobBenefit 
 } from '@/types/careers';
+import { useCareersService, CareersHookResult } from '@/hooks/useCareersService';
+import { CareersServiceCategory } from '@/lib/careers-service';
 
-interface CareersContextType {
-  // Data
+interface CareersContextType extends Omit<CareersHookResult, 'jobs'> {
+  // Data extendida del hook
   allJobs: JobPosting[];
   filteredJobs: JobPosting[];
   selectedJob: JobPosting | null;
-  benefits: JobBenefit[];
   
   // Filters
   filters: CareerFilters;
   setFilters: (filters: CareerFilters) => void;
+  updateFilters: (newFilters: Partial<CareerFilters>) => void;
   
   // Actions
   selectJob: (job: JobPosting | null) => void;
@@ -35,7 +35,7 @@ interface CareersContextType {
   filterByTags: (tags: string[]) => void;
   toggleFeatured: () => void;
   toggleUrgent: () => void;
-  clearFilters: () => void;
+  resetFilters: () => void;
   
   // Computed values
   uniqueCategories: JobCategory[];
@@ -45,12 +45,13 @@ interface CareersContextType {
   uniqueLevels: JobLevel[];
   uniqueTags: string[];
   uniqueSkills: string[];
+  featuredJobs: JobPosting[];
+  urgentJobs: JobPosting[];
   jobCount: number;
   salaryRange: { min: number; max: number };
   
-  // Loading states
+  // Renamed loading state for compatibility
   isLoading: boolean;
-  error: string | null;
 }
 
 const CareersContext = createContext<CareersContextType | undefined>(undefined);
@@ -60,206 +61,94 @@ interface CareersProviderProps {
 }
 
 export function CareersProvider({ children }: CareersProviderProps) {
-  const [allJobs] = useState<JobPosting[]>(sampleJobPostings);
-  const [benefits] = useState<JobBenefit[]>(sampleBenefits);
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
   const [filters, setFilters] = useState<CareerFilters>({
     searchQuery: ''
   });
 
-  // Memoized filtered jobs
-  const filteredJobs = useMemo(() => {
-    let filtered = [...allJobs];
+  // Usar el hook híbrido del CareersService
+  const careersService = useCareersService(filters);
 
-    // Only show active jobs
-    filtered = filtered.filter(job => job.status === 'active');
+  // Los trabajos filtrados vienen directamente del CareersService
+  const allJobs = careersService.jobs;
+  const filteredJobs = careersService.jobs; // Ya están filtrados por el service
 
-    // Filter by category
-    if (filters.category) {
-      filtered = filtered.filter(job => job.category === filters.category);
-    }
-
-    // Filter by location
-    if (filters.location) {
-      filtered = filtered.filter(job => 
-        `${job.location.city}, ${job.location.region}` === filters.location ||
-        job.location.city === filters.location
-      );
-    }
-
-    // Filter by type
-    if (filters.type) {
-      filtered = filtered.filter(job => job.type === filters.type);
-    }
-
-    // Filter by level
-    if (filters.level) {
-      filtered = filtered.filter(job => job.level === filters.level);
-    }
-
-    // Filter by salary range
-    if (filters.salaryRange) {
-      filtered = filtered.filter(job => {
-        if (!job.salary) return false;
-        const jobAvgSalary = (job.salary.min + job.salary.max) / 2;
-        return jobAvgSalary >= filters.salaryRange![0] && jobAvgSalary <= filters.salaryRange![1];
-      });
-    }
-    
-    // Filter by department
-    if (filters.department) {
-      filtered = filtered.filter(job => job.department === filters.department);
-    }
-    
-    // Filter by skills
-    if (filters.skills && filters.skills.length > 0) {
-      filtered = filtered.filter(job => {
-        const jobSkills = job.requirements
-          .filter(req => req.type === 'skill')
-          .map(req => req.title.toLowerCase());
-        return filters.skills!.some(skill => 
-          jobSkills.some(jobSkill => jobSkill.includes(skill.toLowerCase()))
-        );
-      });
-    }
-
-    // Filter by remote
-    if (filters.remote !== undefined && filters.remote !== null) {
-      filtered = filtered.filter(job => 
-        filters.remote ? job.location.remote || job.location.hybrid : !job.location.remote
-      );
-    }
-
-    // Filter by tags
-    if (filters.tags && filters.tags.length > 0) {
-      filtered = filtered.filter(job => 
-        filters.tags!.some(tag => job.tags.includes(tag))
-      );
-    }
-
-    // Filter by featured
-    if (filters.featured) {
-      filtered = filtered.filter(job => job.featured);
-    }
-
-    // Filter by urgent
-    if (filters.urgent) {
-      filtered = filtered.filter(job => job.urgent);
-    }
-
-    // Filter by search query
-    if (filters.searchQuery) {
-      const searchLower = filters.searchQuery.toLowerCase();
-      filtered = filtered.filter(job => 
-        job.title.toLowerCase().includes(searchLower) ||
-        job.description.toLowerCase().includes(searchLower) ||
-        job.location.city.toLowerCase().includes(searchLower) ||
-        job.responsibilities.some(resp => resp.toLowerCase().includes(searchLower)) ||
-        job.tags.some(tag => tag.toLowerCase().includes(searchLower))
-      );
-    }
-
-    // Sort by priority: featured > urgent > posted date
-    filtered.sort((a, b) => {
-      if (a.featured && !b.featured) return -1;
-      if (!a.featured && b.featured) return 1;
-      if (a.urgent && !b.urgent) return -1;
-      if (!a.urgent && b.urgent) return 1;
-      return b.postedAt.getTime() - a.postedAt.getTime();
-    });
-
-    return filtered;
-  }, [allJobs, filters]);
-
-  // Memoized unique values
+  // Memoized unique values basados en categorías del service
   const uniqueCategories = useMemo(() => {
-    const categories = new Set<JobCategory>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        categories.add(job.category);
-      }
-    });
-    return Array.from(categories);
-  }, [allJobs]);
+    return careersService.categories.map(cat => cat.slug as JobCategory);
+  }, [careersService.categories]);
 
   const uniqueLocations = useMemo(() => {
     const locations = new Set<string>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        locations.add(`${job.location.city}, ${job.location.region}`);
-      }
+    careersService.jobs.forEach(job => {
+      locations.add(`${job.location.city}, ${job.location.region}`);
     });
     return Array.from(locations).sort();
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   const uniqueTypes = useMemo(() => {
     const types = new Set<JobType>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        types.add(job.type);
-      }
+    careersService.jobs.forEach(job => {
+      types.add(job.type);
     });
     return Array.from(types);
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   const uniqueLevels = useMemo(() => {
     const levels = new Set<JobLevel>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        levels.add(job.level);
-      }
+    careersService.jobs.forEach(job => {
+      levels.add(job.level);
     });
     return Array.from(levels);
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   const uniqueDepartments = useMemo(() => {
     const departments = new Set<string>();
-    allJobs.forEach(job => {
+    careersService.jobs.forEach(job => {
       if (job.status === 'active') {
         departments.add(job.department);
       }
     });
     return Array.from(departments).sort();
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   const uniqueSkills = useMemo(() => {
     const skills = new Set<string>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        job.requirements.forEach(req => {
-          if (req.type === 'skill') {
-            skills.add(req.title);
-          }
-        });
-        job.tags.forEach(tag => skills.add(tag));
-      }
+    careersService.jobs.forEach(job => {
+      job.requirements.forEach(req => {
+        if (req.type === 'skill') {
+          skills.add(req.title);
+        }
+      });
+      job.tags.forEach(tag => skills.add(tag));
     });
     return Array.from(skills).sort();
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   const uniqueTags = useMemo(() => {
     const tags = new Set<string>();
-    allJobs.forEach(job => {
-      if (job.status === 'active') {
-        job.tags.forEach(tag => tags.add(tag));
-      }
+    careersService.jobs.forEach(job => {
+      job.tags.forEach(tag => tags.add(tag));
     });
     return Array.from(tags).sort();
-  }, [allJobs]);
+  }, [careersService.jobs]);
+
+  const featuredJobs = useMemo(() => {
+    return careersService.jobs.filter(job => job.featured);
+  }, [careersService.jobs]);
+
+  const urgentJobs = useMemo(() => {
+    return careersService.jobs.filter(job => job.urgent);
+  }, [careersService.jobs]);
 
   const salaryRange = useMemo(() => {
-    const activeJobsWithSalary = allJobs.filter(job => 
-      job.status === 'active' && job.salary
-    );
+    const jobsWithSalary = careersService.jobs.filter(job => job.salary);
     
-    if (activeJobsWithSalary.length === 0) {
+    if (jobsWithSalary.length === 0) {
       return { min: 0, max: 20000 };
     }
 
-    const salaries = activeJobsWithSalary.map(job => 
+    const salaries = jobsWithSalary.map(job => 
       (job.salary!.min + job.salary!.max) / 2
     );
 
@@ -267,92 +156,76 @@ export function CareersProvider({ children }: CareersProviderProps) {
       min: Math.min(...salaries),
       max: Math.max(...salaries)
     };
-  }, [allJobs]);
+  }, [careersService.jobs]);
 
   // Actions
   const selectJob = useCallback((job: JobPosting | null) => {
     setSelectedJob(job);
   }, []);
 
-  const searchJobs = useCallback((term: string) => {
-    setFilters(prev => ({ ...prev, searchQuery: term }));
+  const updateFilters = useCallback((newFilters: Partial<CareerFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
+
+  const searchJobs = useCallback((term: string) => {
+    updateFilters({ searchQuery: term });
+  }, [updateFilters]);
 
   const filterByCategory = useCallback((category: JobCategory | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      category: category === 'all' ? undefined : category 
-    }));
-  }, []);
+    updateFilters({ category: category === 'all' ? undefined : category });
+  }, [updateFilters]);
 
   const filterByLocation = useCallback((location: string | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      location: location === 'all' ? undefined : location 
-    }));
-  }, []);
+    updateFilters({ location: location === 'all' ? undefined : location });
+  }, [updateFilters]);
 
   const filterByType = useCallback((type: JobType | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      type: type === 'all' ? undefined : type 
-    }));
-  }, []);
+    updateFilters({ type: type === 'all' ? undefined : type });
+  }, [updateFilters]);
 
   const filterByLevel = useCallback((level: JobLevel | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      level: level === 'all' ? undefined : level 
-    }));
-  }, []);
+    updateFilters({ level: level === 'all' ? undefined : level });
+  }, [updateFilters]);
 
   const filterBySalary = useCallback((min: number, max: number) => {
-    setFilters(prev => ({ ...prev, salary: { min, max } }));
-  }, []);
+    updateFilters({ salaryRange: [min, max] });
+  }, [updateFilters]);
 
   const filterByRemote = useCallback((remote: boolean | null) => {
-    setFilters(prev => ({ ...prev, remote }));
-  }, []);
+    updateFilters({ remote });
+  }, [updateFilters]);
 
   const filterByTags = useCallback((tags: string[]) => {
-    setFilters(prev => ({ ...prev, tags }));
-  }, []);
+    updateFilters({ tags });
+  }, [updateFilters]);
 
   const toggleFeatured = useCallback(() => {
-    setFilters(prev => ({ ...prev, featured: !prev.featured }));
-  }, []);
+    updateFilters({ featured: !filters.featured });
+  }, [updateFilters, filters.featured]);
 
   const toggleUrgent = useCallback(() => {
-    setFilters(prev => ({ ...prev, urgent: !prev.urgent }));
-  }, []);
+    updateFilters({ urgent: !filters.urgent });
+  }, [updateFilters, filters.urgent]);
 
-  const clearFilters = useCallback(() => {
-    setFilters({
-      searchTerm: '',
-      category: 'all',
-      location: 'all',
-      type: 'all',
-      level: 'all',
-      salaryRange: { min: 0, max: 50000 },
-      remote: null,
-      tags: [],
-      featured: false,
-      urgent: false
-    });
+  const resetFilters = useCallback(() => {
+    setFilters({ searchQuery: '' });
   }, []);
 
   const contextValue: CareersContextType = {
-    // Data
+    // Data del CareersService híbrido
     allJobs,
     filteredJobs,
     selectedJob,
-    benefits,
+    categories: careersService.categories,
+    benefits: careersService.benefits,
+    stats: careersService.stats,
     
     // Filters
     filters,
     setFilters,
+    updateFilters,
     
-    // Actions
+    // Actions del CareersService
     selectJob,
     searchJobs,
     filterByCategory,
@@ -364,7 +237,11 @@ export function CareersProvider({ children }: CareersProviderProps) {
     filterByTags,
     toggleFeatured,
     toggleUrgent,
-    clearFilters,
+    resetFilters,
+    refresh: careersService.refresh,
+    getJobBySlug: careersService.getJobBySlug,
+    getRelatedJobs: careersService.getRelatedJobs,
+    clearCache: careersService.clearCache,
     
     // Computed values
     uniqueCategories,
@@ -374,12 +251,21 @@ export function CareersProvider({ children }: CareersProviderProps) {
     uniqueLevels,
     uniqueTags,
     uniqueSkills,
+    featuredJobs,
+    urgentJobs,
     jobCount: filteredJobs.length,
     salaryRange,
     
-    // Loading states
-    isLoading,
-    error
+    // System info del CareersService
+    systemInfo: careersService.systemInfo,
+    
+    // Loading states (renombrados para compatibilidad)
+    isLoading: careersService.loading,
+    loading: careersService.loading,
+    categoriesLoading: careersService.categoriesLoading,
+    benefitsLoading: careersService.benefitsLoading,
+    statsLoading: careersService.statsLoading,
+    error: careersService.error
   };
 
   return (

@@ -1,18 +1,20 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
-import { BlogPost, BlogFilters, BlogCategory, Author, sampleBlogPosts, sampleAuthors } from '@/types/blog';
+import { BlogPost, BlogFilters, BlogCategory, Author } from '@/types/blog';
+import { useBlogService, BlogHookResult } from '@/hooks/useBlogService';
+import { BlogServiceCategory } from '@/lib/blog-service';
 
-interface BlogContextType {
-  // Data
+interface BlogContextType extends Omit<BlogHookResult, 'posts'> {
+  // Data extendida del hook
   allPosts: BlogPost[];
   filteredPosts: BlogPost[];
   selectedPost: BlogPost | null;
-  authors: Author[];
   
   // Filters
   filters: BlogFilters;
   setFilters: (filters: BlogFilters) => void;
+  updateFilters: (newFilters: Partial<BlogFilters>) => void;
   
   // Actions
   selectPost: (post: BlogPost | null) => void;
@@ -21,16 +23,16 @@ interface BlogContextType {
   filterByAuthor: (authorId: string | 'all') => void;
   filterByTags: (tags: string[]) => void;
   toggleFeatured: () => void;
+  resetFilters: () => void;
   
   // Computed values
   uniqueCategories: BlogCategory[];
   uniqueTags: string[];
-  uniqueAuthors: Author[];
+  featuredPosts: BlogPost[];
   postCount: number;
   
-  // Loading states
+  // Renamed loading state for compatibility
   isLoading: boolean;
-  error: string | null;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -40,155 +42,111 @@ interface BlogProviderProps {
 }
 
 export function BlogProvider({ children }: BlogProviderProps) {
-  const [allPosts] = useState<BlogPost[]>(sampleBlogPosts);
-  const [authors] = useState<Author[]>(sampleAuthors);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
   const [filters, setFilters] = useState<BlogFilters>({
     searchQuery: ''
   });
 
-  // Memoized filtered posts
-  const filteredPosts = useMemo(() => {
-    let filtered = [...allPosts];
+  // Usar el hook híbrido del BlogService
+  const blogService = useBlogService(filters);
 
-    // Filter by category
-    if (filters.category) {
-      filtered = filtered.filter(post => post.category === filters.category);
-    }
+  // Los posts filtrados vienen directamente del BlogService
+  const allPosts = blogService.posts;
+  const filteredPosts = blogService.posts; // Ya están filtrados por el service
 
-    // Filter by author
-    if (filters.author) {
-      filtered = filtered.filter(post => post.author.id === filters.author);
-    }
-
-    // Filter by tags
-    if (filters.tags && filters.tags.length > 0) {
-      filtered = filtered.filter(post => 
-        filters.tags!.some(tag => post.tags.includes(tag))
-      );
-    }
-
-    // Filter by featured
-    if (filters.featured) {
-      filtered = filtered.filter(post => post.featured);
-    }
-
-    // Filter by date range
-    if (filters.dateRange) {
-      filtered = filtered.filter(post => 
-        post.publishedAt >= filters.dateRange!.from &&
-        post.publishedAt <= filters.dateRange!.to
-      );
-    }
-
-    // Filter by search query
-    if (filters.searchQuery) {
-      const searchLower = filters.searchQuery.toLowerCase();
-      filtered = filtered.filter(post => 
-        post.title.toLowerCase().includes(searchLower) ||
-        post.excerpt.toLowerCase().includes(searchLower) ||
-        post.content.toLowerCase().includes(searchLower) ||
-        post.author.name.toLowerCase().includes(searchLower) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchLower))
-      );
-    }
-
-    // Only show published posts
-    filtered = filtered.filter(post => post.status === 'published');
-
-    // Sort by publish date (newest first)
-    filtered.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
-
-    return filtered;
-  }, [allPosts, filters]);
-
-  // Memoized unique values
+  // Memoized unique values basados en categorías del service
   const uniqueCategories = useMemo(() => {
-    const categories = new Set<BlogCategory>();
-    allPosts.forEach(post => {
-      categories.add(post.category);
-    });
-    return Array.from(categories);
-  }, [allPosts]);
+    return blogService.categories.map(cat => cat.slug as BlogCategory);
+  }, [blogService.categories]);
 
   const uniqueTags = useMemo(() => {
     const tags = new Set<string>();
-    allPosts.forEach(post => {
+    blogService.posts.forEach(post => {
       post.tags.forEach(tag => tags.add(tag));
     });
     return Array.from(tags).sort();
-  }, [allPosts]);
+  }, [blogService.posts]);
 
-  const uniqueAuthors = useMemo(() => {
-    const authorIds = new Set<string>();
-    allPosts.forEach(post => {
-      authorIds.add(post.author.id);
-    });
-    return authors.filter(author => authorIds.has(author.id));
-  }, [allPosts, authors]);
+  const featuredPosts = useMemo(() => {
+    return blogService.posts.filter(post => post.featured);
+  }, [blogService.posts]);
 
   // Actions
   const selectPost = useCallback((post: BlogPost | null) => {
     setSelectedPost(post);
   }, []);
 
-  const searchPosts = useCallback((term: string) => {
-    setFilters(prev => ({ ...prev, searchQuery: term }));
+  const updateFilters = useCallback((newFilters: Partial<BlogFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
+
+  const searchPosts = useCallback((term: string) => {
+    updateFilters({ searchQuery: term });
+  }, [updateFilters]);
 
   const filterByCategory = useCallback((category: BlogCategory | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      category: category === 'all' ? undefined : category 
-    }));
-  }, []);
+    updateFilters({ category: category === 'all' ? undefined : category });
+  }, [updateFilters]);
 
   const filterByAuthor = useCallback((authorId: string | 'all') => {
-    setFilters(prev => ({ 
-      ...prev, 
-      author: authorId === 'all' ? undefined : authorId 
-    }));
-  }, []);
+    updateFilters({ author: authorId === 'all' ? undefined : authorId });
+  }, [updateFilters]);
 
   const filterByTags = useCallback((tags: string[]) => {
-    setFilters(prev => ({ ...prev, tags }));
-  }, []);
+    updateFilters({ tags });
+  }, [updateFilters]);
 
   const toggleFeatured = useCallback(() => {
-    setFilters(prev => ({ ...prev, featured: !prev.featured }));
+    updateFilters({ featured: !filters.featured });
+  }, [updateFilters, filters.featured]);
+
+  const resetFilters = useCallback(() => {
+    setFilters({ searchQuery: '' });
   }, []);
 
   const contextValue: BlogContextType = {
-    // Data
+    // Data del BlogService híbrido
     allPosts,
     filteredPosts,
     selectedPost,
-    authors,
+    categories: blogService.categories,
+    authors: blogService.authors,
+    stats: blogService.stats,
     
     // Filters
     filters,
     setFilters,
+    updateFilters,
     
-    // Actions
+    // Actions del BlogService
     selectPost,
     searchPosts,
     filterByCategory,
     filterByAuthor,
     filterByTags,
     toggleFeatured,
+    resetFilters,
+    refresh: blogService.refresh,
+    getPostBySlug: blogService.getPostBySlug,
+    getRelatedPosts: blogService.getRelatedPosts,
+    clearCache: blogService.clearCache,
     
     // Computed values
     uniqueCategories,
     uniqueTags,
-    uniqueAuthors,
+    featuredPosts,
     postCount: filteredPosts.length,
     
-    // Loading states
-    isLoading,
-    error
+    // System info del BlogService
+    systemInfo: blogService.systemInfo,
+    
+    // Loading states (renombrados para compatibilidad)
+    isLoading: blogService.loading,
+    loading: blogService.loading,
+    categoriesLoading: blogService.categoriesLoading,
+    authorsLoading: blogService.authorsLoading,
+    statsLoading: blogService.statsLoading,
+    error: blogService.error
   };
 
   return (
@@ -206,62 +164,67 @@ export function useBlog() {
   return context;
 }
 
-// Hook para obtener un post específico por slug
+// Hook para obtener un post específico por slug (usa BlogService híbrido)
 export function useBlogPost(slug: string): BlogPost | null {
-  const { allPosts } = useBlog();
-  return useMemo(() => {
-    return allPosts.find(post => post.slug === slug) || null;
-  }, [allPosts, slug]);
+  const { getPostBySlug } = useBlog();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  
+  useEffect(() => {
+    getPostBySlug(slug).then(setPost);
+  }, [slug, getPostBySlug]);
+  
+  return post;
 }
 
-// Hook para obtener posts por categoría
+// Hook para obtener posts por categoría (usa BlogService híbrido)
 export function useBlogPostsByCategory(category: BlogCategory): BlogPost[] {
-  const { allPosts } = useBlog();
-  return useMemo(() => {
-    return allPosts.filter(post => post.category === category && post.status === 'published');
-  }, [allPosts, category]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  
+  useEffect(() => {
+    import('@/lib/blog-service').then(({ BlogService }) => {
+      BlogService.getPosts({ category }).then(setPosts);
+    });
+  }, [category]);
+  
+  return posts;
 }
 
-// Hook para obtener posts destacados
+// Hook para obtener posts destacados (usa BlogService híbrido)
 export function useFeaturedBlogPosts(): BlogPost[] {
-  const { allPosts } = useBlog();
-  return useMemo(() => {
-    return allPosts.filter(post => post.featured && post.status === 'published');
-  }, [allPosts]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  
+  useEffect(() => {
+    import('@/lib/blog-service').then(({ BlogService }) => {
+      BlogService.getPosts({ featured: true }).then(setPosts);
+    });
+  }, []);
+  
+  return posts;
 }
 
-// Hook para obtener posts recientes
+// Hook para obtener posts recientes (usa BlogService híbrido)
 export function useRecentBlogPosts(limit: number = 5): BlogPost[] {
-  const { allPosts } = useBlog();
-  return useMemo(() => {
-    return allPosts
-      .filter(post => post.status === 'published')
-      .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
-      .slice(0, limit);
-  }, [allPosts, limit]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  
+  useEffect(() => {
+    import('@/lib/blog-service').then(({ BlogService }) => {
+      BlogService.getPosts({ limit }).then(setPosts);
+    });
+  }, [limit]);
+  
+  return posts;
 }
 
-// Hook para obtener posts relacionados
+// Hook para obtener posts relacionados (usa BlogService híbrido)
 export function useRelatedBlogPosts(currentPost: BlogPost, limit: number = 3): BlogPost[] {
-  const { allPosts } = useBlog();
-  return useMemo(() => {
-    return allPosts
-      .filter(post => 
-        post.id !== currentPost.id && 
-        post.status === 'published' &&
-        (post.category === currentPost.category || 
-         post.tags.some(tag => currentPost.tags.includes(tag)))
-      )
-      .sort((a, b) => {
-        // Score by category match and tag overlap
-        const aScore = (a.category === currentPost.category ? 2 : 0) + 
-                       a.tags.filter(tag => currentPost.tags.includes(tag)).length;
-        const bScore = (b.category === currentPost.category ? 2 : 0) + 
-                       b.tags.filter(tag => currentPost.tags.includes(tag)).length;
-        return bScore - aScore;
-      })
-      .slice(0, limit);
-  }, [allPosts, currentPost, limit]);
+  const { getRelatedPosts } = useBlog();
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  
+  useEffect(() => {
+    getRelatedPosts(currentPost, limit).then(setPosts);
+  }, [currentPost, limit, getRelatedPosts]);
+  
+  return posts;
 }
 
 // Hook para cache similar al portfolio

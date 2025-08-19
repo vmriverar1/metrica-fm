@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: metrica_postgres
+    environment:
+      POSTGRES_DB: metrica_directus
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: directus_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - metrica_network
+
+  # Directus CMS
+  directus:
+    image: directus/directus:latest
+    container_name: metrica_directus
+    ports:
+      - "8055:8055"
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+    depends_on:
+      - postgres
+    environment:
+      # Database
+      DB_CLIENT: 'pg'
+      DB_HOST: 'postgres'
+      DB_PORT: '5432'
+      DB_DATABASE: 'metrica_directus'
+      DB_USER: 'directus'
+      DB_PASSWORD: 'directus_password'
+
+      # Security Keys (IMPORTANT: Change in production!)
+      KEY: 'metrica-directus-key-change-in-production'
+      SECRET: 'metrica-directus-secret-change-in-production'
+
+      # Admin User
+      ADMIN_EMAIL: 'admin@metrica-dip.com'
+      ADMIN_PASSWORD: 'MetricaDIP2024!'
+
+      # General Settings
+      PUBLIC_URL: 'http://localhost:8055'
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: 'http://localhost:9002,http://localhost:3000'
+
+      # File Storage
+      STORAGE_LOCATIONS: 'local'
+      STORAGE_LOCAL_ROOT: '/directus/uploads'
+
+      # Email (Optional - for password reset, etc.)
+      EMAIL_FROM: 'no-reply@metrica-dip.com'
+      EMAIL_TRANSPORT: 'smtp'
+      EMAIL_SMTP_HOST: 'localhost'
+      EMAIL_SMTP_PORT: '587'
+
+      # Cache (Redis optional)
+      CACHE_ENABLED: 'false'
+
+      # Rate Limiting
+      RATE_LIMITER_ENABLED: 'true'
+      RATE_LIMITER_POINTS: '100'
+      RATE_LIMITER_DURATION: '1'
+
+      # Security
+      ACCESS_TOKEN_TTL: '15m'
+      REFRESH_TOKEN_TTL: '7d'
+
+      # GraphQL
+      GRAPHQL_ENABLED: 'true'
+      GRAPHQL_INTROSPECTION: 'true'
+
+    networks:
+      - metrica_network
+
+  # Redis (Optional - for caching)
+  redis:
+    image: redis:7-alpine
+    container_name: metrica_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - metrica_network
+
+volumes:
+  postgres_data:
+  directus_uploads:
+  directus_extensions:
+  redis_data:
+
+networks:
+  metrica_network:
+    driver: bridge

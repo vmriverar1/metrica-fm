@@ -1,0 +1,47 @@
+{
+  "site": {
+    "title": "Métrica DIP - Dirección Integral de Proyectos",
+    "description": "Líderes en dirección integral de proyectos de infraestructura en Perú desde 2010. Transformamos la infraestructura del país con excelencia, innovación y sostenibilidad.",
+    "keywords": ["dirección integral de proyectos", "DIP", "infraestructura", "Perú", "construcción", "supervisión", "PMO"],
+    "url": "https://metrica-dip.com"
+  },
+  "company": {
+    "name": "Métrica DIP",
+    "full_name": "Métrica - Dirección Integral de Proyectos",
+    "tagline": "que transforman la infraestructura del Perú",
+    "slogan": "Dirección Integral de Proyectos",
+    "founded": 2010,
+    "description": "Empresa líder en dirección integral de proyectos de infraestructura en Perú, especializada en PMO, supervisión técnica y gestión de calidad."
+  },
+  "contact": {
+    "main_office": {
+      "name": "Oficina Principal",
+      "address": "San Isidro, Lima, Perú",
+      "phone": "+51 1 234-5678",
+      "email": "contacto@metrica-dip.com",
+      "hours": "Lunes a Viernes: 8:00 AM - 6:00 PM"
+    }
+  },
+  "social_networks": {
+    "linkedin": "https://linkedin.com/company/metrica-dip",
+    "facebook": "https://facebook.com/metrica-dip",
+    "twitter": "https://twitter.com/metrica-dip",
+    "instagram": "https://instagram.com/metrica-dip"
+  },
+  "assets": {
+    "logo_light": "/img/logo-blanco.png",
+    "logo_dark": "/img/logo-color.png",
+    "logo_footer": "/img/logo-color.png",
+    "favicon": "/favicon.ico"
+  },
+  "seo": {
+    "meta_description": "Métrica DIP - Líderes en dirección integral de proyectos de infraestructura en Perú. PMO, supervisión técnica y gestión de calidad con más de 15 años de experiencia.",
+    "og_image": "/img/og-image.jpg",
+    "twitter_handle": "@metrica-dip"
+  },
+  "copyright": {
+    "year": 2024,
+    "text": "© 2024 Métrica DIP. Todos los derechos reservados.",
+    "legal_notice": "Dirección Integral de Proyectos - RUC: 20123456789"
+  }
+}
