@@ -10,7 +10,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import ProductionConfig from '@/lib/production-config';
+// import ProductionConfig from '@/lib/production-config';
 import { MonitoringService } from '@/lib/monitoring-service';
 import PerformanceService from '@/lib/performance-service';
 import {
@@ -107,13 +107,13 @@ export default function ProductionMonitor() {
       
       try {
         // Load configuration report
-        const config = ProductionConfig.getInstance();
-        const report = config.generateConfigReport();
-        setConfigReport(report);
+        // const config = ProductionConfig.getInstance();
+        // const report = config.generateConfigReport();
+        // setConfigReport(report);
 
         // Load health status
-        const health = await config.performHealthCheck();
-        setHealthStatus(health);
+        // const health = await config.performHealthCheck();
+        // setHealthStatus(health);
 
         // Generate initial metrics
         const metrics = Array.from({ length: 60 }, generateMetrics);

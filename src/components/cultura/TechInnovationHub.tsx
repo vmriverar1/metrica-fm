@@ -21,109 +21,48 @@ import {
 // Registrar plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Tecnologías e innovaciones de Métrica DIP
-const technologies = [
-  {
-    id: 'bim',
-    title: 'Modelado BIM',
-    subtitle: 'Building Information Modeling',
-    icon: Layers,
-    color: '#E84E0F',
-    description: 'Modelado 3D inteligente que integra toda la información del proyecto',
-    features: ['Coordinación 3D', 'Detección de conflictos', 'Simulación 4D', 'Gestión 5D'],
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Centro Comercial Plaza Norte',
-      result: '35% reducción en tiempos de construcción',
-      savings: 'S/. 2.3M en ahorro de costos'
-    }
-  },
-  {
-    id: 'drones',
-    title: 'Tecnología Drone',
-    subtitle: 'Topografía y Supervisión Aérea',
-    icon: Eye,
-    color: '#003F6F',
-    description: 'Inspección y monitoreo de obras con tecnología de punta',
-    features: ['Fotogrametría', 'Mapeo 3D', 'Inspección estructural', 'Seguimiento de progreso'],
-    image: 'https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Complejo Industrial Lurín',
-      result: '90% reducción en tiempo de levantamiento',
-      savings: '78% ahorro en costos topográficos'
-    }
-  },
-  {
-    id: 'ai',
-    title: 'Inteligencia Artificial',
-    subtitle: 'Análisis Predictivo y Optimización',
-    icon: Cpu,
-    color: '#E84E0F',
-    description: 'IA aplicada para optimizar recursos y predecir riesgos en proyectos',
-    features: ['Análisis predictivo', 'Optimización de recursos', 'Gestión de riesgos', 'Automatización'],
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Torre Corporativa San Isidro',
-      result: '25% mejora en eficiencia de recursos',
-      savings: 'Reducción del 40% en retrabajos'
-    }
-  },
-  {
-    id: 'iot',
-    title: 'IoT & Sensores',
-    subtitle: 'Monitoreo en Tiempo Real',
-    icon: Smartphone,
-    color: '#003F6F',
-    description: 'Sensores inteligentes para monitoreo continuo de estructuras',
-    features: ['Sensores estructurales', 'Monitoreo ambiental', 'Alertas automáticas', 'Dashboard en tiempo real'],
-    image: 'https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Puente Peatonal Miraflores',
-      result: 'Monitoreo 24/7 de integridad estructural',
-      savings: '100% prevención de fallas críticas'
-    }
-  },
-  {
-    id: 'cloud',
-    title: 'Cloud Computing',
-    subtitle: 'Colaboración Global y Almacenamiento',
-    icon: Cloud,
-    color: '#E84E0F',
-    description: 'Plataforma en la nube para colaboración en tiempo real',
-    features: ['Acceso global', 'Sincronización automática', 'Backup seguro', 'Colaboración en tiempo real'],
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Campus Universidad del Pacífico',
-      result: 'Colaboración simultánea de 12 especialistas',
-      savings: '60% reducción en reuniones presenciales'
-    }
-  },
-  {
-    id: 'automation',
-    title: 'Automatización',
-    subtitle: 'Procesos Inteligentes y Eficientes',
-    icon: Zap,
-    color: '#003F6F',
-    description: 'Automatización de procesos repetitivos y generación de reportes',
-    features: ['Reportes automáticos', 'Cálculos inteligentes', 'Flujos de trabajo', 'Integración de sistemas'],
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop',
-    caseStudy: {
-      project: 'Complejo Residencial Magdalena',
-      result: '70% automatización de reportes',
-      savings: '15 horas/semana liberadas para análisis estratégico'
-    }
-  }
-];
+// Mapeo de iconos por nombre
+const iconMap = {
+  Cpu,
+  Zap,
+  Eye,
+  Layers,
+  Smartphone,
+  Cloud
+};
+
+interface TechInnovationHubProps {
+  section?: {
+    title: string;
+    subtitle: string;
+  };
+  technologies?: Array<{
+    id: string;
+    title: string;
+    subtitle: string;
+    icon: string;
+    color: string;
+    description: string;
+    features: string[];
+    image: string;
+    image_fallback: string;
+    case_study: {
+      project: string;
+      result: string;
+      savings: string;
+    };
+  }>;
+}
 
 interface TechCardProps {
-  tech: typeof technologies[0];
+  tech: any;
   index: number;
   isActive: boolean;
   onClick: () => void;
 }
 
 function TechCard({ tech, index, isActive, onClick }: TechCardProps) {
-  const Icon = tech.icon;
+  const Icon = (iconMap as any)[tech.icon] || Cpu;
   
   return (
     <motion.div
@@ -190,19 +129,19 @@ function TechCard({ tech, index, isActive, onClick }: TechCardProps) {
       <div className="pt-4 border-t border-gray-100">
         <div className="flex items-center space-x-2 text-xs text-gray-500">
           <span>Caso de estudio:</span>
-          <span className="font-medium">{tech.caseStudy.project}</span>
+          <span className="font-medium">{tech.case_study?.project}</span>
         </div>
       </div>
     </motion.div>
   );
 }
 
-export default function TechInnovationHub() {
+export default function TechInnovationHub({ section, technologies }: TechInnovationHubProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTech, setActiveTech] = useState('bim');
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const activeTechData = technologies.find(t => t.id === activeTech);
+  const activeTechData = (technologies || []).find(t => t.id === activeTech);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -253,17 +192,17 @@ export default function TechInnovationHub() {
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E84E0F] to-[#003F6F]">
-              Centro de Innovación Tecnológica
+              {section?.title || 'Centro de Innovación Tecnológica'}
             </span>
           </h2>
           <p className="text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-            Las tecnologías de vanguardia que aplicamos para revolucionar la industria de la construcción
+            {section?.subtitle || 'Las tecnologías de vanguardia que aplicamos para revolucionar la industria de la construcción'}
           </p>
         </motion.div>
 
         {/* Grid de tecnologías */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-16">
-          {technologies.map((tech, index) => (
+          {(technologies || []).map((tech, index) => (
             <TechCard
               key={tech.id}
               tech={tech}
@@ -294,7 +233,7 @@ export default function TechInnovationHub() {
                       className="p-4 rounded-xl"
                       style={{ backgroundColor: `${activeTechData.color}20` }}
                     >
-                      {React.createElement(activeTechData.icon, {
+                      {React.createElement((iconMap as any)[activeTechData.icon] || Cpu, {
                         size: 32,
                         style: { color: activeTechData.color }
                       })}
@@ -412,18 +351,18 @@ export default function TechInnovationHub() {
                     <div className="space-y-2">
                       <div>
                         <span className="text-gray-600 text-sm">Proyecto: </span>
-                        <span className="text-gray-800 font-medium">{activeTechData.caseStudy.project}</span>
+                        <span className="text-gray-800 font-medium">{activeTechData.case_study?.project}</span>
                       </div>
                       <div>
                         <span className="text-gray-600 text-sm">Resultado: </span>
                         <span style={{ color: activeTechData.color }} className="font-medium">
-                          {activeTechData.caseStudy.result}
+                          {activeTechData.case_study?.result}
                         </span>
                       </div>
                       <div>
                         <span className="text-gray-600 text-sm">Impacto: </span>
                         <span className="text-green-600 font-medium">
-                          {activeTechData.caseStudy.savings}
+                          {activeTechData.case_study?.savings}
                         </span>
                       </div>
                     </div>

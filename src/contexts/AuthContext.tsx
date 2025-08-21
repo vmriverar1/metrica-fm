@@ -8,7 +8,7 @@
 'use client';
 
 import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { AuthService, User, AuthSession, LoginCredentials } from '@/lib/auth-service';
+import { AuthService, User, AuthSession, LoginCredentials } from '@/lib/auth-service-mock';
 
 // Tipos para el contexto
 export interface AuthState {
@@ -156,7 +156,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const hasStoredSession = await AuthService.initializeFromStorage();
         
         if (hasStoredSession) {
-          const user = AuthService.getCurrentUser();
+          const user = await AuthService.getCurrentUser();
           const session = AuthService.getCurrentSession();
           
           if (user && session) {
@@ -172,7 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (process.env.NODE_ENV === 'development') {
             const devLoginSuccess = await AuthService.devAutoLogin();
             if (devLoginSuccess) {
-              const user = AuthService.getCurrentUser();
+              const user = await AuthService.getCurrentUser();
               const session = AuthService.getCurrentSession();
               
               if (user && session) {
@@ -205,7 +205,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const refreshInterval = setInterval(async () => {
       try {
-        const newSession = await AuthService.refreshToken();
+        const newSession = await AuthService.refreshToken(state.session?.refreshToken || '');
         if (newSession) {
           dispatch({ type: 'REFRESH_TOKEN', payload: newSession });
         } else {
@@ -228,22 +228,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const result = await AuthService.login(credentials);
 
-        if (result.success && result.session) {
+        if (result && result.user && result.session) {
           dispatch({
             type: 'LOGIN_SUCCESS',
             payload: {
-              user: result.session.user,
+              user: result.user,
               session: result.session
             }
           });
           return true;
-        } else if (result.requiresTwoFactor) {
-          dispatch({ type: 'LOGIN_REQUIRES_2FA' });
-          return false;
         } else {
           dispatch({
             type: 'LOGIN_ERROR',
-            payload: result.error || 'Error de autenticación'
+            payload: 'Error de autenticación'
           });
           return false;
         }
@@ -263,7 +260,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async refreshToken(): Promise<void> {
       try {
-        const newSession = await AuthService.refreshToken();
+        const newSession = await AuthService.refreshToken(state.session?.refreshToken || '');
         if (newSession) {
           dispatch({ type: 'REFRESH_TOKEN', payload: newSession });
         } else {

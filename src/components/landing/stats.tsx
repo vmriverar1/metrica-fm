@@ -5,15 +5,29 @@ import { Briefcase, Users, UserCheck, Award } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
+import { HomePageData } from '@/types/home';
 
-const stats = [
-  { icon: Briefcase, end: 50, label: 'Proyectos', suffix: '+' },
-  { icon: Users, end: 30, label: 'Clientes', suffix: '+' },
-  { icon: UserCheck, end: 200, label: 'Profesionales', suffix: '+' },
-  { icon: Award, end: 15, label: 'Años en el sector', suffix: '+' },
-];
+// Icon mapping
+const iconMap = {
+  'Briefcase': Briefcase,
+  'Users': Users,
+  'UserCheck': UserCheck,
+  'Award': Award,
+} as const;
 
-const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => {
+interface StatCardProps {
+  stat: {
+    id: string;
+    icon: string;
+    value: number;
+    suffix: string;
+    label: string;
+    description: string;
+  };
+  index: number;
+}
+
+const StatCard = ({ stat, index }: StatCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLParagraphElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -46,7 +60,7 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => 
     }, '-=0.4')
     // Counter animation
     .to(numberRef.current, {
-      textContent: stat.end,
+      textContent: stat.value,
       duration: 2,
       ease: 'power2.out',
       snap: { textContent: 1 },
@@ -78,7 +92,9 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => 
   return (
     <div ref={cardRef} className="text-center p-4 cursor-pointer transition-colors hover:bg-accent/5">
       <div ref={iconRef} className="inline-block">
-        <stat.icon className="h-12 w-12 text-accent mx-auto mb-4" />
+        {React.createElement(iconMap[stat.icon as keyof typeof iconMap], {
+          className: "h-12 w-12 text-accent mx-auto mb-4"
+        })}
       </div>
       <p ref={numberRef} className="text-4xl font-alliance-extrabold text-foreground">
         0{stat.suffix}
@@ -88,7 +104,11 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => 
   );
 };
 
-export default function Stats() {
+interface StatsProps {
+  data: HomePageData['stats'];
+}
+
+export default function Stats({ data }: StatsProps) {
   const sectionRef = useSectionAnimation();
   
   return (
@@ -97,8 +117,8 @@ export default function Stats() {
         <div className="w-[80vw] md:w-[65vw] mx-auto">
           <div className="bg-white rounded-2xl p-6 md:p-8 border border-border/10">
             <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border/50">
-              {stats.map((stat, index) => (
-                <StatCard key={stat.label} stat={stat} index={index} />
+              {data.statistics.map((stat, index) => (
+                <StatCard key={stat.id} stat={stat} index={index} />
               ))}
             </div>
           </div>

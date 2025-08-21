@@ -7,64 +7,33 @@ import { FreeMode, Mousewheel, Navigation } from 'swiper/modules';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { Target, Users, Search, BarChart, Shield, UserCheck, Compass, Network, ScanSearch, ChartBar, AlertTriangle, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { HomePageData } from '@/types/home';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-// Datos actualizados con imágenes placeholder
-const pillarsData = [
-  {
-    id: 1,
-    icon: Compass,
-    title: 'Planificación Estratégica',
-    description: 'Definimos la hoja de ruta para el éxito del proyecto, optimizando plazos y recursos desde el inicio.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 2,
-    icon: Network,
-    title: 'Coordinación Multidisciplinaria',
-    description: 'Integramos equipos de diseño, construcción y fiscalización para una ejecución sin fisuras.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 3,
-    icon: ScanSearch,
-    title: 'Supervisión Técnica',
-    description: 'Garantizamos que cada etapa de la construcción cumpla con los más altos estándares de ingeniería.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 4,
-    icon: ChartBar,
-    title: 'Control de Calidad y Costos',
-    description: 'Implementamos un riguroso control para asegurar la calidad de los materiales y la eficiencia del presupuesto.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 5,
-    icon: AlertTriangle,
-    title: 'Gestión de Riesgos',
-    description: 'Identificamos y mitigamos proactivamente los posibles riesgos que puedan afectar al proyecto.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 6,
-    icon: Building2,
-    title: 'Representación del Cliente',
-    description: 'Actuamos como sus ojos y oídos en el campo, defendiendo sus intereses en cada decisión.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    color: '#E84E0F'
-  }
-];
+// Icon mapping
+const iconMap = {
+  'Compass': Compass,
+  'Network': Network,
+  'ScanSearch': ScanSearch,
+  'ChartBar': ChartBar,
+  'AlertTriangle': AlertTriangle,
+  'Building2': Building2,
+} as const;
 
-export default function PillarsCarousel() {
+interface PillarsCarouselProps {
+  data: HomePageData['pillars'];
+}
+
+export default function PillarsCarousel({ data }: PillarsCarouselProps) {
+  const pillarsData = data.pillars.map(pillar => ({
+    ...pillar,
+    icon: iconMap[pillar.icon as keyof typeof iconMap] || Compass,
+    image: pillar.image || pillar.image_fallback,
+    color: '#E84E0F'
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const swiperRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -184,10 +153,10 @@ export default function PillarsCarousel() {
         {/* Header */}
         <div className="container mx-auto px-4 mb-16 text-center">
           <h2 ref={titleRef} className="title-section text-4xl md:text-5xl mb-4">
-            ¿Qué es DIP?
+            {data.section.title}
           </h2>
           <p ref={subtitleRef} className="max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
-            Nuestra Dirección Integral de Proyectos <span className="text-accent font-alliance-extrabold">(DIP)</span> se fundamenta en seis pilares clave para garantizar la excelencia.
+            {data.section.subtitle}
           </p>
         </div>
 
@@ -296,10 +265,17 @@ export default function PillarsCarousel() {
         }
 
         .pillars-swiper .swiper-slide {
-          height: 45vh !important;
+          height: 65vh !important; /* Móviles: más altura */
           opacity: 1;
           transition: opacity 0.5s ease;
           will-change: transform;
+        }
+
+        /* Tablet y desktop */
+        @media (min-width: 768px) {
+          .pillars-swiper .swiper-slide {
+            height: 45vh !important;
+          }
         }
 
         .card {

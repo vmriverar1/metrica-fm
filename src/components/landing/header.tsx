@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import NavigationLink from '@/components/ui/NavigationLink';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import './header.css';
@@ -19,9 +20,7 @@ const navItems = [
       section1: { title: "Nuestra Esencia", description: "Conoce los pilares que definen a Métrica y nuestro compromiso con el desarrollo." },
       links: [
         { href: "/about/historia", title: "Nuestra Historia", description: "Desde nuestros inicios en 2010, hemos transformado el sector construcción con más de 200 proyectos exitosos." },
-        { href: "/services", title: "Qué Hacemos", description: "Especialistas en dirección integral de proyectos de infraestructura, supervisión técnica y gestión de calidad." },
         { href: "/about/cultura", title: "Cultura y Personas", description: "Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo." },
-        { href: "/blog", title: "Blog", description: "Insights, tendencias y casos de estudio del sector construcción e infraestructura en Perú." },
         { href: "/careers", title: "Bolsa de Trabajo", description: "Únete a nuestro equipo y construye tu carrera en proyectos que transforman el país." },
         { href: "/about/compromiso", title: "Compromiso Social y Medioambiental", description: "Construimos un futuro sostenible con responsabilidad social y las mejores prácticas ambientales." },
         { href: "/about/clientes", title: "Clientes", description: "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo." },
@@ -33,13 +32,16 @@ const navItems = [
       }
     }
   },
-  { id: 'iso', label: 'ISO 9001', href: '/iso', subItems: null },
+  { id: 'que-hacemos', label: 'Qué Hacemos', href: '/services', subItems: null },
+  { id: 'iso', label: 'SIG', href: '/iso', subItems: null },
+  { id: 'blog', label: 'Newsletter', href: '/blog', subItems: null },
   { 
     id: 'portfolio', 
-    label: 'Portafolio',
+    label: 'Proyectos',
     subItems: {
       section1: { title: "Proyectos que Transforman", description: "Explora la diversidad y el impacto de nuestro trabajo a nivel nacional." },
       links: [
+        { href: "/portfolio", title: "Todos nuestros proyectos", description: "Explora nuestros proyectos destacados en diversas áreas de infraestructura." },
         { href: "/portfolio/oficina", title: "Proyectos de Oficina", description: "Espacios corporativos modernos y funcionales que potencian la productividad." },
         { href: "/portfolio/retail", title: "Proyectos de Retail", description: "Centros comerciales y tiendas que crean experiencias de compra excepcionales." },
         { href: "/portfolio/industria", title: "Proyectos de Industria", description: "Infraestructura industrial optimizada para procesos productivos eficientes." },
@@ -63,10 +65,10 @@ const Logo = ({ isScrolled, menuOpen }: { isScrolled: boolean; menuOpen: boolean
     <Image 
       src={isScrolled || menuOpen ? "/img/logo-color.png" : "/img/logo-blanco.png"}
       alt="Métrica Logo"
-      width={150}
-      height={40}
-      priority
-      className="h-10 w-auto"
+    width={200}
+    height={60}
+    priority
+    className="h-10 md:h-16 w-auto"
     />
   </NavigationLink>
 );
@@ -116,22 +118,10 @@ export default function Header() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-background w-[250px] sm:w-[300px]">
+                  <VisuallyHidden>
+                    <SheetTitle>Menú de navegación</SheetTitle>
+                  </VisuallyHidden>
                   <div className="flex flex-col h-full">
-                     <div className="flex items-center justify-between p-4 border-b">
-                       <Image 
-                         src="/img/logo-color.png"
-                         alt="Métrica Logo"
-                         width={120}
-                         height={32}
-                         className="h-8 w-auto"
-                       />
-                       <SheetTrigger asChild>
-                         <Button variant="ghost" size="icon">
-                            <X className="h-6 w-6" />
-                            <span className="sr-only">Cerrar menú</span>
-                         </Button>
-                       </SheetTrigger>
-                     </div>
                     <nav className="flex flex-col items-start gap-2 p-4">
                       {navItems.map((item) => (
                         <NavigationLink 

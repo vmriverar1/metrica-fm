@@ -7,80 +7,35 @@ import { FreeMode, Mousewheel } from 'swiper/modules';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { Shield, Award, Leaf, Heart, Scale, AlertCircle, Lightbulb, Lock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { HomePageData } from '@/types/home';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-// Datos de políticas con íconos y descripciones
-const policiesData = [
-  {
-    id: 1,
-    icon: Award,
-    title: 'Política de Calidad',
-    description: 'Compromiso con la excelencia en cada proyecto, superando las expectativas de nuestros clientes.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 2,
-    icon: Shield,
-    title: 'Política de Seguridad y Salud en el Trabajo',
-    description: 'Priorizamos la seguridad de nuestros trabajadores con protocolos estrictos y capacitación continua.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 3,
-    icon: Leaf,
-    title: 'Política de Medio Ambiente',
-    description: 'Construimos de manera sostenible, minimizando el impacto ambiental en cada etapa del proyecto.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 4,
-    icon: Heart,
-    title: 'Política de Responsabilidad Social',
-    description: 'Contribuimos al desarrollo de las comunidades donde operamos, generando valor compartido.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 5,
-    icon: Scale,
-    title: 'Política de Ética y Cumplimiento',
-    description: 'Actuamos con integridad y transparencia, cumpliendo estrictamente las normativas vigentes.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 6,
-    icon: AlertCircle,
-    title: 'Política de Gestión de Riesgos',
-    description: 'Identificamos y gestionamos proactivamente los riesgos para asegurar el éxito del proyecto.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 7,
-    icon: Lightbulb,
-    title: 'Política de Innovación y Mejora Continua',
-    description: 'Adoptamos tecnologías innovadoras y mejoramos constantemente nuestros procesos.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    color: '#E84E0F'
-  },
-  {
-    id: 8,
-    icon: Lock,
-    title: 'Política de Confidencialidad y Protección de Datos',
-    description: 'Protegemos la información confidencial de nuestros clientes con los más altos estándares.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    color: '#E84E0F'
-  }
-];
+// Icon mapping
+const iconMap = {
+  'Award': Award,
+  'Shield': Shield,
+  'Leaf': Leaf,
+  'Heart': Heart,
+  'Scale': Scale,
+  'AlertCircle': AlertCircle,
+  'Lightbulb': Lightbulb,
+  'Lock': Lock,
+} as const;
 
-export default function PoliciesCarousel() {
+interface PoliciesCarouselProps {
+  data: HomePageData['policies'];
+}
+
+export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
+  const policiesData = data.policies.map(policy => ({
+    ...policy,
+    icon: iconMap[policy.icon as keyof typeof iconMap] || Award,
+    image: policy.image || policy.image_fallback,
+    color: '#E84E0F'
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const swiperRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -192,8 +147,11 @@ export default function PoliciesCarousel() {
         {/* Header */}
         <div className="container mx-auto px-4 mb-16">
           <h2 ref={titleRef} className="title-section text-4xl md:text-5xl">
-            <span className="text-accent">NUESTRAS</span>
-            <span className="block text-white">POLÍTICAS</span>
+            {data.section.title.split(' ').map((word, index) => (
+              <span key={index} className={index === 0 ? "text-accent" : "block text-white"}>
+                {word}
+              </span>
+            ))}
           </h2>
         </div>
 
@@ -296,10 +254,18 @@ export default function PoliciesCarousel() {
         }
 
         .policies-swiper .swiper-slide {
-          height: 45vh !important;
+          height: 65vh !important;
           opacity: 1;
           transition: opacity 0.5s ease;
           will-change: transform;
+        }
+
+
+        /* Tablet y desktop */
+        @media (min-width: 768px) {
+          .policies-swiper .swiper-slide {
+            height: 45vh !important;
+          }
         }
 
         .policies-swiper .card {

@@ -141,11 +141,11 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos los autores</SelectItem>
-                {uniqueAuthors.map((author) => (
+                {uniqueAuthors?.map((author) => (
                   <SelectItem key={author.id} value={author.id}>
                     {author.name}
                   </SelectItem>
-                ))}
+                )) || null}
               </SelectContent>
             </Select>
 
@@ -221,7 +221,7 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
               
               {filters.author && (
                 <Badge variant="secondary" className="gap-1">
-                  {uniqueAuthors.find(a => a.id === filters.author)?.name}
+                  {uniqueAuthors?.find(a => a.id === filters.author)?.name || 'Autor desconocido'}
                   <button
                     onClick={() => handleAuthorChange('all')}
                     className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"

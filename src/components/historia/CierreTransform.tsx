@@ -6,14 +6,26 @@ import { TrendingUp, Calendar, Users, Star, ArrowRight } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 
-const stats = [
+interface CierreTransformProps {
+  historiaData?: any;
+}
+
+// Mapeo de iconos
+const iconMap = {
+  'TrendingUp': TrendingUp,
+  'Calendar': Calendar, 
+  'Users': Users,
+  'Star': Star,
+} as const;
+
+const statsDefault = [
   { icon: TrendingUp, end: 200, label: 'Proyectos Exitosos', suffix: '+' },
   { icon: Calendar, end: 14, label: 'Años de Experiencia', suffix: '' },
   { icon: Users, end: 50, label: 'Profesionales Especializados', suffix: '+' },
   { icon: Star, end: 98, label: 'Satisfacción del Cliente', suffix: '%' },
 ];
 
-const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => {
+const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLParagraphElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -88,8 +100,24 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0], index: number }) => 
   );
 };
 
-export default function CierreTransform() {
+export default function CierreTransform({ historiaData }: CierreTransformProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Usar datos del JSON si están disponibles
+  const achievementSummary = historiaData?.achievement_summary;
+  const stats = achievementSummary?.metrics 
+    ? achievementSummary.metrics.map((metric: any, index: number) => {
+        const iconKeys = Object.keys(iconMap);
+        const iconKey = iconKeys[index % iconKeys.length] as keyof typeof iconMap;
+        return {
+          icon: iconMap[iconKey],
+          end: parseInt(metric.number.replace(/[^\d]/g, '')) || 0,
+          label: metric.label,
+          suffix: metric.number.replace(/[\d]/g, ''),
+          description: metric.description
+        };
+      })
+    : statsDefault;
   
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -114,7 +142,7 @@ export default function CierreTransform() {
       <section ref={sectionRef} id="cierre-transform-section" className="relative py-24 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="section-title text-4xl md:text-5xl font-alliance-extrabold text-center text-primary mb-16">
-            Nuestra Trayectoria
+            {achievementSummary?.title || 'Nuestra Trayectoria'}
           </h2>
           
           <div className="w-[80vw] md:w-[65vw] mx-auto">

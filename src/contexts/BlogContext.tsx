@@ -1,11 +1,16 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode, useEffect } from 'react';
 import { BlogPost, BlogFilters, BlogCategory, Author } from '@/types/blog';
 import { useBlogService, BlogHookResult } from '@/hooks/useBlogService';
 import { BlogServiceCategory } from '@/lib/blog-service';
+import { BlogPageData, BlogContentData } from '@/types/blog-page';
 
 interface BlogContextType extends Omit<BlogHookResult, 'posts'> {
+  // Combined page and content data
+  pageData: BlogPageData | null;
+  contentData: BlogContentData | null;
+  
   // Data extendida del hook
   allPosts: BlogPost[];
   filteredPosts: BlogPost[];
@@ -27,12 +32,16 @@ interface BlogContextType extends Omit<BlogHookResult, 'posts'> {
   
   // Computed values
   uniqueCategories: BlogCategory[];
+  uniqueAuthors: Author[];
   uniqueTags: string[];
   featuredPosts: BlogPost[];
   postCount: number;
   
-  // Renamed loading state for compatibility
+  // Loading states
   isLoading: boolean;
+  pageLoading: boolean;
+  contentLoading: boolean;
+  error: string | null;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -42,10 +51,57 @@ interface BlogProviderProps {
 }
 
 export function BlogProvider({ children }: BlogProviderProps) {
+  const [pageData, setPageData] = useState<BlogPageData | null>(null);
+  const [contentData, setContentData] = useState<BlogContentData | null>(null);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [contentLoading, setContentLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<BlogFilters>({
     searchQuery: ''
   });
+
+  // Fetch blog page and content data on mount
+  useEffect(() => {
+    async function fetchBlogData() {
+      try {
+        setPageLoading(true);
+        setContentLoading(true);
+        setError(null);
+
+        // Fetch both page content and dynamic content in parallel
+        const [pageResponse, contentResponse] = await Promise.all([
+          fetch('/json/pages/blog.json', { cache: 'no-store' }),
+          fetch('/json/dynamic-content/newsletter/content.json', { cache: 'no-store' })
+        ]);
+
+        if (!pageResponse.ok) {
+          throw new Error(`Failed to fetch page data: ${pageResponse.status}`);
+        }
+
+        if (!contentResponse.ok) {
+          throw new Error(`Failed to fetch content data: ${contentResponse.status}`);
+        }
+
+        const [pageJson, contentJson] = await Promise.all([
+          pageResponse.json(),
+          contentResponse.json()
+        ]);
+
+        setPageData(pageJson);
+        setContentData(contentJson);
+        
+      } catch (err) {
+        console.error('Error fetching blog data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load blog data');
+      } finally {
+        setPageLoading(false);
+        setContentLoading(false);
+      }
+    }
+
+    fetchBlogData();
+  }, []);
 
   // Usar el hook híbrido del BlogService
   const blogService = useBlogService(filters);
@@ -58,6 +114,10 @@ export function BlogProvider({ children }: BlogProviderProps) {
   const uniqueCategories = useMemo(() => {
     return blogService.categories.map(cat => cat.slug as BlogCategory);
   }, [blogService.categories]);
+
+  const uniqueAuthors = useMemo(() => {
+    return blogService.authors || [];
+  }, [blogService.authors]);
 
   const uniqueTags = useMemo(() => {
     const tags = new Set<string>();
@@ -104,7 +164,13 @@ export function BlogProvider({ children }: BlogProviderProps) {
     setFilters({ searchQuery: '' });
   }, []);
 
+  const isLoading = pageLoading || contentLoading || blogService.loading;
+
   const contextValue: BlogContextType = {
+    // Combined data
+    pageData,
+    contentData,
+    
     // Data del BlogService híbrido
     allPosts,
     filteredPosts,
@@ -133,6 +199,7 @@ export function BlogProvider({ children }: BlogProviderProps) {
     
     // Computed values
     uniqueCategories,
+    uniqueAuthors,
     uniqueTags,
     featuredPosts,
     postCount: filteredPosts.length,
@@ -140,13 +207,15 @@ export function BlogProvider({ children }: BlogProviderProps) {
     // System info del BlogService
     systemInfo: blogService.systemInfo,
     
-    // Loading states (renombrados para compatibilidad)
-    isLoading: blogService.loading,
+    // Loading states
+    isLoading,
+    pageLoading,
+    contentLoading,
     loading: blogService.loading,
     categoriesLoading: blogService.categoriesLoading,
     authorsLoading: blogService.authorsLoading,
     statsLoading: blogService.statsLoading,
-    error: blogService.error
+    error: error || blogService.error
   };
 
   return (

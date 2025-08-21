@@ -1,0 +1,251 @@
+{
+  "id": "about-historia",
+  "name": "about-historia.json",
+  "title": "Historia de la Empresa",
+  "description": "Información sobre la historia y evolución de Métrica DIP",
+  "path": "/public/json/pages/about-historia.json",
+  "status": "active",
+  "lastModified": "2025-08-20T09:30:00Z",
+  "size": "8.7 KB",
+  "type": "static",
+  "metadata": {
+    "author": "Content Team",
+    "tags": [
+      "about",
+      "history"
+    ],
+    "category": "about",
+    "seoTitle": "Historia - Métrica DIP",
+    "seoDescription": "Conoce la historia y evolución de Métrica DIP"
+  },
+  "page": {
+    "title": "Nuestra Historia",
+    "subtitle": "Más de una década transformando la infraestructura del Perú",
+    "hero_image": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
+    "hero_image_fallback": "/img/historia-hero.jpg",
+    "hero_video": "https://statom.co.uk/assets/video/2024/Oct/rc-frame-video.mp4",
+    "hero_video_fallback": "/video/historia-hero.mp4",
+    "description": "Desde nuestros inicios en 2010, hemos evolucionado para convertirnos en líderes del sector de dirección integral de proyectos en Perú.",
+    "url": "/about/historia"
+  },
+  "introduction": {
+    "text": "En 2010, un grupo visionario de profesionales de la construcción e infraestructura decidió crear algo diferente. No solo otra empresa constructora, sino un socio estratégico que transformaría la manera de ejecutar proyectos en el Perú.",
+    "highlight": "Métrica nació con la convicción de que cada proyecto de infraestructura puede y debe ser ejecutado con excelencia, puntualidad y dentro del presupuesto.",
+    "mission_statement": "Desde el primer día, nuestra misión ha sido clara: ser los ojos, oídos y cerebro estratégico de nuestros clientes en cada proyecto que emprendemos."
+  },
+  "timeline_events": [
+    {
+      "id": "foundation",
+      "year": 2010,
+      "title": "Fundación de Métrica DIP",
+      "subtitle": "Los Inicios Visionarios",
+      "description": "Iniciamos nuestro camino con la visión de revolucionar la gestión de proyectos de infraestructura en Perú. Un equipo fundacional de 5 profesionales experimentados se unió para crear algo diferente: una empresa que priorizara la excelencia técnica y la satisfacción del cliente por encima de todo.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
+      "image_fallback": "/img/timeline/2010-fundacion.jpg",
+      "achievements": [
+        "Primer equipo de 5 profesionales especializados",
+        "Oficina en San Isidro establecida",
+        "Primeros 3 proyectos piloto exitosos",
+        "Metodología DIP inicial desarrollada"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
+        "/img/timeline/2010-fundacion.jpg",
+        "/img/timeline/2010-team.jpg"
+      ],
+      "impact": "Sentamos las bases de lo que se convertiría en la metodología DIP, estableciendo estándares de calidad que definirían nuestra cultura empresarial.",
+      "metrics": {
+        "team_size": 5,
+        "projects": 3,
+        "investment": "$2.5M"
+      }
+    },
+    {
+      "id": "first-expansion",
+      "year": 2015,
+      "title": "Primera Gran Expansión",
+      "subtitle": "Crecimiento Estratégico",
+      "description": "Expandimos nuestras operaciones incorporando especialistas en diferentes sectores. Este año marcó nuestro salto de proyectos residenciales a infraestructura comercial y hospitalaria, demostrando la versatilidad de nuestra metodología DIP.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
+      "achievements": [
+        "Equipo expandido a 25 profesionales",
+        "Primer proyecto hospitalario dirigido",
+        "Apertura de oficina en Arequipa",
+        "Implementación de software de gestión avanzado"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/03.jpg"
+      ],
+      "impact": "Consolidamos nuestra presencia nacional y demostramos capacidad para manejar proyectos de alta complejidad técnica.",
+      "metrics": {
+        "team_size": 25,
+        "projects": 15,
+        "investment": "$45M"
+      }
+    },
+    {
+      "id": "iso-certification",
+      "year": 2018,
+      "title": "Certificación ISO 9001",
+      "subtitle": "Excelencia Reconocida",
+      "description": "Obtuvimos la certificación ISO 9001, formalizando nuestro compromiso con la calidad y estableciendo procesos estandarizados que garantizan la excelencia en cada proyecto. Este hito marcó nuestra maduración como empresa líder del sector.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
+      "image_fallback": "/img/timeline/2018-iso.jpg",
+      "achievements": [
+        "Certificación ISO 9001:2015 obtenida",
+        "Procesos de calidad estandarizados",
+        "50 proyectos completados exitosamente",
+        "Reconocimiento como Empresa del Año en Construcción"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+        "/img/timeline/2018-iso.jpg",
+        "/img/timeline/2018-certificate.jpg"
+      ],
+      "impact": "Establecimos un nuevo estándar en el mercado peruano para empresas de dirección integral de proyectos.",
+      "metrics": {
+        "team_size": 45,
+        "projects": 50,
+        "investment": "$180M"
+      }
+    },
+    {
+      "id": "digital-transformation",
+      "year": 2020,
+      "title": "Transformación Digital",
+      "subtitle": "Innovación Tecnológica",
+      "description": "La pandemia aceleró nuestra adopción de tecnologías digitales. Implementamos BIM 5D, IoT para monitoreo de obras, y plataformas colaborativas que nos permitieron mantener la supervisión remota sin comprometer la calidad.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+      "achievements": [
+        "Implementación completa de BIM 5D",
+        "Plataforma de supervisión remota desarrollada",
+        "100% de proyectos con seguimiento digital",
+        "Primer proyecto 100% gestionado remotamente"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/03.jpg"
+      ],
+      "impact": "Nos posicionamos como pioneros en la digitalización del sector construcción en Perú, estableciendo nuevos estándares de eficiencia.",
+      "metrics": {
+        "team_size": 75,
+        "projects": 120,
+        "investment": "$450M"
+      }
+    },
+    {
+      "id": "sustainability-leadership",
+      "year": 2023,
+      "title": "Liderazgo en Sostenibilidad",
+      "subtitle": "Construcción Verde",
+      "description": "Nos convertimos en el primer empresa de dirección de proyectos en Perú especializada en certificaciones LEED y construcción sostenible. Dirigimos la construcción del primer hospital LEED Gold del país y el primer centro comercial carbono neutral.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+      "image_fallback": "/img/timeline/2023-sustainability.jpg",
+      "achievements": [
+        "5 proyectos LEED certificados dirigidos",
+        "Primer hospital LEED Gold del Perú",
+        "Equipo de sostenibilidad especializado formado",
+        "Alianza estratégica con Green Building Council"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+        "/img/timeline/2023-sustainability.jpg",
+        "/img/timeline/2023-leed.jpg",
+        "/img/timeline/2023-green.jpg"
+      ],
+      "impact": "Lideramos la transformación hacia la construcción sostenible en Perú, influyendo en políticas públicas del sector.",
+      "metrics": {
+        "team_size": 120,
+        "projects": 180,
+        "investment": "$850M"
+      }
+    },
+    {
+      "id": "industry-leadership",
+      "year": 2024,
+      "title": "Liderazgo Sectorial Consolidado",
+      "subtitle": "Referentes Nacionales",
+      "description": "Hoy somos reconocidos como la empresa líder en dirección integral de proyectos en Perú. Con más de 200 proyectos exitosos, un equipo de 150 profesionales especializados y presencia en las principales ciudades del país, continuamos estableciendo nuevos estándares de excelencia.",
+      "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
+      "achievements": [
+        "200+ proyectos completados exitosamente",
+        "Presencia en 8 ciudades del Perú",
+        "Primera empresa del sector en obtener B-Corp",
+        "Reconocimiento como Mejor Empleador del Sector"
+      ],
+      "gallery": [
+        "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
+        "https://metrica-dip.com/images/slider-inicio-es/04.jpg"
+      ],
+      "impact": "Nos consolidamos como el referente indiscutible en dirección integral de proyectos, siendo consultados para políticas públicas del sector.",
+      "metrics": {
+        "team_size": 150,
+        "projects": 200,
+        "investment": "$1.2B"
+      }
+    }
+  ],
+  "achievement_summary": {
+    "title": "Nuestra Trayectoria",
+    "metrics": [
+      {
+        "number": "200+",
+        "label": "Proyectos Completados",
+        "description": "Desde complejos hospitalarios hasta centros comerciales"
+      },
+      {
+        "number": "$2.5B+",
+        "label": "Valor de Proyectos Dirigidos",
+        "description": "En inversión total de infraestructura supervisada"
+      },
+      {
+        "number": "15+",
+        "label": "Años de Experiencia",
+        "description": "Consolidando nuestra posición en el mercado"
+      },
+      {
+        "number": "98%",
+        "label": "Tasa de Éxito",
+        "description": "Proyectos entregados a tiempo y dentro del presupuesto"
+      }
+    ]
+  },
+  "company_evolution": {
+    "title": "Evolución Empresarial",
+    "phases": [
+      {
+        "phase": "Fundación",
+        "period": "2010-2012",
+        "focus": "Primeros pasos en PMO y supervisión",
+        "achievement": "Establecimiento de metodologías base"
+      },
+      {
+        "phase": "Consolidación",
+        "period": "2013-2017",
+        "focus": "Expansión geográfica y sectorial",
+        "achievement": "Certificación ISO 9001 y crecimiento del equipo"
+      },
+      {
+        "phase": "Liderazgo",
+        "period": "2018-2022",
+        "focus": "Tecnologías innovadoras y sostenibilidad",
+        "achievement": "Integración BIM y proyectos LEED"
+      },
+      {
+        "phase": "Transformación",
+        "period": "2023-presente",
+        "focus": "Digitalización y metodologías ágiles",
+        "achievement": "Líder en transformación digital del sector"
+      }
+    ]
+  }
+}

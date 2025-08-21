@@ -10,60 +10,52 @@ import { Building2, Users, Trophy, Clock, MapPin, Target } from 'lucide-react';
 // Registrar plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Datos de la cultura empresarial organizados por categorías
-const cultureData = {
-  historia: {
-    title: "Nuestra Historia",
-    icon: Clock,
-    color: "#E84E0F",
-    stats: [
-      { label: "Años en el mercado", value: "15+", description: "Experiencia consolidada en dirección de proyectos" },
-      { label: "Proyectos completados", value: "200+", description: "Obras exitosas en todo el Perú" },
-      { label: "Clientes satisfechos", value: "150+", description: "Empresas que confían en nosotros" }
-    ]
-  },
-  equipo: {
-    title: "Nuestro Equipo",
-    icon: Users,
-    color: "#003F6F", 
-    stats: [
-      { label: "Profesionales", value: "45+", description: "Especialistas multidisciplinarios" },
-      { label: "Ingenierías", value: "8", description: "Diferentes especialidades técnicas" },
-      { label: "Certificaciones", value: "25+", description: "Acreditaciones profesionales activas" }
-    ]
-  },
-  alcance: {
-    title: "Alcance Nacional",
-    icon: MapPin,
-    color: "#E84E0F",
-    stats: [
-      { label: "Regiones", value: "12", description: "Presencia en todo el territorio peruano" },
-      { label: "Sectores", value: "6", description: "Industrial, minero, energía, inmobiliario" },
-      { label: "Especialidades", value: "10+", description: "Áreas de expertise técnico" }
-    ]
-  },
-  logros: {
-    title: "Reconocimientos",
-    icon: Trophy,
-    color: "#003F6F",
-    stats: [
-      { label: "Premios", value: "8", description: "Reconocimientos a la excelencia" },
-      { label: "ISO certificado", value: "2", description: "Sistemas de gestión implementados" },
-      { label: "Satisfacción", value: "98%", description: "Índice de clientes satisfechos" }
-    ]
-  }
+// Mapeo de iconos por nombre
+const iconMap = {
+  Clock,
+  Users,
+  MapPin,
+  Trophy,
+  Building2,
+  Target
 };
 
+interface CultureShowcaseProps {
+  title?: string;
+  subtitle?: string;
+  categories?: {
+    [key: string]: {
+      title: string;
+      icon: string;
+      color: string;
+      stats: Array<{
+        label: string;
+        value: string;
+        description: string;
+      }>;
+    };
+  };
+}
+
 interface StatCardProps {
-  category: keyof typeof cultureData;
-  data: typeof cultureData[keyof typeof cultureData];
+  category: string;
+  data: {
+    title: string;
+    icon: string;
+    color: string;
+    stats: Array<{
+      label: string;
+      value: string;
+      description: string;
+    }>;
+  };
   index: number;
   isActive: boolean;
   onClick: () => void;
 }
 
 function StatCard({ category, data, index, isActive, onClick }: StatCardProps) {
-  const Icon = data.icon;
+  const Icon = (iconMap as any)[data.icon] || Clock;
   
   return (
     <motion.div
@@ -145,9 +137,9 @@ function StatCard({ category, data, index, isActive, onClick }: StatCardProps) {
   );
 }
 
-export default function CultureShowcase() {
+export default function CultureShowcase({ title, subtitle, categories }: CultureShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeCategory, setActiveCategory] = useState<keyof typeof cultureData>('historia');
+  const [activeCategory, setActiveCategory] = useState<string>('historia');
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -188,23 +180,23 @@ export default function CultureShowcase() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-[#003F6F] mb-6">
-            Cultura en Números
+            {title || 'Cultura en Números'}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Los datos que reflejan nuestro compromiso con la excelencia y el crecimiento sostenido en el sector de construcción
+            {subtitle || 'Los datos que reflejan nuestro compromiso con la excelencia y el crecimiento sostenido en el sector de construcción'}
           </p>
         </motion.div>
 
         {/* Grid de tarjetas estadísticas */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
-          {Object.entries(cultureData).map(([category, data], index) => (
+          {Object.entries(categories || {}).map(([category, data], index) => (
             <StatCard
               key={category}
-              category={category as keyof typeof cultureData}
+              category={category}
               data={data}
               index={index}
               isActive={activeCategory === category}
-              onClick={() => setActiveCategory(category as keyof typeof cultureData)}
+              onClick={() => setActiveCategory(category)}
             />
           ))}
         </div>
@@ -223,16 +215,16 @@ export default function CultureShowcase() {
             <div className="flex items-center space-x-4 mb-6">
               <div 
                 className="p-4 rounded-full"
-                style={{ backgroundColor: `${cultureData[activeCategory].color}20` }}
+                style={{ backgroundColor: `${categories?.[activeCategory]?.color || '#003F6F'}20` }}
               >
-                {React.createElement(cultureData[activeCategory].icon, {
+                {React.createElement((iconMap as any)[categories?.[activeCategory]?.icon || 'Clock'], {
                   size: 32,
-                  style: { color: cultureData[activeCategory].color }
+                  style: { color: categories?.[activeCategory]?.color || '#003F6F' }
                 })}
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-gray-800">
-                  {cultureData[activeCategory].title}
+                  {categories?.[activeCategory]?.title || 'Categoría'}
                 </h3>
                 <p className="text-gray-600">
                   Explora los números que definen esta área
@@ -242,7 +234,7 @@ export default function CultureShowcase() {
 
             {/* Gráfico visual de estadísticas */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {cultureData[activeCategory].stats.map((stat, index) => (
+              {(categories?.[activeCategory]?.stats || []).map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -255,7 +247,7 @@ export default function CultureShowcase() {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                     className="text-4xl font-bold mb-2"
-                    style={{ color: cultureData[activeCategory].color }}
+                    style={{ color: categories?.[activeCategory]?.color || '#003F6F' }}
                   >
                     {stat.value}
                   </motion.div>

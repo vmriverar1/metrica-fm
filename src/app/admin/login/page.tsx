@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Eye, EyeOff, Shield, LogIn, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,7 @@ export default function LoginPage() {
   const router = useRouter();
   
   const [formData, setFormData] = useState({
-    email: 'admin@metrica-dip.com', // Pre-filled for development
+    email: 'admin@metrica.pe', // Pre-filled for development
     password: 'admin123', // Pre-filled for development
     rememberMe: false,
     twoFactorCode: ''
@@ -28,10 +28,11 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Redirigir si ya está autenticado
-  if (isAuthenticated && !isLoading) {
-    router.push('/admin/dashboard');
-    return null;
-  }
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.push('/admin/json-crud');
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ export default function LoginPage() {
       });
 
       if (success) {
-        router.push('/admin/dashboard');
+        router.push('/admin/json-crud');
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -64,15 +65,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-accent/5 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo y Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
-          <p className="text-gray-600">Métrica DIP - Sistema de Gestión</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">
+            <span className="font-['Marsek_Demi'] text-primary">Métrica</span>
+            <span className="text-accent ml-1">DIP</span>
+          </h1>
+          <p className="text-muted-foreground">Panel de Administración</p>
         </div>
 
         {/* Card de Login */}
@@ -90,8 +94,8 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                placeholder="tu@metrica-dip.com"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                placeholder="tu@metrica.pe"
               />
             </div>
 
@@ -108,7 +112,7 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
                   placeholder="••••••••"
                 />
                 <button
@@ -134,7 +138,7 @@ export default function LoginPage() {
                   value={formData.twoFactorCode}
                   onChange={handleInputChange}
                   maxLength={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-center tracking-wider"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors text-center tracking-wider"
                   placeholder="123456"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -151,7 +155,7 @@ export default function LoginPage() {
                 name="rememberMe"
                 checked={formData.rememberMe}
                 onChange={handleInputChange}
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
               />
               <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-700">
                 Recordar mi sesión por 30 días
@@ -180,7 +184,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting || isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting || isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -201,15 +205,15 @@ export default function LoginPage() {
                 <div className="space-y-2 text-sm text-gray-600">
                   <div className="flex justify-between">
                     <span>Admin:</span>
-                    <code className="bg-white px-2 py-1 rounded">admin@metrica-dip.com / admin123</code>
+                    <code className="bg-white px-2 py-1 rounded">admin@metrica.pe / admin123</code>
                   </div>
                   <div className="flex justify-between">
-                    <span>Reclutador:</span>
-                    <code className="bg-white px-2 py-1 rounded">ana.torres@metrica-dip.com / admin123</code>
+                    <span>Gestor:</span>
+                    <code className="bg-white px-2 py-1 rounded">gestor@metrica.pe / admin123</code>
                   </div>
                   <div className="flex justify-between">
-                    <span>Hiring Manager:</span>
-                    <code className="bg-white px-2 py-1 rounded">luis.hernandez@metrica-dip.com / admin123</code>
+                    <span>Editor:</span>
+                    <code className="bg-white px-2 py-1 rounded">editor@metrica.pe / admin123</code>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
                     Código 2FA para cuentas que lo requieren: <code>123456</code>

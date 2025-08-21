@@ -5,8 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { MoveRight, CheckCircle } from 'lucide-react';
+import { HomePageData } from '@/types/home';
 
-export default function Newsletter() {
+interface NewsletterProps {
+  data: HomePageData['newsletter'];
+}
+
+export default function Newsletter({ data }: NewsletterProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -31,8 +36,8 @@ export default function Newsletter() {
       setIsSubmitting(false);
       setIsSubscribed(true);
       toast({
-        title: "¡Suscripción exitosa!",
-        description: "Te has suscrito correctamente a nuestro newsletter",
+        title: data.form.success_message,
+        description: data.form.success_description,
       });
       
       // Reset después de 3 segundos
@@ -47,23 +52,23 @@ export default function Newsletter() {
     <section id="newsletter" className="py-24 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 text-center">
         <h2 className="font-headline text-3xl md:text-4xl font-bold">
-          Suscríbete a nuestro Newsletter
+          {data.section.title}
         </h2>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-primary-foreground/80">
-          Recibe las últimas noticias, análisis y casos de éxito del sector de infraestructura directamente en tu correo.
+          {data.section.subtitle}
         </p>
         
         {isSubscribed ? (
           <div className="mt-8 flex flex-col items-center gap-4">
             <CheckCircle className="w-12 h-12 text-accent" />
-            <p className="text-lg font-semibold">¡Gracias por suscribirte!</p>
-            <p className="text-primary-foreground/80">Pronto recibirás nuestro contenido exclusivo</p>
+            <p className="text-lg font-semibold">{data.form.success_message}</p>
+            <p className="text-primary-foreground/80">{data.form.success_description}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto flex gap-2">
             <Input 
               type="email" 
-              placeholder="Tu correo electrónico" 
+              placeholder={data.form.placeholder_text} 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
@@ -75,7 +80,7 @@ export default function Newsletter() {
               disabled={isSubmitting}
               className="bg-accent hover:bg-accent/90 shrink-0"
             >
-              {isSubmitting ? 'Suscribiendo...' : 'Suscribirme'}
+              {isSubmitting ? data.form.loading_text : data.form.cta_text}
               <MoveRight className="ml-2 h-5 w-5" />
             </Button>
           </form>

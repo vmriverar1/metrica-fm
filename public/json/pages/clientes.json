@@ -1,0 +1,534 @@
+{
+  "page": {
+    "title": "Nuestros Clientes - Métrica DIP",
+    "description": "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos de infraestructura."
+  },
+  "hero": {
+    "title": "Nuestros Clientes",
+    "subtitle": "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo",
+    "background_image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
+    "background_image_fallback": "/img/clientes/hero-background.jpg"
+  },
+  "introduction": {
+    "title": "Clientes que Confían en Nosotros",
+    "description": "A lo largo de más de una década, hemos construido relaciones sólidas con organismos públicos y empresas privadas líderes en el sector construcción e infraestructura del Perú.",
+    "stats": {
+      "total_clients": "150+",
+      "public_sector": "25+",
+      "private_sector": "125+",
+      "years_experience": "15+"
+    }
+  },
+  "client_sectors": [
+    {
+      "id": "sector-publico",
+      "title": "Sector Público",
+      "subtitle": "Organismos gubernamentales que confían en nuestra experiencia",
+      "description": "Trabajamos estrechamente con ministerios y entidades públicas en proyectos de gran envergadura que impactan directamente en el bienestar de la población peruana.",
+      "clients": [
+        {
+          "id": "minsa",
+          "name": "MINSA",
+          "full_name": "Ministerio de Salud",
+          "logo_text": "MINSA",
+          "sector": "Salud",
+          "color": "#DC2626",
+          "icon": "Heart",
+          "description": "Dirección integral de proyectos de infraestructura hospitalaria y centros de salud",
+          "projects_count": 25,
+          "key_projects": [
+            {
+              "name": "Hospital Nacional Dos de Mayo - Modernización",
+              "value": "S/ 180M",
+              "duration": "36 meses",
+              "status": "Completado"
+            },
+            {
+              "name": "Centro de Salud Mental Lima Norte",
+              "value": "S/ 45M",
+              "duration": "18 meses",
+              "status": "En ejecución"
+            },
+            {
+              "name": "Red de Postas Médicas Rurales - Cusco",
+              "value": "S/ 95M",
+              "duration": "24 meses",
+              "status": "Completado"
+            }
+          ],
+          "specialties": [
+            "Hospitales de alta complejidad",
+            "Centros de atención primaria",
+            "Laboratorios especializados",
+            "Equipamiento médico"
+          ]
+        },
+        {
+          "id": "minedu",
+          "name": "MINEDU",
+          "full_name": "Ministerio de Educación",
+          "logo_text": "MINEDU",
+          "sector": "Educación",
+          "color": "#7C3AED",
+          "icon": "GraduationCap",
+          "description": "Supervisión de construcción y mejoramiento de infraestructura educativa",
+          "projects_count": 32,
+          "key_projects": [
+            {
+              "name": "Colegio Emblemático María Parado de Bellido",
+              "value": "S/ 85M",
+              "duration": "30 meses",
+              "status": "Completado"
+            },
+            {
+              "name": "Universidad Nacional de Ingeniería - Campus Norte",
+              "value": "S/ 220M",
+              "duration": "42 meses",
+              "status": "En ejecución"
+            },
+            {
+              "name": "Red de Colegios COAR - Regiones",
+              "value": "S/ 350M",
+              "duration": "48 meses",
+              "status": "En planificación"
+            }
+          ],
+          "specialties": [
+            "Instituciones educativas",
+            "Laboratorios académicos",
+            "Infraestructura deportiva",
+            "Residencias estudiantiles"
+          ]
+        },
+        {
+          "id": "mtc",
+          "name": "MTC",
+          "full_name": "Ministerio de Transportes y Comunicaciones",
+          "logo_text": "MTC",
+          "sector": "Transportes",
+          "color": "#059669",
+          "icon": "Truck",
+          "description": "Control de calidad en proyectos de infraestructura vial y aeroportuaria",
+          "projects_count": 18,
+          "key_projects": [
+            {
+              "name": "Ampliación Aeropuerto Jorge Chávez",
+              "value": "S/ 1.2B",
+              "duration": "60 meses",
+              "status": "En ejecución"
+            },
+            {
+              "name": "Carretera Central - Tramo La Oroya",
+              "value": "S/ 450M",
+              "duration": "36 meses",
+              "status": "Completado"
+            },
+            {
+              "name": "Puentes Peatonales Metropolitanos",
+              "value": "S/ 75M",
+              "duration": "24 meses",
+              "status": "Completado"
+            }
+          ],
+          "specialties": [
+            "Infraestructura vial",
+            "Puentes y túneles",
+            "Aeropuertos",
+            "Terminales de transporte"
+          ]
+        },
+        {
+          "id": "mvcs",
+          "name": "MVCS",
+          "full_name": "Ministerio de Vivienda, Construcción y Saneamiento",
+          "logo_text": "MVCS",
+          "sector": "Vivienda y Saneamiento",
+          "color": "#0891B2",
+          "icon": "Home",
+          "description": "Gestión de proyectos habitacionales y de saneamiento básico",
+          "projects_count": 28,
+          "key_projects": [
+            {
+              "name": "Planta de Tratamiento Taboada - Ampliación",
+              "value": "S/ 280M",
+              "duration": "30 meses",
+              "status": "En ejecución"
+            },
+            {
+              "name": "Programa Nacional de Vivienda Rural",
+              "value": "S/ 420M",
+              "duration": "36 meses",
+              "status": "Completado"
+            },
+            {
+              "name": "Sistema de Agua Potable Huancavelica",
+              "value": "S/ 150M",
+              "duration": "24 meses",
+              "status": "Completado"
+            }
+          ],
+          "specialties": [
+            "Plantas de tratamiento",
+            "Sistemas de agua potable",
+            "Vivienda social",
+            "Saneamiento rural"
+          ]
+        }
+      ],
+      "total_investment": "S/ 3.8B",
+      "active_projects": 12,
+      "completed_projects": 91
+    },
+    {
+      "id": "sector-privado",
+      "title": "Sector Privado",
+      "subtitle": "Empresas líderes en construcción e inmobiliario",
+      "description": "Colaboramos con las principales empresas del sector privado, proporcionando servicios de dirección integral que garantizan el éxito de sus inversiones.",
+      "categories": [
+        {
+          "id": "constructoras",
+          "title": "Constructoras Líderes",
+          "description": "Principales empresas constructoras del país que confían en nuestra supervisión técnica especializada",
+          "icon": "Building2",
+          "color": "#E84E0F",
+          "clients": [
+            {
+              "name": "Cosapi",
+              "projects": 15,
+              "specialization": "Infraestructura industrial y minera"
+            },
+            {
+              "name": "Graña y Montero",
+              "projects": 12,
+              "specialization": "Proyectos de ingeniería compleja"
+            },
+            {
+              "name": "JJC Contratistas Generales",
+              "projects": 8,
+              "specialization": "Edificaciones comerciales"
+            },
+            {
+              "name": "Stracon GyM",
+              "projects": 10,
+              "specialization": "Minería e infraestructura vial"
+            }
+          ],
+          "services": [
+            "Supervisión técnica especializada",
+            "Control de calidad de materiales",
+            "Gestión de cronogramas",
+            "Coordinación multidisciplinaria"
+          ],
+          "key_projects": [
+            {
+              "name": "Centro Empresarial San Isidro",
+              "client": "Cosapi",
+              "value": "S/ 320M",
+              "status": "Completado"
+            },
+            {
+              "name": "Complejo Industrial Lurín",
+              "client": "Graña y Montero",
+              "value": "S/ 450M",
+              "status": "En ejecución"
+            }
+          ]
+        },
+        {
+          "id": "desarrolladores",
+          "title": "Desarrolladores Inmobiliarios",
+          "description": "Empresas inmobiliarias que desarrollan proyectos residenciales, comerciales y mixtos",
+          "icon": "Building",
+          "color": "#7C3AED",
+          "clients": [
+            {
+              "name": "Paz Centenario",
+              "projects": 22,
+              "specialization": "Proyectos residenciales premium"
+            },
+            {
+              "name": "Besco",
+              "projects": 18,
+              "specialization": "Desarrollos comerciales"
+            },
+            {
+              "name": "Viva GyM",
+              "projects": 14,
+              "specialization": "Vivienda social y media"
+            },
+            {
+              "name": "Los Portales",
+              "projects": 16,
+              "specialization": "Proyectos mixtos"
+            }
+          ],
+          "services": [
+            "Dirección integral de proyectos",
+            "Gestión de permisos y licencias",
+            "Supervisión de construcción",
+            "Control de costos y presupuestos"
+          ],
+          "key_projects": [
+            {
+              "name": "Torres del Parque - Miraflores",
+              "client": "Paz Centenario",
+              "value": "S/ 180M",
+              "status": "Completado"
+            },
+            {
+              "name": "Mall Plaza Norte Extensión",
+              "client": "Besco",
+              "value": "S/ 220M",
+              "status": "En ejecución"
+            }
+          ]
+        },
+        {
+          "id": "servicios",
+          "title": "Empresas de Servicios",
+          "description": "Compañías de servicios públicos y concesionarias de infraestructura",
+          "icon": "Settings",
+          "color": "#059669",
+          "clients": [
+            {
+              "name": "SEDAPAL",
+              "projects": 12,
+              "specialization": "Infraestructura de agua y saneamiento"
+            },
+            {
+              "name": "Luz del Sur",
+              "projects": 8,
+              "specialization": "Infraestructura eléctrica"
+            },
+            {
+              "name": "Rutas de Lima",
+              "projects": 6,
+              "specialization": "Infraestructura vial urbana"
+            },
+            {
+              "name": "Lima Airport Partners",
+              "projects": 4,
+              "specialization": "Infraestructura aeroportuaria"
+            }
+          ],
+          "services": [
+            "Supervisión de concesiones",
+            "Gestión de contratos",
+            "Control de estándares de servicio",
+            "Auditorías técnicas"
+          ],
+          "key_projects": [
+            {
+              "name": "Renovación Planta La Atarjea",
+              "client": "SEDAPAL",
+              "value": "S/ 180M",
+              "status": "Completado"
+            },
+            {
+              "name": "Modernización Línea Amarilla",
+              "client": "Rutas de Lima",
+              "value": "S/ 85M",
+              "status": "En ejecución"
+            }
+          ]
+        }
+      ],
+      "total_investment": "S/ 2.1B",
+      "active_projects": 18,
+      "completed_projects": 134
+    }
+  ],
+  "testimonials": {
+    "title": "Lo que Dicen de Nosotros",
+    "subtitle": "Testimonios reales de nuestros clientes más importantes",
+    "testimonials_list": [
+      {
+        "id": 1,
+        "quote": "Métrica DIP ha demostrado un nivel excepcional de profesionalismo y expertise técnico en la supervisión de nuestros proyectos hospitalarios. Su compromiso con la calidad es invaluable.",
+        "author": "Director de Infraestructura",
+        "company": "MINSA",
+        "sector": "Sector Público",
+        "project": "Hospital Nacional Dos de Mayo",
+        "rating": 5,
+        "date": "2023"
+      },
+      {
+        "id": 2,
+        "quote": "La dirección integral de proyectos que proporciona Métrica nos ha permitido cumplir con los cronogramas más exigentes manteniendo los más altos estándares de calidad.",
+        "author": "Gerente General",
+        "company": "Constructora Líder",
+        "sector": "Sector Privado",
+        "project": "Centro Empresarial San Isidro",
+        "rating": 5,
+        "date": "2023"
+      },
+      {
+        "id": 3,
+        "quote": "Su experiencia en gestión de proyectos educativos ha sido fundamental para el éxito de nuestras instituciones emblemáticas. Profesionalismo y resultados garantizados.",
+        "author": "Coordinador de Infraestructura",
+        "company": "MINEDU",
+        "sector": "Sector Público",
+        "project": "Colegio Emblemático María Parado de Bellido",
+        "rating": 5,
+        "date": "2022"
+      },
+      {
+        "id": 4,
+        "quote": "La supervisión técnica de Métrica DIP en nuestros desarrollos inmobiliarios ha superado nuestras expectativas. Su atención al detalle es excepcional.",
+        "author": "Director de Proyectos",
+        "company": "Paz Centenario",
+        "sector": "Sector Privado",
+        "project": "Torres del Parque - Miraflores",
+        "rating": 5,
+        "date": "2023"
+      },
+      {
+        "id": 5,
+        "quote": "El control de calidad y gestión de cronogramas en nuestros proyectos viales ha sido impecable. Métrica DIP es sinónimo de confianza y eficiencia.",
+        "author": "Jefe de Obras",
+        "company": "MTC",
+        "sector": "Sector Público",
+        "project": "Carretera Central - La Oroya",
+        "rating": 5,
+        "date": "2022"
+      },
+      {
+        "id": 6,
+        "quote": "Su expertise en proyectos de saneamiento y la gestión integral que proporcionan ha sido clave para el éxito de nuestras obras de infraestructura hídrica.",
+        "author": "Gerente de Proyectos",
+        "company": "SEDAPAL",
+        "sector": "Sector Privado",
+        "project": "Renovación Planta La Atarjea",
+        "rating": 5,
+        "date": "2023"
+      }
+    ]
+  },
+  "client_benefits": {
+    "title": "Beneficios para Nuestros Clientes",
+    "subtitle": "Por qué las principales empresas e instituciones nos eligen",
+    "benefits": [
+      {
+        "id": "expertise",
+        "title": "Experiencia Especializada",
+        "description": "Más de 15 años dirigiendo proyectos complejos en múltiples sectores",
+        "icon": "Award",
+        "color": "#E84E0F",
+        "metrics": [
+          "200+ proyectos completados exitosamente",
+          "95% de satisfacción del cliente",
+          "100% cumplimiento normativo"
+        ]
+      },
+      {
+        "id": "quality",
+        "title": "Garantía de Calidad",
+        "description": "Certificaciones ISO y procesos rigurosos de control de calidad",
+        "icon": "Shield",
+        "color": "#059669",
+        "metrics": [
+          "Certificación ISO 9001:2015",
+          "Zero incidencias de calidad críticas",
+          "Auditorías internas mensuales"
+        ]
+      },
+      {
+        "id": "efficiency",
+        "title": "Eficiencia Comprobada",
+        "description": "Optimización de tiempos y costos mediante metodologías avanzadas",
+        "icon": "TrendingUp",
+        "color": "#7C3AED",
+        "metrics": [
+          "20% reducción promedio en tiempos",
+          "15% ahorro en costos de proyecto",
+          "98% cumplimiento de cronogramas"
+        ]
+      },
+      {
+        "id": "technology",
+        "title": "Tecnología Avanzada",
+        "description": "Herramientas BIM, IoT y metodologías digitales de última generación",
+        "icon": "Cpu",
+        "color": "#DC2626",
+        "metrics": [
+          "100% proyectos con metodología BIM",
+          "Monitoreo en tiempo real 24/7",
+          "Reporting digital automatizado"
+        ]
+      }
+    ]
+  },
+  "partnership_approach": {
+    "title": "Nuestro Enfoque de Colaboración",
+    "subtitle": "Construimos relaciones sólidas y duraderas con cada cliente",
+    "description": "No somos solo proveedores, somos socios estratégicos comprometidos con el éxito de cada proyecto. Nuestro enfoque colaborativo garantiza resultados excepcionales.",
+    "phases": [
+      {
+        "phase": 1,
+        "title": "Análisis y Planificación",
+        "description": "Entendimiento profundo de objetivos, alcance y expectativas del cliente",
+        "duration": "2-4 semanas",
+        "deliverables": [
+          "Plan de dirección integral",
+          "Análisis de riesgos",
+          "Cronograma maestro",
+          "Presupuesto detallado"
+        ]
+      },
+      {
+        "phase": 2,
+        "title": "Implementación y Supervisión",
+        "description": "Ejecución del proyecto con supervisión técnica continua y control de calidad",
+        "duration": "Según cronograma",
+        "deliverables": [
+          "Reportes semanales de avance",
+          "Control de calidad en tiempo real",
+          "Gestión de cambios",
+          "Coordinación multidisciplinaria"
+        ]
+      },
+      {
+        "phase": 3,
+        "title": "Entrega y Seguimiento",
+        "description": "Cierre del proyecto con entrega formal y seguimiento post-construcción",
+        "duration": "2-6 semanas",
+        "deliverables": [
+          "Entrega formal del proyecto",
+          "Documentación as-built",
+          "Capacitación al personal",
+          "Garantía de calidad extendida"
+        ]
+      }
+    ]
+  },
+  "success_metrics": {
+    "title": "Métricas de Éxito",
+    "subtitle": "Resultados medibles que respaldan nuestra propuesta de valor",
+    "metrics": [
+      {
+        "category": "Satisfacción del Cliente",
+        "value": "95%",
+        "description": "Índice de satisfacción promedio",
+        "trend": "+5% vs año anterior"
+      },
+      {
+        "category": "Cumplimiento de Cronogramas",
+        "value": "98%",
+        "description": "Proyectos entregados a tiempo",
+        "trend": "+3% vs año anterior"
+      },
+      {
+        "category": "Control de Costos",
+        "value": "±2%",
+        "description": "Variación promedio vs presupuesto",
+        "trend": "Mejora del 1% vs año anterior"
+      },
+      {
+        "category": "Tasa de Renovación",
+        "value": "92%",
+        "description": "Clientes que renuevan contratos",
+        "trend": "+8% vs año anterior"
+      }
+    ]
+  }
+}

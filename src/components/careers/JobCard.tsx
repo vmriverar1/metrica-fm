@@ -13,7 +13,7 @@ import {
   Building2,
   ChevronRight
 } from 'lucide-react';
-import { JobPosting, getJobCategoryLabel, getJobTypeLabel } from '@/types/careers';
+import { JobPosting } from '@/hooks/useDynamicCareersContent';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,6 +47,29 @@ export default function JobCard({
     setIsHovered(false);
     setMousePosition({ x: 0, y: 0 });
   };
+
+  // Helper functions for the new JobPosting structure
+  const getJobCategoryLabel = (category: string) => {
+    const categoryMap: { [key: string]: string } = {
+      'gestion-direccion': 'Gestión y Dirección',
+      'ingenieria-tecnica': 'Ingeniería Técnica',
+      'arquitectura-diseño': 'Arquitectura y Diseño',
+      'operaciones-control': 'Operaciones y Control',
+      'administracion-finanzas': 'Administración y Finanzas'
+    };
+    return categoryMap[category] || category;
+  };
+
+  const getJobTypeLabel = (type: string) => {
+    const typeMap: { [key: string]: string } = {
+      'full-time': 'Tiempo Completo',
+      'part-time': 'Medio Tiempo',
+      'contract': 'Por Contrato',
+      'internship': 'Prácticas'
+    };
+    return typeMap[type] || type;
+  };
+
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -109,7 +132,7 @@ export default function JobCard({
   // List view rendering
   if (viewMode === 'list') {
     return (
-      <Link href={`/careers/job/${job.id}`} className="block">
+      <Link href={`/careers/job/${job.slug}`} className="block">
         <div
           ref={cardRef}
           className={cn(
@@ -140,9 +163,9 @@ export default function JobCard({
                     Destacado
                   </Badge>
                 )}
-                {job.remote && (
+                {(job.location.remote || job.location.hybrid) && (
                   <Badge variant="outline" className="text-xs">
-                    Remoto
+                    {job.location.remote ? 'Remoto' : 'Híbrido'}
                   </Badge>
                 )}
               </div>
@@ -152,7 +175,7 @@ export default function JobCard({
               </h3>
               
               <p className="text-muted-foreground line-clamp-2">
-                {job.description}
+                {job.short_description}
               </p>
             </div>
             
@@ -184,17 +207,17 @@ export default function JobCard({
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {formatDate(job.postedAt)}
+              {formatDate(new Date(job.posted_date))}
             </div>
           </div>
 
           {/* Requirements preview */}
-          {job.requirements.length > 0 && (
+          {job.requirements.essential.length > 0 && (
             <div className="text-sm">
               <span className="text-muted-foreground">Requisitos: </span>
               <span className="text-foreground">
-                {job.requirements.slice(0, 2).map(req => req.title).join(', ')}
-                {job.requirements.length > 2 && `, +${job.requirements.length - 2} más`}
+                {job.requirements.essential.slice(0, 2).join(', ')}
+                {job.requirements.essential.length > 2 && `, +${job.requirements.essential.length - 2} más`}
               </span>
             </div>
           )}
@@ -203,7 +226,7 @@ export default function JobCard({
         {/* Right Side - Actions */}
         <div className="flex flex-col justify-between items-end">
           <div className="text-xs text-muted-foreground">
-            {job.urgency === 'urgent' && (
+            {job.urgent && (
               <Badge variant="destructive" className="text-xs mb-2">
                 Urgente
               </Badge>
@@ -222,7 +245,7 @@ export default function JobCard({
 
   // Grid/Masonry view rendering
   return (
-    <Link href={`/careers/job/${job.id}`} className="block h-full">
+    <Link href={`/careers/job/${job.slug}`} className="block h-full">
       <div
         ref={cardRef}
         className={cn(
@@ -255,7 +278,7 @@ export default function JobCard({
                 Remoto
               </Badge>
             )}
-            {job.urgency === 'urgent' && (
+            {job.urgent && (
               <Badge variant="destructive" className="text-xs">
                 Urgente
               </Badge>
@@ -285,7 +308,7 @@ export default function JobCard({
           size === 'comfortable' && "text-base line-clamp-3", 
           size === 'spacious' && "text-base line-clamp-4"
         )}>
-          {job.description}
+          {job.short_description}
         </p>
       </div>
 
@@ -313,14 +336,14 @@ export default function JobCard({
             Requisitos clave:
           </h4>
           <div className="flex flex-wrap gap-1">
-            {job.requirements.slice(0, 3).map((req, index) => (
+            {job.requirements.essential.slice(0, 3).map((req, index) => (
               <Badge key={index} variant="outline" className="text-xs">
-                {req.title}
+                {req}
               </Badge>
             ))}
-            {job.requirements.length > 3 && (
+            {job.requirements.essential.length > 3 && (
               <Badge variant="secondary" className="text-xs">
-                +{job.requirements.length - 3}
+                +{job.requirements.essential.length - 3}
               </Badge>
             )}
           </div>
@@ -341,7 +364,7 @@ export default function JobCard({
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
-            {formatDate(job.postedAt)}
+            {formatDate(new Date(job.posted_date))}
           </div>
         </div>
 

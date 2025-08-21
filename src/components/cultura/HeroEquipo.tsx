@@ -8,31 +8,33 @@ interface HeroEquipoProps {
   title: string;
   subtitle: string;
   backgroundImage?: string;
+  teamImages?: string[][];
 }
 
-// Imágenes del equipo - 3 filas por columna para mayor tamaño
-const teamImages = [
-  // Columna 1
-  [
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face',
-  ],
-  // Columna 2
-  [
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=face',
-  ],
-  // Columna 3
-  [
-    'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=700&fit=crop&crop=face',
-  ],
-];
-
-export default function HeroEquipo({ title, subtitle, backgroundImage }: HeroEquipoProps) {
+export default function HeroEquipo({ title, subtitle, backgroundImage, teamImages }: HeroEquipoProps) {
+  // Fallback a imágenes por defecto si no se proporcionan desde JSON
+  const defaultTeamImages = [
+    // Columna 1
+    [
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face',
+    ],
+    // Columna 2
+    [
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=face',
+    ],
+    // Columna 3
+    [
+      'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=700&fit=crop&crop=face',
+    ],
+  ];
+  
+  const finalTeamImages = teamImages || defaultTeamImages;
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -139,7 +141,7 @@ export default function HeroEquipo({ title, subtitle, backgroundImage }: HeroEqu
 
       {/* Galería de imágenes */}
       <div ref={galleryRef} className="gallery">
-        {teamImages.map((columnImages, colIndex) => (
+        {finalTeamImages.map((columnImages, colIndex) => (
           <div key={colIndex} className="col">
             {columnImages.map((imageSrc, imgIndex) => (
               <div key={imgIndex} className="image">

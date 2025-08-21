@@ -10,7 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PortfolioHero() {
-  const { allProjects } = usePortfolio();
+  const { pageData, allProjects, isLoading, error } = usePortfolio();
   const [counters, setCounters] = useState({
     projects: 0,
     years: 0,
@@ -27,10 +27,10 @@ export default function PortfolioHero() {
   const statsRef = useRef<HTMLDivElement>(null);
 
   const targetValues = {
-    projects: allProjects.length,
-    years: 15,
-    categories: 7,
-    cities: new Set(allProjects.map(p => p.location.city)).size
+    projects: pageData?.hero.stats.projects.value || allProjects.length,
+    years: pageData?.hero.stats.experience.value || 15,
+    categories: pageData?.hero.stats.categories.value || 7,
+    cities: pageData?.hero.stats.cities.value || new Set(allProjects.map(p => p.location.city)).size
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function PortfolioHero() {
     }, interval);
 
     return () => clearInterval(timer);
-  }, [allProjects.length]);
+  }, [allProjects.length, pageData]);
 
   // GSAP Parallax and animations setup
   useEffect(() => {
@@ -156,6 +156,29 @@ export default function PortfolioHero() {
     };
   }, []);
 
+  // Show loading state if data isn't ready
+  if (isLoading) {
+    return (
+      <section className="relative h-[60vh] md:h-[70vh] overflow-hidden flex items-center justify-center bg-gradient-to-r from-gray-900 to-gray-800">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p>Cargando portfolio...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error state if there's an error
+  if (error) {
+    return (
+      <section className="relative h-[60vh] md:h-[70vh] overflow-hidden flex items-center justify-center bg-gradient-to-r from-red-900 to-red-800">
+        <div className="text-white text-center">
+          <p>Error al cargar el portfolio: {error}</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section ref={heroRef} className="relative h-[60vh] md:h-[70vh] overflow-hidden">
       {/* Background with parallax effect */}
@@ -164,7 +187,7 @@ export default function PortfolioHero() {
           ref={backgroundRef}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 will-change-transform"
           style={{
-            backgroundImage: 'url("https://metrica-dip.com/images/slider-inicio-es/01.jpg")',
+            backgroundImage: `url("${pageData?.hero.background_image || pageData?.hero.background_image_fallback || "https://metrica-dip.com/images/slider-inicio-es/01.jpg"}")`,
           }}
         />
         {/* Gradient overlay */}
@@ -183,13 +206,13 @@ export default function PortfolioHero() {
             <div ref={titleRef} className="mb-6">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                 <span className="relative inline-block">
-                  Nuestro
+                  {pageData?.hero.title.split(' ')[0] || 'Nuestro'}
                   {/* Glitch effect layers */}
                   <span className="absolute inset-0 text-accent opacity-20 transform translate-x-1 translate-y-1">
-                    Nuestro
+                    {pageData?.hero.title.split(' ')[0] || 'Nuestro'}
                   </span>
                   <span className="absolute inset-0 text-blue-400 opacity-20 transform -translate-x-1 -translate-y-1">
-                    Nuestro
+                    {pageData?.hero.title.split(' ')[0] || 'Nuestro'}
                   </span>
                 </span>{' '}
                 <motion.span
@@ -198,7 +221,7 @@ export default function PortfolioHero() {
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="text-accent"
                 >
-                  Portafolio
+                  {pageData?.hero.title.split(' ').slice(1).join(' ') || 'Portafolio'}
                 </motion.span>
               </h1>
             </div>
@@ -210,8 +233,7 @@ export default function PortfolioHero() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl leading-relaxed"
             >
-              Explora la diversidad y el impacto de nuestros proyectos de infraestructura 
-              que transforman espacios y potencian el crecimiento en todo el Perú.
+              {pageData?.hero.subtitle || 'Explora la diversidad y el impacto de nuestros proyectos de infraestructura que transforman espacios y potencian el crecimiento en todo el Perú.'}
             </motion.p>
 
             {/* Animated statistics */}
@@ -228,7 +250,7 @@ export default function PortfolioHero() {
                   {counters.projects}+
                 </div>
                 <div className="text-sm md:text-base text-white/80">
-                  Proyectos Completados
+                  {pageData?.hero.stats.projects.label || 'Proyectos Completados'}
                 </div>
               </div>
 
@@ -241,7 +263,7 @@ export default function PortfolioHero() {
                   {counters.years}
                 </div>
                 <div className="text-sm md:text-base text-white/80">
-                  Años de Experiencia
+                  {pageData?.hero.stats.experience.label || 'Años de Experiencia'}
                 </div>
               </div>
 
@@ -254,7 +276,7 @@ export default function PortfolioHero() {
                   {counters.categories}
                 </div>
                 <div className="text-sm md:text-base text-white/80">
-                  Categorías de Proyecto
+                  {pageData?.hero.stats.categories.label || 'Categorías de Proyecto'}
                 </div>
               </div>
 
@@ -267,7 +289,7 @@ export default function PortfolioHero() {
                   {counters.cities}
                 </div>
                 <div className="text-sm md:text-base text-white/80">
-                  Ciudades de Impacto
+                  {pageData?.hero.stats.cities.label || 'Ciudades de Impacto'}
                 </div>
               </div>
             </div>

@@ -1,30 +1,71 @@
-import { Metadata } from 'next';
+'use client';
+
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 import CareersContent from '@/components/careers/CareersContent';
-import { CareersProvider } from '@/contexts/CareersContext';
+import { useCareersData } from '@/hooks/useCareersData';
+import OptimizedLoading from '@/components/loading/OptimizedLoading';
+import { useEffect } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo',
-  description: 'Descubre oportunidades laborales en Métrica DIP. Construye tu carrera profesional en proyectos de construcción e infraestructura de gran impacto en Perú.',
-  keywords: 'trabajos construcción, empleos arquitectura, carreras ingeniería civil, oportunidades laborales Perú, trabajo project manager',
-  openGraph: {
-    title: 'Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo',
-    description: 'Descubre oportunidades laborales en Métrica DIP. Construye tu carrera profesional en proyectos de gran impacto.',
-    type: 'website',
-    locale: 'es_PE',
-    siteName: 'Métrica DIP'
+function CareersPageContent() {
+  const { data: careersData, loading, error } = useCareersData();
+
+  // Actualizar el título de la página dinámicamente
+  useEffect(() => {
+    if (careersData?.page?.title) {
+      document.title = careersData.page.title;
+    }
+  }, [careersData?.page?.title]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <OptimizedLoading type="page" />
+        <Footer />
+      </div>
+    );
   }
-};
 
-export default function CareersPage() {
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Error al cargar la página</h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!careersData) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">No se encontraron datos</h2>
+            <p className="text-gray-600">La información de carreras no está disponible</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-background text-foreground min-h-screen overflow-x-hidden">
       <Header />
-      <CareersProvider>
-        <CareersContent />
-      </CareersProvider>
+      <CareersContent careersData={careersData} />
       <Footer />
     </div>
   );
+}
+
+export default function CareersPage() {
+  return <CareersPageContent />;
 }

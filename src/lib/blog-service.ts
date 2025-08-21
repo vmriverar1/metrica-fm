@@ -4,7 +4,6 @@
  * Detecta automáticamente si usar Directus o datos locales
  */
 
-import { directus } from './directus';
 import { 
   BlogPost, 
   BlogCategory as BlogCategoryType, 
@@ -131,56 +130,10 @@ export class BlogService {
   private static directusAvailable = false;
 
   /**
-   * Verifica si Directus está disponible y tiene datos de blog
+   * Always returns false since we removed Directus
    */
   private static async checkDirectusAvailability(): Promise<boolean> {
-    const now = Date.now();
-    const fiveMinutes = 5 * 60 * 1000;
-
-    // Cache check para evitar verificaciones frecuentes
-    if (now - this.lastDirectusCheck < fiveMinutes) {
-      return this.directusAvailable;
-    }
-
-    try {
-      const health = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/server/health`, {
-        method: 'GET',
-        headers: { 'Cache-Control': 'no-cache' }
-      });
-
-      if (!health.ok) {
-        this.directusAvailable = false;
-        this.lastDirectusCheck = now;
-        return false;
-      }
-
-      // Verificar si las collections de blog existen y tienen datos
-      const categoriesResponse = await directus.request(
-        // @ts-ignore - rest API call
-        'GET', '/items/blog_categories?limit=1'
-      );
-
-      const postsResponse = await directus.request(
-        // @ts-ignore - rest API call  
-        'GET', '/items/blog_posts?limit=1'
-      );
-
-      this.directusAvailable = categoriesResponse?.data?.length > 0 && postsResponse?.data?.length > 0;
-      this.lastDirectusCheck = now;
-
-      if (this.directusAvailable) {
-        console.log('📡 Directus blog collections disponibles');
-      } else {
-        console.log('📋 Usando datos locales de blog (fallback)');
-      }
-
-      return this.directusAvailable;
-    } catch (error) {
-      console.log('📋 Usando datos locales de blog (fallback)');
-      this.directusAvailable = false;
-      this.lastDirectusCheck = now;
-      return false;
-    }
+    return false;
   }
 
   /**
@@ -236,31 +189,6 @@ export class BlogService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const categoriesResponse = await directus.request(
-          // @ts-ignore
-          'GET', '/items/blog_categories'
-        );
-
-        const directusCategories: BlogServiceCategory[] = categoriesResponse.data.map((cat: DirectusBlogCategory) => ({
-          id: cat.id,
-          name: cat.name,
-          slug: cat.slug,
-          description: cat.description,
-          color: cat.color,
-          icon: cat.icon,
-          count: 0 // Se calculará después
-        }));
-
-        cache.set(cacheKey, directusCategories);
-        return directusCategories;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus blog categories:', error);
-    }
 
     // Fallback: categorías locales basadas en posts
     const localCategories: BlogServiceCategory[] = [
@@ -317,48 +245,6 @@ export class BlogService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        // Construir query de Directus con filtros
-        let query = '/items/blog_posts?status=published';
-        
-        if (filters.category) {
-          query += `&filter[category][_eq]=${filters.category}`;
-        }
-        
-        if (filters.featured !== undefined) {
-          query += `&filter[featured][_eq]=${filters.featured}`;
-        }
-        
-        if (filters.author) {
-          query += `&filter[author][name][_icontains]=${filters.author}`;
-        }
-        
-        if (filters.searchQuery) {
-          query += `&search=${encodeURIComponent(filters.searchQuery)}`;
-        }
-        
-        if (filters.limit) {
-          query += `&limit=${filters.limit}`;
-        }
-        
-        if (filters.offset) {
-          query += `&offset=${filters.offset}`;
-        }
-
-        query += '&fields=*,author.*,tags.*&sort=-published_at';
-
-        const postsResponse = await directus.request('GET', query);
-        const directusPosts = postsResponse.data.map(this.convertDirectusBlogPost);
-
-        cache.set(cacheKey, directusPosts);
-        return directusPosts;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus blog posts:', error);
-    }
 
     // Fallback: datos locales con filtros
     let filteredPosts = [...sampleBlogPosts].filter(post => post.status === 'published');
@@ -410,24 +296,6 @@ export class BlogService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const postResponse = await directus.request(
-          'GET', 
-          `/items/blog_posts?filter[slug][_eq]=${slug}&fields=*,author.*,tags.*&limit=1`
-        );
-
-        if (postResponse.data.length > 0) {
-          const directusPost = this.convertDirectusBlogPost(postResponse.data[0]);
-          cache.set(cacheKey, directusPost);
-          return directusPost;
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching Directus blog post:', error);
-    }
 
     // Fallback: datos locales
     const localPost = getBlogPost(slug);
@@ -445,22 +313,6 @@ export class BlogService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const authorsResponse = await directus.request(
-          'GET', 
-          '/items/authors?filter[active][_eq]=true'
-        );
-
-        const directusAuthors = authorsResponse.data.map(this.convertDirectusAuthor);
-        cache.set(cacheKey, directusAuthors);
-        return directusAuthors;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus authors:', error);
-    }
 
     // Fallback: datos locales
     cache.set(cacheKey, sampleAuthors);
@@ -517,31 +369,6 @@ export class BlogService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        // Obtener estadísticas de Directus
-        const [postsResponse, authorsResponse] = await Promise.all([
-          directus.request('GET', '/items/blog_posts?aggregate[count]=*'),
-          directus.request('GET', '/items/authors?aggregate[count]=*')
-        ]);
-
-        const stats: BlogStats = {
-          totalPosts: postsResponse.data[0]?.count || 0,
-          totalAuthors: authorsResponse.data[0]?.count || 0,
-          totalCategories: 4,
-          averageReadingTime: 14, // Calculado por separado
-          totalViews: 0, // Calculado por separado
-          popularTags: [] // Calculado por separado
-        };
-
-        cache.set(cacheKey, stats);
-        return stats;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus blog stats:', error);
-    }
 
     // Fallback: estadísticas locales
     const localStats = getBlogStats();
@@ -553,14 +380,13 @@ export class BlogService {
    * Obtiene información del sistema
    */
   static async getSystemInfo(): Promise<BlogSystemInfo> {
-    const directusAvailable = await this.checkDirectusAvailability();
     const stats = await this.getStats();
 
     return {
-      dataSource: directusAvailable ? 'directus' : 'local',
-      directusAvailable,
-      lastCheck: new Date(this.lastDirectusCheck),
-      apiEndpoint: process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055',
+      dataSource: 'local',
+      directusAvailable: false,
+      lastCheck: new Date(),
+      apiEndpoint: '',
       totalPosts: stats.totalPosts,
       totalAuthors: stats.totalAuthors,
       cacheStatus: 'active'

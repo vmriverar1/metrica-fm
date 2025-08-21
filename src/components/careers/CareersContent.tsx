@@ -8,18 +8,23 @@ import CareerFilters from '@/components/careers/CareerFilters';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import OptimizedLoading from '@/components/loading/OptimizedLoading';
+import { CareersData } from '@/hooks/useCareersData';
 
-export default function CareersContent() {
+interface CareersContentProps {
+  careersData: CareersData;
+}
+
+export default function CareersContent({ careersData }: CareersContentProps) {
   return (
     <main className="min-h-screen bg-background">
       <Suspense fallback={<OptimizedLoading type="careers" />}>
-        <CareersHero />
+        <CareersHero heroData={careersData.hero} />
       </Suspense>
       
       <SectionTransition variant="fade" />
       
       <Suspense fallback={<OptimizedLoading type="careers" message="Cargando beneficios de la empresa..." />}>
-        <CompanyBenefits />
+        <CompanyBenefits benefitsData={careersData.company_benefits} />
       </Suspense>
 
       <SectionTransition variant="slide" />
@@ -28,8 +33,8 @@ export default function CareersContent() {
         <div id="careers-content"></div>
         <div className="container mx-auto px-4">
           <Suspense fallback={<OptimizedLoading type="search" />}>
-            <CareerFilters />
-            <JobGrid />
+            <CareerFilters jobOpportunitiesData={careersData.job_opportunities} />
+            <JobGrid jobOpportunitiesData={careersData.job_opportunities} />
           </Suspense>
         </div>
       </section>
@@ -38,15 +43,15 @@ export default function CareersContent() {
       
       <PortfolioCTA 
         type="careers"
-        title="¿No encontraste la posición ideal?"
-        description="Envía tu CV y te contactaremos cuando surjan oportunidades que se alineen con tu perfil profesional."
+        title={careersData.final_cta.title}
+        description={careersData.final_cta.description}
         primaryButton={{
-          text: "Enviar CV",
-          href: "/careers/apply"
+          text: careersData.final_cta.primary_button.text,
+          href: careersData.final_cta.primary_button.href
         }}
         secondaryButton={{
-          text: "Conoce Nuestra Cultura",
-          href: "/about/cultura"
+          text: careersData.final_cta.secondary_button.text,
+          href: careersData.final_cta.secondary_button.href
         }}
       />
     </main>

@@ -18,35 +18,18 @@ import { useGSAP } from '@gsap/react';
 import { cn } from '@/lib/utils';
 import PortfolioProgress from '@/components/ui/portfolio-progress';
 import PortfolioTransition from '@/components/ui/portfolio-transition';
+import { HomePageData } from '@/types/home';
 
-const projects = [
-  {
-    name: 'Hospital Nacional de Alta Complejidad',
-    type: 'Sanitaria',
-    description: 'Supervisión integral de la construcción y equipamiento del hospital más moderno de la región.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg'
-  },
-  {
-    name: 'Institución Educativa Emblemática "Futuro"',
-    type: 'Educativa',
-    description: 'Dirección del proyecto para la modernización de infraestructura educativa para más de 5,000 estudiantes.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg'
-  },
-  {
-    name: 'Autopista del Sol - Tramo IV',
-    type: 'Vial',
-    description: 'Control de calidad y supervisión técnica en uno de los corredores viales más importantes del país.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg'
-  },
-  {
-    name: 'Planta de Tratamiento de Aguas Residuales',
-    type: 'Saneamiento',
-    description: 'Gestión de proyecto para la ampliación y modernización de la planta, beneficiando a 2 millones de personas.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg'
-  },
-];
 
-export default function Portfolio() {
+interface PortfolioProps {
+  data: HomePageData['portfolio'];
+}
+
+export default function Portfolio({ data }: PortfolioProps) {
+  const projects = data.featured_projects.map(project => ({
+    ...project,
+    imageUrl: project.image_url || project.image_url_fallback
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -537,27 +520,7 @@ export default function Portfolio() {
           duration: 0.15,
           ease: 'power2.inOut'
         }, 0.15)
-        .set({}, {}, "+=0.3")
-        .to('.project-card', {
-          height: '70vh',
-          duration: 0.1,
-          ease: 'power2.out'
-        }, 0.7)
-        .to(carouselWrapperRef.current, {
-          width: '90vw',
-          height: '70vh',
-          marginLeft: () => -(window.innerWidth * 0.9 - (carouselWrapperRef.current?.getBoundingClientRect().width || 0)) / 2,
-          marginTop: () => -(window.innerHeight * 0.7 - (carouselWrapperRef.current?.getBoundingClientRect().height || 0)) / 2,
-          borderRadius: '0.5rem',
-          duration: 0.1,
-          ease: 'power2.out'
-        }, 0.7)
-        .to([titleRef.current, subtitleRef.current], {
-          opacity: 1,
-          y: 0,
-          duration: 0.2,
-          ease: 'power2.out'
-        }, 0.8);
+        .set({}, {}, "+=0.7"); // Mantener expandido sin contraer
     });
     
   }, { scope: containerRef });
@@ -594,9 +557,9 @@ export default function Portfolio() {
     <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background transition-colors duration-1000">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <div className="text-center mb-12">
-                <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">Proyectos Destacados</h2>
+                <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">{data.section.title}</h2>
                 <p ref={subtitleRef} className="portfolio-subtitle mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
-                    Conoce el impacto de nuestro trabajo a través de algunos de los proyectos que hemos dirigido.
+                    {data.section.subtitle}
                 </p>
             </div>
             <div ref={carouselWrapperRef} className="carousel-wrapper relative overflow-hidden rounded-lg" style={{ contain: 'layout' }}>
@@ -658,7 +621,7 @@ export default function Portfolio() {
                                                 {project.description}
                                             </p>
                                             <NavigationLink 
-                                                href="/portfolio"
+                                                href={data.section.cta.url}
                                                 loadingMessage="Cargando portafolio completo..."
                                             >
                                                 <Button 
@@ -671,7 +634,7 @@ export default function Portfolio() {
                                                         transitionDelay: current === index ? '900ms' : '0ms'
                                                     }}
                                                 >
-                                                    Ver más detalles
+                                                    {data.section.cta.text}
                                                 </Button>
                                             </NavigationLink>
                                         </div>
@@ -679,8 +642,8 @@ export default function Portfolio() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="carousel-previous absolute left-8 top-1/2 -translate-y-1/2 z-50 text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-300 h-16 w-16 rounded-full backdrop-blur-sm" />
-                    <CarouselNext className="carousel-next absolute right-8 top-1/2 -translate-y-1/2 z-50 text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-300 h-16 w-16 rounded-full backdrop-blur-sm" />
+                    <CarouselPrevious className="carousel-previous absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white bg-black/20 hover:bg-black/40 border-none transition-all duration-200 h-10 w-10 rounded-full backdrop-blur-sm hover:scale-110 shadow-lg" />
+                    <CarouselNext className="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white bg-black/20 hover:bg-black/40 border-none transition-all duration-200 h-10 w-10 rounded-full backdrop-blur-sm hover:scale-110 shadow-lg" />
                     {count > 0 && (
                       <PortfolioProgress 
                         current={current} 

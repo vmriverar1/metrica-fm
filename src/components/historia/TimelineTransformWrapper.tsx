@@ -6,7 +6,11 @@ import { useGSAP } from '@gsap/react';
 import TimelineHorizontal from './TimelineHorizontal';
 import CierreTransform from './CierreTransform';
 
-export default function TimelineTransformWrapper() {
+interface TimelineTransformWrapperProps {
+  historiaData?: any;
+}
+
+export default function TimelineTransformWrapper({ historiaData }: TimelineTransformWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -144,10 +148,10 @@ export default function TimelineTransformWrapper() {
   return (
     <div ref={wrapperRef} className="relative">
       {/* Timeline que se achicará */}
-      <TimelineHorizontal />
+      <TimelineHorizontal historiaData={historiaData} />
       
       {/* Sección que activa la transformación */}
-      <CierreTransform />
+      <CierreTransform historiaData={historiaData} />
     </div>
   );
 }

@@ -1,0 +1,189 @@
+{
+  "authors": [
+    {
+      "id": "1",
+      "name": "Carlos Mendoza",
+      "role": "Director General",
+      "bio": "Arquitecto con 20+ años de experiencia en dirección integral de proyectos. Especialista en infraestructura comercial y sostenibilidad.",
+      "avatar": "https://i.pravatar.cc/400?img=12",
+      "linkedin": "https://linkedin.com/in/carlos-mendoza",
+      "email": "cmendoza@metricadip.com",
+      "featured": true,
+      "articles_count": 8,
+      "specializations": ["Arquitectura", "Sostenibilidad", "PMO"]
+    },
+    {
+      "id": "2",
+      "name": "Ana Rodriguez",
+      "role": "Gerente de Proyectos",
+      "bio": "Ingeniera Civil especializada en gestión de proyectos de gran escala. Experta en metodologías PMI y construcción sostenible.",
+      "avatar": "https://i.pravatar.cc/400?img=32",
+      "linkedin": "https://linkedin.com/in/ana-rodriguez", 
+      "email": "arodriguez@metricadip.com",
+      "featured": true,
+      "articles_count": 6,
+      "specializations": ["Ingeniería Civil", "PMI", "Gestión"]
+    },
+    {
+      "id": "3",
+      "name": "Roberto Silva",
+      "role": "Especialista en Normativas",
+      "bio": "Abogado especializado en normativas de construcción y regulaciones municipales. 15 años asesorando proyectos inmobiliarios.",
+      "avatar": "https://i.pravatar.cc/400?img=14",
+      "linkedin": "https://linkedin.com/in/roberto-silva",
+      "email": "rsilva@metricadip.com",
+      "featured": false,
+      "articles_count": 4,
+      "specializations": ["Normativas", "Legal", "Regulaciones"]
+    },
+    {
+      "id": "4",
+      "name": "María Fernández",
+      "role": "Jefa de Sostenibilidad",
+      "bio": "Arquitecta LEED AP con especialización en diseño bioclimático y eficiencia energética. Líder en proyectos de certificación verde.",
+      "avatar": "https://i.pravatar.cc/400?img=45",
+      "linkedin": "https://linkedin.com/in/maria-fernandez",
+      "email": "mfernandez@metricadip.com",
+      "featured": true,
+      "articles_count": 5,
+      "specializations": ["LEED", "Sostenibilidad", "Eficiencia Energética"]
+    },
+    {
+      "id": "5",
+      "name": "Jorge Vargas",
+      "role": "Director de Innovación",
+      "bio": "Ingeniero Industrial con MBA, especializado en transformación digital y metodologías ágiles aplicadas a construcción.",
+      "avatar": "https://i.pravatar.cc/400?img=68",
+      "linkedin": "https://linkedin.com/in/jorge-vargas",
+      "email": "jvargas@metricadip.com",
+      "featured": false,
+      "articles_count": 3,
+      "specializations": ["Transformación Digital", "BIM", "Metodologías Ágiles"]
+    }
+  ],
+  "categories": [
+    {
+      "id": "industria-tendencias",
+      "name": "Industria & Tendencias",
+      "slug": "industria-tendencias",
+      "description": "Análisis de mercado inmobiliario, tendencias en construcción sostenible e innovaciones tecnológicas del sector.",
+      "color": "#E84E0F",
+      "icon": "TrendingUp",
+      "articles_count": 8,
+      "featured": true,
+      "order": 1
+    },
+    {
+      "id": "casos-estudio",
+      "name": "Casos de Estudio",
+      "slug": "casos-estudio",
+      "description": "Deep dives de proyectos emblemáticos con lecciones aprendidas, métricas reales y testimonios de clientes.",
+      "color": "#003F6F",
+      "icon": "FileText",
+      "articles_count": 6,
+      "featured": true,
+      "order": 2
+    },
+    {
+      "id": "guias-tecnicas",
+      "name": "Guías Técnicas",
+      "slug": "guias-tecnicas",
+      "description": "Metodologías de gestión de proyectos, guías de cumplimiento normativo y herramientas especializadas.",
+      "color": "#34D399",
+      "icon": "BookOpen",
+      "articles_count": 7,
+      "featured": true,
+      "order": 3
+    },
+    {
+      "id": "liderazgo-vision",
+      "name": "Liderazgo & Visión",
+      "slug": "liderazgo-vision",
+      "description": "Insights de líderes, filosofía empresarial, predicciones de mercado y participación en eventos del sector.",
+      "color": "#8B5CF6",
+      "icon": "Users",
+      "articles_count": 5,
+      "featured": false,
+      "order": 4
+    }
+  ],
+  "articles": [
+    {
+      "id": "1",
+      "title": "El Futuro de la Construcción Sostenible en el Perú",
+      "slug": "futuro-construccion-sostenible-peru",
+      "category": "industria-tendencias",
+      "author_id": "4",
+      "featured_image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=800",
+      "featured_image_alt": "Edificio sostenible con tecnología verde",
+      "excerpt": "Análisis profundo de las tendencias de construcción sostenible que están transformando el sector inmobiliario peruano hacia un futuro más verde y eficiente.",
+      "content": "# El Futuro de la Construcción Sostenible en el Perú\n\nEl sector construcción en Perú está experimentando una transformación hacia la sostenibilidad impulsada por nuevas normativas, consciencia ambiental y beneficios económicos comprobados.\n\n## Tendencias Principales\n\n### 1. Certificaciones Verdes\nLas certificaciones LEED, BREEAM y EDGE están ganando tracción en proyectos comerciales y residenciales, con más de 50 proyectos certificados en Lima en los últimos 3 años.\n\n### 2. Materiales Innovadores\n- Concreto con agregados reciclados\n- Sistemas de aislamiento térmico de alta eficiencia\n- Paneles solares integrados en fachadas\n\n### 3. Tecnologías Inteligentes\nLa implementación de IoT en edificios permite optimizar el consumo energético hasta en un 30%, según datos de nuestros proyectos.\n\n## Impacto Económico\n\nLos edificios sostenibles generan:\n- 15-25% de ahorro en costos operativos\n- Mayor valor de reventa (hasta 10% más)\n- Menor tiempo de comercialización\n\n## Retos y Oportunidades\n\nEl principal reto sigue siendo la educación del mercado sobre los beneficios a largo plazo versus la inversión inicial. Sin embargo, el ROI típico se alcanza en 5-7 años.\n\n*Este artículo fue desarrollado basado en datos de 25 proyectos sostenibles gestionados por Métrica DIP entre 2020-2023.*",
+      "published_date": "2024-01-15T10:00:00Z",
+      "reading_time": 8,
+      "featured": true,
+      "tags": ["sostenibilidad", "LEED", "innovación", "mercado"],
+      "seo_description": "Descubre las tendencias de construcción sostenible que están transformando el sector inmobiliario peruano hacia un futuro más verde y eficiente.",
+      "social_image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=630",
+      "url": "/blog/futuro-construccion-sostenible-peru",
+      "related_articles": ["2", "8", "12"],
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200",
+          "caption": "Ejemplo de fachada verde en proyecto comercial"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200",
+          "caption": "Paneles solares integrados en diseño arquitectónico"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Metodologías PMI aplicadas a Proyectos de Gran Escala",
+      "slug": "metodologias-pmi-proyectos-gran-escala",
+      "category": "guias-tecnicas",
+      "author_id": "2",
+      "featured_image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800",
+      "featured_image_alt": "Equipo de proyecto planificando con metodología PMI",
+      "excerpt": "Guía práctica para implementar las mejores prácticas del PMI en proyectos de construcción e infraestructura de gran escala en el contexto peruano.",
+      "content": "# Metodologías PMI aplicadas a Proyectos de Gran Escala\n\nLa implementación correcta de metodologías PMI puede significar la diferencia entre el éxito y el fracaso en proyectos de gran escala.\n\n## Fases Críticas del Proyecto\n\n### 1. Iniciación\n- Definición clara del charter del proyecto\n- Identificación de stakeholders clave\n- Análisis de riesgos preliminar\n\n### 2. Planificación\n- **WBS detallado**: Descomposición hasta nivel de paquetes de trabajo\n- **Cronograma crítico**: Identificación de ruta crítica y holguras\n- **Gestión de recursos**: Planificación de equipos especializados\n\n### 3. Ejecución y Control\n- Reuniones de seguimiento semanales\n- Dashboards de KPIs en tiempo real\n- Gestión proactiva de cambios\n\n## Herramientas Especializadas\n\n### Software de Gestión\n- **Primavera P6**: Para cronogramas complejos\n- **MS Project**: Para equipos medianos\n- **Dashboards personalizados**: Reportes ejecutivos\n\n### Metodologías Ágiles\nIntegración de Scrum para equipos de diseño:\n- Sprints de 2-3 semanas\n- Daily standups virtuales\n- Retrospectivas por fase\n\n## Casos de Éxito\n\nEn el proyecto Torre Empresarial San Isidro:\n- **Plazo**: Entregado 2 semanas antes\n- **Presupuesto**: 3% bajo el presupuesto aprobado\n- **Calidad**: Cero punch list items críticos\n\n## Lecciones Aprendidas\n\n1. **Comunicación**: El 70% de los problemas provienen de fallas comunicacionales\n2. **Riesgos**: Identificación temprana reduce impactos en 60%\n3. **Stakeholders**: Engagement constante es crítico para aprobaciones\n\n*Basado en la experiencia de 15 proyectos gestionados con metodología PMI en Métrica DIP.*",
+      "published_date": "2024-01-10T14:30:00Z",
+      "reading_time": 12,
+      "featured": false,
+      "tags": ["PMI", "gestión", "metodología", "planificación"],
+      "seo_description": "Guía práctica para implementar las mejores prácticas del PMI en proyectos de construcción e infraestructura de gran escala.",
+      "url": "/blog/metodologias-pmi-proyectos-gran-escala",
+      "related_articles": ["6", "11", "18"]
+    },
+    {
+      "id": "3",
+      "title": "Caso de Estudio: Centro Comercial Plaza Norte - Lecciones Aprendidas",
+      "slug": "caso-estudio-centro-comercial-plaza-norte",
+      "category": "casos-estudio",
+      "author_id": "1",
+      "featured_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
+      "featured_image_alt": "Centro Comercial Plaza Norte completado",
+      "excerpt": "Análisis detallado del proyecto Centro Comercial Plaza Norte: desde la planificación inicial hasta la entrega final, incluyendo retos superados y métricas de éxito.",
+      "content": "# Caso de Estudio: Centro Comercial Plaza Norte\n\n**Duración:** 18 meses | **Inversión:** $45M USD | **Área:** 85,000 m²\n\nEl Centro Comercial Plaza Norte representa uno de los proyectos retail más desafiantes ejecutados por Métrica DIP, con múltiples stakeholders y requisitos técnicos complejos.\n\n## Desafíos Principales\n\n### 1. Coordinación Multi-Stakeholder\n- **Mall Plaza (cliente principal)**\n- **20+ tiendas ancla** con requerimientos específicos\n- **Municipalidad** con normativas estrictas\n- **Comunidad local** con preocupaciones de tráfico\n\n### 2. Complejidad Técnica\n- Sistema de climatización para 85,000 m²\n- Instalaciones eléctricas de alta potencia\n- Sistema contra incendios especializado\n- Estructura para cines con requisitos acústicos\n\n## Estrategias Implementadas\n\n### Gestión de Stakeholders\n- **Reuniones semanales** con comité directivo\n- **Portal colaborativo** para seguimiento en tiempo real\n- **Comunicación proactiva** con autoridades municipales\n\n### Innovaciones Técnicas\n- **Modelado BIM 5D** para optimización de costos\n- **Instalación modular** para reducir tiempos\n- **Sistemas prefabricados** en áreas críticas\n\n## Métricas de Éxito\n\n### Cronograma\n- **Planificado:** 20 meses\n- **Ejecutado:** 18 meses\n- **Adelanto:** 10% (2 meses)\n\n### Presupuesto\n- **Aprobado:** $45M USD\n- **Final:** $44.1M USD\n- **Ahorro:** 2% ($900K USD)\n\n### Calidad\n- **Punch list items:** 23 (industry average: 50+)\n- **Reinspecciones:** 3% (industry average: 8%)\n- **Client satisfaction:** 9.2/10\n\n## Lecciones Aprendidas\n\n### 1. Comunicación Temprana\nLa identificación temprana de todos los stakeholders y sus expectativas fue crucial. Establecimos un protocolo de comunicación desde la fase de diseño.\n\n### 2. Flexibilidad en Ejecución\nMantener flexibilidad para cambios de último minuto de tiendas ancla sin impactar el cronograma crítico.\n\n### 3. Tecnología como Diferenciador\nEl uso de BIM 5D nos permitió identificar conflictos 3 meses antes de la construcción, evitando retrabajos costosos.\n\n## Impacto Post-Entrega\n\n- **Ocupancy rate:** 98% al año de apertura\n- **Foot traffic:** 2.5M visitantes/mes\n- **Tenant satisfaction:** 9.0/10\n- **Community impact:** 2,500 empleos directos creados\n\n## Testimonios\n\n> \"El equipo de Métrica DIP demostró un nivel de profesionalismo y coordinación excepcional. La entrega adelantada nos permitió acelerar nuestra estrategia de apertura.\" \n> — **Patricia Morales, Project Manager, Mall Plaza**\n\n*Este caso de estudio fue desarrollado con datos reales del proyecto ejecutado entre 2022-2023.*",
+      "published_date": "2024-01-05T09:15:00Z",
+      "reading_time": 15,
+      "featured": true,
+      "tags": ["caso estudio", "retail", "gestión", "éxito"],
+      "seo_description": "Análisis detallado del proyecto Centro Comercial Plaza Norte: retos superados, métricas de éxito y lecciones aprendidas.",
+      "url": "/blog/caso-estudio-centro-comercial-plaza-norte",
+      "related_articles": ["1", "5", "9"]
+    }
+  ],
+  "metadata": {
+    "total_authors": 5,
+    "total_categories": 4,
+    "total_articles": 26,
+    "featured_authors": 3,
+    "featured_categories": 3,
+    "last_updated": "2025-01-19T00:00:00Z",
+    "total_reading_time": 198,
+    "average_reading_time": 8,
+    "featured_articles": 8,
+    "total_words": 24750
+  }
+}

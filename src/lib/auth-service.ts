@@ -10,7 +10,7 @@
  * - Gestión de permisos granulares
  * - Sesiones seguras con refresh tokens
  * - Auditoría completa de accesos
- * - Integración con Directus Authentication
+ * - Sistema de autenticación local
  */
 
 import { RecruiterProfile } from '@/types/careers';

@@ -13,6 +13,7 @@ interface Hito {
   subtitle: string;
   description: string;
   image: string;
+  image_fallback?: string;
   highlights: string[];
 }
 
@@ -27,6 +28,8 @@ interface HitoFullScreenProps {
 export default function HitoFullScreen({ hito, index, isActive, showPanel = false, onTogglePanel }: HitoFullScreenProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [imageSrc, setImageSrc] = useState(hito.image);
+  const [imageError, setImageError] = useState(false);
 
   useGSAP(() => {
     if (!containerRef.current || !contentRef.current || !isActive) return;
@@ -124,11 +127,17 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
         {/* Capa 1: Imagen principal */}
         <div className="absolute inset-0 parallax-layer" data-speed="0.5">
           <Image
-            src={hito.image}
+            src={imageSrc}
             alt={hito.title}
             fill
             className="object-cover"
             priority={index < 2}
+            onError={() => {
+              if (!imageError && hito.image_fallback) {
+                setImageError(true);
+                setImageSrc(hito.image_fallback);
+              }
+            }}
           />
         </div>
         

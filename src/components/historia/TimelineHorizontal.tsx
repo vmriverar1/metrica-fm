@@ -9,8 +9,38 @@ import HitoPanel from './HitoPanel';
 import FloatingElements from './FloatingElements';
 import FinalImage from './FinalImage';
 
-// Datos extendidos para cada hito
-const hitosExtendidos = {
+interface TimelineHorizontalProps {
+  historiaData?: any;
+}
+
+// Función para generar datos extendidos dinámicamente
+const generateExtendedData = (timelineEvents: any[]) => {
+  const hitosExtendidos: { [key: number]: any } = {};
+  
+  timelineEvents.forEach((event, index) => {
+    const eventIndex = index + 1;
+    hitosExtendidos[eventIndex] = {
+      longDescription: event.description,
+      achievements: [
+        { number: event.metrics.team_size.toString(), label: 'Profesionales' },
+        { number: event.metrics.projects.toString(), label: 'Proyectos' },
+        { number: event.metrics.investment, label: 'Inversión' },
+        { number: `${event.year}`, label: 'Año' }
+      ],
+      gallery: event.gallery || [
+        event.image,
+        event.image_fallback || event.image
+      ],
+      quote: event.impact,
+      quoteAuthor: 'Métrica DIP'
+    };
+  });
+  
+  return hitosExtendidos;
+};
+
+// Datos extendidos para cada hito (fallback para compatibilidad)
+const hitosExtendidosDefault = {
   1: {
     longDescription: 'En 2010, un grupo de profesionales visionarios decidió transformar la forma en que se gestionan los proyectos de infraestructura en el Perú. Con una oficina modesta pero llena de sueños, Métrica DIP dio sus primeros pasos hacia lo que hoy es una empresa líder en el sector.',
     achievements: [
@@ -155,7 +185,7 @@ const hitos = [
   }
 ];
 
-export default function TimelineHorizontal() {
+export default function TimelineHorizontal({ historiaData }: TimelineHorizontalProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
@@ -165,6 +195,25 @@ export default function TimelineHorizontal() {
   const [velocity, setVelocity] = useState(0);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   
+  // Usar datos del JSON si están disponibles
+  const timelineEvents = historiaData?.timeline_events || [];
+  const hitosExtendidos = timelineEvents.length > 0 
+    ? generateExtendedData(timelineEvents) 
+    : hitosExtendidosDefault;
+  
+  // Crear hitos dinámicos basados en el JSON
+  const hitosData = timelineEvents.length > 0 
+    ? timelineEvents.map((event: any, index: number) => ({
+        id: index + 1,
+        year: event.year.toString(),
+        title: event.title,
+        subtitle: event.subtitle,
+        description: event.description,
+        image: event.image || event.image_fallback,
+        highlights: event.achievements || ['Hito importante', 'Crecimiento', 'Excelencia']
+      }))
+    : hitos;
+  
   // Referencias para funcionalidad auxiliar
   const isInSectionRef = useRef(false);
 
@@ -173,7 +222,7 @@ export default function TimelineHorizontal() {
 
     const section = sectionRef.current;
     const wrapper = wrapperRef.current;
-    const totalWidth = (hitos.length - 1) * 100; // Porcentaje total de desplazamiento
+    const totalWidth = (hitosData.length - 1) * 100; // Porcentaje total de desplazamiento
     
     // Animación de revelado cuando entramos a la sección
     if (revealRef.current) {
@@ -221,7 +270,7 @@ export default function TimelineHorizontal() {
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: () => `+=${window.innerHeight * hitos.length}`, // Incluir imagen final: n transiciones
+        end: () => `+=${window.innerHeight * hitosData.length}`, // Incluir imagen final: n transiciones
         scrub: 1, // Scroll fluido sin interrupciones
         pin: true,
         // SIN SNAP - movimiento completamente fluido
@@ -230,9 +279,9 @@ export default function TimelineHorizontal() {
           setProgress(newProgress);
           
           // Actualizar índice activo basado en progreso, incluyendo imagen final
-          const exactIndex = self.progress * hitos.length;
+          const exactIndex = self.progress * hitosData.length;
           const roundedIndex = Math.round(exactIndex);
-          const clampedIndex = Math.max(0, Math.min(roundedIndex, hitos.length));
+          const clampedIndex = Math.max(0, Math.min(roundedIndex, hitosData.length));
           
           // Solo actualizar si cambió el índice redondeado
           if (clampedIndex !== activeIndex) {
@@ -254,7 +303,7 @@ export default function TimelineHorizontal() {
 
     // Animación horizontal del timeline - Fluida y continua (incluye imagen final)
     tl.to(wrapper, {
-      x: () => `-${(hitos.length - 0.4) * window.innerWidth}px`, // Termina justo después de mostrar la imagen final completa
+      x: () => `-${(hitosData.length - 0.4) * window.innerWidth}px`, // Termina justo después de mostrar la imagen final completa
       ease: 'none', // Linear para movimiento fluido constante
       duration: 1
     });
@@ -268,7 +317,7 @@ export default function TimelineHorizontal() {
     const st = scrollTriggerRef.current;
     if (!st || index === activeIndex) return;
 
-    const targetProgress = index / hitos.length; // Ajustado para incluir imagen final
+    const targetProgress = index / hitosData.length; // Ajustado para incluir imagen final
     const targetScroll = st.start + (st.end - st.start) * targetProgress;
     
     // Scroll suave hacia la posición del hito seleccionado
@@ -324,7 +373,7 @@ export default function TimelineHorizontal() {
         className="flex h-full"
         // Width se maneja automáticamente por flex y los hijos w-screen
       >
-        {hitos.map((hito, index) => (
+        {hitosData.map((hito, index) => (
           <HitoFullScreen 
             key={hito.id} 
             hito={hito} 
@@ -337,7 +386,7 @@ export default function TimelineHorizontal() {
         
         {/* Imagen final */}
         <FinalImage 
-          isActive={activeIndex === hitos.length}
+          isActive={activeIndex === hitosData.length}
         />
       </div>
 
@@ -350,7 +399,7 @@ export default function TimelineHorizontal() {
       )}
 
       {/* Panel lateral con información detallada */}
-      {hitos.map((hito, index) => (
+      {hitosData.map((hito, index) => (
         <HitoPanel
           key={hito.id}
           isActive={index === activeIndex && showPanel}

@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://metrica-dip.com/schemas/static-page.schema.json",
+  "title": "Static Page Schema",
+  "description": "Schema para páginas estáticas de Métrica DIP",
+  "type": "object",
+  "required": ["page"],
+  "properties": {
+    "page": {
+      "type": "object",
+      "required": ["title", "description"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Título de la página para SEO"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Descripción de la página para SEO"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Palabras clave para SEO"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^/[a-z0-9/-]*$",
+          "description": "URL relativa de la página"
+        },
+        "subtitle": {
+          "type": "string",
+          "description": "Subtítulo opcional"
+        },
+        "hero_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL de imagen principal"
+        },
+        "hero_image_fallback": {
+          "type": "string",
+          "pattern": "^/[^/].*",
+          "description": "Ruta local de imagen de respaldo"
+        },
+        "hero_video": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL de video principal"
+        },
+        "hero_video_fallback": {
+          "type": "string",
+          "pattern": "^/[^/].*",
+          "description": "Ruta local de video de respaldo"
+        },
+        "openGraph": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "description": { "type": "string" },
+            "type": { "type": "string", "enum": ["website", "article"] },
+            "locale": { "type": "string", "pattern": "^[a-z]{2}_[A-Z]{2}$" },
+            "siteName": { "type": "string" },
+            "images": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string", "format": "uri" },
+                  "width": { "type": "integer", "minimum": 1 },
+                  "height": { "type": "integer", "minimum": 1 },
+                  "alt": { "type": "string" }
+                },
+                "required": ["url"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "hero": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Título principal del hero"
+        },
+        "subtitle": {
+          "type": "string",
+          "description": "Subtítulo del hero"
+        },
+        "description": {
+          "type": "string",
+          "description": "Descripción del hero"
+        },
+        "background_image": {
+          "type": "string",
+          "format": "uri",
+          "description": "Imagen de fondo del hero"
+        },
+        "background_image_fallback": {
+          "type": "string",
+          "pattern": "^/[^/].*",
+          "description": "Imagen de fondo local de respaldo"
+        },
+        "background_gradient": {
+          "type": "string",
+          "description": "Gradiente CSS para el fondo"
+        },
+        "cta": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string" },
+            "href": { "type": "string" },
+            "type": { "type": "string", "enum": ["primary", "secondary"] }
+          }
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" },
+              "description": { "type": "string" },
+              "icon": { "type": "string" },
+              "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+            }
+          }
+        }
+      }
+    },
+    "introduction": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "highlight": { "type": "string" },
+        "image": { "type": "string", "format": "uri" },
+        "image_fallback": { "type": "string", "pattern": "^/[^/].*" }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "description": "Secciones adicionales de la página",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único de la sección"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título de la sección"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["text", "cards", "timeline", "stats", "testimonials", "gallery", "form"],
+            "description": "Tipo de sección"
+          },
+          "content": {
+            "description": "Contenido de la sección (estructura variable según tipo)"
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "visible": { "type": "boolean", "default": true },
+              "order": { "type": "integer", "minimum": 0 },
+              "background": { "type": "string" },
+              "padding": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "lastModified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "author": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published", "archived"],
+          "default": "published"
+        }
+      }
+    }
+  },
+  "additionalProperties": true,
+  "definitions": {
+    "mediaItem": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "fallback": { "type": "string", "pattern": "^/[^/].*" },
+        "alt": { "type": "string" },
+        "caption": { "type": "string" }
+      },
+      "required": ["url"]
+    },
+    "colorValue": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "slugValue": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    }
+  }
+}

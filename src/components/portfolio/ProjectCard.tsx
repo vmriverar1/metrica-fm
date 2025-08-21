@@ -97,17 +97,26 @@ export default function ProjectCard({
       <Link href={`/portfolio/${type}/${slug}`} className="block h-full">
         {/* Imagen principal */}
         <div ref={imageRef} className="relative h-full w-full overflow-hidden">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className={cn(
-              "object-cover transition-all duration-700 ease-out",
-              isHovered ? "scale-110" : "scale-100"
-            )}
-            priority={priority}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          {image && image.trim() !== '' ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className={cn(
+                "object-cover transition-all duration-700 ease-out",
+                isHovered ? "scale-110" : "scale-100"
+              )}
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <div className="text-gray-500 text-center">
+                <div className="text-2xl mb-2">🏗️</div>
+                <div className="text-sm">Sin imagen disponible</div>
+              </div>
+            </div>
+          )}
           
           {/* Overlay gradient */}
           <div className={cn(

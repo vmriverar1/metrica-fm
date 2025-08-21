@@ -12,47 +12,26 @@ import ParallaxWrapper from '@/components/parallax-wrapper';
 import CanvasParticles from '@/components/canvas-particles';
 import TiltCard from '@/components/tilt-card';
 import NavigationLink from '@/components/ui/NavigationLink';
+import { HomePageData } from '@/types/home';
 
-const mainService = {
-  title: 'Dirección Integral de Proyectos (DIP)',
-  description: 'Lideramos tu proyecto desde la concepción hasta la entrega, asegurando el cumplimiento de objetivos en tiempo, costo y calidad.',
-  imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-  iconUrl: '/img/icono-logo-2.png',
-  className: 'lg:col-span-2 bg-primary text-primary-foreground',
-  isMain: true,
-};
 
-const secondaryServices = [
-  {
-    title: 'Gerencia de Proyectos (PMO)',
-    description: 'Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    iconUrl: '/img/ico-service-2.png',
-  },
-  {
-    title: 'Supervisión de Obras',
-    description: 'Vigilancia técnica y administrativa para que la construcción se ejecute según los planos y normativas.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    iconUrl: '/img/ico-service-3.png',
-  },
-  {
-    title: 'Gestión de Contratos',
-    description: 'Administramos los contratos de obra para prevenir conflictos y asegurar el cumplimiento de las obligaciones.',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    iconUrl: '/img/ico-service-4.png',
-  },
-  {
-    title: 'Control de Calidad',
-    description: 'Aseguramos que todos los materiales y procesos constructivos cumplan con los más altos estándares.',
-    iconUrl: '/img/ico-service-5.png',
-    imageUrl: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-  },
-];
+interface ServiceCardProps {
+  service: {
+    id: string;
+    title: string;
+    description: string;
+    image_url: string;
+    image_url_fallback: string;
+    icon_url: string;
+    imageUrl?: string;
+    iconUrl?: string;
+    isMain?: boolean;
+    className?: string;
+  };
+  index: number;
+}
 
-const ServiceCard = ({ service, index }: { 
-  service: (typeof secondaryServices)[0] & { isMain?: boolean, className?: string },
-  index: number 
-}) => {
+const ServiceCard = ({ service, index }: ServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -121,7 +100,7 @@ const ServiceCard = ({ service, index }: {
   
   return (
     <div ref={cardRef} className="h-full">
-      <NavigationLink href="/services" loadingMessage="Navegando a Servicios...">
+      <NavigationLink href={service.cta?.url || "/services"} loadingMessage="Navegando a Servicios...">
         <TiltCard 
           className="h-full"
           maxTilt={10}
@@ -144,9 +123,9 @@ const ServiceCard = ({ service, index }: {
           />
           <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow relative z-20">
             <div className="flex items-start gap-3 mb-2">
-              {service.iconUrl && (
+              {(service.iconUrl || service.icon_url) && (
                 <Image 
-                  src={service.iconUrl}
+                  src={service.iconUrl || service.icon_url}
                   alt=""
                   width={32}
                   height={32}
@@ -174,7 +153,7 @@ const ServiceCard = ({ service, index }: {
           </CardContent>
           <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
             <Image
-              src={service.imageUrl}
+              src={service.imageUrl || service.image_url || service.image_url_fallback}
               alt={service.title}
               layout="fill"
               objectFit="cover"
@@ -187,7 +166,25 @@ const ServiceCard = ({ service, index }: {
   );
 };
 
-const MainServiceCard = ({ service }: { service: typeof mainService }) => {
+interface MainServiceCardProps {
+  service: {
+    title: string;
+    description: string;
+    image_url: string;
+    image_url_fallback: string;
+    icon_url: string;
+    is_main: boolean;
+    cta: {
+      text: string;
+      url: string;
+    };
+    imageUrl?: string;
+    iconUrl?: string;
+    className?: string;
+  };
+}
+
+const MainServiceCard = ({ service }: MainServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -248,7 +245,7 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
   
   return (
     <div ref={cardRef} className="h-full">
-      <NavigationLink href="/services" loadingMessage="Navegando a Servicios...">
+      <NavigationLink href={service.cta?.url || "/services"} loadingMessage="Navegando a Servicios...">
         <Card className={cn(
           'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full cursor-pointer',
           service.className
@@ -280,7 +277,11 @@ const MainServiceCard = ({ service }: { service: typeof mainService }) => {
   );
 };
 
-export default function Services() {
+interface ServicesProps {
+  data: HomePageData['services'];
+}
+
+export default function Services({ data }: ServicesProps) {
   const sectionRef = useSectionAnimation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -320,18 +321,25 @@ export default function Services() {
       <div className="container mx-auto px-4 relative z-10">
         <ParallaxWrapper speed={0.1} className="text-center mb-12">
           <h2 ref={titleRef} className="title-section text-4xl md:text-5xl">
-            Nuestros Servicios
+            {data.section.title}
           </h2>
           <p ref={subtitleRef} className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
-            Ofrecemos un portafolio de servicios especializados para asegurar el éxito de proyectos de infraestructura complejos.
+            {data.section.subtitle}
           </p>
         </ParallaxWrapper>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <MainServiceCard service={mainService} />
+            <MainServiceCard service={{
+              ...data.main_service,
+              className: 'lg:col-span-2 bg-primary text-primary-foreground',
+              imageUrl: data.main_service.image_url || data.main_service.image_url_fallback
+            }} />
           </div>
-          {secondaryServices.map((service, index) => (
-            <ServiceCard key={index} service={service} index={index} />
+          {data.secondary_services.map((service, index) => (
+            <ServiceCard key={service.id} service={{
+              ...service,
+              imageUrl: service.image_url || service.image_url_fallback
+            }} index={index} />
           ))}
         </div>
       </div>

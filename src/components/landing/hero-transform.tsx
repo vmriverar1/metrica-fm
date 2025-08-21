@@ -6,8 +6,13 @@ import Link from 'next/link';
 import { MoveRight } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
+import { HomePageData } from '@/types/home';
 
-const HeroTransform = () => {
+interface HeroTransformProps {
+  data: HomePageData['hero'];
+}
+
+const HeroTransform = ({ data }: HeroTransformProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroWrapperRef = useRef<HTMLDivElement>(null);
   const heroImageWrapperRef = useRef<HTMLDivElement>(null);
@@ -22,7 +27,7 @@ const HeroTransform = () => {
   const newDescriptionRef = useRef<HTMLParagraphElement>(null);
   const wordRef = useRef<HTMLSpanElement>(null);
   
-  const words = ['Trabajamos', 'Creamos', 'Resolvemos', 'Entregamos', 'Transformamos'];
+  const words = data.rotating_words;
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   
   useGSAP(() => {
@@ -150,7 +155,7 @@ const HeroTransform = () => {
       tl.to(heroImageWrapperRef.current, {
         scaleX: 0.8,
         scaleY: 0.35,
-        yPercent: -20, // Adjusted to lower the image further
+        yPercent: -15, // Adjusted to lower the image further
         ease: "power2.inOut"
       }, 0);
       
@@ -248,12 +253,14 @@ const HeroTransform = () => {
                 playsInline
                 className="w-full h-full object-cover"
               >
-                <source src="https://statom.co.uk/assets/video/2024/Oct/rc-frame-video.mp4" type="video/mp4" />
+                <source src={data.background.video_url} type="video/mp4" />
+                <source src={data.background.video_url_fallback} type="video/mp4" />
                 Su navegador no soporta el elemento de video.
               </video>
               <div 
                 ref={heroOverlayRef}
-                className="hero-overlay absolute inset-0 bg-black/40"
+                className="hero-overlay absolute inset-0"
+                style={{ backgroundColor: `rgba(0, 0, 0, ${data.background.overlay_opacity})` }}
               />
             </div>
             
@@ -267,15 +274,15 @@ const HeroTransform = () => {
                   ref={heroTitleRef}
                   className="hero-title text-5xl md:text-7xl tracking-tight text-white mb-4"
                 >
-                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(232, 78, 15, 0.5)' }}>Dirección Integral</span>
-                  <span className="block">de Proyectos</span>
+                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(232, 78, 15, 0.5)' }}>{data.title.main}</span>
+                  <span className="block">{data.title.secondary}</span>
                 </h1>
                 
                 <p 
                   ref={heroSubtitleRef}
                   className="hero-subtitle max-w-3xl mx-auto text-lg md:text-xl text-white/90 mb-8"
                 >
-                  que transforman la infraestructura del Perú
+                  {data.subtitle}
                 </p>
                 
                 <div ref={heroCTARef} className="hero-cta">
@@ -283,16 +290,16 @@ const HeroTransform = () => {
                     size="lg" 
                     className="group relative overflow-hidden bg-primary text-white hover:bg-primary/90"
                     onClick={() => {
-                      const statsSection = document.getElementById('stats');
-                      if (statsSection) {
-                        statsSection.scrollIntoView({ 
+                      const targetElement = document.querySelector(data.cta.target);
+                      if (targetElement) {
+                        targetElement.scrollIntoView({ 
                           behavior: 'smooth',
                           block: 'start'
                         });
                       }
                     }}
                   >
-                    Descubre DIP
+                    {data.cta.text}
                     <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                     <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 group-hover:animate-shine" />
                   </Button>
@@ -304,7 +311,7 @@ const HeroTransform = () => {
           {/* New Content that appears */}
           <div 
             ref={newContentRef}
-            className="new-content absolute left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] z-20 pointer-events-none bottom-[calc(21vh+100px)] md:bottom-[calc(45vh+100px)]"
+            className="new-content absolute left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] z-20 pointer-events-none bottom-[calc(21vh+100px)] min-[480px]:bottom-[calc(21vh+200px)] md:bottom-[calc(45vh+100px)]"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-4">
               <h2 
@@ -318,7 +325,7 @@ const HeroTransform = () => {
                 ref={newDescriptionRef}
                 className="text-lg md:text-xl text-white mt-4 md:mt-0"
               >
-                Trabajar en colaboración nos permite ejecutar los proyectos de infraestructura más impactantes del Perú en los sectores de salud, educación, vialidad y saneamiento.
+                {data.transition_text}
               </p>
             </div>
           </div>

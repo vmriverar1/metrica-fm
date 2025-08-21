@@ -1,0 +1,435 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://metrica-dip.com/schemas/newsletter.schema.json",
+  "title": "Newsletter Content Schema",
+  "description": "Schema para contenido dinámico de newsletter y blog",
+  "type": "object",
+  "required": ["authors", "categories", "articles"],
+  "properties": {
+    "authors": {
+      "type": "array",
+      "description": "Autores de artículos",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único del autor"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Nombre completo del autor"
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Cargo o rol en la empresa"
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Biografía del autor"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL de la foto del autor"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email de contacto del autor"
+          },
+          "linkedin": {
+            "type": "string",
+            "format": "uri",
+            "description": "Perfil de LinkedIn"
+          },
+          "twitter": {
+            "type": "string",
+            "description": "Handle de Twitter (sin @)"
+          },
+          "specialties": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Especialidades del autor"
+          },
+          "experience_years": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Años de experiencia"
+          },
+          "articles_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de artículos publicados"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive"],
+            "default": "active",
+            "description": "Estado del autor"
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si el autor es destacado"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Orden de visualización"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "created_at": { "type": "string", "format": "date-time" },
+              "updated_at": { "type": "string", "format": "date-time" },
+              "last_article": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "description": "Categorías de artículos",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "slug"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único de la categoría"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Nombre de la categoría"
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Slug para URL"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Descripción de la categoría"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "description": "Color de la categoría"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Ícono de la categoría"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "ID de la categoría padre (para subcategorías)"
+          },
+          "articles_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de artículos en esta categoría"
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si la categoría es destacada"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Orden de visualización"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive"],
+            "default": "active"
+          },
+          "seo": {
+            "type": "object",
+            "properties": {
+              "meta_title": { "type": "string", "maxLength": 60 },
+              "meta_description": { "type": "string", "maxLength": 160 },
+              "keywords": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "articles": {
+      "type": "array",
+      "description": "Artículos del blog/newsletter",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "author_id", "category", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único del artículo"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Título del artículo"
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Slug para URL"
+          },
+          "subtitle": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Subtítulo del artículo"
+          },
+          "excerpt": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Resumen del artículo"
+          },
+          "content": {
+            "type": "string",
+            "description": "Contenido completo del artículo (Markdown o HTML)"
+          },
+          "author_id": {
+            "type": "string",
+            "description": "ID del autor (FK a authors.id)"
+          },
+          "category": {
+            "type": "string",
+            "description": "ID de la categoría (FK a categories.id)"
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Etiquetas del artículo"
+          },
+          "featured_image": {
+            "type": "string",
+            "format": "uri",
+            "description": "Imagen destacada del artículo"
+          },
+          "featured_image_alt": {
+            "type": "string",
+            "description": "Texto alternativo para la imagen destacada"
+          },
+          "gallery": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "alt": { "type": "string" },
+                "caption": { "type": "string" },
+                "order": { "type": "integer", "minimum": 0 }
+              }
+            }
+          },
+          "reading_time": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Tiempo estimado de lectura en minutos"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["beginner", "intermediate", "advanced"],
+            "description": "Nivel de dificultad del contenido"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^/blog/[a-z0-9-]+/[a-z0-9-]+$",
+            "description": "URL del artículo"
+          },
+          "external_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL externa si el artículo está en otro sitio"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "published", "archived", "scheduled"],
+            "description": "Estado del artículo"
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si el artículo es destacado"
+          },
+          "trending": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si el artículo está en tendencia"
+          },
+          "premium": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si el artículo es contenido premium"
+          },
+          "views": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de visualizaciones"
+          },
+          "likes": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de likes"
+          },
+          "shares": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de compartidas"
+          },
+          "comments_enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Si se permiten comentarios"
+          },
+          "newsletter_sent": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si se envió por newsletter"
+          },
+          "scheduled_for": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha programada de publicación"
+          },
+          "seo": {
+            "type": "object",
+            "properties": {
+              "meta_title": { "type": "string", "maxLength": 60 },
+              "meta_description": { "type": "string", "maxLength": 160 },
+              "keywords": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "canonical_url": { "type": "string", "format": "uri" }
+            }
+          },
+          "related_articles": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "IDs de artículos relacionados"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "created_at": { "type": "string", "format": "date-time" },
+              "updated_at": { "type": "string", "format": "date-time" },
+              "published_at": { "type": "string", "format": "date-time" },
+              "created_by": { "type": "string" },
+              "updated_by": { "type": "string" },
+              "word_count": { "type": "integer", "minimum": 0 },
+              "reading_score": { "type": "number", "minimum": 0, "maximum": 100 }
+            }
+          }
+        }
+      }
+    },
+    "newsletter_settings": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Si el newsletter está habilitado"
+        },
+        "frequency": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly"],
+          "default": "weekly"
+        },
+        "send_day": {
+          "type": "string",
+          "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+          "default": "friday"
+        },
+        "template": {
+          "type": "string",
+          "description": "Template del newsletter"
+        },
+        "featured_articles_count": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5
+        }
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "total_authors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_categories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_articles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "published_articles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "draft_articles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "average_reading_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total_views": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "newsletter_subscribers": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "last_updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "last_newsletter_sent": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "next_newsletter_scheduled": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,38 +1,22 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useMobileOptimization } from '@/hooks/useServiceOptimization';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function MobileOptimizer({ children }: { children: React.ReactNode }) {
-  const { 
-    isMobile, 
-    orientation, 
-    touchSupport, 
-    getMobileClasses,
-    getViewportMeta
-  } = useMobileOptimization();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Set viewport meta for mobile optimization
     const viewportMeta = document.querySelector('meta[name="viewport"]');
-    if (viewportMeta) {
-      const viewport = getViewportMeta();
-      viewportMeta.setAttribute('content', viewport.content);
+    if (viewportMeta && isMobile) {
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
     }
 
     // Add mobile-specific CSS classes to body
     if (isMobile) {
       document.body.classList.add('mobile-device');
-      
-      if (touchSupport) {
-        document.body.classList.add('touch-device');
-      }
-      
-      if (orientation === 'landscape') {
-        document.body.classList.add('landscape-orientation');
-      } else {
-        document.body.classList.add('portrait-orientation');
-      }
+      document.body.classList.add('touch-device');
     }
 
     // Mobile performance optimizations
@@ -67,13 +51,11 @@ export default function MobileOptimizer({ children }: { children: React.ReactNod
     return () => {
       document.body.classList.remove(
         'mobile-device', 
-        'touch-device', 
-        'landscape-orientation', 
-        'portrait-orientation',
+        'touch-device',
         'reduce-motion'
       );
     };
-  }, [isMobile, touchSupport, orientation, getViewportMeta]);
+  }, [isMobile]);
 
   // Inject mobile-specific CSS
   useEffect(() => {
@@ -173,7 +155,7 @@ export default function MobileOptimizer({ children }: { children: React.ReactNod
   }, [isMobile]);
 
   return (
-    <div className={getMobileClasses('services-page-wrapper')}>
+    <div className={isMobile ? 'mobile-device services-page-wrapper' : 'services-page-wrapper'}>
       {children}
     </div>
   );

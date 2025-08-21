@@ -5,38 +5,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
-import { useCareers } from '@/contexts/CareersContext';
-import { getCareersStats } from '@/types/careers';
 import { ArrowDown, Users, MapPin, Building2, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CareersData } from '@/hooks/useCareersData';
 
-export default function CareersHero() {
-  const { jobCount } = useCareers();
-  const stats = getCareersStats();
-  
+// Mapeo de iconos por nombre
+const iconMap = {
+  Users,
+  MapPin,
+  Building2,
+  Clock,
+  ArrowDown
+};
+
+interface CareersHeroProps {
+  heroData: CareersData['hero'];
+}
+
+export default function CareersHero({ heroData }: CareersHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const shadeRef = useRef<HTMLDivElement>(null);
   const [typedTitle, setTypedTitle] = useState('');
   
-  const title = 'Únete a Métrica DIP';
-  
   // Efecto de escritura para el título
   useEffect(() => {
+    if (!heroData.typing_effect.enabled) {
+      setTypedTitle(heroData.title);
+      return;
+    }
+    
     let charIndex = 0;
     const typeWriter = setInterval(() => {
-      if (charIndex < title.length) {
-        setTypedTitle(title.slice(0, charIndex + 1));
+      if (charIndex < heroData.title.length) {
+        setTypedTitle(heroData.title.slice(0, charIndex + 1));
         charIndex++;
       } else {
         clearInterval(typeWriter);
       }
-    }, 80);
+    }, heroData.typing_effect.speed || 80);
 
     return () => clearInterval(typeWriter);
-  }, [title]);
+  }, [heroData.title, heroData.typing_effect]);
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -105,7 +117,7 @@ export default function CareersHero() {
         }}
       >
         <Image
-          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=800"
+          src={heroData.background.image}
           alt="Equipo Métrica DIP"
           fill
           className="object-cover"
@@ -125,8 +137,12 @@ export default function CareersHero() {
 
       {/* Overlay base inicial - más oscuro para mejor contraste */}
       <div 
-        className="absolute inset-0 w-full h-full bg-black/70" 
-        style={{ zIndex: 2 }} 
+        className="absolute inset-0 w-full h-full"
+        style={{ 
+          backgroundColor: heroData.background.overlay_color,
+          opacity: heroData.background.overlay_opacity,
+          zIndex: 2 
+        }} 
       />
 
       {/* Contenido principal */}
@@ -139,8 +155,8 @@ export default function CareersHero() {
           {/* Badge principal */}
           <div className="mb-6">
             <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm font-medium">
-              <Users className="w-4 h-4 mr-2" />
-              Construye tu carrera con nosotros
+              {React.createElement((iconMap as any)[heroData.badge.icon] || Users, { className: 'w-4 h-4 mr-2' })}
+              {heroData.badge.text}
             </Badge>
           </div>
 
@@ -154,56 +170,40 @@ export default function CareersHero() {
           
           {/* Subtítulo */}
           <p className="max-w-3xl mx-auto text-xl md:text-2xl text-white/90 font-medium mb-8">
-            Forma parte del equipo líder en gestión integral de proyectos de infraestructura en Perú
+            {heroData.subtitle}
           </p>
 
           {/* Estadísticas */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                {stats.totalPositions}
-              </div>
-              <div className="text-sm text-white/80 font-medium">
-                Posiciones Abiertas
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                {stats.totalCategories}
-              </div>
-              <div className="text-sm text-white/80 font-medium">
-                Áreas Profesionales
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                {stats.topLocations.length}
-              </div>
-              <div className="text-sm text-white/80 font-medium">
-                Ubicaciones
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                15+
-              </div>
-              <div className="text-sm text-white/80 font-medium">
-                Años de Experiencia
-              </div>
-            </div>
+            {heroData.stats.map((stat, index) => {
+              const IconComponent = (iconMap as any)[stat.icon] || Building2;
+              return (
+                <div key={index} className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-white/80 font-medium">
+                    {stat.label}
+                  </div>
+                  <div className="text-xs text-white/60 mt-1">
+                    {stat.description}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Call to Actions - Botónes mejorados */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button asChild size="lg" className="bg-gradient-to-r from-[#E84E0F] to-[#E84E0F]/80 hover:from-[#E84E0F]/90 hover:to-[#E84E0F] text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-              <Link href="#careers-content">
-                Ver Oportunidades
+              <Link href={heroData.cta.primary.href}>
+                {heroData.cta.primary.text}
                 <span className="ml-2">→</span>
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-black hover:border-white font-semibold px-8 py-4 transition-all duration-300">
-              <Link href="#company-benefits">
-                Conoce los Beneficios
+              <Link href={heroData.cta.secondary.href}>
+                {heroData.cta.secondary.text}
               </Link>
             </Button>
           </div>

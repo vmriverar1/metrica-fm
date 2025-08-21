@@ -79,69 +79,12 @@ Based on the blueprint.md, the design follows:
 - Firebase App Hosting is configured with a single instance maximum
 - The landing page is component-based with each section as a separate component
 
-## Directus Local Configuration
+## Content Management
 
-### Setup and Configuration
-The project includes a local Directus CMS instance for content management:
-
-**Location**: `/directus-local/` directory
-**URL**: http://localhost:8055
-**Credentials**: admin@metrica-dip.com / MetricaDIP2024!
-
-### Starting Directus Locally
-```bash
-# Navigate to directus-local directory
-cd directus-local/
-
-# Start Directus (already configured with SQLite)
-npm start
-
-# Or from project root:
-npm run directus:start
-```
-
-### Known Issues and Solutions
-
-#### Issue: "You don't have permission to access field 'name' in collection"
-**Root Cause**: 
-1. Collection created with incomplete field structure (missing `name` and `slug` fields)
-2. Administrator role lacking proper `admin_access: true` configuration
-3. Directus 11+ requires policy-based permissions system
-
-**Solution Applied**:
-1. **Recreated collection** with complete field structure:
-   ```javascript
-   fields: [
-     { field: 'id', type: 'integer', primary_key: true },
-     { field: 'name', type: 'string', required: true },
-     { field: 'slug', type: 'string', unique: true }
-   ]
-   ```
-
-2. **Fixed Administrator role**:
-   ```javascript
-   PATCH /roles/administrator
-   {
-     admin_access: true,
-     app_access: true
-   }
-   ```
-
-3. **Database Configuration**: SQLite doesn't allow adding NOT NULL columns to existing tables without default values. Required dropping and recreating collection.
-
-### Hybrid System Behavior
-The application uses a hybrid approach:
-- **Admin panel**: Full Directus functionality at http://localhost:8055
-- **Public API**: Falls back to local TypeScript data when public access isn't configured
-- **Development**: Works seamlessly with local data while Directus setup is in progress
-
-### Current Status
-- ✅ Directus running on port 8055
-- ✅ Admin panel fully functional
-- ✅ Collections created with proper field structure
-- ✅ Test data populated (7 categories)
-- ✅ API accessible with admin token
-- ⚠️ Public API access requires additional policy configuration
+The application uses a JSON-based content system:
+- Static content is stored in `/public/json/pages/` for pages
+- Dynamic content is stored in `/public/json/dynamic-content/` for reusable components
+- Each component or page loads its content from the corresponding JSON file
 
 ## Implementation Tracking
 

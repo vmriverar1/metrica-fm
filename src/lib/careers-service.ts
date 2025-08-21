@@ -1,10 +1,8 @@
 /**
- * CareersService - Sistema híbrido para gestión de careers/jobs
- * Sigue el mismo patrón exitoso de PortfolioService y BlogService
- * Detecta automáticamente si usar Directus o datos locales
+ * CareersService - Sistema basado en datos locales
+ * Servicio para gestión de careers/jobs usando únicamente datos locales
  */
 
-import { directus } from './directus';
 import { 
   JobPosting, 
   JobCategory, 
@@ -26,73 +24,7 @@ import {
   getJobCategoryDescription
 } from '@/types/careers';
 
-// Interfaces extendidas para Directus
-export interface DirectusJobPosting {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  department: string;
-  location: {
-    city: string;
-    region: string;
-    country: string;
-    remote: boolean;
-    hybrid: boolean;
-  };
-  type: JobType;
-  level: JobLevel;
-  status: JobStatus;
-  remote: boolean;
-  experience: number;
-  description: string;
-  responsibilities: string[];
-  requirements: any[];
-  benefits: DirectusJobBenefit[];
-  nice_to_have?: string[];
-  salary: {
-    min: number;
-    max: number;
-    currency: string;
-    period: string;
-    negotiable: boolean;
-  };
-  posted_at: string;
-  deadline: string;
-  created_at: string;
-  tags: string[];
-  featured: boolean;
-  urgent: boolean;
-  applicant_count: number;
-  view_count: number;
-  hiring_manager: {
-    name: string;
-    email: string;
-    role: string;
-  };
-  seo_title: string;
-  seo_description: string;
-  seo_keywords: string[];
-}
-
-export interface DirectusJobBenefit {
-  id: string;
-  category: string;
-  title: string;
-  description: string;
-  icon?: string;
-}
-
-export interface DirectusJobCategory {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  color: string;
-  icon: string;
-}
-
-// Extensión de tipos locales para compatibilidad con Directus
+// Extensión de tipos locales para el servicio
 export interface CareersServiceCategory {
   id: string;
   name: string;
@@ -104,7 +36,7 @@ export interface CareersServiceCategory {
 }
 
 export interface CareersSystemInfo {
-  dataSource: 'local' | 'directus';
+  dataSource: 'local';
   directusAvailable: boolean;
   lastCheck: Date;
   apiEndpoint: string;
@@ -144,108 +76,17 @@ class CareersServiceCache {
 const cache = new CareersServiceCache();
 
 /**
- * CareersService - Servicio principal híbrido
+ * CareersService - Servicio principal usando datos locales
  */
 export class CareersService {
   private static lastDirectusCheck = 0;
   private static directusAvailable = false;
 
   /**
-   * Verifica si Directus está disponible y tiene datos de careers
+   * Always returns false since we removed Directus
    */
   private static async checkDirectusAvailability(): Promise<boolean> {
-    const now = Date.now();
-    const fiveMinutes = 5 * 60 * 1000;
-
-    // Cache check para evitar verificaciones frecuentes
-    if (now - this.lastDirectusCheck < fiveMinutes) {
-      return this.directusAvailable;
-    }
-
-    try {
-      const health = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/server/health`, {
-        method: 'GET',
-        headers: { 'Cache-Control': 'no-cache' }
-      });
-
-      if (!health.ok) {
-        this.directusAvailable = false;
-        this.lastDirectusCheck = now;
-        return false;
-      }
-
-      // Verificar si las collections de careers existen y tienen datos
-      const categoriesResponse = await directus.request(
-        // @ts-ignore - rest API call
-        'GET', '/items/job_categories?limit=1'
-      );
-
-      const jobsResponse = await directus.request(
-        // @ts-ignore - rest API call  
-        'GET', '/items/job_postings?limit=1'
-      );
-
-      this.directusAvailable = categoriesResponse?.data?.length > 0 && jobsResponse?.data?.length > 0;
-      this.lastDirectusCheck = now;
-
-      if (this.directusAvailable) {
-        console.log('💼 Directus careers collections disponibles');
-      } else {
-        console.log('📋 Usando datos locales de careers (fallback)');
-      }
-
-      return this.directusAvailable;
-    } catch (error) {
-      console.log('📋 Usando datos locales de careers (fallback)');
-      this.directusAvailable = false;
-      this.lastDirectusCheck = now;
-      return false;
-    }
-  }
-
-  /**
-   * Convierte job posting de Directus a formato local
-   */
-  private static convertDirectusJobPosting(directusJob: DirectusJobPosting): JobPosting {
-    return {
-      id: directusJob.id,
-      title: directusJob.title,
-      slug: directusJob.slug,
-      category: directusJob.category as JobCategory,
-      department: directusJob.department,
-      location: directusJob.location,
-      type: directusJob.type,
-      level: directusJob.level,
-      status: directusJob.status,
-      remote: directusJob.remote,
-      experience: directusJob.experience,
-      description: directusJob.description,
-      responsibilities: directusJob.responsibilities,
-      requirements: directusJob.requirements,
-      benefits: directusJob.benefits.map(b => ({
-        id: b.id,
-        category: b.category as any,
-        title: b.title,
-        description: b.description,
-        icon: b.icon
-      })),
-      niceToHave: directusJob.nice_to_have,
-      salary: directusJob.salary,
-      postedAt: new Date(directusJob.posted_at),
-      deadline: new Date(directusJob.deadline),
-      createdAt: new Date(directusJob.created_at),
-      tags: directusJob.tags,
-      featured: directusJob.featured,
-      urgent: directusJob.urgent,
-      applicantCount: directusJob.applicant_count,
-      viewCount: directusJob.view_count,
-      hiringManager: directusJob.hiring_manager,
-      seo: {
-        metaTitle: directusJob.seo_title,
-        metaDescription: directusJob.seo_description,
-        keywords: directusJob.seo_keywords
-      }
-    };
+    return false;
   }
 
   /**
@@ -256,33 +97,7 @@ export class CareersService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const categoriesResponse = await directus.request(
-          // @ts-ignore
-          'GET', '/items/job_categories'
-        );
-
-        const directusCategories: CareersServiceCategory[] = categoriesResponse.data.map((cat: DirectusJobCategory) => ({
-          id: cat.id,
-          name: cat.name,
-          slug: cat.slug,
-          description: cat.description,
-          color: cat.color,
-          icon: cat.icon,
-          count: 0 // Se calculará después
-        }));
-
-        cache.set(cacheKey, directusCategories);
-        return directusCategories;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus job categories:', error);
-    }
-
-    // Fallback: categorías locales basadas en jobs
+    // Categorías locales basadas en jobs
     const localCategories: CareersServiceCategory[] = [
       {
         id: 'gestion-direccion',
@@ -346,58 +161,7 @@ export class CareersService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        // Construir query de Directus con filtros
-        let query = '/items/job_postings?status=active';
-        
-        if (filters.category) {
-          query += `&filter[category][_eq]=${filters.category}`;
-        }
-        
-        if (filters.featured !== undefined) {
-          query += `&filter[featured][_eq]=${filters.featured}`;
-        }
-        
-        if (filters.type) {
-          query += `&filter[type][_eq]=${filters.type}`;
-        }
-
-        if (filters.level) {
-          query += `&filter[level][_eq]=${filters.level}`;
-        }
-
-        if (filters.remote !== undefined) {
-          query += `&filter[remote][_eq]=${filters.remote}`;
-        }
-        
-        if (filters.searchQuery) {
-          query += `&search=${encodeURIComponent(filters.searchQuery)}`;
-        }
-        
-        if (filters.limit) {
-          query += `&limit=${filters.limit}`;
-        }
-        
-        if (filters.offset) {
-          query += `&offset=${filters.offset}`;
-        }
-
-        query += '&fields=*,benefits.*&sort=-posted_at';
-
-        const jobsResponse = await directus.request('GET', query);
-        const directusJobs = jobsResponse.data.map(this.convertDirectusJobPosting);
-
-        cache.set(cacheKey, directusJobs);
-        return directusJobs;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus job postings:', error);
-    }
-
-    // Fallback: datos locales con filtros
+    // Datos locales con filtros
     let filteredJobs = [...sampleJobPostings].filter(job => job.status === 'active');
 
     if (filters.category) {
@@ -461,26 +225,7 @@ export class CareersService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const jobResponse = await directus.request(
-          'GET', 
-          `/items/job_postings?filter[slug][_eq]=${slug}&fields=*,benefits.*&limit=1`
-        );
-
-        if (jobResponse.data.length > 0) {
-          const directusJob = this.convertDirectusJobPosting(jobResponse.data[0]);
-          cache.set(cacheKey, directusJob);
-          return directusJob;
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching Directus job posting:', error);
-    }
-
-    // Fallback: datos locales
+    // Datos locales
     const localJob = sampleJobPostings.find(job => job.slug === slug) || null;
     if (localJob) {
       cache.set(cacheKey, localJob);
@@ -538,33 +283,7 @@ export class CareersService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        // Obtener estadísticas de Directus
-        const [jobsResponse, applicationsResponse] = await Promise.all([
-          directus.request('GET', '/items/job_postings?aggregate[count]=*'),
-          directus.request('GET', '/items/job_applications?aggregate[count]=*')
-        ]);
-
-        const stats: CareersStats = {
-          totalPositions: jobsResponse.data[0]?.count || 0,
-          totalCategories: 5,
-          totalApplications: applicationsResponse.data[0]?.count || 0,
-          averageSalary: 8500, // Calculado por separado
-          topLocations: [{ location: 'Lima, Lima', count: 3 }],
-          popularBenefits: [] // Calculado por separado
-        };
-
-        cache.set(cacheKey, stats);
-        return stats;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus careers stats:', error);
-    }
-
-    // Fallback: estadísticas locales
+    // Estadísticas locales
     const localStats = getCareersStats();
     cache.set(cacheKey, localStats);
     return localStats;
@@ -574,14 +293,13 @@ export class CareersService {
    * Obtiene información del sistema
    */
   static async getSystemInfo(): Promise<CareersSystemInfo> {
-    const directusAvailable = await this.checkDirectusAvailability();
     const stats = await this.getStats();
 
     return {
-      dataSource: directusAvailable ? 'directus' : 'local',
-      directusAvailable,
-      lastCheck: new Date(this.lastDirectusCheck),
-      apiEndpoint: process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055',
+      dataSource: 'local',
+      directusAvailable: false,
+      lastCheck: new Date(),
+      apiEndpoint: '',
       totalJobs: stats.totalPositions,
       totalApplications: stats.totalApplications,
       cacheStatus: 'active'
@@ -596,31 +314,7 @@ export class CareersService {
     const cached = cache.get(cacheKey);
     if (cached) return cached;
 
-    try {
-      const directusAvailable = await this.checkDirectusAvailability();
-
-      if (directusAvailable) {
-        const benefitsResponse = await directus.request(
-          'GET', 
-          '/items/job_benefits'
-        );
-
-        const directusBenefits = benefitsResponse.data.map((b: DirectusJobBenefit) => ({
-          id: b.id,
-          category: b.category as any,
-          title: b.title,
-          description: b.description,
-          icon: b.icon
-        }));
-
-        cache.set(cacheKey, directusBenefits);
-        return directusBenefits;
-      }
-    } catch (error) {
-      console.error('Error fetching Directus job benefits:', error);
-    }
-
-    // Fallback: beneficios locales
+    // Beneficios locales
     cache.set(cacheKey, sampleBenefits);
     return sampleBenefits;
   }

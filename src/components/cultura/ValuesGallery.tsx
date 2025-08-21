@@ -27,132 +27,34 @@ const ImageSkeleton = ({ className }: { className?: string }) => (
 // Registrar plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Imágenes de Unsplash de alta calidad con temática empresarial/construcción
-const values = [
-  {
-    id: 'excellence',
-    title: 'Excelencia',
-    description: 'Buscamos la perfección en cada detalle de nuestros proyectos, estableciendo estándares de calidad superiores en la industria de la construcción.',
-    icon: Target,
-    color: '#E84E0F',
-    images: [
-      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Supervisión de obra con los más altos estándares de calidad y precisión técnica',
-      'Planificación meticulosa que considera cada aspecto del proyecto constructivo',
-      'Uso de tecnología avanzada para garantizar resultados excepcionales',
-      'Control de calidad exhaustivo en cada fase de construcción'
-    ],
-    size: 'large'
-  },
-  {
-    id: 'collaboration',
-    title: 'Colaboración',
-    description: 'Trabajamos en equipo con nuestros clientes, socios y comunidades para crear soluciones que beneficien a todos los involucrados.',
-    icon: Users,
-    color: '#003F6F',
-    images: [
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Reuniones colaborativas donde cada voz cuenta en la toma de decisiones',
-      'Coordinación multidisciplinaria para integrar todas las especialidades',
-      'Trabajo en equipo que potencia las fortalezas individuales',
-      'Comunicación fluida entre todos los niveles de la organización'
-    ],
-    size: 'medium'
-  },
-  {
-    id: 'innovation',
-    title: 'Innovación',
-    description: 'Implementamos las últimas tecnologías y metodologías para ofrecer soluciones constructivas eficientes y sostenibles.',
-    icon: Lightbulb,
-    color: '#E84E0F',
-    images: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1581092795442-1094e1b1bfaa?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1561736778-92e52a7769ef?w=400&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Análisis de datos y métricas para optimizar procesos constructivos',
-      'Implementación de BIM y modelado 3D en nuestros proyectos',
-      'Desarrollo de soluciones digitales para la gestión de obras',
-      'Investigación continua de nuevas tecnologías constructivas'
-    ],
-    size: 'small'
-  },
-  {
-    id: 'integrity',
-    title: 'Integridad',
-    description: 'Actuamos con transparencia y honestidad en todas nuestras relaciones comerciales, manteniendo los más altos estándares éticos.',
-    icon: Shield,
-    color: '#003F6F',
-    images: [
-      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Documentación transparente y trazabilidad en todos nuestros procesos',
-      'Cumplimiento estricto de normativas y regulaciones vigentes',
-      'Reportes honestos sobre el progreso y desafíos de cada proyecto',
-      'Construcción de relaciones basadas en la confianza mutua'
-    ],
-    size: 'small'
-  },
-  {
-    id: 'growth',
-    title: 'Crecimiento',
-    description: 'Fomentamos el desarrollo continuo de nuestro equipo y organización, adaptándonos a los desafíos del mercado peruano.',
-    icon: TrendingUp,
-    color: '#E84E0F',
-    images: [
-      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Expansión estratégica adaptada al mercado peruano de construcción',
-      'Capacitación continua para mantenernos a la vanguardia',
-      'Análisis de mercado para identificar nuevas oportunidades',
-      'Crecimiento sostenible basado en resultados sólidos'
-    ],
-    size: 'large'
-  },
-  {
-    id: 'teamwork',
-    title: 'Trabajo en Equipo',
-    description: 'Valoramos la diversidad de perspectivas y habilidades, creando un ambiente donde cada miembro contribuye al éxito colectivo.',
-    icon: Users,
-    color: '#003F6F',
-    images: [
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=400&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop&crop=center',
-    ],
-    imageDescriptions: [
-      'Equipos diversos que aportan perspectivas únicas a cada proyecto',
-      'Sinergia entre arquitectos, ingenieros y especialistas',
-      'Ambiente colaborativo que fomenta la creatividad',
-      'Celebración de logros colectivos y reconocimiento mutuo'
-    ],
-    size: 'medium'
-  }
-];
+// Mapeo de iconos por nombre
+const iconMap = {
+  Target,
+  Users,
+  Lightbulb,
+  Shield,
+  TrendingUp
+};
+
+interface Value {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  size: string;
+  images: string[];
+  image_descriptions: string[];
+}
+
+interface ValuesGalleryProps {
+  title?: string;
+  subtitle?: string;
+  values?: Value[];
+}
 
 interface ValueModalProps {
-  value: (typeof values[0] & { imageDescriptions?: string[] }) | null;
+  value: Value | null;
   onClose: () => void;
 }
 
@@ -196,7 +98,7 @@ function ValueModal({ value, onClose }: ValueModalProps) {
                 className="w-12 h-12 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: value.color }}
               >
-                <value.icon size={24} />
+                {React.createElement((iconMap as any)[value.icon] || Target, { size: 24 })}
               </div>
               <button
                 onClick={onClose}
@@ -250,7 +152,7 @@ function ValueModal({ value, onClose }: ValueModalProps) {
           </div>
 
           {/* Descripción de la imagen actual */}
-          {value.imageDescriptions && value.imageDescriptions[currentImageIndex] && (
+          {value.image_descriptions && value.image_descriptions[currentImageIndex] && (
             <motion.div 
               key={currentImageIndex}
               initial={{ opacity: 0, y: 10 }}
@@ -259,7 +161,7 @@ function ValueModal({ value, onClose }: ValueModalProps) {
               className="px-6 py-4 bg-white border-b border-gray-100"
             >
               <p className="text-sm text-gray-600 leading-relaxed italic">
-                {value.imageDescriptions[currentImageIndex]}
+                {value.image_descriptions[currentImageIndex]}
               </p>
             </motion.div>
           )}
@@ -306,9 +208,9 @@ function ValueModal({ value, onClose }: ValueModalProps) {
   );
 }
 
-export default function ValuesGallery() {
+export default function ValuesGallery({ title, subtitle, values }: ValuesGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedValue, setSelectedValue] = useState<typeof values[0] | null>(null);
+  const [selectedValue, setSelectedValue] = useState<Value | null>(null);
 
   useGSAP(() => {
     // Animación de entrada más simple y rápida
@@ -407,7 +309,7 @@ export default function ValuesGallery() {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold text-[#003F6F] mb-6"
           >
-            Nuestros Valores
+            {title || 'Nuestros Valores'}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -415,14 +317,14 @@ export default function ValuesGallery() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
           >
-            Los principios que guían cada decisión y definen nuestra identidad como empresa líder en la dirección integral de proyectos
+            {subtitle || 'Los principios que guían cada decisión y definen nuestra identidad como empresa líder en la dirección integral de proyectos'}
           </motion.p>
         </div>
         
         {/* Grid Masonry de Valores */}
         <div className="values-grid grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-auto">
-          {values.map((value, index) => {
-            const IconComponent = value.icon;
+          {(values || []).map((value, index) => {
+            const IconComponent = (iconMap as any)[value.icon] || Target;
             
             return (
               <motion.div

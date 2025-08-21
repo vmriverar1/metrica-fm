@@ -8,22 +8,29 @@ import Stats from '@/components/landing/stats';
 import Services from '@/components/landing/services';
 import Clients from '@/components/landing/clients';
 import PoliciesCarousel from '@/components/landing/policies-carousel';
-import CustomCursor from '@/components/custom-cursor';
+import { HomePageData } from '@/types/home';
 
-export default function Home() {
+import { readPublicJSONAsync } from '@/lib/json-reader';
+
+async function getHomeData(): Promise<HomePageData> {
+  return readPublicJSONAsync<HomePageData>('/json/pages/home.json');
+}
+
+export default async function Home() {
+  const data = await getHomeData();
+
   return (
     <div className="bg-background text-foreground min-h-screen overflow-x-hidden">
-      <CustomCursor />
       <Header />
       <main>
-        <HeroTransform />
-        <Stats />
-        <Services />
-        <Portfolio />
-        <PillarsCarousel />
-        <PoliciesCarousel />
+        <HeroTransform data={data.hero} />
+        <Stats data={data.stats} />
+        <Services data={data.services} />
+        <Portfolio data={data.portfolio} />
+        <PillarsCarousel data={data.pillars} />
+        <PoliciesCarousel data={data.policies} />
         <Clients />
-        <Newsletter />
+        <Newsletter data={data.newsletter} />
       </main>
       <Footer />
     </div>

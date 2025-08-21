@@ -1,0 +1,383 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://metrica-dip.com/schemas/careers.schema.json",
+  "title": "Careers Content Schema",
+  "description": "Schema para contenido dinámico de bolsa de trabajo",
+  "type": "object",
+  "required": ["page_info", "departments", "jobs"],
+  "properties": {
+    "page_info": {
+      "type": "object",
+      "required": ["title", "description"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Título de la página de careers"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Descripción de la página"
+        },
+        "hero": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "subtitle": { "type": "string" },
+            "background_image": { "type": "string", "format": "uri" },
+            "cta_text": { "type": "string" },
+            "stats": {
+              "type": "object",
+              "properties": {
+                "open_positions": { "type": "string" },
+                "team_size": { "type": "string" },
+                "departments": { "type": "integer", "minimum": 0 },
+                "avg_experience": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "departments": {
+      "type": "array",
+      "description": "Departamentos de la empresa",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único del departamento"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Nombre del departamento"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Descripción del departamento"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Ícono del departamento"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "description": "Color del departamento"
+          },
+          "head": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "title": { "type": "string" },
+              "avatar": { "type": "string", "format": "uri" },
+              "email": { "type": "string", "format": "email" }
+            }
+          },
+          "team_size": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Tamaño del equipo"
+          },
+          "open_positions": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Posiciones abiertas"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive"],
+            "default": "active"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Orden de visualización"
+          }
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "description": "Ofertas de trabajo",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "category", "type", "level", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "ID único del trabajo"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Título del puesto"
+          },
+          "category": {
+            "type": "string",
+            "description": "ID del departamento (FK a departments.id)"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Descripción del puesto"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["full-time", "part-time", "contract", "internship"],
+            "description": "Tipo de empleo"
+          },
+          "level": {
+            "type": "string",
+            "enum": ["junior", "mid", "senior", "lead", "director"],
+            "description": "Nivel del puesto"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "city": { "type": "string" },
+              "country": { "type": "string", "default": "Perú" },
+              "remote": { "type": "boolean", "default": false },
+              "hybrid": { "type": "boolean", "default": false }
+            }
+          },
+          "salary": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "integer", "minimum": 0 },
+              "max": { "type": "integer", "minimum": 0 },
+              "currency": { "type": "string", "default": "PEN" },
+              "period": { "type": "string", "enum": ["hourly", "monthly", "yearly"], "default": "monthly" },
+              "negotiable": { "type": "boolean", "default": true }
+            }
+          },
+          "requirements": {
+            "type": "object",
+            "properties": {
+              "education": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Requisitos de educación"
+              },
+              "experience": {
+                "type": "string",
+                "description": "Experiencia requerida"
+              },
+              "skills": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Habilidades requeridas"
+              },
+              "languages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "language": { "type": "string" },
+                    "level": { "type": "string", "enum": ["basic", "intermediate", "advanced", "native"] }
+                  }
+                }
+              },
+              "certifications": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Certificaciones requeridas"
+              }
+            }
+          },
+          "responsibilities": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Responsabilidades del puesto"
+          },
+          "benefits": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Beneficios del puesto"
+          },
+          "application": {
+            "type": "object",
+            "properties": {
+              "deadline": { "type": "string", "format": "date" },
+              "contact_email": { "type": "string", "format": "email" },
+              "contact_person": { "type": "string" },
+              "application_url": { "type": "string", "format": "uri" },
+              "instructions": { "type": "string" }
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "active", "closed", "filled"],
+            "description": "Estado de la oferta"
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si la oferta es destacada"
+          },
+          "urgent": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si la oferta es urgente"
+          },
+          "external": {
+            "type": "boolean",
+            "default": false,
+            "description": "Si la oferta es para un cliente externo"
+          },
+          "views": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de visualizaciones"
+          },
+          "applications_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Número de aplicaciones recibidas"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "created_at": { "type": "string", "format": "date-time" },
+              "updated_at": { "type": "string", "format": "date-time" },
+              "created_by": { "type": "string" },
+              "updated_by": { "type": "string" },
+              "published_at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "company_benefits": {
+      "type": "array",
+      "description": "Beneficios generales de la empresa",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "category"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["health", "financial", "growth", "culture", "wellness"],
+            "description": "Categoría del beneficio"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$"
+          },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "featured": {
+            "type": "boolean",
+            "default": false
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "hiring_process": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": { "type": "integer", "minimum": 1 },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "duration": { "type": "string" },
+              "type": {
+                "type": "string",
+                "enum": ["application", "screening", "interview", "test", "reference", "offer"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "applications_enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Si se aceptan aplicaciones"
+        },
+        "auto_close_after_days": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 30,
+          "description": "Días para cerrar automáticamente ofertas"
+        },
+        "featured_jobs_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 6
+        },
+        "jobs_per_page": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "last_updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "total_jobs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "active_jobs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_applications": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

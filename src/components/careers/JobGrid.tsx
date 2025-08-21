@@ -1,21 +1,24 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useCareers } from '@/contexts/CareersContext';
+import { useDynamicCareersContent, JobPosting } from '@/hooks/useDynamicCareersContent';
+import { CareersData } from '@/hooks/useCareersData';
 import JobCard from './JobCard';
 import { cn } from '@/lib/utils';
 import { Grid, List, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type ViewMode = 'grid' | 'masonry' | 'list';
 type GridSize = 'compact' | 'comfortable' | 'spacious';
 
 interface JobGridProps {
+  jobOpportunitiesData?: CareersData['job_opportunities'];
   className?: string;
 }
 
-export default function JobGrid({ className }: JobGridProps) {
-  const { filteredJobs, clearFilters } = useCareers();
+export default function JobGrid({ jobOpportunitiesData, className }: JobGridProps) {
+  const { data: dynamicContent, loading: dynamicLoading, error: dynamicError } = useDynamicCareersContent();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -24,6 +27,13 @@ export default function JobGrid({ className }: JobGridProps) {
   const handleLoadMore = () => {
     // Por ahora, simplemente mostrar un mensaje ya que es una funcionalidad futura
     alert('Esta función estará disponible próximamente. ¡Mantente atento para ver más oportunidades!');
+  };
+
+  const clearFilters = () => {
+    // Reset any filters - for now just reload the page to show all jobs
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
 
   // Detect device type
@@ -109,6 +119,26 @@ export default function JobGrid({ className }: JobGridProps) {
 
   const gridConfig = getGridConfig();
 
+  // Handle loading state
+  if (dynamicLoading) {
+    return (
+      <div className={cn("flex items-center justify-center py-16", className)}>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (dynamicError) {
+    return (
+      <div className={cn("flex flex-col items-center justify-center py-16 text-center", className)}>
+        <p className="text-red-500">Error al cargar oportunidades de trabajo: {dynamicError}</p>
+      </div>
+    );
+  }
+
+  // Get jobs from dynamic content, with fallback to empty array
+  const filteredJobs = dynamicContent?.jobs || [];
 
   if (!filteredJobs.length) {
     return (
@@ -264,26 +294,26 @@ export default function JobGrid({ className }: JobGridProps) {
           </div>
           <div>
             <div className="text-2xl font-bold text-primary mb-1">
-              {new Set(filteredJobs.map(job => job.category)).size}
+              {new Set(filteredJobs.map(job => job.department)).size}
             </div>
             <div className="text-sm text-muted-foreground">
-              Áreas Profesionales
+              Departamentos
             </div>
           </div>
           <div>
             <div className="text-2xl font-bold text-primary mb-1">
-              {new Set(filteredJobs.map(job => job.location)).size}
+              {new Set(filteredJobs.map(job => job.location.city)).size}
             </div>
             <div className="text-sm text-muted-foreground">
-              Ubicaciones
+              Ciudades
             </div>
           </div>
           <div>
             <div className="text-2xl font-bold text-primary mb-1">
-              {filteredJobs.filter(job => job.remote).length}
+              {filteredJobs.filter(job => job.location.remote || job.location.hybrid).length}
             </div>
             <div className="text-sm text-muted-foreground">
-              Trabajo Remoto
+              Trabajo Flexible
             </div>
           </div>
         </div>

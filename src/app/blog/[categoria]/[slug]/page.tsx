@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogProvider } from '@/contexts/BlogContext';
-import { getBlogPost, sampleBlogPosts } from '@/types/blog';
 import UniversalHero from '@/components/ui/universal-hero';
 import ArticleContent from '@/components/blog/ArticleContent';
 import AuthorBio from '@/components/blog/AuthorBio';
@@ -10,6 +9,7 @@ import ArticleSEO from '@/components/seo/ArticleSEO';
 import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 // import FavoritesShare from '@/components/portfolio/FavoritesShare';
 import SectionTransition from '@/components/portfolio/SectionTransition';
+import { BlogContentData } from '@/types/blog-page';
 
 interface ArticlePageProps {
   params: {
@@ -18,82 +18,153 @@ interface ArticlePageProps {
   };
 }
 
+import { readPublicJSON } from '@/lib/json-reader';
+
+// Function to fetch blog content data
+async function getBlogContentData(): Promise<BlogContentData | null> {
+  try {
+    return readPublicJSON<BlogContentData>('/json/dynamic-content/newsletter/content.json');
+  } catch (error) {
+    console.error('Error fetching blog content data:', error);
+    return null;
+  }
+}
+
+// Function to get article by slug
+async function getArticleBySlug(slug: string, contentData: BlogContentData | null) {
+  if (!contentData) return null;
+  
+  const article = contentData.articles.find(article => article.slug === slug);
+  if (!article) return null;
+  
+  // Find the author
+  const author = contentData.authors.find(author => author.id === article.author_id);
+  
+  return {
+    ...article,
+    author: author || {
+      id: 'unknown',
+      name: 'Autor Desconocido',
+      role: 'Colaborador',
+      bio: '',
+      avatar: '',
+      linkedin: '',
+      email: '',
+      featured: false,
+      articles_count: 0,
+      specializations: []
+    }
+  };
+}
+
 export async function generateStaticParams() {
-  return sampleBlogPosts.map((post) => ({
-    categoria: post.category,
-    slug: post.slug,
+  const contentData = await getBlogContentData();
+  
+  if (!contentData) {
+    return [];
+  }
+  
+  return contentData.articles.map((article) => ({
+    categoria: article.category,
+    slug: article.slug,
   }));
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-  const post = getBlogPost(params.slug);
+  const contentData = await getBlogContentData();
+  const article = await getArticleBySlug(params.slug, contentData);
   
-  if (!post) {
+  if (!article) {
     return {
       title: 'Artículo no encontrado | Blog Métrica DIP'
     };
   }
 
   return {
-    title: `${post.title} | Blog Métrica DIP`,
-    description: post.excerpt,
-    keywords: post.tags.join(', '),
-    authors: [{ name: post.author.name }],
+    title: `${article.title} | Blog Métrica DIP`,
+    description: article.excerpt,
+    keywords: article.tags.join(', '),
+    authors: [{ name: article.author.name }],
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: article.title,
+      description: article.excerpt,
       type: 'article',
-      publishedTime: post.publishedAt.toISOString(),
-      authors: [post.author.name],
+      publishedTime: article.published_date,
+      authors: [article.author.name],
       images: [
         {
-          url: post.featuredImage,
+          url: article.featured_image,
           width: 1200,
           height: 630,
-          alt: post.title
+          alt: article.featured_image_alt || article.title
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-      images: [post.featuredImage]
+      title: article.title,
+      description: article.excerpt,
+      images: [article.social_image || article.featured_image]
     }
   };
 }
 
-export default function ArticlePage({ params }: ArticlePageProps) {
-  const post = getBlogPost(params.slug);
+export default async function ArticlePage({ params }: ArticlePageProps) {
+  const contentData = await getBlogContentData();
+  const article = await getArticleBySlug(params.slug, contentData);
 
-  if (!post) {
+  if (!article) {
     notFound();
   }
 
   return (
     <BlogProvider>
-      <ArticleSEO article={post} />
+      {/* ArticleSEO will need to be updated to handle new article structure */}
+      {/* <ArticleSEO article={article} /> */}
       
       <main className="min-h-screen bg-background">
         <UniversalHero 
-          title={post.title}
-          subtitle={post.excerpt}
-          backgroundImage={post.featuredImage}
+          title={article.title}
+          subtitle={article.excerpt}
+          backgroundImage={article.featured_image}
         />
         
         <SectionTransition variant="fade" />
         
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
-            <ArticleContent content={post.content} />
+            {/* Article metadata */}
+            <div className="mb-8 pb-8 border-b border-border">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <span>Publicado: {new Date(article.published_date).toLocaleDateString('es-PE')}</span>
+                <span>•</span>
+                <span>Lectura: {article.reading_time} min</span>
+                <span>•</span>
+                <span>Autor: {article.author.name}</span>
+              </div>
+              {article.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {article.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <ArticleContent content={article.content} />
             
             <div className="mt-16 pt-8 border-t border-border">
-              <AuthorBio author={post.author} />
+              <AuthorBio author={article.author} />
             </div>
             
             <div className="mt-16 pt-8 border-t border-border">
               <CommentSection 
-                articleId={post.id}
+                articleId={article.id}
                 allowGuests={true}
                 moderationEnabled={true}
               />
@@ -103,7 +174,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             <div className="mt-12">
               <FavoritesShare 
                 type="article" 
-                item={post}
+                item={article}
                 title="Compartir artículo"
               />
             </div>

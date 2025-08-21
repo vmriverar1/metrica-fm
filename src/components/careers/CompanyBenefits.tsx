@@ -19,77 +19,30 @@ import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import CVModal from './CVModal';
+import { CareersData } from '@/hooks/useCareersData';
 
-interface Benefit {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  category: 'salud' | 'desarrollo' | 'bienestar' | 'compensacion';
-  highlight?: boolean;
-}
-
-const benefits: Benefit[] = [
-  {
-    id: 'seguro-salud',
-    title: 'Seguro de Salud Integral',
-    description: 'Cobertura médica completa para ti y tu familia, incluyendo atención dental y oftalmológica.',
-    icon: <Heart className="w-6 h-6" />,
-    category: 'salud',
-    highlight: true
-  },
-  {
-    id: 'capacitacion',
-    title: 'Capacitación Continua',
-    description: 'Programas de desarrollo profesional, certificaciones y cursos especializados pagados por la empresa.',
-    icon: <GraduationCap className="w-6 h-6" />,
-    category: 'desarrollo',
-    highlight: true
-  },
-  {
-    id: 'work-life',
-    title: 'Balance Vida-Trabajo',
-    description: 'Horarios flexibles y opciones de trabajo remoto para mantener el equilibrio personal.',
-    icon: <Clock className="w-6 h-6" />,
-    category: 'bienestar',
-    highlight: true
-  },
-  {
-    id: 'bonos',
-    title: 'Bonos por Performance',
-    description: 'Reconocimiento económico adicional basado en el desempeño individual y de equipo.',
-    icon: <Trophy className="w-6 h-6" />,
-    category: 'compensacion',
-    highlight: true
-  }
-];
-
-const categoryLabels = {
-  salud: 'Salud y Protección',
-  desarrollo: 'Desarrollo Profesional',
-  bienestar: 'Bienestar y Balance',
-  compensacion: 'Compensación Adicional'
-};
-
-const categoryColors = {
-  salud: 'from-red-50 to-pink-50 border-red-200',
-  desarrollo: 'from-blue-50 to-indigo-50 border-blue-200',
-  bienestar: 'from-green-50 to-emerald-50 border-green-200',
-  compensacion: 'from-orange-50 to-yellow-50 border-orange-200'
-};
-
-const categoryIconColors = {
-  salud: 'text-red-600',
-  desarrollo: 'text-blue-600',
-  bienestar: 'text-green-600',
-  compensacion: 'text-orange-600'
+// Mapeo de iconos por nombre
+const iconMap = {
+  Heart,
+  GraduationCap,
+  Plane,
+  Coffee,
+  Shield,
+  Trophy,
+  Clock,
+  Home,
+  Users,
+  Car,
+  Gift,
+  Dumbbell
 };
 
 interface CompanyBenefitsProps {
+  benefitsData: CareersData['company_benefits'];
   className?: string;
 }
 
-export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
+export default function CompanyBenefits({ benefitsData, className }: CompanyBenefitsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
 
@@ -177,37 +130,30 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
             Beneficios Métrica DIP
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Más que un trabajo,{' '}
-            <span className="text-primary">una experiencia integral</span>
+            {benefitsData.title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            En Métrica DIP creemos que nuestro equipo es nuestro activo más valioso. 
-            Por eso ofrecemos un paquete de beneficios integral que va más allá del salario.
+            {benefitsData.description}
           </p>
         </div>
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {benefits.map((benefit) => (
+          {benefitsData.benefits.map((benefit) => {
+            const IconComponent = (iconMap as any)[benefit.icon] || Heart;
+            return (
             <div
               key={benefit.id}
-              className={cn(
-                "benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default",
-                "bg-gradient-to-br",
-                categoryColors[benefit.category],
-                "ring-2 ring-primary/20 ring-offset-2"
-              )}
+              className="benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default bg-gradient-to-br from-gray-50 to-white border-gray-200 hover:border-primary/30 hover:shadow-lg"
             >
               {/* Highlight Badge */}
-              <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+              {benefit.highlight && (
+                <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+              )}
 
               {/* Icon */}
-              <div className={cn(
-                "w-12 h-12 rounded-lg flex items-center justify-center mb-4",
-                "bg-white/80 backdrop-blur-sm",
-                categoryIconColors[benefit.category]
-              )}>
-                {benefit.icon}
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-white/80 backdrop-blur-sm text-primary">
+                <IconComponent className="w-6 h-6" />
               </div>
 
               {/* Content */}
@@ -218,12 +164,23 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
                 <p className="text-muted-foreground leading-relaxed">
                   {benefit.description}
                 </p>
+                {benefit.details && (
+                  <ul className="mt-3 text-sm text-muted-foreground space-y-1">
+                    {benefit.details.map((detail, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-primary mt-1">•</span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               {/* Decorative Element */}
               <div className="absolute bottom-4 right-4 w-8 h-8 bg-white/30 rounded-full opacity-50"></div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Call to Action */}
@@ -231,18 +188,17 @@ export default function CompanyBenefits({ className }: CompanyBenefitsProps) {
           <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-8 md:p-12">
             <div className="max-w-2xl mx-auto">
               <h3 className="text-3xl font-bold text-foreground mb-4">
-                ¿Listo para formar parte del equipo?
+                {benefitsData.cta.title}
               </h3>
               <p className="text-lg text-muted-foreground mb-6">
-                Explora nuestras oportunidades laborales y descubre cómo puedes 
-                crecer profesionalmente mientras contribuyes a proyectos de impacto.
+                {benefitsData.cta.description}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button 
                   onClick={scrollToJobs}
                   className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
-                  Ver Posiciones Abiertas
+                  {benefitsData.cta.button.text}
                 </button>
                 <button 
                   onClick={() => setIsCVModalOpen(true)}

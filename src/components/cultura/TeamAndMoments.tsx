@@ -10,65 +10,31 @@ import { X, ZoomIn } from 'lucide-react';
 // Registrar plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Datos del equipo con información profesional
-const teamMembers = [
-  {
-    id: 1,
-    name: 'Carlos Mendoza',
-    role: 'Director Ejecutivo',
-    description: 'Ingeniero Civil con 20+ años liderando proyectos de infraestructura. Master en Project Management, especialista en metodologías PMI.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 2,
-    name: 'Ana Torres',
-    role: 'Gerente de Operaciones',
-    description: 'Arquitecta especializada en sostenibilidad y certificaciones LEED. Experta en BIM y tecnologías de construcción 4.0.',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 3,
-    name: 'Miguel Rodríguez',
-    role: 'Supervisor Técnico Senior',
-    description: 'Ingeniero con certificación ISO 9001, especialista en control de calidad y gestión de riesgos en construcción.',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 4,
-    name: 'Sofía Herrera',
-    role: 'Project Manager',
-    description: 'PMP certificada con experiencia en gestión integral de proyectos residenciales y comerciales de gran escala.',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 5,
-    name: 'Roberto Silva',
-    role: 'Consultor Estratégico',
-    description: 'MBA especializado en desarrollo inmobiliario, experto en análisis de factibilidad y optimización de ROI.',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 6,
-    name: 'Patricia Vega',
-    role: 'Directora de Calidad',
-    description: 'Ingeniera Industrial con especialización en sistemas de gestión de calidad y procesos de mejora continua.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 7,
-    name: 'Diego Morales',
-    role: 'BIM Manager',
-    description: 'Especialista en modelado 5D y tecnologías VR/AR aplicadas a la construcción. Certificado Autodesk Expert.',
-    image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&h=800&fit=crop&crop=face'
-  },
-  {
-    id: 8,
-    name: 'Carmen López',
-    role: 'Coordinadora de Proyectos',
-    description: 'Arquitecta con experiencia en coordinación multidisciplinaria y gestión de stakeholders en proyectos complejos.',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop&crop=face'
-  }
-];
+interface TeamAndMomentsProps {
+  teamSection?: {
+    title: string;
+    subtitle: string;
+  };
+  members?: Array<{
+    id: number;
+    name: string;
+    role: string;
+    description: string;
+    image: string;
+    image_fallback: string;
+  }>;
+  moments?: {
+    title: string;
+    subtitle: string;
+    gallery: Array<{
+      id: number;
+      title: string;
+      description: string;
+      image: string;
+      image_fallback: string;
+    }>;
+  };
+}
 
 // Filtros por color dominante
 const filters = [
@@ -79,104 +45,10 @@ const filters = [
   { id: 'legacy', name: 'Historia', color: '#374151', icon: '⚪' }
 ];
 
-// Momentos organizados por categorías con sus colores dominantes
-const moments = [
-  // Corporativo (Azul)
-  {
-    id: 1,
-    category: 'corporate',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&h=400&fit=crop',
-    title: 'Dirección estratégica',
-    size: 'large'
-  },
-  {
-    id: 2,
-    category: 'corporate',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=300&fit=crop',
-    title: 'Planificación de proyectos',
-    size: 'medium'
-  },
-  {
-    id: 3,
-    category: 'corporate',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=600&fit=crop',
-    title: 'Reuniones ejecutivas',
-    size: 'tall'
-  },
-  
-  // Celebraciones (Naranja)
-  {
-    id: 4,
-    category: 'celebrations',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop',
-    title: 'Logros del equipo',
-    size: 'large'
-  },
-  {
-    id: 5,
-    category: 'celebrations',
-    image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop',
-    title: 'Eventos corporativos',
-    size: 'medium'
-  },
-  {
-    id: 6,
-    category: 'celebrations',
-    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=300&fit=crop',
-    title: 'Reconocimientos',
-    size: 'medium'
-  },
-
-  // Sostenibilidad (Verde)
-  {
-    id: 7,
-    category: 'sustainability',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=600&fit=crop',
-    title: 'Tecnología sostenible',
-    size: 'tall'
-  },
-  {
-    id: 8,
-    category: 'sustainability',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
-    title: 'Proyectos verdes',
-    size: 'large'
-  },
-  {
-    id: 9,
-    category: 'sustainability',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
-    title: 'Innovación ambiental',
-    size: 'medium'
-  },
-
-  // Historia (B&N)
-  {
-    id: 10,
-    category: 'legacy',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop',
-    title: 'Nuestros orígenes',
-    size: 'large'
-  },
-  {
-    id: 11,
-    category: 'legacy',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=600&fit=crop',
-    title: 'Evolución empresarial',
-    size: 'tall'
-  },
-  {
-    id: 12,
-    category: 'legacy',
-    image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400&h=300&fit=crop',
-    title: 'Hitos históricos',
-    size: 'medium'
-  }
-];
 
 // Componente de Lightbox
 interface LightboxProps {
-  moment: typeof moments[0] | null;
+  moment: any | null;
   onClose: () => void;
 }
 
@@ -247,17 +119,15 @@ function Lightbox({ moment, onClose }: LightboxProps) {
   );
 }
 
-export default function TeamAndMoments() {
+export default function TeamAndMoments({ teamSection, members, moments }: TeamAndMomentsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const [hoveredMember, setHoveredMember] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedMoment, setSelectedMoment] = useState<typeof moments[0] | null>(null);
+  const [selectedMoment, setSelectedMoment] = useState<any>(null);
 
   // Filtrar momentos según la categoría activa
-  const filteredMoments = activeFilter === 'all' 
-    ? moments 
-    : moments.filter(moment => moment.category === activeFilter);
+  const filteredMoments = moments?.gallery || [];
 
   // Obtener tamaño de grid para cada momento
   const getGridSize = (size: string) => {
@@ -378,18 +248,18 @@ export default function TeamAndMoments() {
             <span className="text-white drop-shadow-2xl" style={{
               textShadow: '0 0 30px rgba(232, 78, 15, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3)'
             }}>
-              Nuestro Equipo
+              {teamSection?.title || 'Nuestro Equipo'}
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Los rostros detrás de cada proyecto exitoso
+            {teamSection?.subtitle || 'Los rostros detrás de cada proyecto exitoso'}
           </p>
         </motion.div>
 
         {/* Timeline horizontal del equipo */}
         <div className="relative h-96 overflow-hidden rounded-2xl mb-20">
           <div ref={timelineRef} className="flex items-center h-full space-x-8">
-            {teamMembers.map((member, index) => (
+            {(members || []).map((member, index) => (
               <motion.div
                 key={member.id}
                 className="team-portrait flex-shrink-0 w-64 h-80 relative group cursor-pointer"
@@ -445,11 +315,11 @@ export default function TeamAndMoments() {
             <span className="text-white drop-shadow-2xl" style={{
               textShadow: '0 0 25px rgba(232, 78, 15, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4)'
             }}>
-              Momentos que Nos Definen
+              {moments?.title || 'Momentos que Nos Definen'}
             </span>
           </h3>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Una galería visual que captura la esencia de nuestra cultura empresarial
+            {moments?.subtitle || 'Una galería visual que captura la esencia de nuestra cultura empresarial'}
           </p>
           
           {/* Separador visual */}
