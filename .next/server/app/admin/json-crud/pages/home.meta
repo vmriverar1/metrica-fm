@@ -1,0 +1,7 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/json-crud/layout,_N_T_/admin/json-crud/pages/layout,_N_T_/admin/json-crud/pages/home/layout,_N_T_/admin/json-crud/pages/home/page,_N_T_/admin/json-crud/pages/home"
+  }
+}

@@ -1,0 +1,11 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /test/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /careers/profile/
+Disallow: /careers/apply/
+Disallow: /*.json$
+
+Sitemap: https://metrica-dip.com/sitemap.xml
