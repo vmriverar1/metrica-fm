@@ -17,65 +17,43 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { currentCertification } from '@/data/iso-sample';
+import { useISOData } from '@/hooks/useISOData';
 import { cn } from '@/lib/utils';
 
-const benefits = [
-  {
-    icon: Shield,
-    title: 'Garantía de Calidad',
-    description: 'Procesos estandarizados y documentados que aseguran la consistencia en cada proyecto.',
-    color: 'text-blue-600'
-  },
-  {
-    icon: Target,
-    title: 'Enfoque al Cliente',
-    description: 'Sistema centrado en superar las expectativas de nuestros clientes en cada entrega.',
-    color: 'text-green-600'
-  },
-  {
-    icon: TrendingUp,
-    title: 'Mejora Continua',
-    description: 'Cultura organizacional orientada a la optimización constante de nuestros procesos.',
-    color: 'text-purple-600'
-  },
-  {
-    icon: Users,
-    title: 'Equipo Competente',
-    description: 'Personal calificado y en constante capacitación para brindar servicios excepcionales.',
-    color: 'text-orange-600'
-  }
-];
-
-const scopeItems = [
-  'Dirección integral de proyectos de construcción',
-  'Gestión de proyectos de infraestructura',
-  'Supervisión y control de obras',
-  'Consultoría en construcción'
-];
-
-const whyImportant = [
-  {
-    icon: Building2,
-    title: 'Sector Construcción',
-    description: 'La industria de la construcción requiere estándares rigurosos para garantizar seguridad, calidad y cumplimiento normativo.',
-    stats: '85% de clientes prefieren empresas certificadas'
-  },
-  {
-    icon: Globe,
-    title: 'Estándar Internacional',
-    description: 'ISO 9001 es reconocido mundialmente como la norma de referencia para sistemas de gestión de calidad.',
-    stats: '1M+ organizaciones certificadas globalmente'
-  },
-  {
-    icon: Award,
-    title: 'Competitividad',
-    description: 'La certificación nos posiciona como líder en calidad frente a la competencia en el mercado peruano.',
-    stats: '40% mayor confianza del mercado'
-  }
-];
+const iconMap = {
+  Shield,
+  Target,
+  TrendingUp,
+  Users,
+  Building2,
+  Globe,
+  Award
+};
 
 export default function ISOIntroduction() {
+  const { data, loading, error } = useISOData();
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-lg text-muted-foreground">Cargando información ISO...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-lg text-red-600">Error cargando datos</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
@@ -89,15 +67,13 @@ export default function ISOIntroduction() {
           className="text-center mb-16"
         >
           <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-            Sistema de Gestión de Calidad
+            {data.introduction.section.subtitle}
           </Badge>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            ¿Qué es <span className="text-primary">ISO 9001</span>?
+            {data.introduction.section.title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            ISO 9001:2015 es el estándar internacional para sistemas de gestión de calidad, 
-            que nos permite demostrar nuestra capacidad de proporcionar servicios que 
-            satisfacen consistentemente los requisitos del cliente y las regulaciones aplicables.
+            {data.introduction.section.description}
           </p>
         </motion.div>
 
@@ -112,11 +88,11 @@ export default function ISOIntroduction() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h3 className="text-2xl font-semibold mb-8 text-foreground">
-              ¿Por qué es importante en construcción?
+              {data.introduction.importance.title}
             </h3>
             
             <div className="space-y-6">
-              {whyImportant.map((item, index) => (
+              {data.introduction.importance.reasons.map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -129,7 +105,7 @@ export default function ISOIntroduction() {
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
                           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <item.icon className="w-6 h-6 text-primary" />
+                            {React.createElement(iconMap[item.icon as keyof typeof iconMap], { className: "w-6 h-6 text-primary" })}
                           </div>
                         </div>
                         <div className="flex-1">
@@ -138,7 +114,7 @@ export default function ISOIntroduction() {
                             {item.description}
                           </p>
                           <div className="text-sm font-medium text-primary">
-                            {item.stats}
+                            {item.stat}
                           </div>
                         </div>
                       </div>
@@ -160,13 +136,13 @@ export default function ISOIntroduction() {
             {/* Certification Scope */}
             <div>
               <h3 className="text-2xl font-semibold mb-6 text-foreground">
-                Alcance de Nuestra Certificación
+                {data.introduction.scope.title}
               </h3>
               
               <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
                 <CardContent className="p-6">
                   <div className="space-y-4">
-                    {scopeItems.map((item, index) => (
+                    {data.introduction.scope.items.map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 20 }}
@@ -183,10 +159,10 @@ export default function ISOIntroduction() {
                   
                   <div className="mt-6 pt-6 border-t border-primary/20">
                     <div className="text-sm text-muted-foreground">
-                      <strong>Certificado por:</strong> {currentCertification.certifyingBody}
+                      <strong>Certificado por:</strong> {data.hero.certificate_details.certifying_body}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      <strong>Vigencia:</strong> {currentCertification.expiryDate.toLocaleDateString('es-PE')}
+                      <strong>Vigencia:</strong> {new Date(data.hero.certificate_details.expiry_date).toLocaleDateString('es-PE')}
                     </div>
                   </div>
                 </CardContent>

@@ -373,7 +373,7 @@ export default function DataTable({
                         
                         {actions.length > 2 && (
                           <div className="relative">
-                            <button className="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-100">
+                            <button type="button" className="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-100">
                               <MoreHorizontal className="w-4 h-4" />
                             </button>
                           </div>

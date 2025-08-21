@@ -247,6 +247,7 @@ export default function ProductionMonitor() {
                 { id: 'alerts', name: 'Alerts', icon: Bell }
               ].map((tab) => (
                 <button
+                  type="button"
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
@@ -567,7 +568,7 @@ export default function ProductionMonitor() {
                               Acknowledged
                             </span>
                           ) : (
-                            <button className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                            <button type="button" className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
                               Acknowledge
                             </button>
                           )}

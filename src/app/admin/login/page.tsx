@@ -30,7 +30,10 @@ export default function LoginPage() {
   // Redirigir si ya está autenticado
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
-      router.push('/admin/json-crud');
+      // Verificar si hay una ruta guardada para redireccionar
+      const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/admin/dashboard';
+      sessionStorage.removeItem('redirectAfterLogin');
+      router.push(redirectTo);
     }
   }, [isAuthenticated, isLoading, router]);
 
@@ -47,7 +50,10 @@ export default function LoginPage() {
       });
 
       if (success) {
-        router.push('/admin/json-crud');
+        // Verificar si hay una ruta guardada para redireccionar
+        const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/admin/dashboard';
+        sessionStorage.removeItem('redirectAfterLogin');
+        router.push(redirectTo);
       }
     } catch (err) {
       console.error('Login error:', err);

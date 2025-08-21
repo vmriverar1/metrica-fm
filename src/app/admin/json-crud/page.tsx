@@ -5,6 +5,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+// AdminLayout se maneja en layout.tsx
 import { SystemHealth } from '@/components/admin/SystemHealth';
 import { useState, useEffect } from 'react';
 import {
@@ -188,13 +189,6 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard de Administración</h1>
-        <p className="mt-2 text-gray-600">
-          Bienvenido, {user?.firstName}. Administra todo el contenido JSON desde aquí.
-        </p>
-      </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

@@ -18,14 +18,50 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { currentCertification, isoStats } from '@/data/iso-sample';
+import { useISOData } from '@/hooks/useISOData';
 import { getCertificationStatus } from '@/types/iso';
 
 export default function ISOHero() {
+  const { data, loading, error } = useISOData();
   const [isHovered, setIsHovered] = useState(false);
   const [certificateRotation, setCertificateRotation] = useState({ x: 0, y: 0 });
   const certificateRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-rotation animation when not hovered
+  useEffect(() => {
+    if (!isHovered && !loading && !error) {
+      const interval = setInterval(() => {
+        setCertificateRotation(prev => ({
+          x: Math.sin(Date.now() * 0.001) * 3,
+          y: Math.cos(Date.now() * 0.0015) * 5
+        }));
+      }, 16);
+
+      return () => clearInterval(interval);
+    }
+  }, [isHovered, loading, error]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-lg text-muted-foreground">Cargando certificación ISO 9001...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <p className="text-lg text-red-600">Error cargando datos ISO</p>
+        </div>
+      </div>
+    );
+  }
 
   // Mouse tracking for 3D effect
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -49,22 +85,8 @@ export default function ISOHero() {
     setCertificateRotation({ x: 0, y: 0 });
   };
 
-  const status = getCertificationStatus(currentCertification);
+  const status = data.hero.certification_status.is_valid ? 'valid' : 'invalid';
   const isValidCertificate = status === 'valid';
-
-  // Auto-rotation animation when not hovered
-  useEffect(() => {
-    if (!isHovered) {
-      const interval = setInterval(() => {
-        setCertificateRotation(prev => ({
-          x: Math.sin(Date.now() * 0.001) * 3,
-          y: Math.cos(Date.now() * 0.0015) * 5
-        }));
-      }, 16);
-
-      return () => clearInterval(interval);
-    }
-  }, [isHovered]);
 
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-[#003F6F] via-[#002A4D] to-[#001A33] overflow-hidden">
@@ -165,7 +187,7 @@ export default function ISOHero() {
             >
               <div className="text-center lg:text-left">
                 <div className="text-3xl lg:text-4xl font-bold text-white">
-                  {isoStats.certificationYears}
+                  {data.hero.stats.certification_years}
                 </div>
                 <div className="text-sm text-gray-300 font-medium">
                   Años Certificados
@@ -173,7 +195,7 @@ export default function ISOHero() {
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-3xl lg:text-4xl font-bold text-white">
-                  {isoStats.certifiedProjects}+
+                  {data.hero.stats.certified_projects}+
                 </div>
                 <div className="text-sm text-gray-300 font-medium">
                   Proyectos Certificados
@@ -181,7 +203,7 @@ export default function ISOHero() {
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-3xl lg:text-4xl font-bold text-white">
-                  {isoStats.averageSatisfaction}%
+                  {data.hero.stats.average_satisfaction}%
                 </div>
                 <div className="text-sm text-gray-300 font-medium">
                   Satisfacción Cliente
@@ -199,7 +221,7 @@ export default function ISOHero() {
               <Button 
                 size="lg" 
                 className="bg-[#E84E0F] hover:bg-[#E84E0F]/90 text-white px-8 py-3 text-base font-medium shadow-lg"
-                onClick={() => window.open(currentCertification.pdfUrl, '_blank')}
+                onClick={() => window.open(data.hero.certificate_details.pdf_url, '_blank')}
               >
                 <Download className="w-5 h-5 mr-2" />
                 Descargar Certificado
@@ -233,24 +255,24 @@ export default function ISOHero() {
                 <div className="flex items-center gap-2 text-gray-200">
                   <Shield className="w-4 h-4 text-[#E84E0F]" />
                   <span className="font-medium">Ente Certificador:</span>
-                  <span>{currentCertification.certifyingBody}</span>
+                  <span>{data.hero.certificate_details.certifying_body}</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-200">
                   <Calendar className="w-4 h-4 text-[#E84E0F]" />
                   <span className="font-medium">Vigente hasta:</span>
-                  <span>{currentCertification.expiryDate.toLocaleDateString('es-PE')}</span>
+                  <span>{new Date(data.hero.certificate_details.expiry_date).toLocaleDateString('es-PE')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-200">
                   <Award className="w-4 h-4 text-[#E84E0F]" />
                   <span className="font-medium">N° Certificado:</span>
-                  <span>{currentCertification.certificateNumber}</span>
+                  <span>{data.hero.certificate_details.certificate_number}</span>
                 </div>
-                {currentCertification.verificationUrl && (
+                {data.hero.certificate_details.verification_url && (
                   <div className="flex items-center gap-2 text-gray-200">
                     <ExternalLink className="w-4 h-4 text-[#E84E0F]" />
                     <span className="font-medium">
                       <a 
-                        href={currentCertification.verificationUrl}
+                        href={data.hero.certificate_details.verification_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#E84E0F] hover:underline"
@@ -363,8 +385,8 @@ export default function ISOHero() {
                     {/* Certificate Footer */}
                     <div className="border-t border-gray-200 pt-4 space-y-2">
                       <div className="flex justify-between text-xs text-gray-600">
-                        <span>Cert. N° {currentCertification.certificateNumber}</span>
-                        <span>{currentCertification.certifyingBody}</span>
+                        <span>Cert. N° {data.hero.certificate_details.certificate_number}</span>
+                        <span>{data.hero.certificate_details.certifying_body}</span>
                       </div>
                       <div className="text-center">
                         <Globe className="w-4 h-4 text-[#E84E0F] mx-auto" />
@@ -402,7 +424,7 @@ export default function ISOHero() {
                 <Button
                   size="lg"
                   className="rounded-full w-14 h-14 shadow-lg bg-[#E84E0F] hover:bg-[#E84E0F]/90"
-                  onClick={() => window.open(currentCertification.pdfUrl, '_blank')}
+                  onClick={() => window.open(data.hero.certificate_details.pdf_url, '_blank')}
                 >
                   <Download className="w-6 h-6" />
                 </Button>

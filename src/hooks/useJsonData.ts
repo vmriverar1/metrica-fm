@@ -90,5 +90,5 @@ export function useHistoriaData() {
         achievement: string;
       }>;
     };
-  }>('/json/pages/about-historia.json');
+  }>('/json/pages/historia.json');
 }

@@ -540,6 +540,7 @@ export default function ProjectsPage() {
             </p>
             <div className="mt-6">
               <button
+                type="button"
                 onClick={handleCreateProject}
                 className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
@@ -589,12 +590,14 @@ export default function ProjectsPage() {
               
               <div className="flex justify-end space-x-4">
                 <button
+                  type="button"
                   onClick={() => setDeleteConfirm(null)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md"
                 >
                   Cancelar
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleDeleteProject(deleteConfirm)}
                   className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md"
                 >

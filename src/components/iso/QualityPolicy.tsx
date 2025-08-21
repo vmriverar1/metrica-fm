@@ -26,6 +26,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { useISOData } from '@/hooks/useISOData';
 
 const policyDocument = {
   title: "Política de Calidad",
@@ -162,8 +163,30 @@ const policyStructure = [
 ];
 
 export default function QualityPolicy() {
+  const { data, loading, error } = useISOData();
   const [expandedCommitment, setExpandedCommitment] = useState<number | null>(null);
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-lg text-muted-foreground">Cargando política de calidad...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-lg text-red-600">Error cargando datos</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-background">
@@ -206,20 +229,20 @@ export default function QualityPolicy() {
                   </div>
                   <div>
                     <CardTitle className="text-2xl font-bold mb-2">
-                      {policyDocument.title}
+                      {data.quality_policy.document.title}
                     </CardTitle>
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Award className="w-4 h-4 text-primary" />
-                        <span>Versión {policyDocument.version}</span>
+                        <span>Versión {data.quality_policy.document.version}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-primary" />
-                        <span>Actualizado: {policyDocument.lastUpdate.toLocaleDateString('es-PE')}</span>
+                        <span>Actualizado: {new Date(data.quality_policy.document.last_update).toLocaleDateString('es-PE')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-primary" />
-                        <span>Aprobado por: {policyDocument.approvedBy}</span>
+                        <span>Aprobado por: {data.quality_policy.document.approved_by}</span>
                       </div>
                     </div>
                   </div>
@@ -344,8 +367,8 @@ export default function QualityPolicy() {
 
                 <div className="text-sm text-muted-foreground">
                   <p>
-                    <strong>Próxima revisión:</strong> {policyDocument.nextReview.toLocaleDateString('es-PE')} • 
-                    <strong> Vigente desde:</strong> {policyDocument.effectiveDate.toLocaleDateString('es-PE')}
+                    <strong>Próxima revisión:</strong> {new Date(data.quality_policy.document.next_review).toLocaleDateString('es-PE')} • 
+                    <strong> Vigente desde:</strong> {new Date(data.quality_policy.document.effective_date).toLocaleDateString('es-PE')}
                   </p>
                 </div>
               </div>

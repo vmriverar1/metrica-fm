@@ -8,8 +8,10 @@
 
 'use client';
 
-import { useAuth, withAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useApplicationsService, useRecruitmentStats } from '@/hooks/useApplicationsService';
+import AdminLayout from '@/components/admin/AdminLayout';
+import { Button } from '@/components/ui/button';
 import { 
   Users, 
   FileText, 
@@ -39,21 +41,21 @@ function AdminDashboard() {
   const quickStats = [
     {
       title: 'Total Aplicaciones',
-      value: stats?.applications.total || 0,
-      change: stats?.applications.growth || 0,
+      value: stats?.applications?.total || 0,
+      change: stats?.applications?.growth || 0,
       icon: FileText,
       color: 'blue'
     },
     {
       title: 'Este Mes',
-      value: stats?.applications.thisMonth || 0,
+      value: stats?.applications?.thisMonth || 0,
       change: 0,
       icon: Calendar,
       color: 'green'
     },
     {
       title: 'Tasa Conversión',
-      value: `${stats?.performance.conversionRates.overallConversion.toFixed(1) || 0}%`,
+      value: `${stats?.performance?.conversionRates?.overallConversion?.toFixed(1) || 0}%`,
       change: 0,
       icon: TrendingUp,
       color: 'purple'
@@ -130,36 +132,18 @@ function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Panel de Administración</h1>
-              <p className="text-gray-600">
-                Bienvenido, {user.firstName} {user.lastName} - {user.role.name}
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => window.open('/recruitment-dashboard', '_blank')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Dashboard Reclutamiento
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <AdminLayout 
+      title="Panel de Administración" 
+      description={`Bienvenido, ${user.firstName} ${user.lastName} - ${user.role?.name || 'Usuario'}`}
+      actions={
+        <Button
+          onClick={() => window.open('/recruitment-dashboard', '_blank')}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          Dashboard Reclutamiento
+        </Button>
+      }
+    >
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {quickStats.map((stat, index) => (
@@ -214,7 +198,7 @@ function AdminDashboard() {
                   ))}
                 </div>
                 <div className="mt-6">
-                  <button className="text-blue-600 text-sm hover:text-blue-700 font-medium">
+                  <button type="button" className="text-blue-600 text-sm hover:text-blue-700 font-medium">
                     Ver toda la actividad →
                   </button>
                 </div>
@@ -258,6 +242,7 @@ function AdminDashboard() {
               <div className="p-6">
                 <div className="space-y-3">
                   <button
+                    type="button"
                     onClick={() => window.open('/admin/users', '_blank')}
                     className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
@@ -266,6 +251,7 @@ function AdminDashboard() {
                   </button>
                   
                   <button
+                    type="button"
                     onClick={() => window.open('/test-applications', '_blank')}
                     className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
@@ -273,17 +259,17 @@ function AdminDashboard() {
                     <span className="text-sm text-gray-900">Testing del Sistema</span>
                   </button>
                   
-                  <button className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                     <BarChart3 className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Generar Reportes</span>
                   </button>
                   
-                  <button className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                     <Settings className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Configuración</span>
                   </button>
                   
-                  <button className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                     <Mail className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Notificaciones</span>
                   </button>
@@ -364,6 +350,7 @@ function AdminDashboard() {
             </div>
             <div className="px-6 py-3 border-t bg-gray-50">
               <button
+                type="button"
                 onClick={() => window.open('/recruitment-dashboard', '_blank')}
                 className="text-blue-600 text-sm hover:text-blue-700 font-medium"
               >
@@ -372,9 +359,8 @@ function AdminDashboard() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }
 
-export default withAuth(AdminDashboard);
+export default AdminDashboard;

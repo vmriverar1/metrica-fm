@@ -10,7 +10,7 @@ import { Search, FileText, Edit, Eye, Plus, Trash2, Download, Upload, Sparkles, 
 import { useRouter } from 'next/navigation';
 import DataTable from '@/components/admin/DataTable';
 import DynamicForm from '@/components/admin/DynamicForm';
-import HomeConfigWizard from '@/components/admin/HomeConfigWizard';
+// import HomeConfigWizard from '@/components/admin/HomeConfigWizard';
 // import { useSetupWizard } from '@/hooks/useSetupWizard';
 
 interface PageData {
@@ -67,11 +67,11 @@ const PagesManagement = () => {
         }
       },
       {
-        id: 'about-historia',
-        name: 'about-historia.json',
+        id: 'historia',
+        name: 'historia.json',
         title: 'Historia de la Empresa',
         description: 'Información sobre la historia y evolución de Métrica DIP',
-        path: '/public/json/pages/about-historia.json',
+        path: '/public/json/pages/historia.json',
         status: 'active',
         lastModified: '2025-08-20T09:30:00Z',
         size: '8.7 KB',
@@ -91,8 +91,8 @@ const PagesManagement = () => {
         description: 'Configuración y contenido del portafolio de proyectos',
         path: '/public/json/pages/portfolio.json',
         status: 'active',
-        lastModified: '2025-08-20T11:15:00Z',
-        size: '22.1 KB',
+        lastModified: '2025-08-21T14:30:00Z',
+        size: '32.8 KB',
         type: 'dynamic',
         metadata: {
           author: 'Portfolio Team',
@@ -109,8 +109,8 @@ const PagesManagement = () => {
         description: 'Configuración de la sección de empleos y oportunidades',
         path: '/public/json/pages/careers.json',
         status: 'active',
-        lastModified: '2025-08-20T08:45:00Z',
-        size: '12.3 KB',
+        lastModified: '2025-08-21T14:15:00Z',
+        size: '26.7 KB',
         type: 'dynamic',
         metadata: {
           author: 'HR Team',
@@ -118,6 +118,96 @@ const PagesManagement = () => {
           category: 'recruitment',
           seoTitle: 'Carreras - Métrica DIP',
           seoDescription: 'Únete a nuestro equipo de profesionales'
+        }
+      },
+      {
+        id: 'contact',
+        name: 'contact.json',
+        title: 'Página de Contacto',
+        description: 'Información de contacto, formularios y FAQ',
+        path: '/public/json/pages/contact.json',
+        status: 'active',
+        lastModified: '2025-08-21T10:00:00Z',
+        size: '9.4 KB',
+        type: 'static',
+        metadata: {
+          author: 'Admin',
+          tags: ['contact', 'forms', 'faq'],
+          category: 'contact',
+          seoTitle: 'Contáctanos - Métrica DIP',
+          seoDescription: 'Ponte en contacto con nuestro equipo de expertos'
+        }
+      },
+      {
+        id: 'blog',
+        name: 'blog.json',
+        title: 'Configuración del Blog',
+        description: 'Configuración, categorías y contenido del blog',
+        path: '/public/json/pages/blog.json',
+        status: 'active',
+        lastModified: '2025-08-21T11:30:00Z',
+        size: '18.7 KB',
+        type: 'dynamic',
+        metadata: {
+          author: 'Admin',
+          tags: ['blog', 'content', 'categories'],
+          category: 'content',
+          seoTitle: 'Blog - Métrica DIP',
+          seoDescription: 'Insights y experiencias en infraestructura'
+        }
+      },
+      {
+        id: 'services',
+        name: 'services.json',
+        title: 'Página de Servicios',
+        description: 'Catálogo completo de servicios y configuración',
+        path: '/public/json/pages/services.json',
+        status: 'active',
+        lastModified: '2025-08-21T11:45:00Z',
+        size: '24.2 KB',
+        type: 'dynamic',
+        metadata: {
+          author: 'Admin',
+          tags: ['services', 'catalog', 'testimonials'],
+          category: 'services',
+          seoTitle: 'Servicios - Métrica DIP',
+          seoDescription: 'Soluciones integrales en infraestructura'
+        }
+      },
+      {
+        id: 'compromiso',
+        name: 'compromiso.json',
+        title: 'Responsabilidad Social',
+        description: 'Compromisos, valores y responsabilidad social corporativa',
+        path: '/public/json/pages/compromiso.json',
+        status: 'active',
+        lastModified: '2025-08-21T12:00:00Z',
+        size: '16.3 KB',
+        type: 'dynamic',
+        metadata: {
+          author: 'Admin',
+          tags: ['compromiso', 'responsabilidad', 'sostenibilidad'],
+          category: 'corporate',
+          seoTitle: 'Nuestro Compromiso - Métrica DIP',
+          seoDescription: 'Responsabilidad social y desarrollo sostenible'
+        }
+      },
+      {
+        id: 'cultura',
+        name: 'cultura.json',
+        title: 'Cultura Organizacional',
+        description: 'Cultura, valores y ambiente de trabajo en Métrica DIP',
+        path: '/public/json/pages/cultura.json',
+        status: 'active',
+        lastModified: '2025-08-21T14:00:00Z',
+        size: '28.5 KB',
+        type: 'dynamic',
+        metadata: {
+          author: 'HR Team',
+          tags: ['cultura', 'valores', 'equipo', 'beneficios'],
+          category: 'corporate',
+          seoTitle: 'Cultura Organizacional - Métrica DIP',
+          seoDescription: 'Descubre la cultura, valores y ambiente de trabajo en Métrica DIP'
         }
       },
       {
@@ -169,6 +259,42 @@ const PagesManagement = () => {
 
   const handleEditPage = async (page: PageData) => {
     console.log('🔄 [EDIT PAGE] Iniciando carga de datos para:', page.name);
+    
+    // ✅ Redirección a editores especializados
+    if (page.name === 'contact.json') {
+      router.push('/admin/json-crud/pages/contact');
+      return;
+    }
+    
+    if (page.name === 'blog.json') {
+      router.push('/admin/json-crud/pages/blog');
+      return;
+    }
+    
+    if (page.name === 'services.json') {
+      router.push('/admin/json-crud/pages/services');
+      return;
+    }
+    
+    if (page.name === 'compromiso.json') {
+      router.push('/admin/json-crud/pages/compromiso');
+      return;
+    }
+    
+    if (page.name === 'portfolio.json') {
+      router.push('/admin/json-crud/pages/portfolio');
+      return;
+    }
+    
+    if (page.name === 'careers.json') {
+      router.push('/admin/json-crud/pages/careers');
+      return;
+    }
+    
+    if (page.name === 'cultura.json') {
+      router.push('/admin/json-crud/pages/cultura');
+      return;
+    }
     
     try {
       // Cargar datos reales del archivo JSON
@@ -441,7 +567,7 @@ const PagesManagement = () => {
   // Esquemas de formulario por tipo de página
   const getFormSchema = (pageName: string) => {
     switch (pageName) {
-      case 'about-historia.json':
+      case 'historia.json':
         return {
           title: 'Editar Historia de la Empresa',
           groups: [
@@ -2071,12 +2197,15 @@ const PagesManagement = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Wizard Component */}
-                  <HomeConfigWizard
+                  {/* Wizard Component - Temporarily disabled */}
+                  {/* <HomeConfigWizard
                     initialData={selectedPage}
                     onComplete={handleWizardComplete}
                     onCancel={handleWizardCancel}
-                  />
+                  /> */}
+                  <div className="text-center py-8 text-gray-500">
+                    Wizard temporalmente deshabilitado
+                  </div>
                 </div>
               ) : (
                 /* Normal Edit Form */
