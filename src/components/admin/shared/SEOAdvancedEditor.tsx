@@ -115,10 +115,10 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
 
     // Título (25 puntos)
     if (data.title) {
-      if (data.title.length >= validation.titleMinLength! && data.title.length <= validation.titleMaxLength!) {
+      if (data.title.length >= (validation?.titleMinLength || 10) && data.title.length <= (validation?.titleMaxLength || 60)) {
         score += 25;
       } else {
-        issues.push(`Título debe tener entre ${validation.titleMinLength}-${validation.titleMaxLength} caracteres`);
+        issues.push(`Título debe tener entre ${validation?.titleMinLength || 10}-${validation?.titleMaxLength || 60} caracteres`);
       }
     } else {
       issues.push('Título requerido');
@@ -126,10 +126,10 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
 
     // Descripción (25 puntos)
     if (data.description) {
-      if (data.description.length >= validation.descriptionMinLength! && data.description.length <= validation.descriptionMaxLength!) {
+      if (data.description.length >= (validation?.descriptionMinLength || 120) && data.description.length <= (validation?.descriptionMaxLength || 160)) {
         score += 25;
       } else {
-        issues.push(`Descripción debe tener entre ${validation.descriptionMinLength}-${validation.descriptionMaxLength} caracteres`);
+        issues.push(`Descripción debe tener entre ${validation?.descriptionMinLength || 120}-${validation?.descriptionMaxLength || 160} caracteres`);
       }
     } else {
       issues.push('Descripción requerida');
@@ -138,8 +138,8 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
     // Keywords (10 puntos)
     if (data.keywords && data.keywords.length > 0) {
       score += 10;
-      if (data.keywords.length > validation.keywordsMax!) {
-        issues.push(`Máximo ${validation.keywordsMax} keywords recomendadas`);
+      if (data.keywords.length > (validation?.keywordsMax || 10)) {
+        issues.push(`Máximo ${validation?.keywordsMax || 10} keywords recomendadas`);
       }
     } else {
       issues.push('Keywords recomendadas');
@@ -320,15 +320,15 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium">Título SEO *</label>
-                <span className={`text-xs ${data.title?.length > validation.titleMaxLength! ? 'text-red-500' : 'text-gray-500'}`}>
-                  {data.title?.length || 0}/{validation.titleMaxLength}
+                <span className={`text-xs ${data.title?.length > (validation?.titleMaxLength || 60) ? 'text-red-500' : 'text-gray-500'}`}>
+                  {data.title?.length || 0}/{validation?.titleMaxLength || 60}
                 </span>
               </div>
               <Input
                 value={data.title || ''}
                 onChange={(e) => handleFieldChange('title', e.target.value)}
                 placeholder="Título optimizado para SEO"
-                maxLength={validation.titleMaxLength}
+                maxLength={validation?.titleMaxLength || 60}
               />
               <p className="text-xs text-gray-500 mt-1">
                 Aparece en pestañas del navegador y resultados de búsqueda
@@ -338,15 +338,15 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium">Descripción SEO *</label>
-                <span className={`text-xs ${data.description?.length > validation.descriptionMaxLength! ? 'text-red-500' : 'text-gray-500'}`}>
-                  {data.description?.length || 0}/{validation.descriptionMaxLength}
+                <span className={`text-xs ${data.description?.length > (validation?.descriptionMaxLength || 160) ? 'text-red-500' : 'text-gray-500'}`}>
+                  {data.description?.length || 0}/{validation?.descriptionMaxLength || 160}
                 </span>
               </div>
               <Textarea
                 value={data.description || ''}
                 onChange={(e) => handleFieldChange('description', e.target.value)}
                 placeholder="Descripción que aparece en resultados de búsqueda"
-                maxLength={validation.descriptionMaxLength}
+                maxLength={validation?.descriptionMaxLength || 160}
                 rows={3}
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -362,7 +362,7 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
                 placeholder="palabra1, palabra2, palabra3"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Separa las palabras clave con comas (máximo {validation.keywordsMax})
+                Separa las palabras clave con comas (máximo {validation?.keywordsMax || 10})
               </p>
               {data.keywords && data.keywords.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">

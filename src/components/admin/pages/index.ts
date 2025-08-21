@@ -9,7 +9,7 @@ export { CompromisoPageEditor } from './CompromisoPageEditor'
 // ✅ Implemented page editors - Phase 2
 export { PortfolioPageEditor } from './PortfolioPageEditor'
 export { CareersPageEditor } from './CareersPageEditor'
-export { CulturaPageEditor } from './CulturaPageEditor'
+export { default as CulturaPageEditor } from './CulturaPageEditor'
 
 export const PAGE_EDITORS_INFO = {
   description: 'Editores principales para cada página JSON - FASE 2 COMPLETADA',

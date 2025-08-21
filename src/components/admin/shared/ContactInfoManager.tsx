@@ -25,7 +25,25 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 export interface ContactInfo {
   id: string;
@@ -85,6 +103,13 @@ export const ContactInfoManager: React.FC<ContactInfoManagerProps> = ({
     status: 'active',
     metadata: {}
   });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   // Iconos disponibles por tipo
   const iconsByType = {
@@ -184,14 +209,15 @@ export const ContactInfoManager: React.FC<ContactInfoManagerProps> = ({
   };
 
   // Reordenar información
-  const handleDragEnd = (result: any) => {
-    if (!result.destination || !allowReordering) return;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-    const items = Array.from(contactInfo);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    if (!over || active.id === over.id || !allowReordering) return;
 
-    const reorderedContactInfo = items.map((item, index) => ({
+    const oldIndex = contactInfo.findIndex((item) => item.id === active.id);
+    const newIndex = contactInfo.findIndex((item) => item.id === over.id);
+
+    const reorderedContactInfo = arrayMove(contactInfo, oldIndex, newIndex).map((item, index) => ({
       ...item,
       order: index
     }));
@@ -406,33 +432,37 @@ export const ContactInfoManager: React.FC<ContactInfoManagerProps> = ({
 
         {/* Lista de información de contacto */}
         {allowReordering ? (
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="contactInfo">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
-                  {contactInfo.map((item, index) => (
-                    <ContactInfoItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      editingId={editingId}
-                      onEdit={setEditingId}
-                      onUpdate={handleUpdateContactInfo}
-                      onDelete={handleDeleteContactInfo}
-                      onDuplicate={handleDuplicateContactInfo}
-                      onVerify={handleVerifyContactInfo}
-                      showVerification={showVerification}
-                      allowExternalLinks={allowExternalLinks}
-                      iconsByType={iconsByType}
-                      getIconComponent={getIconComponent}
-                      validation={validation}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={contactInfo.map(item => item.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-3">
+                {contactInfo.map((item, index) => (
+                  <SortableContactInfoItem
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    editingId={editingId}
+                    onEdit={setEditingId}
+                    onUpdate={handleUpdateContactInfo}
+                    onDelete={handleDeleteContactInfo}
+                    onDuplicate={handleDuplicateContactInfo}
+                    onVerify={handleVerifyContactInfo}
+                    showVerification={showVerification}
+                    allowExternalLinks={allowExternalLinks}
+                    iconsByType={iconsByType}
+                    getIconComponent={getIconComponent}
+                    validation={validation}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         ) : (
           <div className="space-y-3">
             {contactInfo.map((item, index) => (
@@ -491,6 +521,7 @@ interface ContactInfoItemProps {
   getIconComponent: (iconName: string) => any;
   validation: any;
   draggable?: boolean;
+  dragHandleProps?: any;
 }
 
 const ContactInfoItem: React.FC<ContactInfoItemProps> = ({
@@ -507,7 +538,8 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({
   iconsByType,
   getIconComponent,
   validation,
-  draggable = true
+  draggable = true,
+  dragHandleProps
 }) => {
   const [editData, setEditData] = useState<Partial<ContactInfo>>(item);
   const IconComponent = getIconComponent(item.icon);
@@ -600,7 +632,10 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3 flex-1">
                 {draggable && (
-                  <Move className="w-4 h-4 text-gray-400 cursor-grab mt-1" />
+                  <Move 
+                    className="w-4 h-4 text-gray-400 cursor-grab mt-1" 
+                    {...dragHandleProps}
+                  />
                 )}
                 <IconComponent className="w-5 h-5 text-[#003F6F] mt-0.5" />
                 <div className="flex-1">
@@ -688,21 +723,29 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({
     </Card>
   );
 
-  if (draggable) {
-    return (
-      <Draggable draggableId={item.id} index={index}>
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <ContactInfoContent />
-          </div>
-        )}
-      </Draggable>
-    );
-  }
-
   return <ContactInfoContent />;
+};
+
+// Componente sortable para drag and drop
+const SortableContactInfoItem: React.FC<ContactInfoItemProps> = (props) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: props.item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <ContactInfoItem {...props} draggable={true} dragHandleProps={{...attributes, ...listeners}} />
+    </div>
+  );
 };
