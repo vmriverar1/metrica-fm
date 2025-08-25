@@ -32,15 +32,16 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readSubscriptionsFile();
     
     // Buscar en newsletter subscriptions
-    let entry = data.newsletter_subscriptions.find((sub: any) => sub.id === (await params).id);
+    let entry = data.newsletter_subscriptions.find((sub: any) => sub.id === id);
     let type = 'newsletter';
     
     // Si no se encuentra, buscar en contact submissions
     if (!entry) {
-      entry = data.contact_submissions.find((contact: any) => contact.id === (await params).id);
+      entry = data.contact_submissions.find((contact: any) => contact.id === id);
       type = 'contact';
     }
 
@@ -87,17 +88,18 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const data = await readSubscriptionsFile();
 
     // Buscar en newsletter subscriptions
-    let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === (await params).id);
+    let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === id);
     let type = 'newsletter';
     let arrayKey = 'newsletter_subscriptions';
     
     // Si no se encuentra, buscar en contact submissions
     if (entryIndex === -1) {
-      entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === (await params).id);
+      entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === id);
       type = 'contact';
       arrayKey = 'contact_submissions';
     }
@@ -115,7 +117,7 @@ export async function PATCH(
     if (type === 'newsletter' && body.email && body.email !== existingEntry.email) {
       // Verificar que el nuevo email no exista
       const emailExists = data.newsletter_subscriptions.some((sub: any) => 
-        sub.email === body.email && sub.id !== (await params).id
+        sub.email === body.email && sub.id !== id
       );
       if (emailExists) {
         return NextResponse.json(
@@ -189,15 +191,16 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readSubscriptionsFile();
 
     // Buscar en newsletter subscriptions
-    let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === (await params).id);
+    let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === id);
     let arrayKey = 'newsletter_subscriptions';
     
     // Si no se encuentra, buscar en contact submissions
     if (entryIndex === -1) {
-      entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === (await params).id);
+      entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === id);
       arrayKey = 'contact_submissions';
     }
 

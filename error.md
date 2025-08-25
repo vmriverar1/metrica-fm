@@ -1,29 +1,179 @@
-Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
-AppInitializer.tsx:16 AppInitializer: Ocultando loading después de 2 segundos
-AppInitializer.tsx:22 AppInitializer: EMERGENCY - Forzando ocultar loading
-page.tsx:261 🔄 [EDIT PAGE] Iniciando carga de datos para: historia.json
-page.tsx:354 📡 [LOAD PAGE DATA] Iniciando llamada a API: {fileName: 'historia.json', slug: 'historia', apiUrl: '/api/admin/pages/historia', timestamp: '2025-08-25T04:25:04.169Z'}
-page.tsx:364 📡 [LOAD PAGE DATA] Respuesta de API recibida: {status: 200, statusText: 'OK', ok: true, url: 'http://localhost:9002/api/admin/pages/historia', headers: {…}}
-page.tsx:375 📄 [LOAD PAGE DATA] JSON parseado: {success: true, hasData: true, dataStructure: {…}}
-page.tsx:391 ✅ [LOAD PAGE DATA] Datos extraídos correctamente
-page.tsx:303 ✅ [EDIT PAGE] Datos cargados exitosamente: {fileName: 'historia.json', hasData: true, dataKeys: Array(15), sampleData: {…}}
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: historia.json
-page.tsx:318 🔍 [EDIT PAGE] Verificando mapeo de datos para formulario: {fileName: 'historia.json', pageWithRealData: {…}, testMappings: {…}, schemaFields: 25}
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-page.tsx:613 🔍 [GET FORM SCHEMA] Buscando schema para: about-historia.json
-DynamicForm.tsx:772 🎨 [DYNAMIC FORM] Renderizando grupo: {groupName: 'default', hasGroup: false, groupLabel: undefined, isCollapsible: undefined, isExpanded: undefined, …}
-DynamicForm.tsx:782 ⚠️ [DYNAMIC FORM] Grupo no encontrado, renderizando sin header: default
-DynamicForm.tsx:772 🎨 [DYNAMIC FORM] Renderizando grupo: {groupName: 'default', hasGroup: false, groupLabel: undefined, isCollapsible: undefined, isExpanded: undefined, …}
-DynamicForm.tsx:782 ⚠️ [DYNAMIC FORM] Grupo no encontrado, renderizando sin header: default
-DynamicForm.tsx:163 📝 [DYNAMIC FORM] Recibiendo valores iniciales: {hasInitialValues: true, initialValuesKeys: Array(15), sampleValues: {…}, fieldsCount: 3}
-DynamicForm.tsx:211 🔧 [DYNAMIC FORM] Inicializando grupos: {groupsCount: 0, groupNames: Array(0), groupsDetails: Array(0), initialExpanded: {…}, isMobile: false, …}
-DynamicForm.tsx:163 📝 [DYNAMIC FORM] Recibiendo valores iniciales: {hasInitialValues: true, initialValuesKeys: Array(15), sampleValues: {…}, fieldsCount: 3}
-DynamicForm.tsx:211 🔧 [DYNAMIC FORM] Inicializando grupos: {groupsCount: 0, groupNames: Array(0), groupsDetails: Array(0), initialExpanded: {…}, isMobile: false, …}
-DynamicForm.tsx:772 🎨 [DYNAMIC FORM] Renderizando grupo: {groupName: 'default', hasGroup: false, groupLabel: undefined, isCollapsible: undefined, isExpanded: undefined, …}
-DynamicForm.tsx:782 ⚠️ [DYNAMIC FORM] Grupo no encontrado, renderizando sin header: default
-DynamicForm.tsx:772 🎨 [DYNAMIC FORM] Renderizando grupo: {groupName: 'default', hasGroup: false, groupLabel: undefined, isCollapsible: undefined, isExpanded: undefined, …}fieldsCount: 3groupLabel: undefinedgroupName: "default"hasGroup: falseisCollapsible: undefinedisExpanded: undefined[[Prototype]]: Object
-DynamicForm.tsx:782 ⚠️ [DYNAMIC FORM] Grupo no encontrado, renderizando sin header: default
+> nextn@0.1.0 build
+> next build
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+   ▲ Next.js 15.3.3
+   Creating an optimized production build ...
+Failed to compile.
+./src/app/api/admin/reports/[id]/route.ts
+Error:   x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/reports/[id]/route.ts:36:1]
+ 33 | ) {
+ 34 |   try {
+ 35 |     const data = await readReportsFile();
+ 36 |     const report = data.generated_reports.find((r: any) => r.id === (await params).id);
+    :                                                                      ^^^^^
+ 37 | 
+ 38 |     if (!report) {
+ 39 |       return NextResponse.json(
+    `----
+  x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/reports/[id]/route.ts:79:1]
+ 76 |     const body = await request.json();
+ 77 |     const data = await readReportsFile();
+ 78 | 
+ 79 |     const reportIndex = data.generated_reports.findIndex((r: any) => r.id === (await params).id);
+    :                                                                                ^^^^^
+ 80 |     if (reportIndex === -1) {
+ 81 |       return NextResponse.json(
+ 82 |         { error: 'Reporte no encontrado' },
+    `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/reports/[id]/route.ts:165:1]
+ 162 |   try {
+ 163 |     const data = await readReportsFile();
+ 164 | 
+ 165 |     const reportIndex = data.generated_reports.findIndex((r: any) => r.id === (await params).id);
+     :                                                                                ^^^^^
+ 166 |     if (reportIndex === -1) {
+ 167 |       return NextResponse.json(
+ 168 |         { error: 'Reporte no encontrado' },
+     `----
+Caused by:
+    Syntax Error
+Import trace for requested module:
+./src/app/api/admin/reports/[id]/route.ts
+./src/app/api/admin/subscriptions/[id]/route.ts
+Error:   x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:38:1]
+ 35 |     const data = await readSubscriptionsFile();
+ 36 |     
+ 37 |     // Buscar en newsletter subscriptions
+ 38 |     let entry = data.newsletter_subscriptions.find((sub: any) => sub.id === (await params).id);
+    :                                                                              ^^^^^
+ 39 |     let type = 'newsletter';
+ 40 |     
+ 41 |     // Si no se encuentra, buscar en contact submissions
+    `----
+  x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:43:1]
+ 40 |     
+ 41 |     // Si no se encuentra, buscar en contact submissions
+ 42 |     if (!entry) {
+ 43 |       entry = data.contact_submissions.find((contact: any) => contact.id === (await params).id);
+    :                                                                               ^^^^^
+ 44 |       type = 'contact';
+ 45 |     }
+    `----
+  x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:94:1]
+ 91 |     const data = await readSubscriptionsFile();
+ 92 | 
+ 93 |     // Buscar en newsletter subscriptions
+ 94 |     let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === (await params).id);
+    :                                                                                        ^^^^^
+ 95 |     let type = 'newsletter';
+ 96 |     let arrayKey = 'newsletter_subscriptions';
+ 97 |     
+    `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:100:1]
+  97 |     
+  98 |     // Si no se encuentra, buscar en contact submissions
+  99 |     if (entryIndex === -1) {
+ 100 |       entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === (await params).id);
+     :                                                                                         ^^^^^
+ 101 |       type = 'contact';
+ 102 |       arrayKey = 'contact_submissions';
+ 103 |     }
+     `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:118:1]
+ 115 |     if (type === 'newsletter' && body.email && body.email !== existingEntry.email) {
+ 116 |       // Verificar que el nuevo email no exista
+ 117 |       const emailExists = data.newsletter_subscriptions.some((sub: any) => 
+ 118 |         sub.email === body.email && sub.id !== (await params).id
+     :                                                 ^^^^^
+ 119 |       );
+ 120 |       if (emailExists) {
+ 121 |         return NextResponse.json(
+     `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:195:1]
+ 192 |     const data = await readSubscriptionsFile();
+ 193 | 
+ 194 |     // Buscar en newsletter subscriptions
+ 195 |     let entryIndex = data.newsletter_subscriptions.findIndex((sub: any) => sub.id === (await params).id);
+     :                                                                                        ^^^^^
+ 196 |     let arrayKey = 'newsletter_subscriptions';
+ 197 |     
+ 198 |     // Si no se encuentra, buscar en contact submissions
+     `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/subscriptions/[id]/route.ts:200:1]
+ 197 |     
+ 198 |     // Si no se encuentra, buscar en contact submissions
+ 199 |     if (entryIndex === -1) {
+ 200 |       entryIndex = data.contact_submissions.findIndex((contact: any) => contact.id === (await params).id);
+     :                                                                                         ^^^^^
+ 201 |       arrayKey = 'contact_submissions';
+ 202 |     }
+     `----
+Caused by:
+    Syntax Error
+Import trace for requested module:
+./src/app/api/admin/subscriptions/[id]/route.ts
+./src/app/api/admin/users/[id]/route.ts
+Error:   x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/users/[id]/route.ts:36:1]
+ 33 | ) {
+ 34 |   try {
+ 35 |     const data = await readUsersFile();
+ 36 |     const user = data.users.find((u: any) => u.id === (await params).id);
+    :                                                        ^^^^^
+ 37 | 
+ 38 |     if (!user) {
+ 39 |       return NextResponse.json(
+    `----
+  x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/users/[id]/route.ts:72:1]
+ 69 |     const body = await request.json();
+ 70 |     const data = await readUsersFile();
+ 71 | 
+ 72 |     const userIndex = data.users.findIndex((u: any) => u.id === (await params).id);
+    :                                                                  ^^^^^
+ 73 |     if (userIndex === -1) {
+ 74 |       return NextResponse.json(
+ 75 |         { error: 'Usuario no encontrado' },
+    `----
+  x await isn't allowed in non-async function
+    ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/users/[id]/route.ts:85:1]
+ 82 |     // Si se está actualizando el email, verificar que no exista
+ 83 |     if (body.email && body.email !== existingUser.email) {
+ 84 |       const emailExists = data.users.some((u: any) => 
+ 85 |         u.email === body.email && u.id !== (await params).id
+    :                                             ^^^^^
+ 86 |       );
+ 87 |       if (emailExists) {
+ 88 |         return NextResponse.json(
+    `----
+  x await isn't allowed in non-async function
+     ,-[/home/runner/work/metrica-dip/metrica-dip/src/app/api/admin/users/[id]/route.ts:155:1]
+ 152 |   try {
+ 153 |     const data = await readUsersFile();
+ 154 | 
+ 155 |     const userIndex = data.users.findIndex((u: any) => u.id === (await params).id);
+     :                                                                  ^^^^^
+ 156 |     if (userIndex === -1) {
+ 157 |       return NextResponse.json(
+ 158 |         { error: 'Usuario no encontrado' },
+     `----
+Caused by:
+    Syntax Error
+Import trace for requested module:
+./src/app/api/admin/users/[id]/route.ts
+> Build failed because of webpack errors
+Error: Process completed with exit code 1.

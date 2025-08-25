@@ -32,8 +32,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readReportsFile();
-    const report = data.generated_reports.find((r: any) => r.id === (await params).id);
+    const report = data.generated_reports.find((r: any) => r.id === id);
 
     if (!report) {
       return NextResponse.json(
@@ -73,10 +74,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const data = await readReportsFile();
 
-    const reportIndex = data.generated_reports.findIndex((r: any) => r.id === (await params).id);
+    const reportIndex = data.generated_reports.findIndex((r: any) => r.id === id);
     if (reportIndex === -1) {
       return NextResponse.json(
         { error: 'Reporte no encontrado' },
@@ -160,9 +162,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readReportsFile();
 
-    const reportIndex = data.generated_reports.findIndex((r: any) => r.id === (await params).id);
+    const reportIndex = data.generated_reports.findIndex((r: any) => r.id === id);
     if (reportIndex === -1) {
       return NextResponse.json(
         { error: 'Reporte no encontrado' },

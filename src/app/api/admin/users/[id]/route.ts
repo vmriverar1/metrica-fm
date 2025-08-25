@@ -32,8 +32,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readUsersFile();
-    const user = data.users.find((u: any) => u.id === (await params).id);
+    const user = data.users.find((u: any) => u.id === id);
 
     if (!user) {
       return NextResponse.json(
@@ -66,10 +67,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const data = await readUsersFile();
 
-    const userIndex = data.users.findIndex((u: any) => u.id === (await params).id);
+    const userIndex = data.users.findIndex((u: any) => u.id === id);
     if (userIndex === -1) {
       return NextResponse.json(
         { error: 'Usuario no encontrado' },
@@ -82,7 +84,7 @@ export async function PATCH(
     // Si se está actualizando el email, verificar que no exista
     if (body.email && body.email !== existingUser.email) {
       const emailExists = data.users.some((u: any) => 
-        u.email === body.email && u.id !== (await params).id
+        u.email === body.email && u.id !== id
       );
       if (emailExists) {
         return NextResponse.json(
@@ -150,9 +152,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await readUsersFile();
 
-    const userIndex = data.users.findIndex((u: any) => u.id === (await params).id);
+    const userIndex = data.users.findIndex((u: any) => u.id === id);
     if (userIndex === -1) {
       return NextResponse.json(
         { error: 'Usuario no encontrado' },
