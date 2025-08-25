@@ -57,7 +57,6 @@ export interface Department {
   color: string;
   open_positions: number;
   total_employees: number;
-  growth_rate: string;
   featured: boolean;
   required_skills: string[];
   career_path: {

@@ -290,15 +290,19 @@ const PortfolioDashboard = () => {
               </Button>
             </Link>
             
-            <Button variant="outline" className="h-20 flex-col gap-2 w-full">
-              <Plus className="h-6 w-6" />
-              <span>Nuevo Proyecto</span>
-            </Button>
+            <Link href="/admin/json-crud/portfolio/projects">
+              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
+                <Plus className="h-6 w-6" />
+                <span>Nuevo Proyecto</span>
+              </Button>
+            </Link>
             
-            <Button variant="outline" className="h-20 flex-col gap-2 w-full">
-              <BarChart3 className="h-6 w-6" />
-              <span>Reportes</span>
-            </Button>
+            <Link href="/admin/reports">
+              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
+                <BarChart3 className="h-6 w-6" />
+                <span>Reportes</span>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

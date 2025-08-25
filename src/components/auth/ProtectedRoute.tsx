@@ -19,10 +19,10 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, loading, actions } = useAuth();
+  const { isAuthenticated, isLoading, actions } = useAuth();
 
   useEffect(() => {
-    if (!loading) {
+    if (!isLoading) {
       if (requireAuth && !isAuthenticated) {
         // Guardar la ruta actual para redireccionar después del login
         sessionStorage.setItem('redirectAfterLogin', pathname);
@@ -38,10 +38,10 @@ export default function ProtectedRoute({
         }
       }
     }
-  }, [loading, isAuthenticated, requireAuth, permissions, pathname, router, redirectTo, actions]);
+  }, [isLoading, isAuthenticated, requireAuth, permissions, pathname, router, redirectTo, actions]);
 
   // Mostrar loading mientras se verifica la autenticación
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">

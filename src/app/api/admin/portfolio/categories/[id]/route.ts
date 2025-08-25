@@ -60,7 +60,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to get category: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to get category: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -191,7 +191,7 @@ export const PUT = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to update category: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to update category: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -287,7 +287,7 @@ export const DELETE = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to delete category: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to delete category: ${(await params).id}`, error, {
         userId: context.user.id
       });
 

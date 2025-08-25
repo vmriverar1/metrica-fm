@@ -9,35 +9,21 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Building2, Users, Briefcase, TrendingUp } from 'lucide-react';
+import { Plus, Building2, Users, Briefcase, TrendingUp, Edit, Eye, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 
 interface Department {
   id: string;
   name: string;
   slug: string;
   description: string;
-  head: string;
-  head_email: string;
-  head_avatar: string;
-  location: string;
-  team_size: number;
+  detailed_description: string;
+  icon: string;
+  color: string;
   open_positions: number;
-  status: 'active' | 'inactive';
-  budget: {
-    annual: number;
-    allocated: number;
-    remaining: number;
-  };
-  metadata: {
-    founded_date: string;
-    total_hires: number;
-    avg_salary: number;
-    employee_satisfaction: number;
-    turnover_rate: number;
-  };
-  skills_required: string[];
-  benefits: string[];
-  working_model: 'remote' | 'hybrid' | 'onsite';
+  total_employees: number;
+  featured: boolean;
+  required_skills: string[];
+  positions: string[];
 }
 
 const DepartmentsManagement = () => {
@@ -82,94 +68,65 @@ const DepartmentsManagement = () => {
     {
       key: 'name',
       label: 'Departamento',
-      render: (department: Department) => (
+      render: (department: Department) => department ? (
         <div>
-          <div className="font-medium">{department.name}</div>
-          <div className="text-sm text-gray-500">{department.location}</div>
+          <div className="font-medium">{department.name || 'Sin nombre'}</div>
+          <div className="text-sm text-gray-500">{department.slug || 'Sin slug'}</div>
         </div>
+      ) : (
+        <div className="text-sm text-gray-500">Sin datos</div>
       )
     },
     {
-      key: 'head',
-      label: 'Jefe de Área',
-      render: (department: Department) => (
-        <div className="flex items-center gap-3">
-          <img
-            src={department.head_avatar || '/default-avatar.png'}
-            alt={department.head}
-            className="w-8 h-8 rounded-full object-cover"
-          />
-          <div>
-            <div className="font-medium text-sm">{department.head}</div>
-            <div className="text-xs text-gray-500">{department.head_email}</div>
+      key: 'icon',
+      label: 'Icono',
+      render: (department: Department) => department ? (
+        <div className="text-center">
+          <div 
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
+            style={{ backgroundColor: department.color || '#666666' }}
+          >
+            {department.icon?.charAt(0) || '?'}
           </div>
         </div>
+      ) : (
+        <div className="text-sm text-gray-500">Sin datos</div>
       )
     },
     {
-      key: 'team_size',
-      label: 'Equipo',
-      render: (department: Department) => (
+      key: 'total_employees',
+      label: 'Empleados',
+      render: (department: Department) => department ? (
         <div className="text-center">
-          <div className="font-medium">{department.team_size}</div>
+          <div className="font-medium">{department.total_employees || 0}</div>
           <div className="text-xs text-gray-500">personas</div>
         </div>
+      ) : (
+        <div className="text-sm text-gray-500">Sin datos</div>
       )
     },
     {
       key: 'open_positions',
       label: 'Vacantes',
-      render: (department: Department) => (
+      render: (department: Department) => department ? (
         <div className="text-center">
-          <Badge variant={department.open_positions > 0 ? 'default' : 'secondary'}>
-            {department.open_positions}
+          <Badge variant={(department.open_positions || 0) > 0 ? 'default' : 'secondary'}>
+            {department.open_positions || 0}
           </Badge>
         </div>
+      ) : (
+        <div className="text-sm text-gray-500">Sin datos</div>
       )
     },
     {
-      key: 'working_model',
-      label: 'Modalidad',
-      render: (department: Department) => {
-        const modelLabels = {
-          remote: 'Remoto',
-          hybrid: 'Híbrido',
-          onsite: 'Presencial'
-        };
-        const modelColors = {
-          remote: 'bg-green-100 text-green-800',
-          hybrid: 'bg-blue-100 text-blue-800',
-          onsite: 'bg-orange-100 text-orange-800'
-        };
-        return (
-          <Badge className={modelColors[department.working_model]}>
-            {modelLabels[department.working_model]}
-          </Badge>
-        );
-      }
-    },
-    {
-      key: 'metadata.employee_satisfaction',
-      label: 'Satisfacción',
-      render: (department: Department) => (
-        <div className="text-center">
-          <div className="font-medium">{department.metadata.employee_satisfaction}%</div>
-          <div className="w-12 bg-gray-200 rounded-full h-2 mx-auto">
-            <div
-              className="bg-blue-600 h-2 rounded-full"
-              style={{ width: `${department.metadata.employee_satisfaction}%` }}
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      key: 'status',
-      label: 'Estado',
-      render: (department: Department) => (
-        <Badge variant={department.status === 'active' ? 'default' : 'secondary'}>
-          {department.status === 'active' ? 'Activo' : 'Inactivo'}
+      key: 'featured',
+      label: 'Destacado',
+      render: (department: Department) => department ? (
+        <Badge variant={department.featured ? 'default' : 'secondary'}>
+          {department.featured ? 'Sí' : 'No'}
         </Badge>
+      ) : (
+        <div className="text-sm text-gray-500">Sin datos</div>
       )
     }
   ];
@@ -177,6 +134,7 @@ const DepartmentsManagement = () => {
   const actions = [
     {
       label: 'Editar',
+      icon: Edit,
       onClick: (department: Department) => {
         setSelectedDepartment(department);
         setIsModalOpen(true);
@@ -185,6 +143,7 @@ const DepartmentsManagement = () => {
     },
     {
       label: 'Ver Empleos',
+      icon: Eye,
       onClick: (department: Department) => {
         window.open(`/admin/json-crud/careers/jobs?department=${department.slug}`, '_blank');
       },
@@ -192,6 +151,7 @@ const DepartmentsManagement = () => {
     },
     {
       label: department => department.status === 'active' ? 'Desactivar' : 'Activar',
+      icon: department => department.status === 'active' ? ToggleLeft : ToggleRight,
       onClick: async (department: Department) => {
         try {
           const data = await apiClient.put(`/api/admin/careers/departments/${department.id}`, {
@@ -207,6 +167,7 @@ const DepartmentsManagement = () => {
     },
     {
       label: 'Eliminar',
+      icon: Trash2,
       onClick: async (department: Department) => {
         if (!confirm('¿Estás seguro de que quieres eliminar este departamento?')) return;
         try {
@@ -225,25 +186,15 @@ const DepartmentsManagement = () => {
 
   const filters = [
     {
-      key: 'status',
-      label: 'Estado',
+      key: 'featured',
+      label: 'Destacados',
       options: [
         { value: 'all', label: 'Todos' },
-        { value: 'active', label: 'Activos' },
-        { value: 'inactive', label: 'Inactivos' }
+        { value: 'featured', label: 'Solo destacados' },
+        { value: 'not-featured', label: 'No destacados' }
       ],
       value: statusFilter,
       onChange: setStatusFilter
-    },
-    {
-      key: 'location',
-      label: 'Ubicación',
-      options: [
-        { value: 'all', label: 'Todas' },
-        ...uniqueLocations.map(location => ({ value: location, label: location }))
-      ],
-      value: locationFilter,
-      onChange: setLocationFilter
     }
   ];
 
@@ -260,7 +211,7 @@ const DepartmentsManagement = () => {
       label: 'Slug (URL)',
       type: 'text' as const,
       required: true,
-      placeholder: 'ingenieria-infraestructura',
+      placeholder: 'gestion-direccion',
       validation: { 
         pattern: '^[a-z0-9-]+$',
         custom: (value: string) => {
@@ -273,159 +224,97 @@ const DepartmentsManagement = () => {
     },
     {
       key: 'description',
-      label: 'Descripción',
+      label: 'Descripción Corta',
       type: 'textarea' as const,
       required: true,
-      validation: { max: 500 }
+      validation: { max: 200 },
+      placeholder: 'Descripción breve del departamento para vistas de lista'
     },
     {
-      key: 'location',
-      label: 'Ubicación',
+      key: 'detailed_description',
+      label: 'Descripción Detallada',
+      type: 'textarea' as const,
+      required: true,
+      validation: { max: 1000 },
+      placeholder: 'Descripción completa del departamento para la página de carreras'
+    },
+    {
+      key: 'icon',
+      label: 'Icono',
       type: 'text' as const,
       required: true,
-      placeholder: 'Lima, Perú'
+      placeholder: 'Users',
+      validation: { max: 50 }
     },
     {
-      key: 'working_model',
-      label: 'Modalidad de Trabajo',
-      type: 'select' as const,
-      required: true,
-      options: [
-        { value: 'onsite', label: 'Presencial' },
-        { value: 'hybrid', label: 'Híbrido' },
-        { value: 'remote', label: 'Remoto' }
-      ]
-    },
-    {
-      key: 'head',
-      label: 'Jefe de Área',
+      key: 'color',
+      label: 'Color (Hex)',
       type: 'text' as const,
       required: true,
-      group: 'Liderazgo'
-    },
-    {
-      key: 'head_email',
-      label: 'Email del Jefe',
-      type: 'email' as const,
-      required: true,
-      group: 'Liderazgo'
-    },
-    {
-      key: 'head_avatar',
-      label: 'Avatar del Jefe (URL)',
-      type: 'url' as const,
-      group: 'Liderazgo',
-      placeholder: 'https://ejemplo.com/avatar.jpg'
-    },
-    {
-      key: 'team_size',
-      label: 'Tamaño del Equipo',
-      type: 'number' as const,
-      required: true,
-      validation: { min: 1, max: 1000 },
-      group: 'Equipo'
+      placeholder: '#E84E0F',
+      validation: { 
+        pattern: '^#[0-9A-Fa-f]{6}$',
+        custom: (value: string) => {
+          if (!/^#[0-9A-Fa-f]{6}$/.test(value)) {
+            return 'El color debe ser un código hex válido (ej: #E84E0F)';
+          }
+          return null;
+        }
+      }
     },
     {
       key: 'open_positions',
-      label: 'Posiciones Abiertas',
+      label: 'Vacantes Abiertas',
       type: 'number' as const,
       required: true,
-      validation: { min: 0, max: 100 },
-      group: 'Equipo'
+      validation: { min: 0, max: 100 }
     },
     {
-      key: 'budget.annual',
-      label: 'Presupuesto Anual (USD)',
+      key: 'total_employees',
+      label: 'Total de Empleados',
       type: 'number' as const,
       required: true,
-      validation: { min: 0 },
-      group: 'Presupuesto'
+      validation: { min: 1, max: 1000 }
     },
     {
-      key: 'budget.allocated',
-      label: 'Presupuesto Asignado (USD)',
-      type: 'number' as const,
-      required: true,
-      validation: { min: 0 },
-      group: 'Presupuesto'
+      key: 'featured',
+      label: 'Departamento Destacado',
+      type: 'checkbox' as const,
+      description: 'Los departamentos destacados aparecen en posiciones prominentes'
     },
     {
-      key: 'metadata.avg_salary',
-      label: 'Salario Promedio (USD)',
-      type: 'number' as const,
-      required: true,
-      validation: { min: 0 },
-      group: 'Métricas'
-    },
-    {
-      key: 'metadata.employee_satisfaction',
-      label: 'Satisfacción de Empleados (%)',
-      type: 'number' as const,
-      required: true,
-      validation: { min: 0, max: 100 },
-      group: 'Métricas'
-    },
-    {
-      key: 'metadata.turnover_rate',
-      label: 'Tasa de Rotación (%)',
-      type: 'number' as const,
-      required: true,
-      validation: { min: 0, max: 100 },
-      group: 'Métricas'
-    },
-    {
-      key: 'skills_required',
+      key: 'required_skills',
       label: 'Habilidades Requeridas',
       type: 'tags' as const,
       required: true,
-      placeholder: 'Escriba habilidades y presione Enter'
+      placeholder: 'Escriba habilidades y presione Enter',
+      description: 'Lista de habilidades principales requeridas en este departamento'
     },
     {
-      key: 'benefits',
-      label: 'Beneficios del Departamento',
+      key: 'positions',
+      label: 'Posiciones Disponibles',
       type: 'tags' as const,
-      placeholder: 'Escriba beneficios y presione Enter'
-    },
-    {
-      key: 'status',
-      label: 'Estado',
-      type: 'select' as const,
       required: true,
-      options: [
-        { value: 'active', label: 'Activo' },
-        { value: 'inactive', label: 'Inactivo' }
-      ]
+      placeholder: 'Escriba posiciones y presione Enter',
+      description: 'Lista de posiciones específicas en el departamento'
     }
   ];
 
   const handleSubmit = async (values: any) => {
     try {
       const departmentData = {
+        id: selectedDepartment?.id || `dept-${Date.now()}`,
         name: values.name,
         slug: values.slug,
         description: values.description,
-        head: values.head,
-        head_email: values.head_email,
-        head_avatar: values.head_avatar || '',
-        location: values.location,
-        team_size: parseInt(values.team_size),
+        detailed_description: values.detailed_description,
+        icon: values.icon,
+        color: values.color,
         open_positions: parseInt(values.open_positions),
-        status: values.status,
-        budget: {
-          annual: parseFloat(values['budget.annual']),
-          allocated: parseFloat(values['budget.allocated']),
-          remaining: parseFloat(values['budget.annual']) - parseFloat(values['budget.allocated'])
-        },
-        metadata: {
-          founded_date: selectedDepartment?.metadata.founded_date || new Date().toISOString(),
-          total_hires: selectedDepartment?.metadata.total_hires || 0,
-          avg_salary: parseFloat(values['metadata.avg_salary']),
-          employee_satisfaction: parseInt(values['metadata.employee_satisfaction']),
-          turnover_rate: parseFloat(values['metadata.turnover_rate'])
-        },
-        skills_required: values.skills_required || [],
-        benefits: values.benefits || [],
-        working_model: values.working_model
+        total_employees: parseInt(values.total_employees),
+        featured: Boolean(values.featured),
+        required_skills: values.required_skills || [],
+        positions: values.positions || []
       };
 
       const url = selectedDepartment
@@ -460,21 +349,14 @@ const DepartmentsManagement = () => {
       name: department.name,
       slug: department.slug,
       description: department.description,
-      head: department.head,
-      head_email: department.head_email,
-      head_avatar: department.head_avatar,
-      location: department.location,
-      team_size: department.team_size,
+      detailed_description: department.detailed_description,
+      icon: department.icon,
+      color: department.color,
       open_positions: department.open_positions,
-      'budget.annual': department.budget.annual,
-      'budget.allocated': department.budget.allocated,
-      'metadata.avg_salary': department.metadata.avg_salary,
-      'metadata.employee_satisfaction': department.metadata.employee_satisfaction,
-      'metadata.turnover_rate': department.metadata.turnover_rate,
-      skills_required: department.skills_required,
-      benefits: department.benefits,
-      working_model: department.working_model,
-      status: department.status
+      total_employees: department.total_employees,
+      featured: department.featured,
+      required_skills: department.required_skills,
+      positions: department.positions
     };
   };
 
@@ -531,7 +413,7 @@ const DepartmentsManagement = () => {
             <span className="text-sm font-medium text-blue-800">Total Empleados</span>
           </div>
           <div className="text-2xl font-bold text-blue-900">
-            {departments.reduce((sum, dept) => sum + dept.team_size, 0)}
+            {departments.reduce((sum, dept) => sum + (Number(dept.total_employees) || 0), 0)}
           </div>
         </div>
         <div className="bg-green-50 p-4 rounded-lg">
@@ -540,18 +422,16 @@ const DepartmentsManagement = () => {
             <span className="text-sm font-medium text-green-800">Vacantes Abiertas</span>
           </div>
           <div className="text-2xl font-bold text-green-900">
-            {departments.reduce((sum, dept) => sum + dept.open_positions, 0)}
+            {departments.reduce((sum, dept) => sum + (Number(dept.open_positions) || 0), 0)}
           </div>
         </div>
         <div className="bg-orange-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="h-5 w-5 text-orange-600" />
-            <span className="text-sm font-medium text-orange-800">Satisfacción Promedio</span>
+            <span className="text-sm font-medium text-orange-800">Departamentos Destacados</span>
           </div>
           <div className="text-2xl font-bold text-orange-900">
-            {departments.length > 0 
-              ? Math.round(departments.reduce((sum, dept) => sum + dept.metadata.employee_satisfaction, 0) / departments.length)
-              : 0}%
+            {departments.filter(dept => dept.featured).length}
           </div>
         </div>
       </div>

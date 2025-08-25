@@ -276,6 +276,7 @@ export const HelpSystem: React.FC<HelpSystemProps> = ({ isOpen, onClose }) => {
                 {categories.map(category => (
                   <button
                     key={category}
+                    type="button"
                     onClick={() => setSelectedCategory(category)}
                     className="w-full text-left p-3 rounded-lg hover:bg-gray-50 flex items-center justify-between group"
                   >
@@ -295,6 +296,7 @@ export const HelpSystem: React.FC<HelpSystemProps> = ({ isOpen, onClose }) => {
                 {filteredArticles.map(article => (
                   <button
                     key={article.id}
+                    type="button"
                     onClick={() => setSelectedArticle(article)}
                     className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border"
                   >
@@ -444,6 +446,7 @@ export const HelpButton: React.FC = () => {
   return (
     <>
       <button
+        type="button"
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
         title="Abrir centro de ayuda"

@@ -166,6 +166,39 @@ export default function ProjectsPage() {
     }
   };
 
+  // Función para aplanar datos complejos del proyecto para el formulario
+  const flattenProjectForForm = (project: Project | null): Record<string, any> => {
+    if (!project) return {};
+    
+    // Procesar gallery: si son objetos complejos, extraer solo las URLs
+    let processedGallery: string[] = [];
+    if (Array.isArray(project.gallery)) {
+      processedGallery = project.gallery.map(item => {
+        // Si es un objeto con propiedad 'url', extraer la URL
+        if (typeof item === 'object' && item !== null && 'url' in item) {
+          return String(item.url || '');
+        }
+        // Si es un string, usarlo directamente
+        return String(item || '');
+      }).filter(Boolean);
+    } else if (project.gallery) {
+      // Si es un string, convertir a array
+      processedGallery = [String(project.gallery)];
+    }
+    
+    return {
+      ...project,
+      // Aplanar category_info si existe
+      category: project.category_info?.name || project.category,
+      // Gallery procesada con URLs extraídas
+      gallery: processedGallery,
+      // Asegurar que tags sea un string si es array  
+      tags: Array.isArray(project.tags) ? project.tags.join(', ') : project.tags || '',
+      // Eliminar objetos complejos que no necesita el formulario
+      category_info: undefined
+    };
+  };
+
   const handleFormSubmit = async (values: Record<string, any>) => {
     try {
       const url = editingProject 
@@ -402,16 +435,16 @@ export default function ProjectsPage() {
     {
       key: 'featured_image',
       label: 'Imagen Principal',
-      type: 'url',
-      placeholder: 'https://ejemplo.com/imagen.jpg',
+      type: 'image',
+      description: 'Imagen destacada del proyecto. Puedes subir un archivo o usar una URL externa.',
       group: 'media'
     },
     {
       key: 'gallery',
       label: 'Galería de Imágenes',
-      type: 'tags',
-      placeholder: 'URLs de imágenes separadas por comas',
-      description: 'Lista de URLs de imágenes para la galería del proyecto',
+      type: 'gallery',
+      placeholder: 'Agregar imágenes a la galería del proyecto',
+      description: 'Galería de imágenes del proyecto. Puedes subir archivos o usar URLs externas.',
       group: 'media'
     },
     {
@@ -554,12 +587,18 @@ export default function ProjectsPage() {
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          onClick={() => setShowForm(false)}
+        >
+          <div 
+            className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
             <DynamicForm
               fields={formFields}
               groups={formGroups}
-              initialValues={editingProject || {}}
+              initialValues={flattenProjectForForm(editingProject)}
               onSubmit={handleFormSubmit}
               onCancel={() => {
                 setShowForm(false);
@@ -575,8 +614,14 @@ export default function ProjectsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          onClick={() => setDeleteConfirm(null)}
+        >
+          <div 
+            className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mt-3">
               <div className="flex items-center mb-4">
                 <AlertTriangle className="w-6 h-6 text-red-600 mr-3" />

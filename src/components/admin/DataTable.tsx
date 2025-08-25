@@ -187,6 +187,7 @@ export default function DataTable({
 
               {filters.length > 0 && (
                 <button
+                  type="button"
                   onClick={() => setShowFilters(!showFilters)}
                   className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
@@ -198,6 +199,7 @@ export default function DataTable({
 
               {primaryAction && (
                 <button
+                  type="button"
                   onClick={primaryAction.onClick}
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
@@ -263,8 +265,8 @@ export default function DataTable({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div>
+        <table className="w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               {actions.length > 0 && (
@@ -362,6 +364,7 @@ export default function DataTable({
                           return (
                             <button
                               key={actionIndex}
+                              type="button"
                               onClick={() => action.onClick(row)}
                               className={`${getActionVariantClass(action.variant)} hover:bg-gray-100 p-1 rounded`}
                               title={action.label}
@@ -393,6 +396,7 @@ export default function DataTable({
         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
           <div className="flex-1 flex justify-between sm:hidden">
             <button
+              type="button"
               onClick={() => onPageChange && onPageChange((pagination.page || 1) - 1)}
               disabled={!pagination.hasPrevPage}
               className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -400,6 +404,7 @@ export default function DataTable({
               Anterior
             </button>
             <button
+              type="button"
               onClick={() => onPageChange && onPageChange((pagination.page || 1) + 1)}
               disabled={!pagination.hasNextPage}
               className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -445,6 +450,7 @@ export default function DataTable({
               <div>
                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                   <button
+                    type="button"
                     onClick={() => onPageChange && onPageChange((pagination.page || 1) - 1)}
                     disabled={!pagination.hasPrevPage}
                     className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -460,6 +466,7 @@ export default function DataTable({
                     return (
                       <button
                         key={pageNum}
+                        type="button"
                         onClick={() => onPageChange && onPageChange(pageNum)}
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                           pageNum === (pagination.page || 1)
@@ -473,6 +480,7 @@ export default function DataTable({
                   })}
                   
                   <button
+                    type="button"
                     onClick={() => onPageChange && onPageChange((pagination.page || 1) + 1)}
                     disabled={!pagination.hasNextPage}
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"

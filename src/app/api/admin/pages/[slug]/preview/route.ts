@@ -93,7 +93,7 @@ export const POST = withAuth(
       });
 
     } catch (error) {
-      await logger.error('pages-api', `Failed to generate preview: ${params.slug}`, error, {
+      await logger.error('pages-api', `Failed to generate preview: ${(await params).slug}`, error, {
         userId: context.user.id
       });
 

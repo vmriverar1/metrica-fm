@@ -104,7 +104,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to get job: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to get job: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -346,7 +346,7 @@ export const PUT = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to update job: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to update job: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -451,7 +451,7 @@ export const DELETE = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to delete job: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to delete job: ${(await params).id}`, error, {
         userId: context.user.id
       });
 

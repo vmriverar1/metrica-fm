@@ -1,0 +1,175 @@
+{
+  "notifications": [
+    {
+      "id": "notif_001",
+      "type": "new_subscriber",
+      "title": "Nueva suscripción al newsletter",
+      "message": "María García se suscribió al newsletter desde landing_page",
+      "priority": "low",
+      "status": "unread",
+      "relatedId": "news_002",
+      "relatedType": "newsletter_subscription",
+      "metadata": {
+        "subscriberEmail": "maria.rodriguez@gmail.com",
+        "subscriberName": "María García",
+        "source": "blog_post",
+        "company": "Independiente"
+      },
+      "createdAt": "2025-01-27T14:20:00.000Z",
+      "readAt": null,
+      "actionUrl": "/admin/subscriptions?tab=newsletter&search=maria.rodriguez@gmail.com"
+    },
+    {
+      "id": "notif_002",
+      "title": "Nueva consulta de proyecto comercial",
+      "message": "Ana López envió consulta para centro comercial de 15,000 m² en Arequipa",
+      "type": "new_contact",
+      "priority": "high",
+      "status": "unread",
+      "relatedId": "contact_001",
+      "relatedType": "contact_submission",
+      "metadata": {
+        "contactEmail": "ana.lopez@constructora.pe",
+        "contactName": "Ana López",
+        "company": "Constructora del Sur",
+        "projectType": "comercial",
+        "budget": "500000-1000000",
+        "location": "Arequipa"
+      },
+      "createdAt": "2025-01-25T15:30:00.000Z",
+      "readAt": null,
+      "actionUrl": "/admin/subscriptions?tab=contacts&search=ana.lopez@constructora.pe"
+    },
+    {
+      "id": "notif_003",
+      "type": "new_contact",
+      "title": "Consulta sobre construcción residencial",
+      "message": "Roberto García solicita asesoría para construcción de casa de 200 m²",
+      "priority": "medium",
+      "status": "read",
+      "relatedId": "contact_002",
+      "relatedType": "contact_submission",
+      "metadata": {
+        "contactEmail": "r.garcia@gmail.com",
+        "contactName": "Roberto García",
+        "company": "Particular",
+        "projectType": "residencial",
+        "budget": "50000-100000",
+        "location": "Lima"
+      },
+      "createdAt": "2025-01-22T10:15:00.000Z",
+      "readAt": "2025-01-23T09:00:00.000Z",
+      "actionUrl": "/admin/subscriptions?tab=contacts&search=r.garcia@gmail.com"
+    },
+    {
+      "id": "notif_004",
+      "type": "new_subscriber",
+      "title": "Suscripción desde referido",
+      "message": "Juan Pérez se suscribió al newsletter por referido de cliente",
+      "priority": "low",
+      "status": "read",
+      "relatedId": "news_001",
+      "relatedType": "newsletter_subscription",
+      "metadata": {
+        "subscriberEmail": "juan.perez@empresa.com",
+        "subscriberName": "Juan Pérez",
+        "source": "referral",
+        "company": "Constructora Lima SAC"
+      },
+      "createdAt": "2025-01-15T09:30:00.000Z",
+      "readAt": "2025-01-16T08:00:00.000Z",
+      "actionUrl": "/admin/subscriptions?tab=newsletter&search=juan.perez@empresa.com"
+    },
+    {
+      "id": "notif_005",
+      "type": "new_contact",
+      "title": "Consulta de alianza estratégica",
+      "message": "Luis Fernández propone alianza para proyectos hospitalarios y educativos",
+      "priority": "high",
+      "status": "read",
+      "relatedId": "contact_003",
+      "relatedType": "contact_submission",
+      "metadata": {
+        "contactEmail": "luis.fernandez@arquitectos.pe",
+        "contactName": "Luis Fernández",
+        "company": "Estudio Fernández Arquitectos",
+        "projectType": "partnership",
+        "budget": "1000000+",
+        "location": "Nacional"
+      },
+      "createdAt": "2025-01-20T11:45:00.000Z",
+      "readAt": "2025-01-21T08:30:00.000Z",
+      "actionUrl": "/admin/subscriptions?tab=contacts&search=luis.fernandez@arquitectos.pe"
+    }
+  ],
+  "settings": {
+    "maxNotifications": 30,
+    "autoMarkReadAfterDays": 7,
+    "enabledNotifications": {
+      "new_subscriber": true,
+      "new_contact": true,
+      "user_activity": false,
+      "system_alerts": true
+    },
+    "priorities": {
+      "low": {
+        "name": "Baja",
+        "color": "gray",
+        "icon": "info"
+      },
+      "medium": {
+        "name": "Media",
+        "color": "yellow",
+        "icon": "alert-circle"
+      },
+      "high": {
+        "name": "Alta",
+        "color": "red",
+        "icon": "alert-triangle"
+      }
+    },
+    "types": {
+      "new_subscriber": {
+        "name": "Nueva Suscripción",
+        "description": "Notificación cuando alguien se suscribe al newsletter",
+        "icon": "user-plus",
+        "defaultPriority": "low"
+      },
+      "new_contact": {
+        "name": "Nuevo Contacto",
+        "description": "Notificación cuando alguien envía el formulario de contacto",
+        "icon": "message-square",
+        "defaultPriority": "medium"
+      },
+      "user_activity": {
+        "name": "Actividad de Usuario",
+        "description": "Notificaciones de logins y actividades importantes",
+        "icon": "activity",
+        "defaultPriority": "low"
+      },
+      "system_alerts": {
+        "name": "Alertas del Sistema",
+        "description": "Errores y alertas importantes del sistema",
+        "icon": "alert-triangle",
+        "defaultPriority": "high"
+      }
+    }
+  },
+  "stats": {
+    "totalNotifications": 5,
+    "unreadCount": 2,
+    "todayCount": 1,
+    "thisWeekCount": 3,
+    "byType": {
+      "new_subscriber": 2,
+      "new_contact": 3,
+      "user_activity": 0,
+      "system_alerts": 0
+    },
+    "byPriority": {
+      "low": 2,
+      "medium": 1,
+      "high": 2
+    }
+  }
+}

@@ -184,6 +184,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       )}
       {action && (
         <button
+          type="button"
           onClick={action.onClick}
           className="text-blue-600 hover:text-blue-700 text-sm font-medium"
         >

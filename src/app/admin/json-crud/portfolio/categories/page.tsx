@@ -261,16 +261,16 @@ const PortfolioCategoriesPage = () => {
       key: 'name',
       label: 'Categoría',
       render: (value: string, row: PortfolioCategory) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-[200px]">
           <div 
-            className="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
             style={{ backgroundColor: `${row.color}20`, color: row.color }}
           >
             {row.icon}
           </div>
-          <div>
-            <div className="font-medium">{value}</div>
-            <div className="text-sm text-gray-500">/{row.slug}</div>
+          <div className="min-w-0">
+            <div className="font-medium truncate">{value}</div>
+            <div className="text-xs text-gray-500 truncate">/{row.slug}</div>
           </div>
         </div>
       )
@@ -279,7 +279,7 @@ const PortfolioCategoriesPage = () => {
       key: 'description',
       label: 'Descripción',
       render: (value: string) => (
-        <div className="max-w-xs">
+        <div className="max-w-[300px] min-w-[200px]">
           <p className="text-sm text-gray-600 line-clamp-2">{value}</p>
         </div>
       )
@@ -288,8 +288,8 @@ const PortfolioCategoriesPage = () => {
       key: 'projectCount',
       label: 'Proyectos',
       render: (value: number) => (
-        <div className="flex items-center gap-1">
-          <Building2 className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-1 min-w-[80px]">
+          <Building2 className="h-4 w-4 text-gray-400 flex-shrink-0" />
           <span className="font-medium">{value}</span>
         </div>
       )
@@ -298,8 +298,8 @@ const PortfolioCategoriesPage = () => {
       key: 'isActive',
       label: 'Estado',
       render: (value: boolean, row: PortfolioCategory) => (
-        <div className="flex items-center gap-2">
-          <Badge className={getStatusColor(value)}>
+        <div className="flex flex-col items-center gap-1 min-w-[90px]">
+          <Badge className={getStatusColor(value)} size="sm">
             {value ? 'Activa' : 'Inactiva'}
           </Badge>
           <Switch
@@ -314,18 +314,22 @@ const PortfolioCategoriesPage = () => {
       key: 'sortOrder',
       label: 'Orden',
       render: (value: number) => (
-        <Badge variant="outline" className="font-mono">
-          {value}
-        </Badge>
+        <div className="min-w-[60px]">
+          <Badge variant="outline" className="font-mono text-xs">
+            {value}
+          </Badge>
+        </div>
       )
     },
     {
       key: 'updatedAt',
       label: 'Actualizado',
       render: (value: string) => (
-        <span className="text-sm text-gray-500">
-          {new Date(value).toLocaleDateString('es-ES')}
-        </span>
+        <div className="min-w-[100px]">
+          <span className="text-xs text-gray-500">
+            {new Date(value).toLocaleDateString('es-ES')}
+          </span>
+        </div>
       )
     }
   ];
@@ -355,51 +359,51 @@ const PortfolioCategoriesPage = () => {
     title: 'Editar Categoría',
     fields: [
       {
-        name: 'name',
+        key: 'name',
         label: 'Nombre',
         type: 'text',
         required: true,
         placeholder: 'Nombre de la categoría'
       },
       {
-        name: 'description',
+        key: 'description',
         label: 'Descripción',
         type: 'textarea',
         required: true,
         placeholder: 'Descripción de la categoría'
       },
       {
-        name: 'icon',
+        key: 'icon',
         label: 'Icono (Emoji)',
         type: 'text',
         placeholder: '🏢'
       },
       {
-        name: 'color',
+        key: 'color',
         label: 'Color',
         type: 'color',
         required: true
       },
       {
-        name: 'sortOrder',
+        key: 'sortOrder',
         label: 'Orden',
         type: 'number',
         required: true,
         min: 1
       },
       {
-        name: 'isActive',
+        key: 'isActive',
         label: 'Estado Activo',
         type: 'checkbox'
       },
       {
-        name: 'seoTitle',
+        key: 'seoTitle',
         label: 'Título SEO',
         type: 'text',
         placeholder: 'Título para motores de búsqueda'
       },
       {
-        name: 'seoDescription',
+        key: 'seoDescription',
         label: 'Descripción SEO',
         type: 'textarea',
         placeholder: 'Descripción para motores de búsqueda'
@@ -419,70 +423,71 @@ const PortfolioCategoriesPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-[#003F6F]">Categorías del Portfolio</h1>
-          <p className="text-gray-600 mt-1">
+    <div className="space-y-6 overflow-x-hidden max-w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#003F6F]">🏷️ Categorías del Portfolio</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">
             Administra las categorías de proyectos del portfolio
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <Button
             onClick={() => setActiveTab('create')}
-            className="bg-[#E84E0F] hover:bg-[#E84E0F]/90"
+            className="bg-[#E84E0F] hover:bg-[#E84E0F]/90 flex-1 sm:flex-none"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Nueva Categoría
+            <span className="hidden sm:inline">Nueva Categoría</span>
+            <span className="sm:hidden">Nueva</span>
           </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <Tag className="h-8 w-8 text-[#003F6F]" />
-              <div>
-                <p className="text-2xl font-bold">{categories.length}</p>
-                <p className="text-sm text-gray-600">Total Categorías</p>
+              <Tag className="h-6 w-6 md:h-8 md:w-8 text-[#003F6F] flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl md:text-2xl font-bold">{categories.length}</p>
+                <p className="text-xs md:text-sm text-gray-600">Total Categorías</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <Building2 className="h-8 w-8 text-[#E84E0F]" />
-              <div>
-                <p className="text-2xl font-bold">{totalProjects}</p>
-                <p className="text-sm text-gray-600">Total Proyectos</p>
+              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-[#E84E0F] flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl md:text-2xl font-bold">{totalProjects}</p>
+                <p className="text-xs md:text-sm text-gray-600">Total Proyectos</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <BarChart3 className="h-8 w-8 text-green-600" />
-              <div>
-                <p className="text-2xl font-bold">{activeCategories}</p>
-                <p className="text-sm text-gray-600">Categorías Activas</p>
+              <BarChart3 className="h-6 w-6 md:h-8 md:w-8 text-green-600 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl md:text-2xl font-bold">{activeCategories}</p>
+                <p className="text-xs md:text-sm text-gray-600">Categorías Activas</p>
               </div>
             </div>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <Settings className="h-8 w-8 text-gray-600" />
-              <div>
-                <p className="text-2xl font-bold">{categories.length - activeCategories}</p>
-                <p className="text-sm text-gray-600">Categorías Inactivas</p>
+              <Settings className="h-6 w-6 md:h-8 md:w-8 text-gray-600 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl md:text-2xl font-bold">{categories.length - activeCategories}</p>
+                <p className="text-xs md:text-sm text-gray-600">Categorías Inactivas</p>
               </div>
             </div>
           </CardContent>
@@ -498,8 +503,8 @@ const PortfolioCategoriesPage = () => {
         </TabsList>
 
         <TabsContent value="list" className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
+            <div className="relative w-full lg:flex-1 max-w-sm">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
                 placeholder="Buscar categorías..."
@@ -509,40 +514,44 @@ const PortfolioCategoriesPage = () => {
               />
             </div>
             
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-gray-500" />
-              <Button
-                variant={filterActive === null ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterActive(null)}
-              >
-                Todas
-              </Button>
-              <Button
-                variant={filterActive === true ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterActive(true)}
-              >
-                Activas
-              </Button>
-              <Button
-                variant={filterActive === false ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilterActive(false)}
-              >
-                Inactivas
-              </Button>
-            </div>
-            
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Exportar
-              </Button>
-              <Button variant="outline" size="sm">
-                <Upload className="h-4 w-4 mr-2" />
-                Importar
-              </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-gray-500" />
+                <Button
+                  variant={filterActive === null ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilterActive(null)}
+                >
+                  Todas
+                </Button>
+                <Button
+                  variant={filterActive === true ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilterActive(true)}
+                >
+                  Activas
+                </Button>
+                <Button
+                  variant={filterActive === false ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilterActive(false)}
+                >
+                  Inactivas
+                </Button>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">Exportar</span>
+                  <span className="sm:hidden">Exp</span>
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Upload className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">Importar</span>
+                  <span className="sm:hidden">Imp</span>
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -556,13 +565,98 @@ const PortfolioCategoriesPage = () => {
                 Gestiona las categorías de proyectos del portfolio
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <DataTable
-                data={filteredCategories}
-                columns={columns}
-                actions={actions}
-                searchable={false}
-              />
+            <CardContent className="p-0">
+              {/* Vista de tabla para desktop */}
+              <div className="hidden lg:block">
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                  <div className="min-w-[800px] p-6">
+                    <DataTable
+                      data={filteredCategories}
+                      columns={columns}
+                      actions={actions}
+                      searchable={false}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Vista de tarjetas para móvil y tablet */}
+              <div className="lg:hidden p-4 space-y-4">
+                {filteredCategories.map((category) => (
+                  <Card key={category.id} className="border shadow-sm">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div 
+                            className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
+                            style={{ backgroundColor: `${category.color}20`, color: category.color }}
+                          >
+                            {category.icon}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-medium truncate">{category.name}</h3>
+                            <p className="text-xs text-gray-500 truncate">/{category.slug}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 ml-2">
+                          {actions.map((action, idx) => {
+                            const Icon = action.icon;
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => action.onClick(category)}
+                                className={`p-2 rounded-md hover:bg-gray-100 ${action.color} transition-colors`}
+                                title={action.label}
+                              >
+                                <Icon className="h-4 w-4" />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      
+                      <div className="mt-3 space-y-2">
+                        <p className="text-sm text-gray-600 line-clamp-2">{category.description}</p>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-1">
+                              <Building2 className="h-4 w-4 text-gray-400" />
+                              <span className="text-sm font-medium">{category.projectCount}</span>
+                            </div>
+                            
+                            <Badge variant="outline" className="font-mono text-xs">
+                              #{category.sortOrder}
+                            </Badge>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <Badge className={getStatusColor(category.isActive)} size="sm">
+                              {category.isActive ? 'Activa' : 'Inactiva'}
+                            </Badge>
+                            <Switch
+                              checked={category.isActive}
+                              onCheckedChange={() => handleToggleStatus(category.id)}
+                              size="sm"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="text-xs text-gray-400 text-right">
+                          {new Date(category.updatedAt).toLocaleDateString('es-ES')}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                
+                {filteredCategories.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    No se encontraron categorías
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -698,8 +792,9 @@ const PortfolioCategoriesPage = () => {
               </CardHeader>
               <CardContent>
                 <DynamicForm
-                  schema={formSchema}
-                  data={selectedCategory}
+                  fields={formSchema.fields}
+                  title={formSchema.title}
+                  initialValues={selectedCategory}
                   onSubmit={handleSaveCategory}
                   onCancel={() => setActiveTab('list')}
                 />
@@ -725,11 +820,9 @@ const PortfolioCategoriesPage = () => {
             </CardHeader>
             <CardContent>
               <DynamicForm
-                schema={{
-                  ...formSchema,
-                  title: 'Nueva Categoría'
-                }}
-                data={{
+                fields={formSchema.fields}
+                title="Nueva Categoría"
+                initialValues={{
                   isActive: true,
                   sortOrder: categories.length + 1,
                   color: '#6b7280'

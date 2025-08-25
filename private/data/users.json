@@ -1,0 +1,128 @@
+{
+  "users": [
+    {
+      "id": "user_001",
+      "email": "admin@metrica.pe",
+      "firstName": "Admin",
+      "lastName": "Sistema",
+      "avatar": null,
+      "role": {
+        "id": "admin",
+        "name": "Administrador",
+        "level": 1
+      },
+      "department": "Tecnología",
+      "isActive": true,
+      "lastLogin": "2025-01-27T10:30:00.000Z",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2025-08-24T18:16:39.010Z"
+    },
+    {
+      "id": "user_002",
+      "email": "maria.garcia@metrica.pe",
+      "firstName": "María",
+      "lastName": "García",
+      "avatar": null,
+      "role": {
+        "id": "manager",
+        "name": "Gerente de Proyectos",
+        "level": 2
+      },
+      "department": "Proyectos",
+      "isActive": true,
+      "lastLogin": "2025-01-26T15:45:00.000Z",
+      "createdAt": "2024-02-15T00:00:00.000Z",
+      "updatedAt": "2025-01-26T15:45:00.000Z"
+    },
+    {
+      "id": "user_003",
+      "email": "carlos.rodriguez@metrica.pe",
+      "firstName": "Carlos",
+      "lastName": "Rodríguez",
+      "avatar": null,
+      "role": {
+        "id": "employee",
+        "name": "Ingeniero Civil",
+        "level": 3
+      },
+      "department": "Ingeniería",
+      "isActive": true,
+      "lastLogin": "2025-01-25T09:20:00.000Z",
+      "createdAt": "2024-03-10T00:00:00.000Z",
+      "updatedAt": "2025-01-25T09:20:00.000Z"
+    },
+    {
+      "id": "user_004",
+      "email": "ana.lopez@metrica.pe",
+      "firstName": "Ana",
+      "lastName": "López",
+      "avatar": null,
+      "role": {
+        "id": "employee",
+        "name": "Arquitecta",
+        "level": 3
+      },
+      "department": "Diseño",
+      "isActive": false,
+      "lastLogin": "2024-12-20T14:10:00.000Z",
+      "createdAt": "2024-04-05T00:00:00.000Z",
+      "updatedAt": "2025-01-15T08:00:00.000Z"
+    },
+    {
+      "id": "user_005",
+      "email": "luis.martinez@metrica.pe",
+      "firstName": "Luis",
+      "lastName": "Martínez",
+      "avatar": null,
+      "role": {
+        "id": "manager",
+        "name": "Gerente de Recursos Humanos",
+        "level": 2
+      },
+      "department": "Recursos Humanos",
+      "isActive": true,
+      "lastLogin": "2025-01-27T08:15:00.000Z",
+      "createdAt": "2024-01-20T00:00:00.000Z",
+      "updatedAt": "2025-08-24T18:16:51.614Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": "admin",
+      "name": "Administrador",
+      "level": 1,
+      "permissions": [
+        "*"
+      ]
+    },
+    {
+      "id": "manager",
+      "name": "Gerente",
+      "level": 2,
+      "permissions": [
+        "users:read",
+        "projects:*",
+        "reports:*"
+      ]
+    },
+    {
+      "id": "employee",
+      "name": "Empleado",
+      "level": 3,
+      "permissions": [
+        "projects:read",
+        "profile:*"
+      ]
+    }
+  ],
+  "departments": [
+    "Tecnología",
+    "Proyectos",
+    "Ingeniería",
+    "Diseño",
+    "Recursos Humanos",
+    "Administración",
+    "Comercial",
+    "Finanzas"
+  ]
+}

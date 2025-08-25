@@ -35,13 +35,6 @@ const mainNavItems: NavItem[] = [
     description: 'Panel principal'
   },
   {
-    id: 'json-crud',
-    label: 'Editor de Contenido',
-    icon: FileText,
-    path: '/admin/json-crud',
-    description: 'Gestión de contenido'
-  },
-  {
     id: 'pages',
     label: 'Páginas',
     icon: FileText,
@@ -83,7 +76,7 @@ const utilityNavItems: NavItem[] = [
     id: 'settings',
     label: 'Configuración',
     icon: Settings,
-    path: '/admin/json-crud/settings',
+    path: '/admin/settings',
     description: 'Configuración del sistema'
   },
   {
@@ -113,8 +106,7 @@ export default function AdminNavigation({ className, compact = false }: AdminNav
   };
 
   const isActive = (path: string) => {
-    if (path === '/admin/json-crud' && pathname === '/admin/json-crud') return true;
-    if (path !== '/admin/json-crud' && pathname.startsWith(path)) return true;
+    if (pathname.startsWith(path)) return true;
     return pathname === path;
   };
 

@@ -54,7 +54,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      console.error('pages-api', `Failed to get page: ${params.slug}`, error);
+      console.error('pages-api', `Failed to get page: ${(await params).slug}`, error);
 
       return NextResponse.json(
         {

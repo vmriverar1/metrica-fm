@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, FileText, Edit, Eye, Plus, Trash2, Download, Upload, Sparkles, TrendingUp } from 'lucide-react';
+import { Search, FileText, Edit, Eye, Plus, Trash2, Download, Upload, Sparkles, TrendingUp, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import DataTable from '@/components/admin/DataTable';
 import DynamicForm from '@/components/admin/DynamicForm';
@@ -165,7 +165,7 @@ const PagesManagement = () => {
         status: 'active',
         lastModified: '2025-08-21T11:45:00Z',
         size: '24.2 KB',
-        type: 'dynamic',
+        type: 'static',
         metadata: {
           author: 'Admin',
           tags: ['services', 'catalog', 'testimonials'],
@@ -183,7 +183,7 @@ const PagesManagement = () => {
         status: 'active',
         lastModified: '2025-08-21T12:00:00Z',
         size: '16.3 KB',
-        type: 'dynamic',
+        type: 'static',
         metadata: {
           author: 'Admin',
           tags: ['compromiso', 'responsabilidad', 'sostenibilidad'],
@@ -201,7 +201,7 @@ const PagesManagement = () => {
         status: 'active',
         lastModified: '2025-08-21T14:00:00Z',
         size: '28.5 KB',
-        type: 'dynamic',
+        type: 'static',
         metadata: {
           author: 'HR Team',
           tags: ['cultura', 'valores', 'equipo', 'beneficios'],
@@ -260,41 +260,9 @@ const PagesManagement = () => {
   const handleEditPage = async (page: PageData) => {
     console.log('🔄 [EDIT PAGE] Iniciando carga de datos para:', page.name);
     
-    // ✅ Redirección a editores especializados
-    if (page.name === 'contact.json') {
-      router.push('/admin/json-crud/pages/contact');
-      return;
-    }
+    // ✅ Todas las páginas usan ahora el editor estándar unificado
+    // Las redirecciones especiales se han eliminado para consistencia
     
-    if (page.name === 'blog.json') {
-      router.push('/admin/json-crud/pages/blog');
-      return;
-    }
-    
-    if (page.name === 'services.json') {
-      router.push('/admin/json-crud/pages/services');
-      return;
-    }
-    
-    if (page.name === 'compromiso.json') {
-      router.push('/admin/json-crud/pages/compromiso');
-      return;
-    }
-    
-    if (page.name === 'portfolio.json') {
-      router.push('/admin/json-crud/pages/portfolio');
-      return;
-    }
-    
-    if (page.name === 'careers.json') {
-      router.push('/admin/json-crud/pages/careers');
-      return;
-    }
-    
-    if (page.name === 'cultura.json') {
-      router.push('/admin/json-crud/pages/cultura');
-      return;
-    }
     
     try {
       // Cargar datos reales del archivo JSON
@@ -313,6 +281,20 @@ const PagesManagement = () => {
       });
 
       const pageWithRealData = { ...page, ...realData };
+      
+      // Debug: Verificar que los datos se están mapeando correctamente
+      console.log('🔍 [EDIT PAGE] Verificando mapeo de datos para formulario:', {
+        fileName: page.name,
+        pageWithRealData: pageWithRealData,
+        testMappings: {
+          'page.title': pageWithRealData.page?.title,
+          'page.subtitle': pageWithRealData.page?.subtitle,
+          'introduction.text': pageWithRealData.introduction?.text,
+          'achievement_summary.title': pageWithRealData.achievement_summary?.title,
+        },
+        schemaFields: getFormSchema(page.name)?.fields?.length || 0
+      });
+      
       setSelectedPage(pageWithRealData);
       setIsEditing(true);
       setActiveTab('edit');
@@ -489,11 +471,47 @@ const PagesManagement = () => {
            (setupWizard.showWizard || showWizardOverride || setupWizard.shouldShowWizard(page));
   };
 
-  const handleDeletePage = (pageId: string) => {
-    if (confirm('¿Estás seguro de que deseas eliminar esta página?')) {
-      setPages(prev => prev.filter(p => p.id !== pageId));
-    }
+  // Helper functions for preview
+  const getPreviewUrl = (page: PageData): string => {
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://metrica-dip.com' 
+      : 'http://localhost:9002';
+    
+    // Map page names to actual URLs
+    const pageUrls: Record<string, string> = {
+      'home.json': '/',
+      'historia.json': '/historia',
+      'portfolio.json': '/portfolio',
+      'careers.json': '/careers',
+      'contact.json': '/contacto',
+      'blog.json': '/blog',
+      'services.json': '/servicios',
+      'compromiso.json': '/compromiso',
+      'cultura.json': '/cultura',
+      'iso.json': '/iso'
+    };
+    
+    const pagePath = pageUrls[page.name] || '/';
+    return `${baseUrl}${pagePath}`;
   };
+
+  const getPagePath = (page: PageData): string => {
+    const pageUrls: Record<string, string> = {
+      'home.json': '/',
+      'historia.json': '/historia',
+      'portfolio.json': '/portfolio',
+      'careers.json': '/careers',
+      'contact.json': '/contacto',
+      'blog.json': '/blog',
+      'services.json': '/servicios',
+      'compromiso.json': '/compromiso',
+      'cultura.json': '/cultura',
+      'iso.json': '/iso'
+    };
+    
+    return pageUrls[page.name] || '/';
+  };
+
 
   const columns = [
     {
@@ -555,19 +573,15 @@ const PagesManagement = () => {
       icon: Edit,
       onClick: handleEditPage,
       color: 'text-green-600 hover:text-green-800'
-    },
-    {
-      label: 'Eliminar',
-      icon: Trash2,
-      onClick: (page: PageData) => handleDeletePage(page.id),
-      color: 'text-red-600 hover:text-red-800'
     }
   ];
 
   // Esquemas de formulario por tipo de página
   const getFormSchema = (pageName: string) => {
+    console.log('🔍 [GET FORM SCHEMA] Buscando schema para:', pageName);
     switch (pageName) {
       case 'historia.json':
+      case 'about-historia.json':
         return {
           title: 'Editar Historia de la Empresa',
           groups: [
@@ -766,6 +780,147 @@ const PagesManagement = () => {
               label: 'Métrica 4 - Descripción',
               type: 'text',
               group: 'metrics'
+            }
+          ]
+        };
+
+      case 'cultura.json':
+        return {
+          title: 'Editor de Cultura Organizacional',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Meta información y configuración SEO',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'hero_section',
+              label: 'Sección Hero',
+              description: 'Banner principal y galería del equipo',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'values_section',
+              label: 'Valores Empresariales',
+              description: 'Información básica de valores (estructura compleja requiere editor especializado)',
+              collapsible: true,
+              defaultExpanded: false
+            },
+            {
+              name: 'culture_stats',
+              label: 'Estadísticas de Cultura',
+              description: 'Métricas y datos sobre la cultura organizacional',
+              collapsible: true,
+              defaultExpanded: false
+            },
+            {
+              name: 'team_section',
+              label: 'Información del Equipo',
+              description: 'Configuración básica del equipo (estructura compleja requiere editor especializado)',
+              collapsible: true,
+              defaultExpanded: false
+            },
+            {
+              name: 'technologies',
+              label: 'Tecnologías',
+              description: 'Información básica de tecnologías (estructura compleja requiere editor especializado)',
+              collapsible: true,
+              defaultExpanded: false
+            }
+          ],
+          fields: [
+            // Page Info Group
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+
+            // Hero Section Group
+            {
+              key: 'hero.title',
+              label: 'Título Principal',
+              type: 'text',
+              required: true,
+              group: 'hero_section'
+            },
+            {
+              key: 'hero.subtitle',
+              label: 'Subtítulo',
+              type: 'textarea',
+              required: true,
+              group: 'hero_section'
+            },
+            {
+              key: 'hero.background_image',
+              label: 'Imagen de Fondo (URL)',
+              type: 'url',
+              group: 'hero_section'
+            },
+            {
+              key: 'hero.background_image_fallback',
+              label: 'Imagen de Fondo Fallback',
+              type: 'text',
+              group: 'hero_section'
+            },
+
+            // Values Section - Basic Info Only
+            {
+              key: 'values_info',
+              label: 'Información de Valores',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Los valores contienen estructura compleja (título, descripción, iconos, ejemplos). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'values_section',
+              description: 'Para editar valores específicos, requiere herramientas avanzadas'
+            },
+
+            // Culture Stats Group
+            {
+              key: 'culture_stats.title',
+              label: 'Título de Estadísticas',
+              type: 'text',
+              group: 'culture_stats'
+            },
+            {
+              key: 'culture_stats.subtitle',
+              label: 'Subtítulo de Estadísticas',
+              type: 'text',
+              group: 'culture_stats'
+            },
+
+            // Team Section - Basic Info Only
+            {
+              key: 'team_info',
+              label: 'Información del Equipo',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'El equipo contiene estructura compleja (departamentos, miembros, perfiles). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'team_section',
+              description: 'Para editar miembros específicos del equipo, requiere herramientas avanzadas'
+            },
+
+            // Technologies Section - Basic Info Only
+            {
+              key: 'technologies_info',
+              label: 'Información de Tecnologías',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Las tecnologías contienen estructura compleja (categorías, herramientas, descripciones). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'technologies',
+              description: 'Para editar tecnologías específicas, requiere herramientas avanzadas'
             }
           ]
         };
@@ -1931,6 +2086,276 @@ const PagesManagement = () => {
 
           ]
         };
+
+      case 'contact.json':
+        return {
+          title: 'Editor de Página de Contacto',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'contact_info',
+              label: 'Información de Contacto',
+              description: 'Datos de contacto principales',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'contact_info_note',
+              label: 'Información de Contacto',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de contacto. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'contact_info'
+            }
+          ]
+        };
+
+      case 'blog.json':
+        return {
+          title: 'Editor de Configuración del Blog',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'blog_config',
+              label: 'Configuración del Blog',
+              description: 'Configuración general del blog',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'blog_config_note',
+              label: 'Configuración del Blog',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de blog. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'blog_config'
+            }
+          ]
+        };
+
+      case 'services.json':
+        return {
+          title: 'Editor de Página de Servicios',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'services_info',
+              label: 'Información de Servicios',
+              description: 'Configuración de servicios',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'services_info_note',
+              label: 'Información de Servicios',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de servicios. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'services_info'
+            }
+          ]
+        };
+
+      case 'compromiso.json':
+        return {
+          title: 'Editor de Página de Compromiso',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'commitment_info',
+              label: 'Información de Compromiso',
+              description: 'Contenido de compromiso social y sostenibilidad',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'commitment_info_note',
+              label: 'Información de Compromiso',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de compromiso. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'commitment_info'
+            }
+          ]
+        };
+
+      case 'portfolio.json':
+        return {
+          title: 'Editor de Portafolio',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'portfolio_info',
+              label: 'Información del Portafolio',
+              description: 'Configuración de proyectos y portafolio',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'portfolio_info_note',
+              label: 'Información del Portafolio',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de portafolio. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'portfolio_info'
+            }
+          ]
+        };
+
+      case 'careers.json':
+        return {
+          title: 'Editor de Bolsa de Trabajo',
+          groups: [
+            {
+              name: 'page_info',
+              label: 'Información de la Página',
+              description: 'Configuración SEO y meta información',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'careers_info',
+              label: 'Información de Carreras',
+              description: 'Configuración de empleos y oportunidades',
+              collapsible: true,
+              defaultExpanded: true
+            }
+          ],
+          fields: [
+            {
+              key: 'page.title',
+              label: 'Título SEO',
+              type: 'text',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'page.description',
+              label: 'Descripción SEO',
+              type: 'textarea',
+              required: true,
+              group: 'page_info'
+            },
+            {
+              key: 'careers_info_note',
+              label: 'Información de Carreras',
+              type: 'textarea',
+              disabled: true,
+              defaultValue: 'Esta página contiene estructura compleja de carreras. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              group: 'careers_info'
+            }
+          ]
+        };
       
       default:
         return {
@@ -1984,12 +2409,9 @@ const PagesManagement = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button
-            onClick={() => setActiveTab('create')}
-            className="bg-[#E84E0F] hover:bg-[#E84E0F]/90"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Nueva Página
+          <Button variant="outline" size="sm">
+            <Download className="h-4 w-4 mr-2" />
+            Exportar
           </Button>
         </div>
       </div>
@@ -1999,7 +2421,6 @@ const PagesManagement = () => {
           <TabsTrigger value="list">Lista de Páginas</TabsTrigger>
           <TabsTrigger value="view">Vista Previa</TabsTrigger>
           <TabsTrigger value="edit">Editar</TabsTrigger>
-          <TabsTrigger value="create">Crear Nueva</TabsTrigger>
         </TabsList>
 
         <TabsContent value="list" className="space-y-4">
@@ -2048,81 +2469,179 @@ const PagesManagement = () => {
 
         <TabsContent value="view">
           {selectedPage ? (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  Vista Previa: {selectedPage.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-600">Archivo:</label>
-                    <p className="font-mono text-sm">{selectedPage.name}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-600">Estado:</label>
-                    <Badge className={getStatusColor(selectedPage.status)}>
-                      {selectedPage.status === 'active' ? 'Activa' : 
-                       selectedPage.status === 'draft' ? 'Borrador' : 'Archivada'}
-                    </Badge>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-600">Tipo:</label>
-                    <Badge variant={selectedPage.type === 'static' ? 'secondary' : 'default'}>
-                      {selectedPage.type === 'static' ? 'Estática' : 'Dinámica'}
-                    </Badge>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-600">Tamaño:</label>
-                    <p>{selectedPage.size}</p>
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-gray-600">Descripción:</label>
-                  <p>{selectedPage.description}</p>
-                </div>
-
-                {selectedPage.metadata && (
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">Metadatos:</label>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                      {selectedPage.metadata.seoTitle && (
-                        <div>
-                          <span className="text-sm font-medium">SEO Title:</span>
-                          <p className="text-sm">{selectedPage.metadata.seoTitle}</p>
-                        </div>
-                      )}
-                      {selectedPage.metadata.seoDescription && (
-                        <div>
-                          <span className="text-sm font-medium">SEO Description:</span>
-                          <p className="text-sm">{selectedPage.metadata.seoDescription}</p>
-                        </div>
-                      )}
-                      {selectedPage.metadata.tags && (
-                        <div>
-                          <span className="text-sm font-medium">Tags:</span>
-                          <div className="flex gap-1 mt-1">
-                            {selectedPage.metadata.tags.map(tag => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+            <div className="space-y-4">
+              {/* Header with page info */}
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <Eye className="h-5 w-5" />
+                      Vista Previa: {selectedPage.title}
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Badge className={getStatusColor(selectedPage.status)}>
+                        {selectedPage.status === 'active' ? 'Activa' : 
+                         selectedPage.status === 'draft' ? 'Borrador' : 'Archivada'}
+                      </Badge>
+                      <Badge variant={selectedPage.type === 'static' ? 'secondary' : 'default'}>
+                        {selectedPage.type === 'static' ? 'Estática' : 'Dinámica'}
+                      </Badge>
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  <CardDescription>
+                    {selectedPage.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              {/* Preview Controls */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-600">Resolución:</label>
+                        <select 
+                          className="px-2 py-1 border rounded text-sm"
+                          onChange={(e) => {
+                            const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
+                            if (iframe) {
+                              const [width, height] = e.target.value.split('x');
+                              iframe.style.width = width + 'px';
+                              iframe.style.height = height + 'px';
+                            }
+                          }}
+                        >
+                          <option value="1200x800">Desktop (1200x800)</option>
+                          <option value="768x1024">Tablet (768x1024)</option>
+                          <option value="375x667">Mobile (375x667)</option>
+                          <option value="100%x600">Responsive</option>
+                        </select>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="text-sm font-medium text-gray-600">Zoom:</label>
+                        <select 
+                          className="px-2 py-1 border rounded text-sm"
+                          onChange={(e) => {
+                            const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
+                            if (iframe) {
+                              iframe.style.transform = `scale(${e.target.value})`;
+                              iframe.style.transformOrigin = 'top left';
+                            }
+                          }}
+                        >
+                          <option value="1">100%</option>
+                          <option value="0.75">75%</option>
+                          <option value="0.5">50%</option>
+                          <option value="0.25">25%</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
+                          if (iframe) {
+                            iframe.src = iframe.src; // Reload iframe
+                          }
+                        }}
+                      >
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Recargar
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const url = getPreviewUrl(selectedPage);
+                          window.open(url, '_blank');
+                        }}
+                      >
+                        Abrir en Nueva Pestaña
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Preview Iframe */}
+              <Card className="overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="bg-gray-100 p-4">
+                    <div className="bg-white rounded shadow-lg mx-auto" style={{ width: 'fit-content' }}>
+                      <iframe
+                        id="preview-iframe"
+                        src={getPreviewUrl(selectedPage)}
+                        className="border-0 block"
+                        style={{ 
+                          width: '1200px', 
+                          height: '800px',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onLoad={() => {
+                          const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
+                          if (iframe) {
+                            try {
+                              // Try to scroll to specific sections based on page type
+                              if (selectedPage.id === 'home') {
+                                // For home page, show hero section
+                                iframe.contentWindow?.scrollTo(0, 0);
+                              } else if (selectedPage.id === 'portfolio') {
+                                // For portfolio, scroll to portfolio section
+                                const portfolioSection = iframe.contentDocument?.getElementById('portfolio');
+                                portfolioSection?.scrollIntoView({ behavior: 'smooth' });
+                              }
+                            } catch (error) {
+                              // Cross-origin restrictions, ignore
+                              console.log('Cannot control iframe content due to cross-origin restrictions');
+                            }
+                          }
+                        }}
+                        onError={() => {
+                          console.error('Failed to load preview for', selectedPage.name);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Page Info Footer */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <label className="text-gray-600 font-medium">Archivo:</label>
+                      <p className="font-mono">{selectedPage.name}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-600 font-medium">Tamaño:</label>
+                      <p>{selectedPage.size}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-600 font-medium">Modificado:</label>
+                      <p>{new Date(selectedPage.lastModified).toLocaleDateString('es-ES')}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-600 font-medium">URL:</label>
+                      <p className="text-blue-600 hover:underline cursor-pointer" 
+                         onClick={() => window.open(getPreviewUrl(selectedPage), '_blank')}>
+                        {getPagePath(selectedPage)}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           ) : (
             <Card>
-              <CardContent className="text-center py-8">
-                <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">Selecciona una página para ver los detalles</p>
+              <CardContent className="text-center py-12">
+                <Eye className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Vista Previa de Página</h3>
+                <p className="text-gray-500 mb-4">Selecciona una página de la lista para ver cómo se ve en el sitio web</p>
+                <p className="text-sm text-gray-400">La vista previa mostrará la página real con controles de zoom y resolución</p>
               </CardContent>
             </Card>
           )}
@@ -2245,15 +2764,31 @@ const PagesManagement = () => {
                         showPerformanceMonitor={true}
                       />
                     ) : (
-                      // Versión estándar para otras páginas
-                      <DynamicForm
-                        fields={getFormSchema(selectedPage.name).fields}
-                        groups={getFormSchema(selectedPage.name).groups || []}
-                        title={getFormSchema(selectedPage.name).title}
-                        initialValues={selectedPage}
-                        onSubmit={handleSavePage}
-                        onCancel={() => setActiveTab('list')}
-                      />
+                      <>
+                        {/* Debug específico para historia.json */}
+                        {selectedPage.name === 'historia.json' && (() => {
+                          const schema = getFormSchema(selectedPage.name);
+                          console.log('🔧 [DEBUG HISTORIA] Pre-render check:', {
+                            pageName: selectedPage.name,
+                            hasSchema: !!schema,
+                            schemaTitle: schema?.title,
+                            groupsCount: schema?.groups?.length || 0,
+                            fieldsCount: schema?.fields?.length || 0,
+                            groups: schema?.groups,
+                            initialValues: selectedPage
+                          });
+                          return null;
+                        })()}
+                        
+                        <DynamicForm
+                          fields={getFormSchema(selectedPage.name).fields}
+                          groups={getFormSchema(selectedPage.name).groups || []}
+                          title={getFormSchema(selectedPage.name).title}
+                          initialValues={selectedPage}
+                          onSubmit={handleSavePage}
+                          onCancel={() => setActiveTab('list')}
+                        />
+                      </>
                     )}
                   </CardContent>
                 </Card>
@@ -2269,77 +2804,6 @@ const PagesManagement = () => {
           )}
         </TabsContent>
 
-        <TabsContent value="create">
-          <Card>
-            <CardHeader>
-              <CardTitle>Crear Nueva Página</CardTitle>
-              <CardDescription>
-                Crea una nueva página estática para el sitio web
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <DynamicForm
-                fields={[
-                  {
-                    key: 'name',
-                    label: 'Nombre del archivo',
-                    type: 'text',
-                    required: true,
-                    placeholder: 'ejemplo.json'
-                  },
-                  {
-                    key: 'title',
-                    label: 'Título',
-                    type: 'text',
-                    required: true,
-                    placeholder: 'Título de la página'
-                  },
-                  {
-                    key: 'description',
-                    label: 'Descripción',
-                    type: 'textarea',
-                    required: true,
-                    placeholder: 'Descripción de la página'
-                  },
-                  {
-                    key: 'type',
-                    label: 'Tipo de página',
-                    type: 'select',
-                    required: true,
-                    options: [
-                      { value: 'static', label: 'Estática' },
-                      { value: 'dynamic', label: 'Dinámica' }
-                    ]
-                  }
-                ]}
-                title="Nueva Página"
-                initialValues={{}}
-                onSubmit={async (data) => {
-                  const newPage: PageData = {
-                    id: data.name.replace('.json', ''),
-                    name: data.name,
-                    title: data.title,
-                    description: data.description,
-                    path: `/public/json/pages/${data.name}`,
-                    status: data.status,
-                    lastModified: new Date().toISOString(),
-                    size: '0 KB',
-                    type: data.type,
-                    metadata: {
-                      author: 'Admin',
-                      tags: data.metadata?.tags?.split(',').map((t: string) => t.trim()) || [],
-                      seoTitle: data.metadata?.seoTitle,
-                      seoDescription: data.metadata?.seoDescription
-                    }
-                  };
-                  setPages(prev => [...prev, newPage]);
-                  setActiveTab('list');
-                }}
-                onCancel={() => setActiveTab('list')}
-              />
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
     </div>
   );

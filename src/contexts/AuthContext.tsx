@@ -51,7 +51,7 @@ const initialState: AuthState = {
   user: null,
   session: null,
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: true, // Siempre true al inicio
   error: null,
   requiresTwoFactor: false
 };
@@ -149,10 +149,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Inicializar sesión al cargar la aplicación
   useEffect(() => {
     const initializeAuth = async () => {
-      dispatch({ type: 'SET_LOADING', payload: true });
-
+      // No cambiar loading a true porque ya inicia en true
+      
       try {
-        // Intentar restaurar sesión desde storage
+        // Primero verificar sincronamente si existe sesión
+        if (typeof window !== 'undefined') {
+          const syncUser = AuthService.getCurrentUserSync();
+          if (syncUser) {
+            // Si hay usuario en localStorage, establecerlo inmediatamente
+            dispatch({
+              type: 'LOGIN_SUCCESS',
+              payload: { 
+                user: syncUser, 
+                session: AuthService.getCurrentSession() || {
+                  id: 'mock-session',
+                  userId: syncUser.id,
+                  token: 'mock-token',
+                  refreshToken: 'mock-refresh',
+                  expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+                  createdAt: new Date(),
+                  lastActivity: new Date(),
+                  userAgent: navigator.userAgent,
+                  ipAddress: '127.0.0.1'
+                }
+              }
+            });
+            return; // Salir temprano
+          }
+        }
+
+        // Si no hay sesión sincronamente, proceder con verificación asíncrona
         const hasStoredSession = await AuthService.initializeFromStorage();
         
         if (hasStoredSession) {

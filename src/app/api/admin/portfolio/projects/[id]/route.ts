@@ -75,7 +75,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to get project: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to get project: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -266,7 +266,7 @@ export const PUT = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to update project: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to update project: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -358,7 +358,7 @@ export const DELETE = withAuth(
       });
 
     } catch (error) {
-      await logger.error('portfolio-api', `Failed to delete project: ${params.id}`, error, {
+      await logger.error('portfolio-api', `Failed to delete project: ${(await params).id}`, error, {
         userId: context.user.id
       });
 

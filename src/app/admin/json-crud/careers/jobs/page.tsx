@@ -853,8 +853,14 @@ export default function JobsPage() {
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          onClick={() => setShowForm(false)}
+        >
+          <div 
+            className="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
             <DynamicForm
               fields={formFields}
               groups={formGroups}
@@ -874,8 +880,14 @@ export default function JobsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          onClick={() => setDeleteConfirm(null)}
+        >
+          <div 
+            className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mt-3">
               <div className="flex items-center mb-4">
                 <AlertTriangle className="w-6 h-6 text-red-600 mr-3" />

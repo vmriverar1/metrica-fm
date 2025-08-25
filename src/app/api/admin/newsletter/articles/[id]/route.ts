@@ -110,7 +110,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      await logger.error('newsletter-api', `Failed to get article: ${params.id}`, error, {
+      await logger.error('newsletter-api', `Failed to get article: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -335,7 +335,7 @@ export const PUT = withAuth(
       });
 
     } catch (error) {
-      await logger.error('newsletter-api', `Failed to update article: ${params.id}`, error, {
+      await logger.error('newsletter-api', `Failed to update article: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -439,7 +439,7 @@ export const DELETE = withAuth(
       });
 
     } catch (error) {
-      await logger.error('newsletter-api', `Failed to delete article: ${params.id}`, error, {
+      await logger.error('newsletter-api', `Failed to delete article: ${(await params).id}`, error, {
         userId: context.user.id
       });
 

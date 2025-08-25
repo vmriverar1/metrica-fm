@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RotatingWordsEditor from './home/RotatingWordsEditor';
 import StatisticsGrid from './home/StatisticsGrid';
 import ServiceBuilder from './home/ServiceBuilder';
@@ -14,6 +15,8 @@ import PoliciesManager from './home/PoliciesManager';
 import PreviewModal from './PreviewModal';
 import ValidationPanel from './ValidationPanel';
 import MediaPickerField from './MediaPickerField';
+import ImageField from './ImageField';
+import GalleryField from './GalleryField';
 import BackupManager from './BackupManager';
 import PerformanceMonitor from './PerformanceMonitor';
 import { useSmartValidation } from '@/hooks/useSmartValidation';
@@ -36,7 +39,21 @@ import {
   FileText,
   Eye,
   EyeOff,
-  Monitor
+  Monitor,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  User,
+  Briefcase,
+  Star,
+  BarChart3,
+  Shield,
+  Globe,
+  Settings,
+  Image,
+  TrendingUp,
+  Users,
+  Award
 } from 'lucide-react';
 
 export interface FormField {
@@ -121,6 +138,8 @@ export default function DynamicForm({
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [showPreview, setShowPreview] = useState<Record<string, boolean>>({});
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('');
+  const [isMobile, setIsMobile] = useState(false);
   
   // Smart Validation
   const smartValidation = useSmartValidation(values, {
@@ -129,6 +148,18 @@ export default function DynamicForm({
     fieldValidation: enableSmartValidation,
     autoSuggest: enableSmartValidation
   });
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   useEffect(() => {
     console.log('📝 [DYNAMIC FORM] Recibiendo valores iniciales:', {
@@ -174,6 +205,11 @@ export default function DynamicForm({
       initialExpanded[group.name] = group.defaultExpanded ?? true;
     });
     
+    // Set first group as active tab if not set
+    if (!activeTab && groups.length > 0) {
+      setActiveTab(groups[0].name);
+    }
+    
     console.log('🔧 [DYNAMIC FORM] Inicializando grupos:', {
       groupsCount: groups.length,
       groupNames: groups.map(g => g.name),
@@ -183,11 +219,13 @@ export default function DynamicForm({
         collapsible: g.collapsible,
         defaultExpanded: g.defaultExpanded 
       })),
-      initialExpanded
+      initialExpanded,
+      isMobile,
+      activeTab
     });
     
     setExpandedGroups(initialExpanded);
-  }, [groups.length]); // Only depend on groups length, not the entire groups array
+  }, [groups.length, activeTab, isMobile]); // Only depend on groups length, not the entire groups array
 
   const validateField = (field: FormField, value: any): string | null => {
     // Required validation
@@ -249,6 +287,48 @@ export default function DynamicForm({
     }
 
     return null;
+  };
+
+  // Get icon for group/section
+  const getGroupIcon = (groupName: string) => {
+    const iconMap: Record<string, React.ReactNode> = {
+      // Home page sections
+      'hero': <Home className="w-4 h-4" />,
+      'introduction': <User className="w-4 h-4" />,
+      'services': <Briefcase className="w-4 h-4" />,
+      'portfolio': <Star className="w-4 h-4" />,
+      'statistics': <BarChart3 className="w-4 h-4" />,
+      'pillars': <Shield className="w-4 h-4" />,
+      'policies': <Shield className="w-4 h-4" />,
+      'contact': <Globe className="w-4 h-4" />,
+      'seo': <Settings className="w-4 h-4" />,
+      'metadata': <Settings className="w-4 h-4" />,
+      'images': <Image className="w-4 h-4" />,
+      'performance': <TrendingUp className="w-4 h-4" />,
+      
+      // Portfolio sections
+      'general': <Info className="w-4 h-4" />,
+      'gallery': <Image className="w-4 h-4" />,
+      'technical': <Settings className="w-4 h-4" />,
+      'team': <Users className="w-4 h-4" />,
+      'certifications': <Award className="w-4 h-4" />,
+      
+      // Career sections
+      'job_info': <Briefcase className="w-4 h-4" />,
+      'requirements': <List className="w-4 h-4" />,
+      'benefits': <Star className="w-4 h-4" />,
+      'application': <User className="w-4 h-4" />,
+      
+      // Common sections
+      'general_info': <Info className="w-4 h-4" />,
+      'content': <FileText className="w-4 h-4" />,
+      'configuration': <Settings className="w-4 h-4" />,
+      
+      // Default fallback
+      'default': <FileText className="w-4 h-4" />
+    };
+
+    return iconMap[groupName.toLowerCase()] || iconMap['default'];
   };
 
   const handleChange = (field: FormField, value: any) => {
@@ -581,6 +661,36 @@ export default function DynamicForm({
           />
         )}
 
+        {/* Image Field - Enhanced image input with upload/external toggle */}
+        {field.type === 'image' && (
+          <div>
+            <ImageField
+              value={value || ''}
+              onChange={(newValue) => handleChange(field, newValue)}
+              label="" // No mostrar label en el componente ya que DynamicForm ya lo muestra
+              placeholder={field.placeholder}
+              required={false} // No mostrar asterisco ya que DynamicForm ya lo muestra
+              disabled={field.disabled || loading}
+              description="" // No mostrar description ya que DynamicForm ya la muestra
+            />
+          </div>
+        )}
+
+        {/* Gallery Field - Enhanced gallery management with multiple images */}
+        {field.type === 'gallery' && (
+          <div>
+            <GalleryField
+              value={value || []}
+              onChange={(newValue) => handleChange(field, newValue)}
+              label="" // No mostrar label en el componente ya que DynamicForm ya lo muestra
+              placeholder={field.placeholder}
+              required={false} // No mostrar asterisco ya que DynamicForm ya lo muestra
+              disabled={field.disabled || loading}
+              description="" // No mostrar description ya que DynamicForm ya la muestra
+            />
+          </div>
+        )}
+
         {/* Custom Components */}
         {field.type === 'custom' && field.component === 'rotating-words' && (
           <RotatingWordsEditor
@@ -761,11 +871,105 @@ export default function DynamicForm({
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="p-6">
-        <div className="space-y-8">
-          {Object.entries(groupedFields).map(([groupName, groupFields]) =>
-            renderGroup(groupName, groupFields)
-          )}
-        </div>
+        {groups.length > 1 ? (
+          // Unified Tabs Layout for All Editors - Like Portfolio but Responsive
+          isMobile ? (
+            // Mobile: Accordion Layout
+            <div className="space-y-4">
+              {Object.entries(groupedFields).map(([groupName, groupFields]) =>
+                renderGroup(groupName, groupFields)
+              )}
+            </div>
+          ) : (
+            // Desktop: Single Row Horizontal Tabs with Icons and Scroll
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              {/* Single Row Scrollable Tabs */}
+              <div className="mb-6">
+                <div className="relative">
+                  <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-2">
+                    <TabsList className="inline-flex h-12 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-max">
+                      {groups.map((group) => (
+                        <TabsTrigger 
+                          key={group.name} 
+                          value={group.name}
+                          className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex-shrink-0 min-w-0 max-w-32 mr-1 last:mr-0"
+                          title={group.label}
+                        >
+                          <div className="flex items-center space-x-2 min-w-0">
+                            {/* Icon for section */}
+                            <div className="flex-shrink-0">
+                              {getGroupIcon(group.name)}
+                            </div>
+                            {/* Truncated text with ellipsis */}
+                            <span className="truncate text-xs">
+                              {group.label.length > 8 ? `${group.label.substring(0, 8)}...` : group.label}
+                            </span>
+                          </div>
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </div>
+                  
+                  {/* Fade indicators for scroll */}
+                  <div className="absolute left-0 top-0 bottom-2 w-4 bg-gradient-to-r from-white via-white to-transparent pointer-events-none z-10"></div>
+                  <div className="absolute right-0 top-0 bottom-2 w-4 bg-gradient-to-l from-white via-white to-transparent pointer-events-none z-10"></div>
+                </div>
+                
+                {/* Navigation helper for many tabs */}
+                {groups.length > 8 && (
+                  <div className="mt-2 flex items-center justify-center">
+                    <div className="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                      {groups.findIndex(g => g.name === activeTab) + 1} de {groups.length}: {groups.find(g => g.name === activeTab)?.label}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Tab Content */}
+              {groups.map((group) => (
+                <TabsContent key={group.name} value={group.name} className="mt-0">
+                  <div className="border border-gray-200 rounded-lg">
+                    {/* Tab Content Header - Clean and Simple */}
+                    <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          {getGroupIcon(group.name)}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-lg font-medium text-gray-900">{group.label}</h3>
+                          {group.description && (
+                            <p className="text-sm text-gray-600 mt-0.5 truncate">{group.description}</p>
+                          )}
+                        </div>
+                        {groups.length > 8 && (
+                          <div className="flex-shrink-0">
+                            <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded-full">
+                              {groups.findIndex(g => g.name === group.name) + 1}/{groups.length}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Tab Content Fields */}
+                    <div className="p-6">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {(groupedFields[group.name] || []).map(renderField)}
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
+          )
+        ) : (
+          // Single group or no groups: Simple layout
+          <div className="space-y-8">
+            {Object.entries(groupedFields).map(([groupName, groupFields]) =>
+              renderGroup(groupName, groupFields)
+            )}
+          </div>
+        )}
 
         {/* Actions */}
         <div className="mt-8 flex items-center justify-between pt-6 border-t border-gray-200">

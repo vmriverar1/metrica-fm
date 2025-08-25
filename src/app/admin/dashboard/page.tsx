@@ -36,7 +36,7 @@ function AdminDashboard() {
     await actions.logout();
   };
 
-  if (!user) return null;
+  // No necesitamos verificar auth aquí - AdminLayout/ProtectedRoute ya se encarga
 
   const quickStats = [
     {
@@ -104,32 +104,6 @@ function AdminDashboard() {
     }
   ];
 
-  const systemHealth = [
-    {
-      name: 'Base de Datos',
-      status: 'healthy',
-      uptime: '99.9%',
-      lastCheck: '2 min'
-    },
-    {
-      name: 'API Services',
-      status: 'healthy',
-      uptime: '100%',
-      lastCheck: '1 min'
-    },
-    {
-      name: 'Directus CMS',
-      status: systemInfo.directusAvailable ? 'healthy' : 'warning',
-      uptime: systemInfo.directusAvailable ? '98.5%' : 'N/A',
-      lastCheck: '30 seg'
-    },
-    {
-      name: 'Notificaciones',
-      status: 'healthy',
-      uptime: '99.8%',
-      lastCheck: '5 min'
-    }
-  ];
 
   return (
     <AdminLayout 
@@ -206,35 +180,8 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* System Health */}
+          {/* Quick Actions */}
           <div>
-            <div className="bg-white rounded-lg shadow-sm border mb-6">
-              <div className="px-6 py-4 border-b">
-                <h2 className="text-lg font-semibold text-gray-900">Estado del Sistema</h2>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {systemHealth.map((service, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-2 h-2 rounded-full ${
-                          service.status === 'healthy' ? 'bg-green-500' :
-                          service.status === 'warning' ? 'bg-yellow-500' :
-                          'bg-red-500'
-                        }`}></div>
-                        <span className="text-sm text-gray-900">{service.name}</span>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs text-gray-600">{service.uptime}</p>
-                        <p className="text-xs text-gray-400">{service.lastCheck}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="px-6 py-4 border-b">
                 <h2 className="text-lg font-semibold text-gray-900">Acciones Rápidas</h2>
@@ -252,24 +199,36 @@ function AdminDashboard() {
                   
                   <button
                     type="button"
-                    onClick={() => window.open('/test-applications', '_blank')}
+                    onClick={() => window.open('/admin/subscriptions', '_blank')}
                     className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    <Shield className="w-5 h-5 text-gray-600" />
-                    <span className="text-sm text-gray-900">Testing del Sistema</span>
+                    <Mail className="w-5 h-5 text-gray-600" />
+                    <span className="text-sm text-gray-900">Gestionar Suscripciones</span>
                   </button>
                   
-                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button 
+                    type="button" 
+                    onClick={() => window.open('/admin/reports', '_blank')}
+                    className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
                     <BarChart3 className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Generar Reportes</span>
                   </button>
                   
-                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button 
+                    type="button" 
+                    onClick={() => window.open('/admin/settings', '_blank')}
+                    className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
                     <Settings className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Configuración</span>
                   </button>
                   
-                  <button type="button" className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                  <button 
+                    type="button" 
+                    onClick={() => window.open('/admin/notifications', '_blank')}
+                    className="w-full flex items-center space-x-3 p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
                     <Mail className="w-5 h-5 text-gray-600" />
                     <span className="text-sm text-gray-900">Notificaciones</span>
                   </button>

@@ -107,7 +107,7 @@ export const GET = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to get department: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to get department: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -139,7 +139,6 @@ export const PUT = withAuth(
         color,
         open_positions,
         total_employees,
-        growth_rate,
         featured,
         required_skills,
         career_path,
@@ -204,7 +203,6 @@ export const PUT = withAuth(
         color: color !== undefined ? color : currentDepartment.color,
         open_positions: open_positions !== undefined ? Number(open_positions) : currentDepartment.open_positions,
         total_employees: total_employees !== undefined ? Number(total_employees) : currentDepartment.total_employees,
-        growth_rate: growth_rate !== undefined ? growth_rate : currentDepartment.growth_rate,
         featured: featured !== undefined ? !!featured : currentDepartment.featured,
         required_skills: required_skills !== undefined ? 
           (Array.isArray(required_skills) ? required_skills : []) : currentDepartment.required_skills,
@@ -257,7 +255,7 @@ export const PUT = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to update department: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to update department: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
@@ -359,7 +357,7 @@ export const DELETE = withAuth(
       });
 
     } catch (error) {
-      await logger.error('careers-api', `Failed to delete department: ${params.id}`, error, {
+      await logger.error('careers-api', `Failed to delete department: ${(await params).id}`, error, {
         userId: context.user.id
       });
 
