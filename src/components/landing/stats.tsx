@@ -1,19 +1,12 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Briefcase, Users, UserCheck, Award } from 'lucide-react';
+import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 import { HomePageData } from '@/types/home';
 
-// Icon mapping
-const iconMap = {
-  'Briefcase': Briefcase,
-  'Users': Users,
-  'UserCheck': UserCheck,
-  'Award': Award,
-} as const;
 
 interface StatCardProps {
   stat: {
@@ -92,9 +85,11 @@ const StatCard = ({ stat, index }: StatCardProps) => {
   return (
     <div ref={cardRef} className="text-center p-4 cursor-pointer transition-colors hover:bg-accent/5">
       <div ref={iconRef} className="inline-block">
-        {React.createElement(iconMap[stat.icon as keyof typeof iconMap], {
-          className: "h-12 w-12 text-accent mx-auto mb-4"
-        })}
+        <DynamicIcon 
+          name={stat.icon}
+          className="h-12 w-12 text-accent mx-auto mb-4"
+          fallbackIcon="Award"
+        />
       </div>
       <p ref={numberRef} className="text-4xl font-alliance-extrabold text-foreground">
         0{stat.suffix}

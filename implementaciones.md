@@ -82,3 +82,4 @@
 - [2025-08-25] Simplificado formulario departamentos eliminando campos innecesarios según JSON real - Modified: src/app/admin/json-crud/careers/departments/page.tsx
 - [2025-08-25] Eliminado campo growth_rate de formularios, APIs e interfaces al no usarse en web - Modified: src/app/admin/json-crud/careers/departments/page.tsx, src/app/api/admin/careers/departments/route.ts, src/app/api/admin/careers/departments/[id]/route.ts, src/hooks/useDynamicCareersContent.ts
 - [2025-08-25] Corregidos errores de build Next.js 15 con await params en APIs dinámicas - Modified: src/app/api/admin/reports/[id]/route.ts, src/app/api/admin/subscriptions/[id]/route.ts, src/app/api/admin/users/[id]/route.ts
+- [2025-08-25] Implementado sistema de iconos dinámicos con fallback automático para evitar errores futuros - Added: src/components/ui/DynamicIcon.tsx, Modified: src/components/landing/stats.tsx
