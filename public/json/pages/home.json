@@ -24,10 +24,10 @@
   },
   "hero": {
     "title": {
-      "main": "Dirección Integral",
-      "secondary": "de Proyectoss"
+      "main": "Gerencia de Proyectos",
+      "secondary": "y Supervisión de Obras"
     },
-    "subtitle": "que transforman la infraestructura del Perú",
+    "subtitle": "Liderando el sector construcción",
     "background": {
       "video_url": "https://statom.co.uk/assets/video/2024/Oct/rc-frame-video.mp4",
       "video_url_fallback": "/video/hero-background.mp4",
@@ -36,15 +36,12 @@
       "overlay_opacity": 0.6
     },
     "rotating_words": [
-      "Trabajamos",
-      "Creamos",
-      "Resolvemos",
-      "Entregamos",
-      "Transformamos"
+      "Cuidamos",
+      "Mejoramos"
     ],
-    "transition_text": "Somos el socio estratégico que transforma la visión de infraestructura en realidad, garantizando excelencia operativa en cada proyecto que dirigimos.",
+    "transition_text": "Somos el socio estratégico que asegura la rentabilidad de tu proyecto, especializados en el sector industrial.",
     "cta": {
-      "text": "Descubre DIP",
+      "text": "DESCUBRE DIP",
       "target": "#services"
     }
   },
@@ -52,35 +49,35 @@
     "statistics": [
       {
         "id": "projects",
-        "icon": "Briefcase",
-        "value": 50,
-        "suffix": "+",
-        "label": "Proyectos",
-        "description": "Proyectos completados exitosamente"
+        "icon": "Building",
+        "value": 2,
+        "suffix": "M",
+        "label": "M2 Construidos",
+        "description": "Metros cuadrados construidos"
       },
       {
         "id": "clients",
-        "icon": "Users",
-        "value": 30,
-        "suffix": "+",
-        "label": "Clientes",
-        "description": "Empresas que confían en nosotros"
+        "icon": "TrendingUp",
+        "value": 450,
+        "suffix": "K",
+        "label": "M2 Construidos Industrial",
+        "description": "Metros cuadrados construidos en el sector industrial"
       },
       {
         "id": "professionals",
-        "icon": "UserCheck",
-        "value": 200,
-        "suffix": "+",
-        "label": "Profesionales",
-        "description": "Equipo multidisciplinario especializado"
+        "icon": "Briefcase",
+        "value": 3100,
+        "suffix": "M",
+        "label": "Soles Invertidos",
+        "description": "Millones de soles invertidos"
       },
       {
         "id": "years",
         "icon": "Award",
-        "value": 15,
-        "suffix": "+",
-        "label": "Años en el sector",
-        "description": "Experiencia consolidada en el mercado"
+        "value": 97,
+        "suffix": "%",
+        "label": "Retencion Clientes",
+        "description": "Nuestros clientes nos eligen denuevo"
       }
     ]
   },
