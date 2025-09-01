@@ -84,7 +84,7 @@
   "services": {
     "section": {
       "title": "Nuestros Servicios",
-      "subtitle": "Ofrecemos un portafolio de servicios especializados para asegurar el éxito de proyectos de infraestructura complejos."
+      "subtitle": "Ofrecemos un portafolio de servicios especializados para cuidar la rentabilidad y el éxito de proyectos del sector construcción."
     },
     "main_service": {
       "title": "Dirección Integral de Proyectos (DIP)",
@@ -145,32 +145,32 @@
     "featured_projects": [
       {
         "id": "hospital-nacional",
-        "name": "Hospital Nacional de Alta Complejidad",
-        "type": "Sanitaria",
+        "name": "Hotel Hilton balta",
+        "type": "Comercial",
         "description": "Supervisión integral de la construcción y equipamiento del hospital más moderno de la región.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
         "image_url_fallback": "/img/portfolio/hospital-nacional.jpg"
       },
       {
         "id": "institucion-educativa",
-        "name": "Institución Educativa Emblemática \"Futuro\"",
-        "type": "Educativa",
+        "name": "Parque logístico callao",
+        "type": "Industrial",
         "description": "Dirección del proyecto para la modernización de infraestructura educativa para más de 5,000 estudiantes.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
         "image_url_fallback": "/img/portfolio/institucion-educativa.jpg"
       },
       {
         "id": "autopista-sol",
-        "name": "Autopista del Sol - Tramo IV",
-        "type": "Vial",
+        "name": "Parque Lima sur",
+        "type": "Industrial",
         "description": "Control de calidad y supervisión técnica en uno de los corredores viales más importantes del país.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
         "image_url_fallback": "/img/portfolio/autopista-sol.jpg"
       },
       {
         "id": "planta-tratamiento",
-        "name": "Planta de Tratamiento de Aguas Residuales",
-        "type": "Saneamiento",
+        "name": "Clínica Aviva",
+        "type": "Sanitaria",
         "description": "Gestión de proyecto para la ampliación y modernización de la planta, beneficiando a 2 millones de personas.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
         "image_url_fallback": "/img/portfolio/planta-tratamiento.jpg"
@@ -180,21 +180,21 @@
   "pillars": {
     "section": {
       "title": "¿Qué es DIP?",
-      "subtitle": "Nuestra Dirección Integral de Proyectos (DIP) se fundamenta en seis pilares clave para garantizar la excelencia."
+      "subtitle": "Nuestra Dirección Integral de Proyectos (DIP para el sector construcción se fundamenta en 5 pilares claves que cuidan y mejoran la rentabilidad.\n"
     },
     "pillars": [
       {
         "id": 1,
         "icon": "Compass",
-        "title": "Planificación Estratégica",
-        "description": "Definimos la hoja de ruta para el éxito del proyecto, optimizando plazos y recursos desde el inicio.",
+        "title": "Curva de protocolo",
+        "description": "Curva de protocolo",
         "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
         "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
       },
       {
         "id": 2,
         "icon": "Network",
-        "title": "Coordinación Multidisciplinaria",
+        "title": "Sistema de Gestión basado en PMI",
         "description": "Integramos equipos de diseño, construcción y fiscalización para una ejecución sin fisuras.",
         "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
         "image_fallback": "/img/pillars/coordinacion-multidisciplinaria.jpg"
@@ -202,7 +202,7 @@
       {
         "id": 3,
         "icon": "ScanSearch",
-        "title": "Supervisión Técnica",
+        "title": "Estimaciones Paramétricas",
         "description": "Garantizamos que cada etapa de la construcción cumpla con los más altos estándares de ingeniería.",
         "image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
         "image_fallback": "/img/pillars/supervision-tecnica.jpg"
@@ -210,7 +210,7 @@
       {
         "id": 4,
         "icon": "ChartBar",
-        "title": "Control de Calidad y Costos",
+        "title": "Experiencia Específica por Sector",
         "description": "Implementamos un riguroso control para asegurar la calidad de los materiales y la eficiencia del presupuesto.",
         "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
         "image_fallback": "/img/pillars/control-calidad-costos.jpg"
@@ -218,7 +218,7 @@
       {
         "id": 5,
         "icon": "AlertTriangle",
-        "title": "Gestión de Riesgos",
+        "title": "Enfoque en la Rentabilidad",
         "description": "Identificamos y mitigamos proactivamente los posibles riesgos que puedan afectar al proyecto.",
         "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
         "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
