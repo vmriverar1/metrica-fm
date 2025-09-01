@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { useNavigationLoading } from '@/hooks/useNavigationLoading';
+import { useRobustNavigation } from '@/hooks/useRobustNavigation';
 
 interface NavigationLinkProps {
   href: string;
@@ -10,6 +10,8 @@ interface NavigationLinkProps {
   className?: string;
   loadingMessage?: string;
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  prefetch?: boolean;
+  [key: string]: any;
 }
 
 export default function NavigationLink({ 
@@ -18,28 +20,43 @@ export default function NavigationLink({
   className, 
   loadingMessage,
   onClick,
+  prefetch = true,
   ...props 
 }: NavigationLinkProps) {
-  const { handleLinkClick } = useNavigationLoading();
+  const { handleLinkClick, smartPrefetch, canNavigate, networkConditions } = useRobustNavigation();
 
-  const handleClick = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+  // Prefetch inteligente al montar el componente
+  useEffect(() => {
+    if (prefetch && href.startsWith('/')) {
+      smartPrefetch(href);
+    }
+  }, [href, prefetch, smartPrefetch]);
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     // Llamar el onClick personalizado si existe
     if (onClick) {
       onClick(event);
     }
 
-    // Solo manejar el loading si no se previno el comportamiento por defecto
-    // y no es un link de hash/ancla
-    if (!event.defaultPrevented && !href.startsWith('#')) {
-      await handleLinkClick(event, href, loadingMessage);
+    // Solo manejar si no se canceló el evento
+    if (!event.defaultPrevented) {
+      handleLinkClick(event, href, loadingMessage);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    // Prefetch adicional al hover si la conexión es rápida
+    if (prefetch && networkConditions.speed === 'fast') {
+      smartPrefetch(href);
     }
   };
 
   return (
     <Link 
       href={href} 
-      className={className} 
+      className={`${className || ''} ${!canNavigate ? 'pointer-events-none opacity-60' : ''}`}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       {...props}
     >
       {children}

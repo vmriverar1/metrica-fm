@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import LoadingProvider from '@/components/loading/LoadingProvider';
 import AppInitializer from '@/components/loading/AppInitializer';
+import RobustNavigationProvider from '@/components/loading/RobustNavigationProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -23,10 +24,12 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AppInitializer>
-          <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
-            {children}
-          </LoadingProvider>
-          <Toaster />
+          <RobustNavigationProvider>
+            <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
+              {children}
+            </LoadingProvider>
+            <Toaster />
+          </RobustNavigationProvider>
         </AppInitializer>
       </body>
     </html>
