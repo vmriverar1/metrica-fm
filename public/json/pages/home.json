@@ -87,12 +87,14 @@
       "subtitle": "Ofrecemos un portafolio de servicios especializados para cuidar la rentabilidad y el éxito de proyectos del sector construcción."
     },
     "main_service": {
+      "id": "main",
       "title": "Dirección Integral de Proyectos (DIP)",
       "description": "Lideramos tu proyecto desde la concepción hasta la entrega, asegurando el cumplimiento de objetivos en tiempo, costo y calidad.",
       "image_url": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
       "image_url_fallback": "/img/services/dip-main.jpg",
       "icon_url": "/img/icono-logo-2.png",
       "is_main": true,
+      "width": "3/3",
       "cta": {
         "text": "Conoce más sobre DIP",
         "url": "/services"
@@ -105,7 +107,13 @@
         "description": "Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
         "image_url_fallback": "/img/services/pmo-service.jpg",
-        "icon_url": "/img/ico-service-2.png"
+        "icon_url": "/img/ico-service-2.png",
+        "is_main": false,
+        "width": "1/3",
+        "cta": {
+          "text": "Ver PMO",
+          "url": "/services"
+        }
       },
       {
         "id": "supervision",
@@ -113,7 +121,13 @@
         "description": "Vigilancia técnica y administrativa para que la construcción se ejecute según los planos y normativas.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
         "image_url_fallback": "/img/services/supervision-service.jpg",
-        "icon_url": "/img/ico-service-3.png"
+        "icon_url": "/img/ico-service-3.png",
+        "is_main": false,
+        "width": "1/3",
+        "cta": {
+          "text": "Ver Supervisión",
+          "url": "/services"
+        }
       },
       {
         "id": "contracts",
@@ -121,7 +135,13 @@
         "description": "Administramos los contratos de obra para prevenir conflictos y asegurar el cumplimiento de las obligaciones.",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
         "image_url_fallback": "/img/services/contracts-service.jpg",
-        "icon_url": "/img/ico-service-4.png"
+        "icon_url": "/img/ico-service-4.png",
+        "is_main": false,
+        "width": "2/3",
+        "cta": {
+          "text": "Ver Contratos",
+          "url": "/services"
+        }
       },
       {
         "id": "quality",
@@ -129,7 +149,13 @@
         "description": "Aseguramos que todos los materiales y procesos constructivos cumplan con los más altos estándares.",
         "icon_url": "/img/ico-service-5.png",
         "image_url": "https://metrica-dip.com/images/slider-inicio-es/07.jpg",
-        "image_url_fallback": "/img/services/quality-service.jpg"
+        "image_url_fallback": "/img/services/quality-service.jpg",
+        "is_main": false,
+        "width": "1/3",
+        "cta": {
+          "text": "Ver Calidad",
+          "url": "/services"
+        }
       }
     ]
   },

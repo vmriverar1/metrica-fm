@@ -230,7 +230,7 @@ export function validateField(
   
   // Validación personalizada
   if (validation.custom) {
-    return validation.custom(value, allData)
+    return validation.custom(value)
   }
   
   return null

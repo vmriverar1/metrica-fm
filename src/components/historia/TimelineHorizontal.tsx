@@ -13,25 +13,24 @@ interface TimelineHorizontalProps {
   historiaData?: any;
 }
 
-// Función para generar datos extendidos dinámicamente
+// Función optimizada para generar datos extendidos dinámicamente
 const generateExtendedData = (timelineEvents: any[]) => {
   const hitosExtendidos: { [key: number]: any } = {};
   
   timelineEvents.forEach((event, index) => {
     const eventIndex = index + 1;
     hitosExtendidos[eventIndex] = {
-      longDescription: event.description,
+      longDescription: event.description || 'Descripción no disponible',
       achievements: [
-        { number: event.metrics.team_size.toString(), label: 'Profesionales' },
-        { number: event.metrics.projects.toString(), label: 'Proyectos' },
-        { number: event.metrics.investment, label: 'Inversión' },
+        { number: event.metrics?.team_size?.toString() || '0', label: 'Profesionales' },
+        { number: event.metrics?.projects?.toString() || '0', label: 'Proyectos' },
+        { number: event.metrics?.investment || 'N/A', label: 'Inversión' },
         { number: `${event.year}`, label: 'Año' }
       ],
-      gallery: event.gallery || [
-        event.image,
-        event.image_fallback || event.image
-      ],
-      quote: event.impact,
+      gallery: event.gallery && event.gallery.length > 0 
+        ? event.gallery.filter(img => img && img.trim() !== '') 
+        : [event.image, event.image_fallback].filter(img => img && img.trim() !== ''),
+      quote: event.impact || '',
       quoteAuthor: 'Métrica DIP'
     };
   });
@@ -39,151 +38,11 @@ const generateExtendedData = (timelineEvents: any[]) => {
   return hitosExtendidos;
 };
 
-// Datos extendidos para cada hito (fallback para compatibilidad)
-const hitosExtendidosDefault = {
-  1: {
-    longDescription: 'En 2010, un grupo de profesionales visionarios decidió transformar la forma en que se gestionan los proyectos de infraestructura en el Perú. Con una oficina modesta pero llena de sueños, Métrica DIP dio sus primeros pasos hacia lo que hoy es una empresa líder en el sector.',
-    achievements: [
-      { number: '5', label: 'Profesionales fundadores' },
-      { number: '1', label: 'Oficina inaugural' },
-      { number: '3', label: 'Primeros clientes' },
-      { number: '100%', label: 'Pasión y compromiso' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/04.jpg'
-    ],
-    quote: 'El éxito no se mide solo en números, sino en la confianza que construimos cada día.',
-    quoteAuthor: 'Equipo Fundador'
-  },
-  2: {
-    longDescription: 'Cinco años después de nuestra fundación, Métrica DIP experimentó un crecimiento exponencial. La calidad de nuestro trabajo y el compromiso con cada proyecto nos abrió las puertas a proyectos de mayor envergadura en todo el territorio nacional.',
-    achievements: [
-      { number: '50+', label: 'Proyectos completados' },
-      { number: '15', label: 'Regiones del Perú' },
-      { number: '30', label: 'Profesionales especializados' },
-      { number: '98%', label: 'Satisfacción del cliente' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/05.jpg'
-    ]
-  },
-  3: {
-    longDescription: 'La obtención de la certificación ISO 9001 marcó un hito fundamental en nuestra historia. Este logro no solo validó nuestros procesos y metodologías, sino que nos posicionó como una empresa con estándares internacionales de calidad.',
-    achievements: [
-      { number: 'ISO 9001', label: 'Certificación obtenida' },
-      { number: '100+', label: 'Procesos optimizados' },
-      { number: '0', label: 'No conformidades críticas' },
-      { number: '24/7', label: 'Mejora continua' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/06.jpg'
-    ],
-    quote: 'La excelencia no es un destino, es un viaje constante de mejora y aprendizaje.',
-    quoteAuthor: 'Director de Calidad'
-  },
-  4: {
-    longDescription: 'El 2020 puso a prueba nuestra capacidad de adaptación. Mientras el mundo enfrentaba desafíos sin precedentes, Métrica DIP demostró su resiliencia manteniendo la continuidad de todos sus proyectos y apoyando a sus clientes en momentos críticos.',
-    achievements: [
-      { number: '100%', label: 'Continuidad operativa' },
-      { number: '0', label: 'Proyectos detenidos' },
-      { number: '90%', label: 'Equipo en trabajo remoto' },
-      { number: '50+', label: 'Protocolos implementados' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/03.jpg'
-    ]
-  },
-  5: {
-    longDescription: 'La transformación digital llegó para quedarse. En 2023, integramos tecnologías BIM y prácticas sostenibles en todos nuestros procesos, marcando el inicio de una nueva era en la gestión de proyectos de infraestructura.',
-    achievements: [
-      { number: 'BIM', label: 'Metodología implementada' },
-      { number: '80%', label: 'Reducción de errores' },
-      { number: '30%', label: 'Ahorro en recursos' },
-      { number: '100%', label: 'Proyectos digitalizados' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/04.jpg'
-    ],
-    quote: 'La innovación no es solo adoptar tecnología, es transformar la forma en que creamos valor.',
-    quoteAuthor: 'Director de Innovación'
-  },
-  6: {
-    longDescription: 'Hoy, Métrica DIP se consolida como líder indiscutible en la dirección integral de proyectos. Con más de 200 proyectos exitosos y un equipo de profesionales apasionados, miramos al futuro con la misma ilusión del primer día.',
-    achievements: [
-      { number: '200+', label: 'Proyectos exitosos' },
-      { number: '50+', label: 'Profesionales expertos' },
-      { number: '14', label: 'Años de experiencia' },
-      { number: '#1', label: 'Líder del sector' }
-    ],
-    gallery: [
-      'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-      'https://metrica-dip.com/images/slider-inicio-es/05.jpg'
-    ]
-  }
-};
-
-// Datos de los hitos históricos
-const hitos = [
-  {
-    id: 1,
-    year: '2010',
-    title: 'Fundación',
-    subtitle: 'El inicio de un sueño',
-    description: 'Métrica DIP nace con la visión de transformar la dirección de proyectos en el Perú. Un equipo de profesionales apasionados se une para crear una empresa que marcaría la diferencia en el sector de infraestructura.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    highlights: ['Primer proyecto', 'Equipo fundador', 'Visión establecida']
-  },
-  {
-    id: 2,
-    year: '2015',
-    title: 'Expansión',
-    subtitle: 'Primeros grandes proyectos',
-    description: 'Consolidamos nuestra presencia con proyectos de infraestructura a nivel nacional. La confianza de nuestros clientes nos impulsa a crecer y asumir desafíos cada vez más grandes.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    highlights: ['50+ proyectos', 'Presencia nacional', 'Equipo especializado']
-  },
-  {
-    id: 3,
-    year: '2018',
-    title: 'Certificación ISO',
-    subtitle: 'Excelencia reconocida',
-    description: 'Obtenemos la certificación ISO 9001, reafirmando nuestro compromiso con la calidad. Este logro nos posiciona como líderes en gestión de proyectos con estándares internacionales.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    highlights: ['ISO 9001', 'Procesos optimizados', 'Calidad garantizada']
-  },
-  {
-    id: 4,
-    year: '2020',
-    title: 'Resiliencia',
-    subtitle: 'Adaptación y crecimiento',
-    description: 'Superamos desafíos globales manteniendo la continuidad de nuestros servicios. La innovación y adaptabilidad nos permiten seguir adelante con todos nuestros proyectos.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    highlights: ['Continuidad operativa', 'Trabajo remoto', 'Cero retrasos']
-  },
-  {
-    id: 5,
-    year: '2023',
-    title: 'Innovación',
-    subtitle: 'Tecnología y sostenibilidad',
-    description: 'Integramos tecnologías BIM y prácticas sostenibles en nuestros procesos. La transformación digital nos permite ofrecer soluciones más eficientes y responsables con el medio ambiente.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    highlights: ['Metodología BIM', 'Proyectos sostenibles', 'Digitalización']
-  },
-  {
-    id: 6,
-    year: '2024',
-    title: 'Presente',
-    subtitle: 'Líderes en dirección de proyectos',
-    description: 'Más de 200 proyectos exitosos nos posicionan como referentes del sector. Miramos al futuro con la experiencia acumulada y la pasión intacta del primer día.',
-    image: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    highlights: ['200+ proyectos', 'Líder del sector', 'Visión de futuro']
-  }
-];
+// Función para crear fallback mínimo si no hay datos
+const getEmptyTimeline = () => ({
+  hitosExtendidos: {},
+  hitosData: []
+});
 
 export default function TimelineHorizontal({ historiaData }: TimelineHorizontalProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -195,24 +54,34 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
   const [velocity, setVelocity] = useState(0);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   
-  // Usar datos del JSON si están disponibles
+  // Usar SOLO datos del JSON - sin fallbacks hardcodeados
   const timelineEvents = historiaData?.timeline_events || [];
+  console.log('📅 TimelineHorizontal: Eventos recibidos:', timelineEvents.length, timelineEvents);
+  
+  // Generar datos extendidos dinámicamente
   const hitosExtendidos = timelineEvents.length > 0 
     ? generateExtendedData(timelineEvents) 
-    : hitosExtendidosDefault;
+    : {};
   
-  // Crear hitos dinámicos basados en el JSON
+  // Crear hitos dinámicos basados ÚNICAMENTE en el JSON
   const hitosData = timelineEvents.length > 0 
     ? timelineEvents.map((event: any, index: number) => ({
         id: index + 1,
         year: event.year.toString(),
-        title: event.title,
-        subtitle: event.subtitle,
-        description: event.description,
-        image: event.image || event.image_fallback,
-        highlights: event.achievements || ['Hito importante', 'Crecimiento', 'Excelencia']
+        title: event.title || 'Sin título',
+        subtitle: event.subtitle || 'Sin subtítulo',
+        description: event.description || 'Sin descripción',
+        image: event.image || event.image_fallback || '',
+        highlights: Array.isArray(event.achievements) && event.achievements.length > 0 
+          ? event.achievements.slice(0, 3) 
+          : ['Evento importante']
       }))
-    : hitos;
+    : [];
+    
+  console.log('📊 TimelineHorizontal: Datos procesados:', { 
+    hitosData: hitosData.length, 
+    hitosExtendidos: Object.keys(hitosExtendidos).length 
+  });
   
   // Referencias para funcionalidad auxiliar
   const isInSectionRef = useRef(false);
@@ -327,6 +196,27 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
     });
   };
 
+  // Si no hay datos del JSON, mostrar mensaje informativo
+  if (hitosData.length === 0) {
+    return (
+      <section 
+        id="timeline-horizontal-section"
+        className="relative bg-background overflow-hidden flex items-center justify-center"
+        style={{ height: '100vh' }}
+      >
+        <div className="text-center">
+          <div className="mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-2">Timeline no disponible</h2>
+            <p className="text-foreground/70">No se encontraron eventos históricos en el archivo JSON.</p>
+            <p className="text-sm text-foreground/50 mt-2">
+              Por favor, configure los eventos en el administrador.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section 
       ref={sectionRef} 
@@ -361,7 +251,7 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
       <div className="progress-indicator">
         <ProgressIndicator 
           progress={progress} 
-          hitos={hitos} 
+          hitos={hitosData} 
           activeIndex={activeIndex}
           onDotClick={handleDotClick}
         />

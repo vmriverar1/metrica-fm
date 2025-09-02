@@ -1,21 +1,22 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings, Plus, Eye, EyeOff, Upload, ExternalLink, Star } from 'lucide-react';
+import { Settings, Plus, Eye, EyeOff, Upload, ExternalLink, Star, Trash2, Edit3, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import ImageField from '@/components/admin/ImageField';
 
 interface Service {
   id: string;
   title: string;
   description: string;
   image_url?: string;
-  image_url_fallback?: string;
   icon_url?: string;
   is_main?: boolean;
+  width?: '1/3' | '2/3' | '3/3';
   cta?: {
     text: string;
     url: string;
@@ -68,38 +69,308 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     });
   };
 
-  const ServiceCard = ({ service, isMain, index }: { service: Service; isMain: boolean; index?: number }) => (
+  const addSecondaryService = () => {
+    const newService: Service = {
+      id: `service-${Date.now()}`,
+      title: '',
+      description: '',
+      image_url: '',
+      icon_url: '',
+      is_main: false,
+      width: '1/3'
+    };
+    
+    const updatedSecondaryServices = [...secondaryServices, newService];
+    onChange({
+      section: { title: '', subtitle: '' },
+      main_service: mainService,
+      secondary_services: updatedSecondaryServices
+    });
+    
+    // Set editing to the new service
+    setEditingService(updatedSecondaryServices.length - 1);
+  };
+
+  const removeSecondaryService = (index: number) => {
+    if (secondaryServices.length <= 1) {
+      alert('Debe mantener al menos un servicio secundario');
+      return;
+    }
+    
+    const updatedSecondaryServices = secondaryServices.filter((_, i) => i !== index);
+    onChange({
+      section: { title: '', subtitle: '' },
+      main_service: mainService,
+      secondary_services: updatedSecondaryServices
+    });
+    
+    // Reset editing if we were editing the removed service
+    if (editingService === index) {
+      setEditingService(null);
+    } else if (editingService !== null && editingService > index) {
+      setEditingService(editingService - 1);
+    }
+  };
+
+  const duplicateService = (index: number) => {
+    const serviceToDuplicate = secondaryServices[index];
+    const newService: Service = {
+      ...serviceToDuplicate,
+      id: `service-${Date.now()}`,
+      title: `${serviceToDuplicate.title} (Copia)`,
+      width: serviceToDuplicate.width || '1/3'
+    };
+    
+    const updatedSecondaryServices = [...secondaryServices];
+    updatedSecondaryServices.splice(index + 1, 0, newService);
+    
+    onChange({
+      section: { title: '', subtitle: '' },
+      main_service: mainService,
+      secondary_services: updatedSecondaryServices
+    });
+    
+    // Set editing to the new service
+    setEditingService(index + 1);
+  };
+
+  const handleWidthChange = (index: number, newWidth: '1/3' | '2/3' | '3/3') => {
+    const updatedSecondaryServices = [...secondaryServices];
+    updatedSecondaryServices[index] = { ...updatedSecondaryServices[index], width: newWidth };
+    onChange({
+      section: { title: '', subtitle: '' },
+      main_service: mainService,
+      secondary_services: updatedSecondaryServices
+    });
+  };
+
+  // Función para obtener clases CSS según el ancho
+  const getWidthClass = (width: '1/3' | '2/3' | '3/3' | undefined): string => {
+    switch (width) {
+      case '2/3': return 'col-span-2';
+      case '3/3': return 'col-span-3';
+      case '1/3':
+      default: return 'col-span-1';
+    }
+  };
+
+  // Función para obtener descripción del ancho
+  const getWidthLabel = (width: '1/3' | '2/3' | '3/3' | undefined): string => {
+    switch (width) {
+      case '2/3': return 'Ancho 2/3';
+      case '3/3': return 'Ancho completo';
+      case '1/3':
+      default: return 'Ancho 1/3';
+    }
+  };
+
+  const toggleMainService = (targetIndex: number) => {
+    // Si ya es el servicio principal, lo quitamos de principal
+    if (targetIndex === -1) {
+      // Quitar de principal (convertir mainService en secundario)
+      const demotedMainService: Service = {
+        ...mainService,
+        id: `service-${Date.now()}`,
+        is_main: false,
+        width: '1/3'
+      };
+      
+      // Crear un servicio principal vacío/placeholder
+      const emptyMain: Service = { 
+        id: 'main', 
+        title: '', 
+        description: '', 
+        is_main: false  // No hay servicio principal
+      };
+      
+      const newSecondaryServices = [demotedMainService, ...secondaryServices];
+        
+      onChange({
+        section: { title: '', subtitle: '' },
+        main_service: emptyMain,
+        secondary_services: newSecondaryServices
+      });
+    } else {
+      // Hacer principal un servicio secundario
+      const serviceToPromote = secondaryServices[targetIndex];
+      const newMainService = { ...serviceToPromote, is_main: true };
+      
+      // Si el main actual tiene contenido, convertirlo en secundario
+      let newSecondaryServices = [...secondaryServices];
+      newSecondaryServices.splice(targetIndex, 1); // Remover el servicio promovido
+      
+      // Solo agregar el main anterior si tiene contenido
+      if (mainService.title || mainService.description || mainService.image_url) {
+        const demotedMainService: Service = {
+          ...mainService,
+          id: `service-${Date.now()}`,
+          is_main: false,
+          width: '1/3'
+        };
+        newSecondaryServices.unshift(demotedMainService);
+      }
+      
+      onChange({
+        section: { title: '', subtitle: '' },
+        main_service: newMainService,
+        secondary_services: newSecondaryServices
+      });
+    }
+  };
+
+  const ServiceCard = ({ service, isMain, index }: { service: Service; isMain: boolean; index?: number }) => {
+    const hasMainContent = isMain && (service.title || service.description || service.image_url);
+    const isRealMain = isMain && service.is_main; // Solo es principal si tiene is_main: true
+    
+    // Si es el slot principal pero está vacío, mostrar placeholder
+    if (isMain && !hasMainContent) {
+      return (
+        <div className="p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
+          <div className="flex flex-col items-center gap-2 py-4">
+            <Star className="h-8 w-8 text-gray-400" />
+            <p className="text-sm text-gray-500">No hay servicio principal</p>
+            <p className="text-xs text-gray-400">Haz click en la estrella de cualquier servicio para hacerlo principal</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
     <div className={`p-4 border rounded-lg transition-all duration-200 ${
-      isMain 
+      isRealMain 
         ? 'border-blue-300 bg-blue-50 ring-2 ring-blue-100' 
         : 'border-gray-200 bg-white hover:border-gray-300'
     }`}>
       <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          {isMain && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
-          <Badge variant={isMain ? "default" : "secondary"}>
-            {isMain ? 'Principal' : `Servicio ${(index || 0) + 2}`}
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => toggleMainService(isMain ? -1 : index || 0)}
+            className={`h-5 w-5 p-0 ${isRealMain ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}
+            title={isRealMain ? "Quitar como principal" : "Hacer principal"}
+          >
+            <Star className={`h-4 w-4 ${isRealMain ? 'fill-yellow-500' : ''}`} />
+          </Button>
+          <Badge variant={isRealMain ? "default" : "secondary"}>
+            {isRealMain ? 'Principal' : `Servicio ${(index || 0) + 1}`}
           </Badge>
+          {!isMain && (
+            <Badge variant="outline" className="text-xs">
+              {getWidthLabel(service.width)}
+            </Badge>
+          )}
         </div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => setEditingService(isMain ? null : index || 0)}
-          className="h-6 w-6 p-0"
-        >
-          <Settings className="h-3 w-3" />
-        </Button>
+        <div className="flex items-center gap-1">
+          {hasMainContent && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setEditingService(isMain ? -1 : index || 0)}
+              className="h-6 w-6 p-0"
+              title="Editar"
+            >
+              <Edit3 className="h-3 w-3" />
+            </Button>
+          )}
+          {!isMain && index !== undefined && (
+            <>
+              {/* Botones de ancho */}
+              <div className="flex items-center">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleWidthChange(index, '1/3')}
+                  className={`h-6 w-6 p-0 ${service.width === '1/3' ? 'text-blue-600' : 'text-gray-400'}`}
+                  title="Ancho 1/3"
+                >
+                  <span className="text-xs font-bold">1</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleWidthChange(index, '2/3')}
+                  className={`h-6 w-6 p-0 ${service.width === '2/3' ? 'text-blue-600' : 'text-gray-400'}`}
+                  title="Ancho 2/3"
+                >
+                  <span className="text-xs font-bold">2</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleWidthChange(index, '3/3')}
+                  className={`h-6 w-6 p-0 ${service.width === '3/3' ? 'text-blue-600' : 'text-gray-400'}`}
+                  title="Ancho completo"
+                >
+                  <span className="text-xs font-bold">3</span>
+                </Button>
+              </div>
+              
+              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+              
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => duplicateService(index)}
+                className="h-6 w-6 p-0"
+                title="Duplicar"
+              >
+                <Plus className="h-3 w-3" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => removeSecondaryService(index)}
+                className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                title="Eliminar"
+              >
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
       
       <div className="space-y-2">
-        <h4 className="font-semibold text-sm line-clamp-1">{service.title || 'Sin título'}</h4>
+        <div className="flex items-start gap-2">
+          {service.icon_url && (
+            <img
+              src={service.icon_url}
+              alt="Icono del servicio"
+              className="w-5 h-5 flex-shrink-0 mt-0.5"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+          )}
+          <h4 className="font-semibold text-sm line-clamp-1">{service.title || 'Sin título'}</h4>
+        </div>
         <p className="text-xs text-gray-600 line-clamp-2">{service.description || 'Sin descripción'}</p>
         
         {service.image_url && (
-          <div className="w-full h-20 bg-gray-100 rounded border overflow-hidden">
-            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-              <span className="text-xs text-gray-600">Imagen: {service.image_url.split('/').pop()}</span>
+          <div className="w-full h-20 bg-gray-100 rounded border overflow-hidden relative">
+            <img
+              src={service.image_url}
+              alt={service.title || 'Imagen del servicio'}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                // Si falla, ocultar imagen y mostrar placeholder
+                target.style.display = 'none';
+                const fallback = target.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center" style={{display: 'none'}}>
+              <span className="text-xs text-gray-600">Imagen no disponible</span>
             </div>
           </div>
         )}
@@ -112,7 +383,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
         )}
       </div>
     </div>
-  );
+    );
+  };
 
   const ServiceEditor = ({ service, isMain, index }: { service: Service; isMain: boolean; index?: number }) => {
     const handleChange = (field: keyof Service, value: any) => {
@@ -131,13 +403,26 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     return (
       <Card className="mb-4">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center gap-2">
-            {isMain && <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />}
-            {isMain ? 'Servicio Principal (DIP)' : `Servicio Secundario ${(index || 0) + 2}`}
-            <Badge variant={isMain ? "default" : "outline"}>
-              {service.id}
-            </Badge>
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg flex items-center gap-2">
+              {isMain && <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />}
+              {isMain ? 'Servicio Principal (DIP)' : `Servicio Secundario ${(index || 0) + 1}`}
+              <Badge variant={isMain ? "default" : "outline"}>
+                {service.id}
+              </Badge>
+            </CardTitle>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => toggleMainService(isMain ? -1 : index || 0)}
+              className={`flex items-center gap-1 ${service.is_main ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}
+              title={service.is_main ? "Quitar como principal" : "Hacer principal"}
+            >
+              <Star className={`h-4 w-4 ${service.is_main ? 'fill-yellow-500' : ''}`} />
+              {service.is_main ? 'Es Principal' : 'Hacer Principal'}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -169,46 +454,75 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                 />
                 <p className="text-xs text-gray-500 mt-1">{service.description?.length || 0}/200</p>
               </div>
+
+              {/* Control de ancho - solo para servicios secundarios */}
+              {!isMain && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Ancho de la Card
+                  </label>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant={service.width === '1/3' ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleChange('width', '1/3')}
+                      className="flex-1"
+                    >
+                      1/3
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={service.width === '2/3' ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleChange('width', '2/3')}
+                      className="flex-1"
+                    >
+                      2/3
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={service.width === '3/3' ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleChange('width', '3/3')}
+                      className="flex-1"
+                    >
+                      Completo
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Controla qué tan ancha será esta card en la grilla de servicios
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Recursos y CTA */}
             <div className="space-y-4">
               {imageUpload && (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Imagen Principal (URL)
-                    </label>
-                    <Input
-                      value={service.image_url || ''}
-                      onChange={(e) => handleChange('image_url', e.target.value)}
-                      placeholder="https://ejemplo.com/imagen.jpg"
-                      type="url"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Imagen Fallback (local)
-                    </label>
-                    <Input
-                      value={service.image_url_fallback || ''}
-                      onChange={(e) => handleChange('image_url_fallback', e.target.value)}
-                      placeholder="/img/services/servicio.jpg"
-                    />
-                  </div>
-                </>
+                <div>
+                  <ImageField
+                    value={service.image_url || ''}
+                    onChange={(newValue) => handleChange('image_url', newValue)}
+                    label="Imagen del Servicio"
+                    placeholder="Seleccionar imagen..."
+                    required={false}
+                    disabled={false}
+                    description="Imagen principal que se mostrará en la card del servicio"
+                  />
+                </div>
               )}
 
               {iconLibrary && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Icono (URL)
-                  </label>
-                  <Input
+                  <ImageField
                     value={service.icon_url || ''}
-                    onChange={(e) => handleChange('icon_url', e.target.value)}
-                    placeholder="/img/ico-service-1.png"
+                    onChange={(newValue) => handleChange('icon_url', newValue)}
+                    label="Icono del Servicio"
+                    placeholder="Seleccionar icono..."
+                    required={false}
+                    disabled={false}
+                    description="Icono pequeño que representa el servicio (opcional)"
                   />
                 </div>
               )}
@@ -241,26 +555,28 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5" />
-              Editor Visual de Servicios
-              <Badge variant="outline">1 Principal + 4 Secundarios</Badge>
-            </CardTitle>
-            <CardDescription>
-              Configure el servicio principal (DIP) destacado y los 4 servicios secundarios.
-            </CardDescription>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addSecondaryService}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Agregar Servicio
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowPreview(!showPreview)}
+              className="flex items-center gap-2"
+            >
+              {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPreview ? 'Editar' : 'Preview'}
+            </Button>
           </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setShowPreview(!showPreview)}
-            className="flex items-center gap-2"
-          >
-            {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            {showPreview ? 'Editar' : 'Preview'}
-          </Button>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -269,7 +585,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
         {showPreview && (
           <div className="bg-gradient-to-br from-blue-50 to-gray-50 p-6 rounded-lg border">
             <h3 className="text-lg font-semibold text-center mb-6 text-gray-800">
-              Vista Previa: Servicio Principal + Grid 2x2
+              Vista Previa: 1 Principal + {secondaryServices.length} Secundarios
             </h3>
             
             {/* Servicio Principal */}
@@ -277,70 +593,173 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
               <ServiceCard service={mainService} isMain={true} />
             </div>
             
-            {/* Servicios Secundarios en Grid 2x2 */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Servicios Secundarios en Grid con ancho dinámico */}
+            <div className="grid grid-cols-3 gap-4">
               {secondaryServices.map((service, index) => (
-                <ServiceCard 
-                  key={service.id} 
-                  service={service} 
-                  isMain={false} 
-                  index={index} 
-                />
+                <div key={service.id} className={getWidthClass(service.width)}>
+                  <ServiceCard 
+                    service={service} 
+                    isMain={false} 
+                    index={index} 
+                  />
+                </div>
               ))}
             </div>
+            
+            {/* Mensaje si no hay servicios secundarios */}
+            {secondaryServices.length === 0 && (
+              <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                <Settings className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p>No hay servicios secundarios configurados</p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addSecondaryService}
+                  className="mt-3"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Agregar Primer Servicio
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
         {/* Edit Mode */}
         {!showPreview && (
           <div className="space-y-6">
-            {/* Servicio Principal siempre visible o cuando está seleccionado */}
-            {(editingService === null || editingService === undefined) && (
-              <ServiceEditor service={mainService} isMain={true} />
+            {/* Vista compacta con cards para gestión rápida */}
+            {editingService === null && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-medium text-gray-700">Vista rápida - Gestión de servicios</h4>
+                  <Badge variant="outline">{secondaryServices.length + 1} servicios total</Badge>
+                </div>
+                
+                {/* Servicio Principal Card */}
+                <div className="mb-4">
+                  <ServiceCard service={mainService} isMain={true} />
+                </div>
+                
+                {/* Servicios Secundarios Cards con ancho dinámico */}
+                <div className="grid grid-cols-3 gap-4">
+                  {secondaryServices.map((service, index) => (
+                    <div key={service.id} className={getWidthClass(service.width)}>
+                      <ServiceCard 
+                        service={service} 
+                        isMain={false} 
+                        index={index} 
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Mensaje si no hay servicios secundarios */}
+                {secondaryServices.length === 0 && (
+                  <div className="text-center py-6 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                    <Settings className="h-6 w-6 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">No hay servicios secundarios</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addSecondaryService}
+                      className="mt-2"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Agregar Primer Servicio
+                    </Button>
+                  </div>
+                )}
+              </div>
             )}
 
-            {/* Servicios Secundarios */}
-            {secondaryServices.map((service, index) => (
-              (editingService === index || editingService === null) && (
-                <ServiceEditor 
-                  key={service.id}
-                  service={service} 
-                  isMain={false} 
-                  index={index} 
-                />
-              )
-            ))}
-
-            {/* Navegación entre servicios */}
+            {/* Editor individual cuando se selecciona un servicio específico */}
             {editingService !== null && (
-              <div className="flex justify-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditingService(null)}
-                >
-                  Ver Principal
-                </Button>
-                {secondaryServices.map((_, index) => (
+              <>
+                {/* Botón para volver atrás */}
+                <div className="flex items-center justify-between mb-4">
                   <Button
                     type="button"
-                    key={index}
-                    variant={editingService === index ? "default" : "outline"}
+                    variant="outline"
                     size="sm"
-                    onClick={() => setEditingService(index)}
+                    onClick={() => setEditingService(null)}
+                    className="flex items-center gap-2"
                   >
-                    Servicio {index + 2}
+                    <X className="h-4 w-4" />
+                    Volver a Vista General
                   </Button>
-                ))}
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setEditingService(null)}
-                >
-                  Ver Todos
-                </Button>
+                  <Badge variant="secondary">
+                    {editingService === -1 ? 'Editando Servicio Principal' : `Editando Servicio ${editingService + 1}`}
+                  </Badge>
+                </div>
+
+                {/* Servicio Principal Editor */}
+                {editingService === -1 && (
+                  <ServiceEditor service={mainService} isMain={true} />
+                )}
+
+                {/* Servicios Secundarios Editor */}
+                {editingService !== -1 && editingService >= 0 && secondaryServices[editingService] && (
+                  <ServiceEditor 
+                    service={secondaryServices[editingService]} 
+                    isMain={false} 
+                    index={editingService} 
+                  />
+                )}
+              </>
+            )}
+
+            {/* Navegación entre servicios */}
+            {secondaryServices.length > 0 && (
+              <div className="border-t pt-6">
+                <div className="flex justify-center items-center gap-2 flex-wrap">
+                  <Button
+                    type="button"
+                    variant={editingService === null ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setEditingService(null)}
+                    className="flex items-center gap-1"
+                  >
+                    <Eye className="h-3 w-3" />
+                    Vista General
+                  </Button>
+                  
+                  <Button
+                    type="button"
+                    variant={editingService === -1 ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setEditingService(-1)}
+                    className="flex items-center gap-1"
+                  >
+                    <Star className="h-3 w-3" />
+                    Principal
+                  </Button>
+                  
+                  {secondaryServices.map((_, index) => (
+                    <Button
+                      type="button"
+                      key={index}
+                      variant={editingService === index ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setEditingService(index)}
+                    >
+                      Servicio {index + 1}
+                    </Button>
+                  ))}
+                  
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={addSecondaryService}
+                    className="flex items-center gap-1 text-green-600 hover:text-green-800"
+                  >
+                    <Plus className="h-3 w-3" />
+                    Nuevo
+                  </Button>
+                </div>
               </div>
             )}
           </div>
@@ -350,7 +769,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
         <div className="border-t pt-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-[#003F6F]">5</p>
+              <p className="text-2xl font-bold text-[#003F6F]">{secondaryServices.length + 1}</p>
               <p className="text-xs text-gray-600">Total Servicios</p>
             </div>
             <div>
@@ -374,17 +793,6 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
           </div>
         </div>
 
-        {/* Tips */}
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Tips para Servicios Efectivos:</h4>
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• <strong>Principal:</strong> DIP debe destacar claramente sus beneficios únicos</li>
-            <li>• <strong>Títulos:</strong> Mantenga títulos concisos y descriptivos (máximo 50 chars)</li>
-            <li>• <strong>Descripciones:</strong> Enfoque en beneficios, no solo características</li>
-            <li>• <strong>CTAs:</strong> Use verbos de acción específicos ("Conoce más", "Solicita consulta")</li>
-            <li>• <strong>Imágenes:</strong> Use fotos reales de proyectos cuando sea posible</li>
-          </ul>
-        </div>
       </CardContent>
     </Card>
   );

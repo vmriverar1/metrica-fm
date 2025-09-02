@@ -443,7 +443,12 @@ export const FAQManager: React.FC<FAQManagerProps> = ({
           /* Lista de FAQs para edición */
           allowReordering ? (
             <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="faqs">
+              <Droppable 
+                droppableId="faqs" 
+                isDropDisabled={false} 
+                isCombineEnabled={false}
+                ignoreContainerClipping={false}
+              >
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
                     {filteredFAQs.map((faq, index) => (

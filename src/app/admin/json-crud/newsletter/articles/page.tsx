@@ -463,9 +463,9 @@ export default function ArticlesPage() {
     {
       key: 'featured_image',
       label: 'Imagen Principal',
-      type: 'url',
-      placeholder: 'https://ejemplo.com/imagen.jpg',
-      description: 'URL de la imagen principal del artículo',
+      type: 'image',
+      placeholder: 'Seleccionar imagen principal del artículo',
+      description: 'Imagen principal del artículo. Puedes subir un archivo o usar una URL externa.',
       group: 'media'
     },
     {
@@ -479,9 +479,9 @@ export default function ArticlesPage() {
     {
       key: 'social_image',
       label: 'Imagen para Redes Sociales',
-      type: 'url',
-      placeholder: 'https://ejemplo.com/imagen-social.jpg',
-      description: 'Imagen que aparecerá al compartir en redes sociales',
+      type: 'image',
+      placeholder: 'Seleccionar imagen para redes sociales',
+      description: 'Imagen que aparecerá al compartir en redes sociales. Puedes subir un archivo o usar una URL externa.',
       group: 'media'
     },
     {

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import BulkOperations from '../BulkOperations';
+import { getSafeNumberInputProps, formatNumber } from '@/lib/form-utils';
 
 interface Statistic {
   id: string;
@@ -181,11 +182,13 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
                         Número/Valor *
                       </label>
                       <Input
-                        type="number"
-                        value={stat.value}
-                        onChange={(e) => handleStatisticChange(index, 'value', Number(e.target.value))}
-                        min={0}
-                        max={9999}
+                        {...getSafeNumberInputProps({
+                          value: stat.value || 0,
+                          onChange: (newValue) => handleStatisticChange(index, 'value', newValue),
+                          min: 0,
+                          max: 9999,
+                          fallback: 0
+                        })}
                         className="text-2xl font-bold text-center"
                       />
                     </div>
@@ -288,13 +291,16 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <p className="text-2xl font-bold text-[#003F6F]">
-                {statistics.reduce((acc, stat) => acc + stat.value, 0)}
+                {formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0))}
               </p>
               <p className="text-xs text-gray-600">Suma Total</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-[#E84E0F]">
-                {Math.round(statistics.reduce((acc, stat) => acc + stat.value, 0) / statistics.length)}
+                {statistics.length > 0 ? 
+                  formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0) / statistics.length) : 
+                  '0'
+                }
               </p>
               <p className="text-xs text-gray-600">Promedio</p>
             </div>

@@ -2,11 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
-
-This is a Next.js 15 application for Métrica DIP (Dirección Integral de Proyectos), a company focused on infrastructure project management in Peru. The project uses TypeScript, Tailwind CSS, shadcn/ui components, and Firebase for hosting and AI capabilities via Genkit.
-
 ## Common Development Commands
+
+No uses estos comandos
 
 ```bash
 # Development server (runs on port 9002)
@@ -14,21 +12,6 @@ npm run dev
 
 # Build the project
 npm run build
-
-# Start production server
-npm run start
-
-# Lint the code
-npm run lint
-
-# Type checking
-npm run typecheck
-
-# Genkit AI development server
-npm run genkit:dev
-
-# Genkit AI with watch mode
-npm run genkit:watch
 ```
 
 ## Architecture Overview

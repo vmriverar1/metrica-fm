@@ -13,7 +13,9 @@ import {
   Monitor,
   Search,
   Users,
-  Building
+  Building,
+  Grid3X3,
+  Menu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -61,6 +63,20 @@ const mainNavItems: NavItem[] = [
     icon: Mail,
     path: '/admin/json-crud/newsletter',
     description: 'Contenido del blog'
+  },
+  {
+    id: 'megamenu',
+    label: 'Mega Menu',
+    icon: Menu,
+    path: '/admin/megamenu',
+    description: 'Gestión del mega menú'
+  },
+  {
+    id: 'dynamic-content',
+    label: 'Contenido Dinámico',
+    icon: Grid3X3,
+    path: '/admin/dynamic-content',
+    description: 'Elementos dinámicos'
   }
 ];
 

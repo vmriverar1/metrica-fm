@@ -28,11 +28,6 @@
     "description": "Desde nuestros inicios en 2010, hemos evolucionado para convertirnos en líderes del sector de dirección integral de proyectos en Perú.",
     "url": "/about/historia"
   },
-  "introduction": {
-    "text": "En 2010, un grupo visionario de profesionales de la construcción e infraestructura decidió crear algo diferente. No solo otra empresa constructora, sino un socio estratégico que transformaría la manera de ejecutar proyectos en el Perú.",
-    "highlight": "Métrica nació con la convicción de que cada proyecto de infraestructura puede y debe ser ejecutado con excelencia, puntualidad y dentro del presupuesto.",
-    "mission_statement": "Desde el primer día, nuestra misión ha sido clara: ser los ojos, oídos y cerebro estratégico de nuestros clientes en cada proyecto que emprendemos."
-  },
   "timeline_events": [
     {
       "id": "foundation",
@@ -219,33 +214,16 @@
       }
     ]
   },
-  "company_evolution": {
-    "title": "Evolución Empresarial",
-    "phases": [
-      {
-        "phase": "Fundación",
-        "period": "2010-2012",
-        "focus": "Primeros pasos en PMO y supervisión",
-        "achievement": "Establecimiento de metodologías base"
-      },
-      {
-        "phase": "Consolidación",
-        "period": "2013-2017",
-        "focus": "Expansión geográfica y sectorial",
-        "achievement": "Certificación ISO 9001 y crecimiento del equipo"
-      },
-      {
-        "phase": "Liderazgo",
-        "period": "2018-2022",
-        "focus": "Tecnologías innovadoras y sostenibilidad",
-        "achievement": "Integración BIM y proyectos LEED"
-      },
-      {
-        "phase": "Transformación",
-        "period": "2023-presente",
-        "focus": "Digitalización y metodologías ágiles",
-        "achievement": "Líder en transformación digital del sector"
-      }
-    ]
+  "call_to_action": {
+    "title": "¿Listo para construir el futuro juntos?",
+    "description": "Únete a más de 200 proyectos exitosos que han transformado la infraestructura del Perú.",
+    "primary_button": {
+      "text": "Conoce nuestros servicios",
+      "href": "/services"
+    },
+    "secondary_button": {
+      "text": "Contáctanos",
+      "href": "/contact"
+    }
   }
 }

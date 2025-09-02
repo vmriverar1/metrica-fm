@@ -39,13 +39,15 @@ export interface HomePageData {
       subtitle: string;
     };
     main_service: {
+      id?: string;
       title: string;
       description: string;
-      image_url: string;
-      image_url_fallback: string;
-      icon_url: string;
-      is_main: boolean;
-      cta: {
+      image_url?: string;
+      image_url_fallback?: string;
+      icon_url?: string;
+      is_main?: boolean;
+      width?: '1/3' | '2/3' | '3/3';
+      cta?: {
         text: string;
         url: string;
       };
@@ -54,9 +56,15 @@ export interface HomePageData {
       id: string;
       title: string;
       description: string;
-      image_url: string;
-      image_url_fallback: string;
-      icon_url: string;
+      image_url?: string;
+      image_url_fallback?: string;
+      icon_url?: string;
+      is_main?: boolean;
+      width?: '1/3' | '2/3' | '3/3';
+      cta?: {
+        text: string;
+        url: string;
+      };
     }>;
   };
   portfolio: {

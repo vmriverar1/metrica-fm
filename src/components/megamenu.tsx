@@ -7,6 +7,7 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useMegaMenuData } from '@/hooks/useMegaMenuData';
 
 interface MegaMenuItem {
   id: string;
@@ -24,14 +25,18 @@ interface MegaMenuItem {
 }
 
 interface MegaMenuProps {
-  items: MegaMenuItem[];
+  items?: MegaMenuItem[];
   isScrolled: boolean;
   onMenuChange?: (isOpen: boolean) => void;
 }
 
-export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuProps) {
+export default function MegaMenu({ items: propItems, isScrolled, onMenuChange }: MegaMenuProps) {
+  const { menuData, isLoading, error, trackItemClick } = useMegaMenuData();
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Use propItems if provided, otherwise use data from hook
+  const items = propItems || menuData;
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -68,6 +73,28 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
     "bg-transparent transition-all duration-200",
     isScrolled || activeItem ? "text-foreground/80" : "text-white/90"
   );
+
+  // Show loading state or error
+  if (isLoading) {
+    return (
+      <nav className="hidden md:block relative">
+        <div className="flex items-center gap-4 animate-pulse">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-10 w-20 bg-muted rounded-md" />
+          ))}
+        </div>
+      </nav>
+    );
+  }
+
+  if (error) {
+    console.error('MegaMenu error:', error);
+    return null;
+  }
+
+  if (!items || items.length === 0) {
+    return null;
+  }
 
   return (
     <nav className="hidden md:block relative">
@@ -133,7 +160,10 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                                       href={link.href}
                                       className="block select-none space-y-1 rounded-lg px-4 py-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-white hover:translate-x-1 group"
                                       loadingMessage={`Navegando a ${link.title}...`}
-                                      onClick={() => setActiveItem(null)}
+                                      onClick={() => {
+                                        setActiveItem(null);
+                                        trackItemClick(item.id);
+                                      }}
                                     >
                                       <div className="text-sm font-semibold leading-none text-foreground group-hover:text-white">{link.title}</div>
                                       {link.description && (
@@ -190,6 +220,7 @@ export default function MegaMenu({ items, isScrolled, onMenuChange }: MegaMenuPr
                   "hover:bg-accent hover:text-white"
                 )}
                 loadingMessage={`Navegando a ${item.label}...`}
+                onClick={() => trackItemClick(item.id)}
               >
                 {item.label}
               </NavigationLink>

@@ -20,13 +20,18 @@ interface ServiceCardProps {
     id: string;
     title: string;
     description: string;
-    image_url: string;
-    image_url_fallback: string;
-    icon_url: string;
+    image_url?: string;
+    image_url_fallback?: string;
+    icon_url?: string;
     imageUrl?: string;
     iconUrl?: string;
     isMain?: boolean;
     className?: string;
+    width?: '1/3' | '2/3' | '3/3';
+    cta?: {
+      text: string;
+      url: string;
+    };
   };
   index: number;
 }
@@ -152,12 +157,21 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             </div>
           </CardContent>
           <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
-            <Image
-              src={service.imageUrl || service.image_url || service.image_url_fallback}
-              alt={service.title}
-              layout="fill"
-              objectFit="cover"
-            />
+            {(service.imageUrl || service.image_url || service.image_url_fallback) ? (
+              <Image
+                src={service.imageUrl || service.image_url || service.image_url_fallback || ''}
+                alt={service.title}
+                layout="fill"
+                objectFit="cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                <div className="text-center">
+                  <ArrowRight className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-500">Sin imagen</p>
+                </div>
+              </div>
+            )}
           </div>
         </Card>
       </TiltCard>
@@ -168,13 +182,15 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
 
 interface MainServiceCardProps {
   service: {
+    id?: string;
     title: string;
     description: string;
-    image_url: string;
-    image_url_fallback: string;
-    icon_url: string;
-    is_main: boolean;
-    cta: {
+    image_url?: string;
+    image_url_fallback?: string;
+    icon_url?: string;
+    is_main?: boolean;
+    width?: '1/3' | '2/3' | '3/3';
+    cta?: {
       text: string;
       url: string;
     };
@@ -264,12 +280,21 @@ const MainServiceCard = ({ service }: MainServiceCardProps) => {
           </div>
         </CardContent>
         <div ref={imageRef} className="relative h-64 w-full overflow-hidden">
-          <Image
-            src={service.imageUrl}
-            alt={service.title}
-            layout="fill"
-            objectFit="cover"
-          />
+          {(service.imageUrl || service.image_url || service.image_url_fallback) ? (
+            <Image
+              src={service.imageUrl || service.image_url || service.image_url_fallback || ''}
+              alt={service.title}
+              layout="fill"
+              objectFit="cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+              <div className="text-center">
+                <ArrowRight className="h-12 w-12 text-white/50 mx-auto mb-3" />
+                <p className="text-white/60">Sin imagen</p>
+              </div>
+            </div>
+          )}
         </div>
       </Card>
       </NavigationLink>
@@ -310,6 +335,26 @@ export default function Services({ data }: ServicesProps) {
     }, '-=0.5');
     
   }, { scope: sectionRef });
+
+  // Función para obtener clases CSS según el ancho
+  const getWidthClass = (width: '1/3' | '2/3' | '3/3' | undefined): string => {
+    switch (width) {
+      case '2/3': return 'lg:col-span-2';
+      case '3/3': return 'lg:col-span-3';
+      case '1/3':
+      default: return 'lg:col-span-1';
+    }
+  };
+
+  // Determinar si hay servicio principal válido
+  const hasMainService = data.main_service.is_main && 
+    (data.main_service.title || data.main_service.description || data.main_service.image_url);
+
+  // Combinar todos los servicios para renderizado dinámico
+  const allServices = [
+    ...(hasMainService ? [{ ...data.main_service, isMain: true }] : []),
+    ...data.secondary_services.map(service => ({ ...service, isMain: false }))
+  ];
   
   return (
     <section ref={sectionRef} id="services" className="py-24 bg-white overflow-hidden relative">
@@ -327,21 +372,42 @@ export default function Services({ data }: ServicesProps) {
             {data.section.subtitle}
           </p>
         </ParallaxWrapper>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <MainServiceCard service={{
-              ...data.main_service,
-              className: 'lg:col-span-2 bg-primary text-primary-foreground',
-              imageUrl: data.main_service.image_url || data.main_service.image_url_fallback
-            }} />
-          </div>
-          {data.secondary_services.map((service, index) => (
-            <ServiceCard key={service.id} service={{
-              ...service,
-              imageUrl: service.image_url || service.image_url_fallback
-            }} index={index} />
+
+        {/* Grid dinámico con ancho respetado */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {allServices.map((service, index) => (
+            <div 
+              key={service.id} 
+              className={getWidthClass(service.width)}
+            >
+              {service.isMain ? (
+                <MainServiceCard service={{
+                  ...service,
+                  className: 'bg-primary text-primary-foreground',
+                  imageUrl: service.image_url || service.image_url_fallback
+                }} />
+              ) : (
+                <ServiceCard service={{
+                  ...service,
+                  imageUrl: service.image_url || service.image_url_fallback
+                }} index={index} />
+              )}
+            </div>
           ))}
         </div>
+
+        {/* Placeholder cuando no hay servicio principal */}
+        {!hasMainService && (
+          <div className="mb-8 p-8 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+                <ArrowRight className="h-6 w-6 text-gray-400" />
+              </div>
+              <p className="text-gray-600">No hay servicio principal configurado</p>
+              <p className="text-sm text-gray-400">Configure un servicio como principal desde el administrador</p>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

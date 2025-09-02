@@ -235,9 +235,10 @@ const AuthorsManagement = () => {
     },
     {
       key: 'avatar',
-      label: 'URL de Avatar',
-      type: 'url' as const,
-      placeholder: 'https://ejemplo.com/avatar.jpg'
+      label: 'Avatar',
+      type: 'image' as const,
+      placeholder: 'Seleccionar imagen de avatar',
+      description: 'Imagen del avatar del autor. Puedes subir un archivo o usar una URL externa.'
     },
     {
       key: 'specialties',

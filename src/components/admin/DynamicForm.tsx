@@ -7,19 +7,43 @@
 import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RotatingWordsEditor from './home/RotatingWordsEditor';
-import StatisticsGrid from './home/StatisticsGrid';
+import EnhancedStatisticsManager from './enhanced/EnhancedStatisticsManager';
 import ServiceBuilder from './home/ServiceBuilder';
-import PortfolioManager from './home/PortfolioManager';
-import PillarsEditor from './home/PillarsEditor';
-import PoliciesManager from './home/PoliciesManager';
+import EnhancedPortfolioManager from './enhanced/EnhancedPortfolioManager';
+import EnhancedPillarsManager from './enhanced/EnhancedPillarsManager';
+import EnhancedPoliciesManager from './enhanced/EnhancedPoliciesManager';
+import TimelineEditor from './TimelineEditor';
+import HeroTeamGalleryEditor from './HeroTeamGalleryEditor';
+import TeamMembersEditor from './TeamMembersEditor';
+import TeamMomentsEditor from './TeamMomentsEditor';
+import ValuesEditor from './ValuesEditor';
+import CultureStatsEditor from './CultureStatsEditor';
+import TechnologiesEditor from './TechnologiesEditor';
 import PreviewModal from './PreviewModal';
 import ValidationPanel from './ValidationPanel';
 import MediaPickerField from './MediaPickerField';
 import ImageField from './ImageField';
 import GalleryField from './GalleryField';
+import VideoField from './VideoField';
+import PdfField from './PdfField';
+import { 
+  BenefitsEditor, 
+  CommitmentsEditor, 
+  ActionButtonsEditor,
+  ClientBenefitsEditor,
+  TestimonialsEditor,
+  QualityObjectivesEditor,
+  ScopeItemsEditor
+} from './iso';
 import BackupManager from './BackupManager';
 import PerformanceMonitor from './PerformanceMonitor';
 import { useSmartValidation } from '@/hooks/useSmartValidation';
+import { useISOValidation } from '@/hooks/useISOValidation';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useFormShortcuts } from '@/hooks/useKeyboardShortcuts';
+import ISOValidationPanel from './iso/ISOValidationPanel';
+import ContextualHelp from './ContextualHelp';
+import { getSafeNumberInputProps } from '@/lib/form-utils';
 import {
   Save,
   X,
@@ -53,13 +77,15 @@ import {
   Image,
   TrendingUp,
   Users,
-  Award
+  Award,
+  RefreshCw,
+  Keyboard
 } from 'lucide-react';
 
 export interface FormField {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'number' | 'date' | 'datetime-local' | 'email' | 'url' | 'password' | 'file' | 'tags' | 'markdown' | 'media' | 'custom';
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'number' | 'date' | 'datetime-local' | 'email' | 'url' | 'password' | 'file' | 'tags' | 'markdown' | 'media' | 'image' | 'gallery' | 'video' | 'custom';
   required?: boolean;
   placeholder?: string;
   options?: { value: string; label: string }[];
@@ -79,8 +105,9 @@ export interface FormField {
   disabled?: boolean;
   width?: 'full' | 'half' | 'third';
   // Para componentes custom
-  component?: 'rotating-words' | 'statistics-grid' | 'service-builder' | 'portfolio-manager' | 'pillars-editor' | 'policies-manager';
+  component?: 'rotating-words' | 'statistics-grid' | 'service-builder' | 'portfolio-manager' | 'pillars-editor' | 'policies-manager' | 'image-field' | 'video-field' | 'pdf-field' | 'timeline-builder' | 'statistics-builder' | 'phases-builder' | 'hero-team-gallery-editor' | 'team-members-editor' | 'team-moments-editor' | 'values-editor' | 'culture-stats-editor' | 'technologies-editor' | 'benefits-editor' | 'commitments-editor' | 'action-buttons-editor' | 'client-benefits-editor' | 'testimonials-editor' | 'quality-objectives-editor' | 'scope-items-editor';
   customProps?: Record<string, any>;
+  config?: Record<string, any>;
 }
 
 export interface FormGroup {
@@ -110,6 +137,11 @@ export interface DynamicFormProps {
   showBackupManager?: boolean;
   backupResource?: string;
   showPerformanceMonitor?: boolean;
+  enableISOValidation?: boolean;
+  enableAutoSave?: boolean;
+  autoSaveInterval?: number;
+  resource?: string;
+  enableKeyboardShortcuts?: boolean;
 }
 
 export default function DynamicForm({
@@ -130,7 +162,13 @@ export default function DynamicForm({
   showValidationPanel = false,
   showBackupManager = false,
   backupResource = 'unknown',
-  showPerformanceMonitor = false
+  showPerformanceMonitor = false,
+  enableISOValidation = false,
+  enableAutoSave = false,
+  autoSaveInterval = 30000,
+  resource = 'unknown',
+  enableKeyboardShortcuts = true,
+  showContextualHelp = false
 }: DynamicFormProps) {
   const [values, setValues] = useState<Record<string, any>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -147,6 +185,47 @@ export default function DynamicForm({
     validateOnChange: enableSmartValidation,
     fieldValidation: enableSmartValidation,
     autoSuggest: enableSmartValidation
+  });
+
+  // ISO Validation
+  const isoValidation = useISOValidation(enableISOValidation ? values : {});
+
+  // Keyboard Shortcuts
+  const shortcuts = useFormShortcuts({
+    onSave: () => {
+      if (enableAutoSave) {
+        autoSaveResult.saveNow();
+      } else {
+        document.querySelector('button[type="submit"]')?.click();
+      }
+    },
+    onCancel: () => onCancel?.(),
+    onPreview: showPreviewButton ? () => setShowPreviewModal(true) : undefined,
+    enabled: enableKeyboardShortcuts
+  });
+
+  // Auto Save System
+  const autoSaveResult = useAutoSave(values, {
+    enabled: enableAutoSave,
+    delay: autoSaveInterval,
+    onSave: async (data) => {
+      try {
+        await onSubmit(data);
+        return true;
+      } catch (error) {
+        console.error('Auto-save failed:', error);
+        return false;
+      }
+    },
+    onSaveStart: () => {
+      console.log('🔄 Auto-save iniciado...');
+    },
+    onSaveSuccess: () => {
+      console.log('✅ Auto-save exitoso');
+    },
+    onSaveError: (error) => {
+      console.error('❌ Auto-save falló:', error);
+    }
   });
 
   // Detect mobile screen size
@@ -427,10 +506,22 @@ export default function DynamicForm({
 
     return (
       <div key={field.key} className={`${widthClass}`}>
-        <label htmlFor={field.key} className="block text-sm font-medium text-gray-700 mb-1">
-          {field.label}
-          {field.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        <div className="flex items-start justify-between mb-1">
+          <label htmlFor={field.key} className="block text-sm font-medium text-gray-700">
+            {field.label}
+            {field.required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          
+          {/* Contextual Help */}
+          {showContextualHelp && (
+            <ContextualHelp
+              fieldKey={field.key}
+              fieldType={field.type}
+              shortcuts={shortcuts.getShortcutsList()}
+              showShortcuts={false} // Only show in main help panel
+            />
+          )}
+        </div>
 
         {field.description && (
           <p className="text-xs text-gray-500 mb-2">{field.description}</p>
@@ -561,11 +652,13 @@ export default function DynamicForm({
         {field.type === 'number' && (
           <input
             {...commonInputProps}
-            type="number"
-            value={value}
-            min={field.validation?.min}
-            max={field.validation?.max}
-            onChange={(e) => handleChange(field, e.target.value ? Number(e.target.value) : '')}
+            {...getSafeNumberInputProps({
+              value: value || 0,
+              onChange: (newValue) => handleChange(field, newValue),
+              min: field.validation?.min,
+              max: field.validation?.max,
+              fallback: 0
+            })}
             onBlur={() => handleBlur(field)}
           />
         )}
@@ -691,6 +784,23 @@ export default function DynamicForm({
           </div>
         )}
 
+        {/* Video Field - Enhanced video input with upload/external toggle */}
+        {field.type === 'video' && (
+          <div>
+            <VideoField
+              value={value || ''}
+              onChange={(newValue) => handleChange(field, newValue)}
+              label="" // No mostrar label en el componente ya que DynamicForm ya lo muestra
+              placeholder={field.placeholder}
+              required={false} // No mostrar asterisco ya que DynamicForm ya lo muestra
+              disabled={field.disabled || loading}
+              description="" // No mostrar description ya que DynamicForm ya la muestra
+              allowYouTube={field.customProps?.allowYouTube !== false}
+              allowVimeo={field.customProps?.allowVimeo !== false}
+            />
+          </div>
+        )}
+
         {/* Custom Components */}
         {field.type === 'custom' && field.component === 'rotating-words' && (
           <RotatingWordsEditor
@@ -701,7 +811,7 @@ export default function DynamicForm({
         )}
         
         {field.type === 'custom' && field.component === 'statistics-grid' && (
-          <StatisticsGrid
+          <EnhancedStatisticsManager
             statistics={Array.isArray(value) ? value : []}
             onChange={(statistics) => handleChange(field, statistics)}
             {...field.customProps}
@@ -718,7 +828,7 @@ export default function DynamicForm({
         )}
         
         {field.type === 'custom' && field.component === 'portfolio-manager' && (
-          <PortfolioManager
+          <EnhancedPortfolioManager
             projects={Array.isArray(value) ? value : []}
             onChange={(projects) => handleChange(field, projects)}
             {...field.customProps}
@@ -726,7 +836,7 @@ export default function DynamicForm({
         )}
         
         {field.type === 'custom' && field.component === 'pillars-editor' && (
-          <PillarsEditor
+          <EnhancedPillarsManager
             pillars={Array.isArray(value) ? value : []}
             onChange={(pillars) => handleChange(field, pillars)}
             {...field.customProps}
@@ -734,10 +844,204 @@ export default function DynamicForm({
         )}
         
         {field.type === 'custom' && field.component === 'policies-manager' && (
-          <PoliciesManager
+          <EnhancedPoliciesManager
             policies={Array.isArray(value) ? value : []}
             onChange={(policies) => handleChange(field, policies)}
             {...field.customProps}
+          />
+        )}
+        
+        {/* Nuevos componentes para historia.json */}
+        {field.type === 'custom' && field.component === 'image-field' && (
+          <ImageField
+            value={value || ''}
+            onChange={(newValue) => handleChange(field, newValue)}
+            label={field.label}
+            description={field.description}
+            required={field.required || false}
+            disabled={field.disabled || false}
+          />
+        )}
+        
+        {field.type === 'custom' && field.component === 'video-field' && (
+          <VideoField
+            value={value || ''}
+            onChange={(newValue) => handleChange(field, newValue)}
+            label={field.label}
+            description={field.description}
+            required={field.required || false}
+            disabled={field.disabled || false}
+          />
+        )}
+        
+        {field.type === 'custom' && field.component === 'pdf-field' && (
+          <PdfField
+            value={value || ''}
+            onChange={(newValue) => handleChange(field, newValue)}
+            label={field.label}
+            description={field.description}
+            required={field.required || false}
+            disabled={field.disabled || false}
+          />
+        )}
+        
+        {field.type === 'custom' && field.component === 'timeline-builder' && (
+          <TimelineEditor
+            events={Array.isArray(value) ? value : []}
+            onChange={(events) => handleChange(field, events)}
+            {...field.customProps}
+          />
+        )}
+        
+        {field.type === 'custom' && field.component === 'statistics-builder' && (
+          <EnhancedStatisticsManager
+            statistics={Array.isArray(value) ? value : []}
+            onChange={(statistics) => handleChange(field, statistics)}
+            title={field.label}
+            description={field.description}
+            config={field.config}
+            {...field.customProps}
+          />
+        )}
+        
+        {field.type === 'custom' && field.component === 'phases-builder' && (
+          <div className="border rounded-lg p-4 bg-gradient-to-r from-orange-50 to-red-50">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="h-5 w-5 text-orange-600" />
+              <h3 className="font-semibold text-orange-900">Editor de Fases</h3>
+              <span className="text-xs bg-orange-200 text-orange-800 px-2 py-1 rounded">Evolutivo</span>
+            </div>
+            <p className="text-sm text-orange-700 mb-4">
+              {field.description || 'Editor de fases cronológicas de desarrollo empresarial.'}
+            </p>
+            <div className="space-y-3 text-sm text-orange-600">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4" />
+                <span>Fases: {Array.isArray(value) ? value.length : 0} de {field.config?.maxPhases || 8}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4" />
+                <span>Con períodos, enfoques y logros por fase</span>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mt-4">
+                <p className="text-yellow-700 text-xs">
+                  <strong>Próximamente:</strong> Editor visual para fases evolutivas. 
+                  Actualmente editando {Array.isArray(value) ? value.length : 0} fases desde JSON.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {field.type === 'custom' && field.component === 'hero-team-gallery-editor' && (
+          <HeroTeamGalleryEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'team-members-editor' && (
+          <TeamMembersEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'team-moments-editor' && (
+          <TeamMomentsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+        {field.type === 'custom' && field.component === 'values-editor' && (
+          <ValuesEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+        {field.type === 'custom' && field.component === 'culture-stats-editor' && (
+          <CultureStatsEditor
+            value={value || { section: { title: '', subtitle: '' }, categories: {} }}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+        {field.type === 'custom' && field.component === 'technologies-editor' && (
+          <TechnologiesEditor
+            value={value || { section: { title: '', subtitle: '' }, tech_list: [] }}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+          />
+        )}
+
+        {/* ISO Components */}
+        {field.type === 'custom' && field.component === 'benefits-editor' && (
+          <BenefitsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxBenefits={field.customProps?.maxBenefits || 8}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'commitments-editor' && (
+          <CommitmentsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxCommitments={field.customProps?.maxCommitments || 8}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'action-buttons-editor' && (
+          <ActionButtonsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxButtons={field.customProps?.maxButtons || 4}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'client-benefits-editor' && (
+          <ClientBenefitsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxBenefits={field.customProps?.maxBenefits || 8}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'testimonials-editor' && (
+          <TestimonialsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxTestimonials={field.customProps?.maxTestimonials || 10}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'quality-objectives-editor' && (
+          <QualityObjectivesEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxObjectives={field.customProps?.maxObjectives || 10}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'scope-items-editor' && (
+          <ScopeItemsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxItems={field.customProps?.maxItems || 10}
+            title={field.customProps?.title}
+            description={field.customProps?.description}
+            placeholder={field.customProps?.placeholder}
           />
         )}
 
@@ -864,8 +1168,43 @@ export default function DynamicForm({
       {/* Header */}
       {(title || subtitle) && (
         <div className="px-6 py-4 border-b border-gray-200">
-          {title && <h2 className="text-xl font-semibold text-gray-900">{title}</h2>}
-          {subtitle && <p className="mt-1 text-sm text-gray-600">{subtitle}</p>}
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              {title && <h2 className="text-xl font-semibold text-gray-900">{title}</h2>}
+              {subtitle && <p className="mt-1 text-sm text-gray-600">{subtitle}</p>}
+            </div>
+            
+            {/* Auto-save Status */}
+            {enableAutoSave && (
+              <div className="ml-4 flex items-center space-x-2">
+                {autoSaveResult.isSaving ? (
+                  <div className="flex items-center text-blue-600">
+                    <RefreshCw className="w-4 h-4 animate-spin mr-2" />
+                    <span className="text-sm font-medium">Guardando...</span>
+                  </div>
+                ) : autoSaveResult.hasUnsavedChanges ? (
+                  <div className="flex items-center text-yellow-600">
+                    <AlertTriangle className="w-4 h-4 mr-2" />
+                    <span className="text-sm font-medium">Cambios sin guardar</span>
+                  </div>
+                ) : autoSaveResult.lastSaved && (
+                  <div className="flex items-center text-green-600">
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    <span className="text-sm">
+                      Guardado {new Date(autoSaveResult.lastSaved).toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+                
+                {autoSaveResult.saveError && (
+                  <div className="flex items-center text-red-600">
+                    <AlertCircle className="w-4 h-4 mr-2" />
+                    <span className="text-sm font-medium">Error al guardar</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -1029,6 +1368,35 @@ export default function DynamicForm({
             onApplyAutoFix={handleAutoFix}
             onValidate={smartValidation.validate}
           />
+        </div>
+      )}
+
+      {/* ISO Validation Panel */}
+      {enableISOValidation && (
+        <div className="mt-6">
+          <ISOValidationPanel
+            data={values}
+            className=""
+          />
+        </div>
+      )}
+
+      {/* Keyboard Shortcuts Help Panel */}
+      {enableKeyboardShortcuts && shortcuts.shortcuts.length > 0 && (
+        <div className="mt-6">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-3">
+              <Keyboard className="w-4 h-4 text-gray-600" />
+              <h3 className="text-sm font-semibold text-gray-800">Atajos de Teclado Disponibles</h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {shortcuts.getShortcutsList().map((shortcut, index) => (
+                <div key={index} className="text-xs text-gray-600 bg-white px-2 py-1 rounded border">
+                  {shortcut}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 

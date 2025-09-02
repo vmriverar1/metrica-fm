@@ -52,11 +52,6 @@ export function useHistoriaData() {
       description: string;
       url: string;
     };
-    introduction: {
-      text: string;
-      highlight: string;
-      mission_statement: string;
-    };
     timeline_events: Array<{
       id: string;
       year: number;
@@ -81,14 +76,17 @@ export function useHistoriaData() {
         description: string;
       }>;
     };
-    company_evolution: {
+    call_to_action: {
       title: string;
-      phases: Array<{
-        phase: string;
-        period: string;
-        focus: string;
-        achievement: string;
-      }>;
+      description: string;
+      primary_button: {
+        text: string;
+        href: string;
+      };
+      secondary_button: {
+        text: string;
+        href: string;
+      };
     };
   }>('/json/pages/historia.json');
 }

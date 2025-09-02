@@ -78,3 +78,6 @@ cache-*
 # archivos de backup automáticos
 *.bak
 *.orig
+
+# documentos
+*.md

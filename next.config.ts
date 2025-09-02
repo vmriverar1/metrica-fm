@@ -46,8 +46,28 @@ const nextConfig: NextConfig = {
         hostname: 'i.pravatar.cc',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'statom.co.uk',
+        port: '',
+        pathname: '/**',
       }
     ],
+  },
+  async headers() {
+    return [
+      {
+        // Para permitir videos externos en el admin
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "media-src 'self' https: data: blob:; video-src 'self' https: data: blob:;",
+          },
+        ],
+      },
+    ];
   },
 };
 

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Shield, 
   Clock, 
@@ -31,6 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useISOData } from '@/hooks/useISOData';
 
 // Client benefits data
 const clientBenefits = [
@@ -179,14 +180,64 @@ const testimonials = [
 ];
 
 export default function ClientBenefits() {
+  const { data, loading, error } = useISOData();
   const [selectedBenefit, setSelectedBenefit] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
+
+  // Show loading state
+  if (loading) {
+    return (
+      <section className="py-24 bg-gradient-to-br from-background via-background to-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-lg text-muted-foreground">Cargando beneficios para clientes...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error state
+  if (error || !data) {
+    return (
+      <section className="py-24 bg-gradient-to-br from-background via-background to-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-lg text-red-600">Error cargando los beneficios para clientes</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Extract data from JSON
+  const clientBenefitsData = data.client_benefits?.benefits_list || [];
+  const testimonialsData = data.testimonials?.testimonials_list || [];
+  const sectionData = data.client_benefits?.section || {};
+
+  // Icon mapper
+  const iconMap = {
+    Shield,
+    Clock,
+    DollarSign,
+    TrendingUp,
+    Users,
+    Heart,
+    Target,
+    CheckCircle,
+    Award,
+    Globe,
+    Building2,
+    Zap,
+    Star,
+    ThumbsUp,
+    FileText,
+    BarChart3,
+    Lightbulb,
+    Eye
+  };
 
   const benefitColors = {
     blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-200' },
@@ -198,11 +249,11 @@ export default function ClientBenefits() {
   };
 
   const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev + 1) % testimonialsData.length);
   };
 
   const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length);
   };
 
   return (
@@ -221,11 +272,10 @@ export default function ClientBenefits() {
             Beneficios para Clientes
           </Badge>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            Ventajas <span className="text-primary">Certificadas ISO 9001</span>
+            {sectionData.title || 'Beneficios para Nuestros Clientes'}
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Nuestra certificación ISO 9001:2015 se traduce en beneficios concretos y medibles 
-            para cada cliente, garantizando excelencia en cada proyecto que gestionamos.
+            {sectionData.subtitle || 'La certificación ISO 9001 se traduce en ventajas tangibles para cada proyecto'}
           </p>
         </motion.div>
 
@@ -241,9 +291,10 @@ export default function ClientBenefits() {
             className="space-y-4"
           >
             <h3 className="text-2xl font-semibold mb-6">Beneficios Principales</h3>
-            {clientBenefits.map((benefit, index) => {
+            {clientBenefitsData.map((benefit, index) => {
               const colors = benefitColors[benefit.color as keyof typeof benefitColors];
               const isSelected = selectedBenefit === index;
+              const IconComponent = iconMap[benefit.icon as keyof typeof iconMap] || Shield;
               
               return (
                 <motion.div
@@ -263,7 +314,7 @@ export default function ClientBenefits() {
                       "w-12 h-12 rounded-lg flex items-center justify-center transition-colors",
                       isSelected ? colors.bg : "bg-muted"
                     )}>
-                      <benefit.icon className={cn(
+                      <IconComponent className={cn(
                         "w-6 h-6 transition-colors",
                         isSelected ? colors.text : "text-muted-foreground"
                       )} />
@@ -303,19 +354,19 @@ export default function ClientBenefits() {
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.4 }}
               >
-                {clientBenefits[selectedBenefit] && (
+                {clientBenefitsData[selectedBenefit] && (
                   <Card className="h-full border-l-4 border-l-primary">
                     <CardHeader>
                       <div className="flex items-start gap-4">
                         <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                          {React.createElement(clientBenefits[selectedBenefit].icon, { className: "w-8 h-8 text-primary" })}
+                          {React.createElement(iconMap[clientBenefitsData[selectedBenefit].icon as keyof typeof iconMap] || Shield, { className: "w-8 h-8 text-primary" })}
                         </div>
                         <div>
                           <CardTitle className="text-2xl mb-2">
-                            {clientBenefits[selectedBenefit].title}
+                            {clientBenefitsData[selectedBenefit].title}
                           </CardTitle>
                           <p className="text-muted-foreground leading-relaxed">
-                            {clientBenefits[selectedBenefit].description}
+                            {clientBenefitsData[selectedBenefit].description}
                           </p>
                         </div>
                       </div>
@@ -329,7 +380,7 @@ export default function ClientBenefits() {
                           <span className="font-semibold">Impacto Medible</span>
                         </div>
                         <div className="text-3xl font-bold text-primary mb-2">
-                          {clientBenefits[selectedBenefit].impact}
+                          {clientBenefitsData[selectedBenefit].impact}
                         </div>
                         <p className="text-sm text-muted-foreground">
                           Resultado promedio en nuestros proyectos certificados
@@ -343,7 +394,7 @@ export default function ClientBenefits() {
                           Cómo lo Garantizamos:
                         </h5>
                         <div className="grid md:grid-cols-2 gap-3">
-                          {clientBenefits[selectedBenefit].details.map((detail, index) => (
+                          {clientBenefitsData[selectedBenefit].details.map((detail, index) => (
                             <motion.div
                               key={index}
                               initial={{ opacity: 0, y: 10 }}
@@ -366,10 +417,10 @@ export default function ClientBenefits() {
                         </h5>
                         <div className="space-y-2">
                           <div className="font-medium text-foreground">
-                            {clientBenefits[selectedBenefit].caseStudy.project}
+                            {clientBenefitsData[selectedBenefit].case_study.project}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {clientBenefits[selectedBenefit].caseStudy.result}
+                            {clientBenefitsData[selectedBenefit].case_study.result}
                           </div>
                         </div>
                       </div>
@@ -413,7 +464,7 @@ export default function ClientBenefits() {
                       
                       <div className="flex-1">
                         <blockquote className="text-lg leading-relaxed text-foreground mb-6 italic">
-                          "{testimonials[currentTestimonial].quote}"
+                          "{testimonialsData[currentTestimonial]?.quote}"
                         </blockquote>
                         
                         <div className="flex items-center gap-4">
@@ -423,24 +474,24 @@ export default function ClientBenefits() {
                           
                           <div>
                             <div className="font-semibold text-lg">
-                              {testimonials[currentTestimonial].name}
+                              {testimonialsData[currentTestimonial]?.author}
                             </div>
                             <div className="text-muted-foreground">
-                              {testimonials[currentTestimonial].position}
+                              {testimonialsData[currentTestimonial]?.position}
                             </div>
                             <div className="text-sm text-primary font-medium">
-                              {testimonials[currentTestimonial].client}
+                              {testimonialsData[currentTestimonial]?.company}
                             </div>
                           </div>
                           
                           <div className="ml-auto">
                             <div className="flex items-center gap-1 mb-1">
-                              {Array.from({ length: testimonials[currentTestimonial].rating }).map((_, i) => (
+                              {Array.from({ length: testimonialsData[currentTestimonial]?.rating || 5 }).map((_, i) => (
                                 <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                               ))}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                              {testimonials[currentTestimonial].project}
+                              {testimonialsData[currentTestimonial]?.project}
                             </div>
                           </div>
                         </div>

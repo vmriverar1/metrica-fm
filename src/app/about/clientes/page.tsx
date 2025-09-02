@@ -2,51 +2,92 @@ import { Metadata } from 'next';
 import UniversalHero from '@/components/ui/universal-hero';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import { CompromisoPageData } from '@/types/compromiso';
 import { 
-  Users, 
   Heart, 
-  Leaf, 
-  Recycle, 
-  Award, 
-  Shield, 
-  TreePine, 
-  Building2, 
   GraduationCap, 
-  Briefcase, 
-  Thermometer 
+  Truck, 
+  Home,
+  Building2,
+  Building,
+  Settings,
+  Award,
+  Shield,
+  TrendingUp,
+  Cpu,
+  Star,
+  Users,
+  Clock,
+  Target
 } from 'lucide-react';
+import { readPublicJSONAsync } from '@/lib/json-reader';
 
-interface CompromisoPageProps {
-  data: CompromisoPageData;
+interface ClientesData {
+  page: {
+    title: string;
+    description: string;
+  };
+  hero: {
+    title: string;
+    subtitle: string;
+    background_image: string;
+    background_image_fallback: string;
+  };
+  introduction: {
+    title: string;
+    description: string;
+    stats: {
+      total_clients: string;
+      public_sector: string;
+      private_sector: string;
+      years_experience: string;
+    };
+  };
+  client_sectors: any[];
+  testimonials: {
+    title: string;
+    subtitle: string;
+    testimonials_list: any[];
+  };
+  client_benefits: {
+    title: string;
+    subtitle: string;
+    benefits: any[];
+  };
+  success_metrics: {
+    title: string;
+    subtitle: string;
+    metrics: any[];
+  };
 }
 
 const iconMap = {
-  Users,
   Heart,
-  Leaf,
-  Recycle,
+  GraduationCap,
+  Truck,
+  Home,
+  Building2,
+  Building,
+  Settings,
   Award,
   Shield,
-  TreePine,
-  Building2,
-  GraduationCap,
-  Briefcase,
-  Thermometer
+  TrendingUp,
+  Cpu,
+  Star,
+  Users,
+  Clock,
+  Target
 };
 
 export const metadata: Metadata = {
-  title: 'Compromiso Social y Medioambiental | Métrica DIP',
-  description: 'Nuestro compromiso con el desarrollo sostenible, responsabilidad social y las mejores prácticas ambientales en la industria de la construcción.',
+  title: 'Nuestros Clientes | Métrica DIP',
+  description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos de infraestructura.',
 };
 
-import { readPublicJSONAsync } from '@/lib/json-reader';
-
-async function getCompromisoData(): Promise<CompromisoPageData> {
-  return readPublicJSONAsync<CompromisoPageData>('/json/pages/compromiso.json');
+async function getClientesData(): Promise<ClientesData> {
+  return readPublicJSONAsync<ClientesData>('/json/pages/clientes.json');
 }
 
-function CompromisoContent({ data }: CompromisoPageProps) {
+function ClientesContent({ data }: { data: ClientesData }) {
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -57,216 +98,247 @@ function CompromisoContent({ data }: CompromisoPageProps) {
           backgroundImage={data.hero.background_image}
         />
         
-        {/* Introducción */}
+        {/* Introducción y estadísticas */}
         <section className="py-16 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-primary mb-6">{data.main_content.introduction.title}</h2>
-              <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
-                {data.main_content.introduction.description}
+              <h2 className="text-3xl font-bold text-primary mb-6">{data.introduction.title}</h2>
+              <p className="text-lg text-muted-foreground max-w-4xl mx-auto mb-12">
+                {data.introduction.description}
               </p>
+              
+              {/* Stats */}
+              <div className="grid md:grid-cols-4 gap-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.total_clients}</div>
+                  <div className="text-sm text-muted-foreground">Clientes Totales</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.public_sector}</div>
+                  <div className="text-sm text-muted-foreground">Sector Público</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.private_sector}</div>
+                  <div className="text-sm text-muted-foreground">Sector Privado</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.years_experience}</div>
+                  <div className="text-sm text-muted-foreground">Años de Experiencia</div>
+                </div>
+              </div>
             </div>
 
-            {/* Secciones principales */}
-            {data.main_content.sections.map((section) => (
-              <div key={section.id} className="mb-20">
+            {/* Client Sectors */}
+            {data.client_sectors.map((sector, sectorIndex) => (
+              <div key={sector.id} className="mb-20">
                 <div className="text-center mb-12">
-                  <h3 className="text-2xl font-semibold text-primary mb-4">{section.title}</h3>
-                  <p className="text-accent font-medium mb-4">{section.subtitle}</p>
-                  <p className="text-muted-foreground max-w-3xl mx-auto">{section.description}</p>
+                  <h3 className="text-2xl font-semibold text-primary mb-4">{sector.title}</h3>
+                  <p className="text-accent font-medium mb-4">{sector.subtitle}</p>
+                  <p className="text-muted-foreground max-w-3xl mx-auto">{sector.description}</p>
                 </div>
 
-                {/* Pillars */}
-                {section.pillars && (
+                {/* Sector Público - Clients */}
+                {sector.clients && (
                   <div className="grid md:grid-cols-2 gap-8 mb-12">
-                    {section.pillars.map((pillar, index) => {
-                      const IconComponent = iconMap[pillar.icon as keyof typeof iconMap];
+                    {sector.clients.map((client: any, index: number) => {
+                      const IconComponent = iconMap[client.icon as keyof typeof iconMap];
                       return (
-                        <div key={index} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-all duration-300">
+                        <div key={client.id} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-all duration-300">
                           <div className="flex items-center gap-3 mb-4">
                             {IconComponent && (
-                              <div className="p-3 rounded-lg" style={{ backgroundColor: `${pillar.color}20` }}>
-                                <IconComponent className="w-6 h-6" style={{ color: pillar.color }} />
+                              <div className="p-3 rounded-lg" style={{ backgroundColor: `${client.color}20` }}>
+                                <IconComponent className="w-6 h-6" style={{ color: client.color }} />
                               </div>
                             )}
-                            <h4 className="text-xl font-semibold text-primary">{pillar.title}</h4>
+                            <div>
+                              <h4 className="text-xl font-semibold text-primary">{client.name}</h4>
+                              <p className="text-sm text-muted-foreground">{client.full_name}</p>
+                            </div>
                           </div>
                           
-                          <div className="space-y-4">
-                            <ul className="space-y-2">
-                              {pillar.initiatives.map((initiative, idx) => (
-                                <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: pillar.color }}></div>
-                                  <span>{initiative}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            
-                            <div className="pt-4 border-t border-border">
-                              <div className="grid grid-cols-3 gap-4 text-center">
-                                {Object.entries(pillar.metrics).map(([key, value]) => (
-                                  <div key={key}>
-                                    <div className="text-lg font-bold text-primary">{value}</div>
-                                    <div className="text-xs text-muted-foreground capitalize">{key.replace('_', ' ')}</div>
+                          <p className="text-sm text-muted-foreground mb-4">{client.description}</p>
+                          
+                          <div className="mb-4">
+                            <p className="text-sm font-medium text-primary mb-2">{client.projects_count} proyectos realizados</p>
+                            {client.specialties && (
+                              <div className="flex flex-wrap gap-1">
+                                {client.specialties.map((specialty: string, idx: number) => (
+                                  <span key={idx} className="text-xs bg-muted px-2 py-1 rounded">
+                                    {specialty}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {client.key_projects && (
+                            <div>
+                              <h5 className="text-sm font-semibold text-primary mb-2">Proyectos Clave:</h5>
+                              <div className="space-y-2">
+                                {client.key_projects.slice(0, 2).map((project: any, idx: number) => (
+                                  <div key={idx} className="text-xs text-muted-foreground">
+                                    <div className="font-medium">{project.name}</div>
+                                    <div className="flex justify-between">
+                                      <span>{project.value}</span>
+                                      <span className={project.status === 'Completado' ? 'text-green-600' : 'text-blue-600'}>
+                                        {project.status}
+                                      </span>
+                                    </div>
                                   </div>
                                 ))}
                               </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       );
                     })}
                   </div>
                 )}
 
-                {/* Case Studies */}
-                {section.case_studies && (
-                  <div className="grid md:grid-cols-2 gap-8 mb-12">
-                    {section.case_studies.map((caseStudy, index) => (
-                      <div key={index} className="bg-card rounded-lg overflow-hidden shadow-sm border hover:shadow-lg transition-shadow">
-                        <div 
-                          className="h-48 bg-cover bg-center"
-                          style={{ backgroundImage: `url("${caseStudy.image}")` }}
-                        />
-                        <div className="p-6">
-                          <h4 className="text-lg font-semibold text-primary mb-2">{caseStudy.title}</h4>
-                          <p className="text-muted-foreground mb-3">{caseStudy.description}</p>
-                          <div className="bg-accent/10 rounded-lg p-3">
-                            <p className="text-accent font-medium text-sm">{caseStudy.impact}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Environmental Programs */}
-                {section.environmental_programs && (
-                  <div className="grid md:grid-cols-3 gap-6 mb-12">
-                    {section.environmental_programs.map((program, index) => (
-                      <div key={index} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-shadow">
-                        <h4 className="text-lg font-semibold text-primary mb-3">{program.title}</h4>
-                        <p className="text-muted-foreground mb-4 text-sm">{program.description}</p>
-                        <div className="bg-green-50 rounded-lg p-3">
-                          <p className="text-green-700 font-medium text-sm">{program.achievement}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Certifications */}
-                {section.certifications && (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {section.certifications.map((cert, index) => {
-                      const IconComponent = iconMap[cert.icon as keyof typeof iconMap];
+                {/* Sector Privado - Categories */}
+                {sector.categories && (
+                  <div className="space-y-12">
+                    {sector.categories.map((category: any, catIndex: number) => {
+                      const IconComponent = iconMap[category.icon as keyof typeof iconMap];
                       return (
-                        <div key={index} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-all duration-300 text-center">
-                          {IconComponent && (
-                            <div className="flex justify-center mb-4">
-                              <div className="p-3 rounded-full" style={{ backgroundColor: `${cert.color}20` }}>
-                                <IconComponent className="w-8 h-8" style={{ color: cert.color }} />
+                        <div key={category.id} className="bg-card rounded-lg p-8 shadow-sm border">
+                          <div className="flex items-center gap-3 mb-6">
+                            {IconComponent && (
+                              <div className="p-3 rounded-lg" style={{ backgroundColor: `${category.color}20` }}>
+                                <IconComponent className="w-6 h-6" style={{ color: category.color }} />
+                              </div>
+                            )}
+                            <div>
+                              <h4 className="text-xl font-semibold text-primary">{category.title}</h4>
+                              <p className="text-sm text-muted-foreground">{category.description}</p>
+                            </div>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-8">
+                            {/* Clients */}
+                            <div>
+                              <h5 className="text-sm font-semibold text-primary mb-4">Clientes Principales:</h5>
+                              <div className="grid grid-cols-2 gap-3">
+                                {category.clients.map((client: any, idx: number) => (
+                                  <div key={idx} className="bg-muted rounded p-3">
+                                    <div className="font-medium text-sm">{client.name}</div>
+                                    <div className="text-xs text-muted-foreground">{client.projects} proyectos</div>
+                                    <div className="text-xs text-muted-foreground mt-1">{client.specialization}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Services */}
+                            <div>
+                              <h5 className="text-sm font-semibold text-primary mb-4">Servicios Proporcionados:</h5>
+                              <ul className="space-y-2">
+                                {category.services.map((service: string, idx: number) => (
+                                  <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: category.color }}></div>
+                                    <span>{service}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          {/* Key Projects */}
+                          {category.key_projects && (
+                            <div className="mt-6 pt-6 border-t border-border">
+                              <h5 className="text-sm font-semibold text-primary mb-4">Proyectos Destacados:</h5>
+                              <div className="grid md:grid-cols-2 gap-4">
+                                {category.key_projects.map((project: any, idx: number) => (
+                                  <div key={idx} className="bg-muted rounded p-4">
+                                    <div className="font-medium text-sm mb-1">{project.name}</div>
+                                    <div className="text-xs text-muted-foreground">Cliente: {project.client}</div>
+                                    <div className="flex justify-between items-center mt-2">
+                                      <span className="text-xs font-medium">{project.value}</span>
+                                      <span className={`text-xs px-2 py-1 rounded ${project.status === 'Completado' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
+                                        {project.status}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           )}
-                          <h4 className="text-sm font-bold text-primary mb-2">{cert.name}</h4>
-                          <p className="text-xs text-accent mb-2">{cert.category}</p>
-                          <p className="text-xs text-muted-foreground mb-3">{cert.description}</p>
-                          <div className="text-xs text-muted-foreground">
-                            <div>Obtenida: {cert.year_obtained}</div>
-                            <div>Válida hasta: {cert.validity}</div>
-                          </div>
                         </div>
                       );
                     })}
                   </div>
                 )}
 
-                {/* Standards */}
-                {section.standards && (
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {section.standards.map((standard, index) => (
-                      <div key={index} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-shadow">
-                        <h4 className="text-lg font-semibold text-primary mb-2">{standard.name}</h4>
-                        <p className="text-muted-foreground mb-3 text-sm">{standard.description}</p>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Cumplimiento:</span>
-                          <span className="text-accent font-semibold">{standard.compliance}</span>
-                        </div>
-                      </div>
-                    ))}
+                {/* Sector Stats */}
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-6 mt-8">
+                  <div className="grid md:grid-cols-3 gap-6 text-center">
+                    <div>
+                      <div className="text-2xl font-bold text-primary">{sector.total_investment}</div>
+                      <div className="text-sm text-muted-foreground">Inversión Total</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">{sector.active_projects}</div>
+                      <div className="text-sm text-muted-foreground">Proyectos Activos</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">{sector.completed_projects}</div>
+                      <div className="text-sm text-muted-foreground">Proyectos Completados</div>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             ))}
 
-            {/* Impact Metrics */}
+            {/* Testimonials */}
             <div className="mb-20">
               <div className="text-center mb-12">
-                <h3 className="text-2xl font-semibold text-primary mb-4">{data.impact_metrics.title}</h3>
-                <p className="text-muted-foreground">{data.impact_metrics.subtitle}</p>
-              </div>
-              
-              <div className="space-y-12">
-                {data.impact_metrics.categories.map((category, index) => {
-                  const IconComponent = iconMap[category.icon as keyof typeof iconMap];
-                  return (
-                    <div key={index} className="bg-card rounded-lg p-8 shadow-sm border">
-                      <div className="flex items-center gap-3 mb-6">
-                        {IconComponent && (
-                          <div className="p-3 rounded-lg" style={{ backgroundColor: `${category.color}20` }}>
-                            <IconComponent className="w-6 h-6" style={{ color: category.color }} />
-                          </div>
-                        )}
-                        <h4 className="text-xl font-semibold text-primary">{category.title}</h4>
-                      </div>
-                      
-                      <div className="grid md:grid-cols-3 gap-6">
-                        {category.metrics.map((metric, idx) => (
-                          <div key={idx} className="text-center">
-                            <div className="text-3xl font-bold text-primary mb-2">{metric.value}</div>
-                            <div className="text-sm font-semibold text-foreground mb-1">{metric.label}</div>
-                            <div className="text-xs text-muted-foreground">{metric.description}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Sustainability Goals */}
-            <div className="mb-20">
-              <div className="text-center mb-12">
-                <h3 className="text-2xl font-semibold text-primary mb-4">{data.sustainability_goals.title}</h3>
-                <p className="text-accent font-medium mb-4">{data.sustainability_goals.subtitle}</p>
-                <p className="text-muted-foreground max-w-3xl mx-auto">{data.sustainability_goals.description}</p>
+                <h3 className="text-2xl font-semibold text-primary mb-4">{data.testimonials.title}</h3>
+                <p className="text-muted-foreground">{data.testimonials.subtitle}</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {data.sustainability_goals.goals.map((goal) => {
-                  const IconComponent = iconMap[goal.icon as keyof typeof iconMap];
+                {data.testimonials.testimonials_list.map((testimonial) => (
+                  <div key={testimonial.id} className="bg-card rounded-lg p-6 shadow-sm border">
+                    <div className="flex mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
+                    <div className="border-t pt-4">
+                      <div className="font-medium text-sm">{testimonial.author}</div>
+                      <div className="text-xs text-muted-foreground">{testimonial.company}</div>
+                      <div className="text-xs text-accent">{testimonial.project}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Client Benefits */}
+            <div className="mb-20">
+              <div className="text-center mb-12">
+                <h3 className="text-2xl font-semibold text-primary mb-4">{data.client_benefits.title}</h3>
+                <p className="text-muted-foreground">{data.client_benefits.subtitle}</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {data.client_benefits.benefits.map((benefit) => {
+                  const IconComponent = iconMap[benefit.icon as keyof typeof iconMap];
                   return (
-                    <div key={goal.number} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-all duration-300">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: goal.color }}>
-                          {goal.number}
-                        </div>
-                        {IconComponent && (
-                          <IconComponent className="w-5 h-5" style={{ color: goal.color }} />
-                        )}
-                      </div>
-                      
-                      <h4 className="text-lg font-semibold text-primary mb-2">{goal.title}</h4>
-                      <p className="text-muted-foreground mb-4 text-sm">{goal.description}</p>
-                      
-                      <div className="space-y-2">
-                        {goal.achievements.map((achievement, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: goal.color }}></div>
-                            <span>{achievement}</span>
+                    <div key={benefit.id} className="text-center">
+                      {IconComponent && (
+                        <div className="flex justify-center mb-4">
+                          <div className="p-4 rounded-full" style={{ backgroundColor: `${benefit.color}20` }}>
+                            <IconComponent className="w-8 h-8" style={{ color: benefit.color }} />
                           </div>
+                        </div>
+                      )}
+                      <h4 className="text-lg font-semibold text-primary mb-2">{benefit.title}</h4>
+                      <p className="text-sm text-muted-foreground mb-4">{benefit.description}</p>
+                      <div className="space-y-1">
+                        {benefit.metrics.map((metric: string, idx: number) => (
+                          <div key={idx} className="text-xs text-muted-foreground">• {metric}</div>
                         ))}
                       </div>
                     </div>
@@ -275,46 +347,22 @@ function CompromisoContent({ data }: CompromisoPageProps) {
               </div>
             </div>
 
-            {/* Future Commitments */}
+            {/* Success Metrics */}
             <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-8 text-white">
               <div className="text-center mb-12">
-                <h3 className="text-2xl font-bold mb-4">{data.future_commitments.title}</h3>
-                <p className="text-white/90 mb-2">{data.future_commitments.subtitle}</p>
-                <p className="text-white/80 max-w-3xl mx-auto">{data.future_commitments.description}</p>
+                <h3 className="text-2xl font-bold mb-4">{data.success_metrics.title}</h3>
+                <p className="text-white/90">{data.success_metrics.subtitle}</p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-8">
-                {data.future_commitments.commitments.map((commitment, index) => {
-                  const IconComponent = iconMap[commitment.icon as keyof typeof iconMap];
-                  return (
-                    <div key={index} className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="bg-white/20 p-2 rounded-lg">
-                          <span className="text-white font-bold">{commitment.year}</span>
-                        </div>
-                        {IconComponent && (
-                          <IconComponent className="w-5 h-5 text-white" />
-                        )}
-                      </div>
-                      
-                      <h4 className="text-lg font-semibold text-white mb-2">{commitment.title}</h4>
-                      <p className="text-white/80 mb-4 text-sm">{commitment.description}</p>
-                      
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-white/80">Progreso:</span>
-                          <span className="text-white font-semibold">{commitment.progress}%</span>
-                        </div>
-                        <div className="w-full bg-white/20 rounded-full h-2">
-                          <div 
-                            className="bg-accent h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${commitment.progress}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {data.success_metrics.metrics.map((metric, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-3xl font-bold text-white mb-2">{metric.value}</div>
+                    <div className="text-sm font-semibold text-white/90 mb-1">{metric.category}</div>
+                    <div className="text-xs text-white/80 mb-2">{metric.description}</div>
+                    <div className="text-xs text-accent font-medium">{metric.trend}</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -326,6 +374,6 @@ function CompromisoContent({ data }: CompromisoPageProps) {
 }
 
 export default async function ClientesPage() {
-  const data = await getCompromisoData();
-  return <CompromisoContent data={data} />;
+  const data = await getClientesData();
+  return <ClientesContent data={data} />;
 }

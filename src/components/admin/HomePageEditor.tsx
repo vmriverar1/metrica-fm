@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Save, RefreshCw, Eye } from 'lucide-react';
 import apiClient from '@/lib/api-client';
+import EnhancedStatisticsManager from './enhanced/EnhancedStatisticsManager';
 
 interface HomePageData {
   page: {
@@ -141,25 +142,6 @@ export const HomePageEditor: React.FC<HomePageEditorProps> = ({ className }) => 
     updateData('hero.rotating_words', newWords);
   };
 
-  const addStatistic = () => {
-    if (!data) return;
-    const newStat = {
-      id: `stat-${Date.now()}`,
-      icon: 'Briefcase',
-      value: 0,
-      suffix: '+',
-      label: 'Nueva Estadística',
-      description: 'Descripción de la estadística'
-    };
-    const newStats = [...data.stats.statistics, newStat];
-    updateData('stats.statistics', newStats);
-  };
-
-  const removeStatistic = (index: number) => {
-    if (!data) return;
-    const newStats = data.stats.statistics.filter((_, i) => i !== index);
-    updateData('stats.statistics', newStats);
-  };
 
   if (loading) {
     return (
@@ -401,75 +383,18 @@ export const HomePageEditor: React.FC<HomePageEditorProps> = ({ className }) => 
         <TabsContent value="stats" className="space-y-4">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Estadísticas</CardTitle>
-                <Button onClick={addStatistic}>Agregar estadística</Button>
-              </div>
+              <CardTitle>Estadísticas Mejoradas</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Sistema avanzado con drag & drop, validaciones en tiempo real y preview
+              </p>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {data.stats.statistics.map((stat, index) => (
-                  <Card key={stat.id} className="p-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <Badge variant="secondary">Estadística #{index + 1}</Badge>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        onClick={() => removeStatistic(index)}
-                      >
-                        Eliminar
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>ID único</Label>
-                        <Input
-                          value={stat.id}
-                          onChange={(e) => updateData(`stats.statistics[${index}].id`, e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Icono</Label>
-                        <Input
-                          value={stat.icon}
-                          onChange={(e) => updateData(`stats.statistics[${index}].icon`, e.target.value)}
-                          placeholder="Briefcase, Users, etc."
-                        />
-                      </div>
-                      <div>
-                        <Label>Valor</Label>
-                        <Input
-                          type="number"
-                          value={stat.value}
-                          onChange={(e) => updateData(`stats.statistics[${index}].value`, parseInt(e.target.value))}
-                        />
-                      </div>
-                      <div>
-                        <Label>Sufijo</Label>
-                        <Input
-                          value={stat.suffix}
-                          onChange={(e) => updateData(`stats.statistics[${index}].suffix`, e.target.value)}
-                          placeholder="+, %, etc."
-                        />
-                      </div>
-                      <div>
-                        <Label>Etiqueta</Label>
-                        <Input
-                          value={stat.label}
-                          onChange={(e) => updateData(`stats.statistics[${index}].label`, e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Descripción</Label>
-                        <Input
-                          value={stat.description}
-                          onChange={(e) => updateData(`stats.statistics[${index}].description`, e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+              <EnhancedStatisticsManager
+                statistics={data.stats.statistics}
+                onChange={(newStats) => updateData('stats.statistics', newStats)}
+                onSave={handleSave}
+                loading={saving}
+              />
             </CardContent>
           </Card>
         </TabsContent>

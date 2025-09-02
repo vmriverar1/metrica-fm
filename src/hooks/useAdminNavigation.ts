@@ -19,29 +19,26 @@ export function useAdminNavigation() {
     options: NavigationOptions = {}
   ) => {
     const {
-      showLoading: shouldShowLoading = true,
-      loadingMessage = 'Cargando panel...',
-      delay = 100
+      showLoading: shouldShowLoading = false, // Cambiado a false por defecto
+      loadingMessage = 'Navegando...',
+      delay = 0 // Reducido delay
     } = options;
 
     try {
+      // Solo mostrar loading si explícitamente se solicita
       if (shouldShowLoading) {
         showLoading(loadingMessage);
+        
+        // Pequeño delay para mostrar el loading si es necesario
+        if (delay > 0) {
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
       }
 
-      // Pequeño delay para mostrar el loading
-      if (delay > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-
+      // Navegación directa sin artificios
       router.push(path);
 
-      // Auto-hide loading después de un tiempo
-      setTimeout(() => {
-        if (shouldShowLoading) {
-          hideLoading();
-        }
-      }, 2000);
+      // No ocultar automáticamente - dejar que Next.js maneje la transición
 
     } catch (error) {
       console.error('Navigation error:', error);

@@ -41,7 +41,15 @@ const PagesManagement = () => {
   const [activeTab, setActiveTab] = useState('list');
   
   // Setup Wizard
-  // const setupWizard = useSetupWizard('home');
+  const setupWizard = {
+    showWizard: false,
+    isFirstTime: true,
+    hideWizard: () => {},
+    completeSetup: () => {},
+    getSetupProgress: (_data: any) => 0,
+    getRecommendations: (_data: any) => [],
+    shouldShowWizard: () => false
+  };
   const [showWizardOverride, setShowWizardOverride] = useState(false);
   const router = useRouter();
 
@@ -274,7 +282,6 @@ const PagesManagement = () => {
         dataKeys: realData ? Object.keys(realData) : [],
         sampleData: realData ? {
           pageTitle: realData.page?.title,
-          introText: realData.introduction?.text?.substring(0, 100) + '...',
           hasTimeline: !!realData.timeline_events,
           hasMetrics: !!realData.achievement_summary
         } : null
@@ -289,7 +296,6 @@ const PagesManagement = () => {
         testMappings: {
           'page.title': pageWithRealData.page?.title,
           'page.subtitle': pageWithRealData.page?.subtitle,
-          'introduction.text': pageWithRealData.introduction?.text,
           'achievement_summary.title': pageWithRealData.achievement_summary?.title,
         },
         schemaFields: getFormSchema(page.name)?.fields?.length || 0
@@ -348,7 +354,6 @@ const PagesManagement = () => {
             contentKeys: result.data.content ? Object.keys(result.data.content) : [],
             contentPreview: result.data.content ? {
               page: result.data.content.page ? Object.keys(result.data.content.page) : null,
-              introduction: result.data.content.introduction ? Object.keys(result.data.content.introduction) : null,
               timelineEventsCount: result.data.content.timeline_events?.length || 0,
               hasAchievements: !!result.data.content.achievement_summary
             } : null
@@ -583,203 +588,219 @@ const PagesManagement = () => {
       case 'historia.json':
       case 'about-historia.json':
         return {
-          title: 'Editar Historia de la Empresa',
+          title: '',
           groups: [
             {
               name: 'page_info',
               label: 'Información de la Página',
-              description: 'Configuración básica de la página',
+              description: 'Configuración SEO y hero de la página',
               collapsible: true,
               defaultExpanded: true
             },
             {
-              name: 'introduction',
-              label: 'Sección de Introducción',
-              description: 'Contenido introductorio de la historia',
+              name: 'timeline_manager',
+              label: 'Editor de Timeline',
+              description: 'Gestión visual de eventos históricos con imágenes y métricas',
               collapsible: true,
               defaultExpanded: true
             },
             {
-              name: 'timeline',
-              label: 'Eventos del Timeline',
-              description: 'Información básica del timeline (para editar eventos específicos usar herramientas avanzadas)',
+              name: 'achievement_stats',
+              label: 'Estadísticas de Logros',
+              description: 'Editor dinámico de métricas principales',
               collapsible: true,
-              defaultExpanded: false
+              defaultExpanded: true
             },
             {
-              name: 'metrics',
-              label: 'Métricas y Logros',
-              description: 'Resumen de achievements y métricas de la empresa',
+              name: 'call_to_action',
+              label: 'Call to Action Final',
+              description: 'Sección de llamada a la acción al final de la página',
               collapsible: true,
               defaultExpanded: false
             }
           ],
           fields: [
-            // Page Info Group
+            // Page Info Group - usando componentes avanzados
             {
               key: 'page.title',
-              label: 'Título de la Página',
-              type: 'text',
+              label: 'Título Principal',
+              type: 'text' as const,
               required: true,
-              group: 'page_info'
+              maxLength: 60,
+              group: 'page_info',
+              description: 'Título principal que aparece en el hero'
             },
             {
               key: 'page.subtitle',
               label: 'Subtítulo',
-              type: 'text',
+              type: 'text' as const,
               required: true,
-              group: 'page_info'
+              maxLength: 120,
+              group: 'page_info',
+              description: 'Subtítulo descriptivo del hero'
             },
             {
               key: 'page.description',
               label: 'Descripción Principal',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
-              group: 'page_info'
+              rows: 3,
+              maxLength: 300,
+              group: 'page_info',
+              description: 'Descripción que aparece bajo el hero'
             },
             {
               key: 'page.hero_image',
-              label: 'Imagen Hero (URL)',
-              type: 'url',
-              group: 'page_info'
+              label: 'Imagen Hero Principal',
+              type: 'custom' as const,
+              component: 'image-field' as const,
+              required: false,
+              group: 'page_info',
+              description: 'Imagen principal del hero (externa o subida)'
             },
             {
               key: 'page.hero_image_fallback',
               label: 'Imagen Hero Fallback',
-              type: 'text',
-              group: 'page_info'
+              type: 'text' as const,
+              placeholder: '/img/historia-hero.jpg',
+              group: 'page_info',
+              description: 'Imagen alternativa si falla la principal'
             },
             {
               key: 'page.hero_video',
-              label: 'Video Hero (URL)',
-              type: 'url',
-              group: 'page_info'
+              label: 'Video Hero',
+              type: 'custom' as const,
+              component: 'video-field' as const,
+              required: false,
+              group: 'page_info',
+              description: 'Video de fondo para el hero (opcional)'
             },
             {
               key: 'page.hero_video_fallback',
               label: 'Video Hero Fallback',
-              type: 'text',
-              group: 'page_info'
-            },
-            {
-              key: 'page.url',
-              label: 'URL de la Página',
-              type: 'text',
-              group: 'page_info'
+              type: 'text' as const,
+              placeholder: '/video/historia-hero.mp4',
+              group: 'page_info',
+              description: 'Video alternativo local'
             },
 
-            // Introduction Group
+            // Timeline Manager - usando componente especializado
             {
-              key: 'introduction.text',
-              label: 'Texto de Introducción',
-              type: 'textarea',
-              required: true,
-              group: 'introduction'
-            },
-            {
-              key: 'introduction.highlight',
-              label: 'Texto Destacado',
-              type: 'textarea',
-              required: true,
-              group: 'introduction'
-            },
-            {
-              key: 'introduction.mission_statement',
-              label: 'Declaración de Misión',
-              type: 'textarea',
-              required: true,
-              group: 'introduction'
-            },
-
-            // Timeline Group (basic info only)
-            {
-              key: 'timeline_info',
-              label: 'Información del Timeline',
-              type: 'textarea',
-              disabled: true,
-              defaultValue: 'El timeline contiene eventos complejos. Para editarlos, use el editor JSON avanzado o contacte al desarrollador.',
-              group: 'timeline',
-              description: 'Actualmente hay eventos del timeline que requieren edición manual'
+              key: 'timeline_events',
+              label: 'Eventos del Timeline',
+              type: 'custom' as const,
+              component: 'timeline-builder' as const,
+              required: false,
+              group: 'timeline_manager',
+              description: 'Editor visual para crear y gestionar eventos históricos con imágenes, métricas y galerías',
+              config: {
+                maxEvents: 10,
+                showMetrics: true,
+                showGallery: true,
+                showAchievements: true,
+                fieldsConfig: {
+                  year: { required: true, min: 1990, max: 2030 },
+                  title: { required: true, maxLength: 100 },
+                  subtitle: { required: true, maxLength: 150 },
+                  description: { required: true, maxLength: 500 },
+                  image: { type: 'image-field', required: false },
+                  achievements: { type: 'list', maxItems: 10 },
+                  gallery: { type: 'image-gallery', maxImages: 6 },
+                  impact: { maxLength: 300 },
+                  metrics: {
+                    team_size: { type: 'number', min: 0 },
+                    projects: { type: 'number', min: 0 },
+                    investment: { type: 'text', placeholder: '$1.2M' }
+                  }
+                }
+              }
             },
 
-            // Metrics Group - Achievement Summary
+            // Achievement Stats - usando componente de estadísticas
             {
               key: 'achievement_summary.title',
               label: 'Título de Logros',
-              type: 'text',
-              group: 'metrics'
+              type: 'text' as const,
+              required: true,
+              maxLength: 50,
+              group: 'achievement_stats',
+              description: 'Título de la sección de logros'
             },
             {
-              key: 'achievement_summary.metrics.0.number',
-              label: 'Métrica 1 - Número',
-              type: 'text',
-              group: 'metrics'
+              key: 'achievement_summary.metrics',
+              label: 'Métricas Principales',
+              type: 'custom' as const,
+              component: 'statistics-builder' as const,
+              required: false,
+              group: 'achievement_stats',
+              description: 'Editor dinámico de métricas y estadísticas principales',
+              config: {
+                maxStats: 6,
+                fieldsConfig: {
+                  number: { required: true, placeholder: '200+' },
+                  label: { required: true, maxLength: 50, placeholder: 'Proyectos Completados' },
+                  description: { required: true, maxLength: 100, placeholder: 'Desde complejos hospitalarios hasta centros comerciales' },
+                  icon: { type: 'icon-picker', required: false },
+                  color: { type: 'color-picker', default: '#003F6F' }
+                }
+              }
+            },
+
+            // Call to Action - sección final de la página
+            {
+              key: 'call_to_action.title',
+              label: 'Título del Call to Action',
+              type: 'text' as const,
+              required: true,
+              maxLength: 80,
+              group: 'call_to_action',
+              description: 'Título principal de la llamada a la acción'
             },
             {
-              key: 'achievement_summary.metrics.0.label',
-              label: 'Métrica 1 - Etiqueta',
-              type: 'text',
-              group: 'metrics'
+              key: 'call_to_action.description',
+              label: 'Descripción',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 200,
+              group: 'call_to_action',
+              description: 'Texto descriptivo que acompaña al call to action'
             },
             {
-              key: 'achievement_summary.metrics.0.description',
-              label: 'Métrica 1 - Descripción',
-              type: 'text',
-              group: 'metrics'
+              key: 'call_to_action.primary_button.text',
+              label: 'Texto Botón Principal',
+              type: 'text' as const,
+              required: true,
+              maxLength: 30,
+              group: 'call_to_action',
+              description: 'Texto del botón principal'
             },
             {
-              key: 'achievement_summary.metrics.1.number',
-              label: 'Métrica 2 - Número',
-              type: 'text',
-              group: 'metrics'
+              key: 'call_to_action.primary_button.href',
+              label: 'Enlace Botón Principal',
+              type: 'text' as const,
+              required: true,
+              maxLength: 100,
+              group: 'call_to_action',
+              description: 'URL o ruta del botón principal'
             },
             {
-              key: 'achievement_summary.metrics.1.label',
-              label: 'Métrica 2 - Etiqueta',
-              type: 'text',
-              group: 'metrics'
+              key: 'call_to_action.secondary_button.text',
+              label: 'Texto Botón Secundario',
+              type: 'text' as const,
+              required: true,
+              maxLength: 30,
+              group: 'call_to_action',
+              description: 'Texto del botón secundario'
             },
             {
-              key: 'achievement_summary.metrics.1.description',
-              label: 'Métrica 2 - Descripción',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.2.number',
-              label: 'Métrica 3 - Número',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.2.label',
-              label: 'Métrica 3 - Etiqueta',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.2.description',
-              label: 'Métrica 3 - Descripción',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.3.number',
-              label: 'Métrica 4 - Número',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.3.label',
-              label: 'Métrica 4 - Etiqueta',
-              type: 'text',
-              group: 'metrics'
-            },
-            {
-              key: 'achievement_summary.metrics.3.description',
-              label: 'Métrica 4 - Descripción',
-              type: 'text',
-              group: 'metrics'
+              key: 'call_to_action.secondary_button.href',
+              label: 'Enlace Botón Secundario',
+              type: 'text' as const,
+              required: true,
+              maxLength: 100,
+              group: 'call_to_action',
+              description: 'URL o ruta del botón secundario'
             }
           ]
         };
@@ -791,42 +812,63 @@ const PagesManagement = () => {
             {
               name: 'page_info',
               label: 'Información de la Página',
-              description: 'Meta información y configuración SEO',
+              description: 'Meta información SEO',
               collapsible: true,
               defaultExpanded: true
             },
             {
-              name: 'hero_section',
-              label: 'Sección Hero',
-              description: 'Banner principal y galería del equipo',
+              name: 'hero_basic',
+              label: 'Contenido del Hero',
+              description: 'Títulos, subtítulo e imagen de fondo',
+              collapsible: true,
+              defaultExpanded: true
+            },
+            {
+              name: 'hero_gallery',
+              label: 'Galería del Hero (9 imágenes)',
+              description: 'Grid 3x3 de imágenes del equipo para el hero',
               collapsible: true,
               defaultExpanded: true
             },
             {
               name: 'values_section',
-              label: 'Valores Empresariales',
-              description: 'Información básica de valores (estructura compleja requiere editor especializado)',
+              label: 'Sección de Valores',
+              description: 'Configuración de la sección de valores empresariales',
               collapsible: true,
               defaultExpanded: false
             },
             {
               name: 'culture_stats',
               label: 'Estadísticas de Cultura',
-              description: 'Métricas y datos sobre la cultura organizacional',
+              description: 'Métricas organizadas por categorías',
               collapsible: true,
               defaultExpanded: false
             },
             {
               name: 'team_section',
-              label: 'Información del Equipo',
-              description: 'Configuración básica del equipo (estructura compleja requiere editor especializado)',
+              label: 'Configuración del Equipo',
+              description: 'Títulos y subtítulos de las secciones del equipo',
+              collapsible: true,
+              defaultExpanded: false
+            },
+            {
+              name: 'team_members',
+              label: 'Miembros del Equipo (Editor)',
+              description: 'Editor completo de miembros individuales con roles y perfiles',
+              collapsible: true,
+              defaultExpanded: false
+            },
+            {
+              name: 'team_moments',
+              label: 'Momentos Destacados (Editor)',
+              description: 'Editor de galería de momentos especiales y celebraciones',
               collapsible: true,
               defaultExpanded: false
             },
             {
               name: 'technologies',
-              label: 'Tecnologías',
-              description: 'Información básica de tecnologías (estructura compleja requiere editor especializado)',
+              label: 'Centro de Innovación',
+              description: 'Tecnologías implementadas en la empresa',
               collapsible: true,
               defaultExpanded: false
             }
@@ -836,540 +878,737 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
-              group: 'page_info'
+              maxLength: 60,
+              group: 'page_info',
+              description: 'Título que aparece en el navegador y motores de búsqueda'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
-              group: 'page_info'
+              rows: 3,
+              maxLength: 160,
+              group: 'page_info',
+              description: 'Descripción meta para SEO'
             },
 
             // Hero Section Group
             {
               key: 'hero.title',
               label: 'Título Principal',
-              type: 'text',
+              type: 'text' as const,
               required: true,
-              group: 'hero_section'
+              maxLength: 40,
+              group: 'hero_basic',
+              placeholder: 'Ej: Cultura y Personas',
+              description: 'Título principal que aparece en grande en el hero'
             },
             {
               key: 'hero.subtitle',
-              label: 'Subtítulo',
-              type: 'textarea',
+              label: 'Subtítulo Descriptivo',
+              type: 'textarea' as const,
               required: true,
-              group: 'hero_section'
+              rows: 3,
+              maxLength: 200,
+              group: 'hero_basic',
+              placeholder: 'Un equipo multidisciplinario comprometido con la excelencia...',
+              description: 'Texto descriptivo que aparece bajo el título principal'
             },
             {
               key: 'hero.background_image',
-              label: 'Imagen de Fondo (URL)',
-              type: 'url',
-              group: 'hero_section'
+              label: 'Imagen de Fondo',
+              type: 'custom' as const,
+              component: 'image-field' as const,
+              required: false,
+              group: 'hero_basic',
+              description: 'Imagen de fondo principal del hero'
             },
             {
               key: 'hero.background_image_fallback',
               label: 'Imagen de Fondo Fallback',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_basic',
+              description: 'Imagen de respaldo local'
             },
 
-            // Values Section - Basic Info Only
+            // Values Section
             {
-              key: 'values_info',
-              label: 'Información de Valores',
-              type: 'textarea',
-              disabled: true,
-              defaultValue: 'Los valores contienen estructura compleja (título, descripción, iconos, ejemplos). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              key: 'values.section.title',
+              label: 'Título de Valores',
+              type: 'text' as const,
+              required: true,
+              maxLength: 30,
               group: 'values_section',
-              description: 'Para editar valores específicos, requiere herramientas avanzadas'
+              placeholder: 'Ej: Nuestros Valores',
+              description: 'Título principal de la sección de valores empresariales'
+            },
+            {
+              key: 'values.section.subtitle',
+              label: 'Descripción de Valores',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 150,
+              group: 'values_section',
+              placeholder: 'Los principios que guían nuestro trabajo y definen nuestra identidad...',
+              description: 'Descripción que explica la importancia de los valores empresariales'
             },
 
-            // Culture Stats Group
+            // Culture Stats Section
             {
-              key: 'culture_stats.title',
+              key: 'culture_stats.section.title',
               label: 'Título de Estadísticas',
-              type: 'text',
-              group: 'culture_stats'
+              type: 'text' as const,
+              required: true,
+              maxLength: 35,
+              group: 'culture_stats',
+              placeholder: 'Ej: Cultura en Números',
+              description: 'Título de la sección que muestra métricas de cultura organizacional'
             },
             {
-              key: 'culture_stats.subtitle',
-              label: 'Subtítulo de Estadísticas',
-              type: 'text',
-              group: 'culture_stats'
+              key: 'culture_stats.section.subtitle',
+              label: 'Descripción de Estadísticas',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 140,
+              group: 'culture_stats',
+              placeholder: 'Datos que reflejan nuestro compromiso con la excelencia...',
+              description: 'Texto que explica qué representan las métricas mostradas'
             },
 
-            // Team Section - Basic Info Only
+            // Team Section
             {
-              key: 'team_info',
-              label: 'Información del Equipo',
-              type: 'textarea',
-              disabled: true,
-              defaultValue: 'El equipo contiene estructura compleja (departamentos, miembros, perfiles). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              key: 'team.section.title',
+              label: 'Título del Equipo',
+              type: 'text' as const,
+              required: true,
+              maxLength: 30,
               group: 'team_section',
-              description: 'Para editar miembros específicos del equipo, requiere herramientas avanzadas'
+              placeholder: 'Ej: Nuestro Equipo',
+              description: 'Título principal de la sección que presenta al equipo'
+            },
+            {
+              key: 'team.section.subtitle',
+              label: 'Descripción del Equipo',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 140,
+              group: 'team_section',
+              placeholder: 'Profesionales altamente calificados comprometidos con la excelencia',
+              description: 'Descripción que destaca las cualidades del equipo de trabajo'
+            },
+            {
+              key: 'team.moments.title',
+              label: 'Título de Momentos Destacados',
+              type: 'text' as const,
+              required: true,
+              maxLength: 35,
+              group: 'team_section',
+              placeholder: 'Ej: Momentos Destacados',
+              description: 'Título de la galería de momentos especiales del equipo'
+            },
+            {
+              key: 'team.moments.subtitle',
+              label: 'Descripción de Momentos',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 150,
+              group: 'team_section',
+              placeholder: 'Celebraciones, logros y experiencias que fortalecen nuestro equipo',
+              description: 'Descripción de qué tipo de momentos se muestran en la galería'
             },
 
-            // Technologies Section - Basic Info Only
+            // Hero Gallery Section
             {
-              key: 'technologies_info',
-              label: 'Información de Tecnologías',
-              type: 'textarea',
-              disabled: true,
-              defaultValue: 'Las tecnologías contienen estructura compleja (categorías, herramientas, descripciones). Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
+              key: 'hero.team_gallery.columns',
+              label: 'Galería de Imágenes del Equipo',
+              type: 'custom' as const,
+              component: 'hero-team-gallery-editor' as const,
+              required: false,
+              group: 'hero_gallery',
+              description: 'Grid 3x3 de imágenes del equipo para el hero'
+            },
+
+            // Team Members Editor
+            {
+              key: 'team.members',
+              label: 'Editor de Miembros del Equipo',
+              type: 'custom' as const,
+              component: 'team-members-editor' as const,
+              required: false,
+              group: 'team_members',
+              description: 'Editor completo para gestionar perfiles individuales del equipo'
+            },
+
+            // Team Moments Editor
+            {
+              key: 'team.moments.gallery',
+              label: 'Editor de Momentos Destacados',
+              type: 'custom' as const,
+              component: 'team-moments-editor' as const,
+              required: false,
+              group: 'team_moments',
+              description: 'Editor de galería para momentos especiales y celebraciones'
+            },
+
+            // Technologies Section
+            {
+              key: 'technologies.section.title',
+              label: 'Título de Innovación',
+              type: 'text' as const,
+              required: true,
+              maxLength: 50,
               group: 'technologies',
-              description: 'Para editar tecnologías específicas, requiere herramientas avanzadas'
+              placeholder: 'Ej: Centro de Innovación Tecnológica',
+              description: 'Título principal del centro de innovación y tecnologías'
+            },
+            {
+              key: 'technologies.section.subtitle',
+              label: 'Descripción de Innovación',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              maxLength: 180,
+              group: 'technologies',
+              placeholder: 'Implementamos las tecnologías más avanzadas para revolucionar la gestión...',
+              description: 'Descripción del enfoque tecnológico y de innovación de la empresa'
+            },
+            // Advanced Editors
+            {
+              key: 'values.values_list',
+              label: 'Editor de Valores Empresariales',
+              type: 'custom' as const,
+              component: 'values-editor' as const,
+              group: 'values_section',
+              description: 'Editor avanzado para gestionar los 6 valores empresariales con iconos, colores e imágenes'
+            },
+            {
+              key: 'culture_stats',
+              label: 'Editor de Estadísticas de Cultura',
+              type: 'custom' as const,
+              component: 'culture-stats-editor' as const,
+              group: 'culture_stats',
+              description: 'Editor avanzado para estadísticas organizadas por categorías (historia, equipo, alcance, logros)'
+            },
+            {
+              key: 'technologies',
+              label: 'Editor de Centro de Innovación',
+              type: 'custom' as const,
+              component: 'technologies-editor' as const,
+              group: 'technologies',
+              description: 'Editor avanzado para tecnologías con características, imágenes y casos de estudio'
             }
           ]
         };
 
       case 'iso.json':
         return {
-          title: 'Editar Certificación ISO 9001',
+          title: 'Editor Completo - Certificación ISO 9001:2015',
           groups: [
             {
               name: 'page_info',
-              label: 'Información de la Página',
-              description: 'Meta información SEO',
+              label: '📄 Información de la Página',
+              description: 'Configuración SEO y meta información para el posicionamiento web',
               collapsible: true,
               defaultExpanded: true
             },
             {
-              name: 'hero_section',
-              label: 'Sección Hero',
-              description: 'Banner principal y certificación',
+              name: 'hero_certificate',
+              label: '🏆 Hero & Certificado',
+              description: 'Banner principal, estadísticas y detalles oficiales del certificado ISO 9001:2015',
               collapsible: true,
               defaultExpanded: true
             },
             {
-              name: 'introduction_section',
-              label: 'Introducción ISO 9001',
-              description: 'Información básica y beneficios',
+              name: 'introduction_benefits',
+              label: '💡 Introducción & Beneficios ISO',
+              description: 'Explicación de ISO 9001, beneficios clave, alcance de certificación e importancia',
               collapsible: true,
               defaultExpanded: false
             },
             {
-              name: 'quality_policy',
-              label: 'Política de Calidad',
-              description: 'Documento y compromisos de calidad',
+              name: 'quality_policy_commitments',
+              label: '📋 Política de Calidad & Compromisos',
+              description: 'Documento oficial de calidad, compromisos empresariales y objetivos estratégicos',
               collapsible: true,
               defaultExpanded: false
             },
             {
-              name: 'client_benefits',
-              label: 'Beneficios para Clientes',
-              description: 'Ventajas tangibles de la certificación',
+              name: 'client_benefits_testimonials',
+              label: '👥 Beneficios para Clientes & Testimonios',
+              description: 'Ventajas tangibles para clientes y testimonios reales sobre calidad certificada',
               collapsible: true,
               defaultExpanded: false
             },
             {
-              name: 'testimonials',
-              label: 'Testimonios',
-              description: 'Testimonios de clientes',
+              name: 'process_standards',
+              label: '⚙️ Procesos & Estándares',
+              description: 'Metodología ISO 9001 por fases, certificaciones adicionales y cumplimiento normativo',
               collapsible: true,
               defaultExpanded: false
             },
             {
-              name: 'process_overview',
-              label: 'Proceso Certificado',
-              description: 'Metodología ISO 9001 por fases',
-              collapsible: true,
-              defaultExpanded: false
-            },
-            {
-              name: 'certifications',
-              label: 'Certificaciones',
-              description: 'Lista de certificaciones y estándares',
-              collapsible: true,
-              defaultExpanded: false
-            },
-            {
-              name: 'quality_metrics',
-              label: 'Métricas de Calidad',
-              description: 'KPIs y resultados medibles',
-              collapsible: true,
-              defaultExpanded: false
-            },
-            {
-              name: 'audit_info',
-              label: 'Información de Auditorías',
-              description: 'Cronograma y resultados de auditorías',
+              name: 'metrics_audit',
+              label: '📊 KPIs & Auditorías',
+              description: 'Indicadores de calidad medibles, cronograma de auditorías y resultados históricos',
               collapsible: true,
               defaultExpanded: false
             }
           ],
           fields: [
-            // Page Info Group
-            {
-              key: 'page.title',
-              label: 'Título SEO',
-              type: 'text',
-              required: true,
-              group: 'page_info'
-            },
+                      // Page Info Group
+                      {
+                        key: 'page.title',
+                        label: 'Título SEO',
+                        type: 'text' as const,
+                        required: true,
+                        group: 'page_info',
+                        description: 'Título optimizado para motores de búsqueda (máximo 60 caracteres recomendados)',
+                        placeholder: 'ISO 9001:2015 Certificación | Métrica DIP - Calidad Garantizada'
+                      },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
-              group: 'page_info'
+              group: 'page_info',
+              description: 'Meta descripción para buscadores (150-160 caracteres óptimo)',
+              placeholder: 'Métrica DIP cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos...'
             },
 
             // Hero Section Group
             {
               key: 'hero.title',
-              label: 'Título Principal',
-              type: 'text',
+              label: 'Título Principal Hero',
+              type: 'text' as const,
               required: true,
-              group: 'hero_section'
+              group: 'hero_certificate',
+              description: 'Título principal visible en la cabecera de la página',
+              placeholder: 'ISO 9001'
             },
             {
               key: 'hero.subtitle',
-              label: 'Subtítulo',
-              type: 'text',
+              label: 'Subtítulo Hero',
+              type: 'text' as const,
               required: true,
-              group: 'hero_section'
+              group: 'hero_certificate',
+              description: 'Subtítulo complementario del hero',
+              placeholder: 'Certificación 2015'
             },
             {
               key: 'hero.description',
               label: 'Descripción Hero',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
-              group: 'hero_section'
+              group: 'hero_certificate',
+              description: 'Descripción principal que explica el valor de la certificación',
+              placeholder: 'Excelencia certificada en gestión de proyectos de construcción e infraestructura'
             },
             {
               key: 'hero.background_gradient',
               label: 'Gradiente de Fondo CSS',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate',
+              description: 'Clases de Tailwind CSS para el gradiente de fondo del hero',
+              placeholder: 'from-[#003F6F] via-[#002A4D] to-[#001A33]'
             },
             {
               key: 'hero.certification_status.is_valid',
               label: 'Certificación Vigente',
-              type: 'checkbox',
-              group: 'hero_section'
+              type: 'checkbox' as const,
+              group: 'hero_certificate',
+              description: 'Indica si la certificación está actualmente vigente'
             },
             {
               key: 'hero.certification_status.status_text',
               label: 'Texto del Estado',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate',
+              description: 'Texto descriptivo del estado de la certificación',
+              placeholder: 'Certificación Vigente'
             },
             {
               key: 'hero.certification_status.since_year',
               label: 'Certificado Desde (Año)',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.stats.certification_years',
               label: 'Años de Certificación',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.stats.certified_projects',
               label: 'Proyectos Certificados',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.stats.average_satisfaction',
               label: 'Satisfacción Promedio',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
 
             // Certificate Details
             {
               key: 'hero.certificate_details.certifying_body',
               label: 'Entidad Certificadora',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.certificate_details.certificate_number',
               label: 'Número de Certificado',
-              type: 'text',
-              group: 'hero_section'
+              type: 'text' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.certificate_details.issue_date',
               label: 'Fecha de Emisión',
-              type: 'date',
-              group: 'hero_section'
+              type: 'date' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.certificate_details.expiry_date',
               label: 'Fecha de Vencimiento',
-              type: 'date',
-              group: 'hero_section'
+              type: 'date' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.certificate_details.verification_url',
               label: 'URL de Verificación',
-              type: 'url',
-              group: 'hero_section'
+              type: 'url' as const,
+              group: 'hero_certificate'
             },
             {
               key: 'hero.certificate_details.pdf_url',
               label: 'URL del Certificado PDF',
-              type: 'text',
-              group: 'hero_section'
+              type: 'custom' as const,
+              component: 'pdf-field' as const,
+              description: 'Sube un archivo PDF o proporciona una URL externa al certificado ISO 9001',
+              group: 'hero_certificate'
+            },
+            {
+              key: 'hero.action_buttons',
+              label: 'Botones de Acción Hero',
+              type: 'custom' as const,
+              component: 'action-buttons-editor' as const,
+              description: 'Configurar botones de llamada a la acción en la sección hero',
+              group: 'hero_certificate',
+              customProps: { maxButtons: 3 }
             },
 
             // Introduction Section
             {
               key: 'introduction.section.title',
               label: 'Título Introducción',
-              type: 'text',
+              type: 'text' as const,
               required: true,
-              group: 'introduction_section'
+              group: 'introduction_benefits'
             },
             {
               key: 'introduction.section.subtitle',
               label: 'Subtítulo Introducción',
-              type: 'text',
+              type: 'text' as const,
               required: true,
-              group: 'introduction_section'
+              group: 'introduction_benefits'
             },
             {
               key: 'introduction.section.description',
               label: 'Descripción ISO 9001',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
-              group: 'introduction_section'
+              group: 'introduction_benefits'
             },
             {
               key: 'introduction.scope.title',
               label: 'Título Alcance',
-              type: 'text',
-              group: 'introduction_section'
+              type: 'text' as const,
+              group: 'introduction_benefits'
+            },
+            {
+              key: 'introduction.scope.items',
+              label: 'Elementos del Alcance',
+              type: 'custom' as const,
+              component: 'scope-items-editor' as const,
+              description: 'Define los elementos que cubre la certificación ISO 9001',
+              group: 'introduction_benefits',
+              customProps: { 
+                maxItems: 8,
+                title: 'Alcance de Certificación',
+                description: 'Define los elementos que cubre la certificación ISO 9001',
+                placeholder: 'ej. Dirección integral de proyectos de construcción'
+              }
             },
             {
               key: 'introduction.importance.title',
               label: 'Título Importancia',
-              type: 'text',
-              group: 'introduction_section'
+              type: 'text' as const,
+              group: 'introduction_benefits'
+            },
+            {
+              key: 'introduction.benefits',
+              label: 'Beneficios ISO 9001',
+              type: 'custom' as const,
+              component: 'benefits-editor' as const,
+              description: 'Gestiona los beneficios clave de la certificación ISO 9001',
+              group: 'introduction_benefits',
+              customProps: { maxBenefits: 6 }
             },
 
             // Quality Policy
             {
               key: 'quality_policy.document.title',
               label: 'Título Documento Calidad',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.document.version',
               label: 'Versión Documento',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.document.last_update',
               label: 'Última Actualización',
-              type: 'date',
-              group: 'quality_policy'
+              type: 'date' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.document.approved_by',
               label: 'Aprobado por',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.document.effective_date',
               label: 'Fecha Efectiva',
-              type: 'date',
-              group: 'quality_policy'
+              type: 'date' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.document.next_review',
               label: 'Próxima Revisión',
-              type: 'date',
-              group: 'quality_policy'
+              type: 'date' as const,
+              group: 'quality_policy_commitments'
+            },
+            {
+              key: 'quality_policy.commitments',
+              label: 'Compromisos de Calidad',
+              type: 'custom' as const,
+              component: 'commitments-editor' as const,
+              description: 'Define los compromisos empresariales clave en la política de calidad ISO 9001',
+              group: 'quality_policy_commitments',
+              customProps: { maxCommitments: 8 }
+            },
+            {
+              key: 'quality_policy.objectives',
+              label: 'Objetivos de Calidad',
+              type: 'custom' as const,
+              component: 'quality-objectives-editor' as const,
+              description: 'Define y gestiona los objetivos medibles de la política de calidad ISO 9001',
+              group: 'quality_policy_commitments',
+              customProps: { maxObjectives: 8 }
             },
 
-            // Quality Objectives (5 objectives from the JSON)
+            // Quality Objectives (DEPRECATED - reemplazado por editor arriba)
             {
               key: 'quality_policy.objectives.0.title',
               label: 'Objetivo 1 - Título',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.0.target',
               label: 'Objetivo 1 - Meta',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.0.current',
               label: 'Objetivo 1 - Actual',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.0.description',
               label: 'Objetivo 1 - Descripción',
-              type: 'textarea',
-              group: 'quality_policy'
+              type: 'textarea' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.1.title',
               label: 'Objetivo 2 - Título',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.1.target',
               label: 'Objetivo 2 - Meta',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.1.current',
               label: 'Objetivo 2 - Actual',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.1.description',
               label: 'Objetivo 2 - Descripción',
-              type: 'textarea',
-              group: 'quality_policy'
+              type: 'textarea' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.2.title',
               label: 'Objetivo 3 - Título',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.2.target',
               label: 'Objetivo 3 - Meta',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.2.current',
               label: 'Objetivo 3 - Actual',
-              type: 'text',
-              group: 'quality_policy'
+              type: 'text' as const,
+              group: 'quality_policy_commitments'
             },
             {
               key: 'quality_policy.objectives.2.description',
               label: 'Objetivo 3 - Descripción',
-              type: 'textarea',
-              group: 'quality_policy'
+              type: 'textarea' as const,
+              group: 'quality_policy_commitments'
             },
 
-            // Client Benefits Section
+            // Client Benefits Section - MEJORADO con componentes especializados
             {
               key: 'client_benefits.section.title',
-              label: 'Título Beneficios Cliente',
-              type: 'text',
-              group: 'client_benefits'
+              label: 'Título Sección Beneficios',
+              type: 'text' as const,
+              required: true,
+              group: 'client_benefits_testimonials',
+              description: 'Título principal de la sección de beneficios para clientes'
             },
             {
               key: 'client_benefits.section.subtitle',
-              label: 'Subtítulo Beneficios Cliente',
-              type: 'textarea',
-              group: 'client_benefits'
+              label: 'Subtítulo Beneficios',
+              type: 'textarea' as const,
+              required: true,
+              rows: 2,
+              group: 'client_benefits_testimonials',
+              description: 'Descripción de los beneficios tangibles de la certificación ISO 9001'
+            },
+            {
+              key: 'client_benefits.benefits_list',
+              label: 'Lista de Beneficios ISO 9001',
+              type: 'custom' as const,
+              component: 'client-benefits-editor' as const,
+              required: false,
+              group: 'client_benefits_testimonials',
+              customProps: { maxBenefits: 8 },
+              description: 'Editor avanzado para beneficios con íconos, colores, impacto medible, detalles y casos de estudio',
+              config: {
+                maxItems: 10,
+                showIcons: true,
+                showColors: true,
+                showDetails: true,
+                showCaseStudy: true,
+                showImpact: true,
+                iconSet: 'business', // Shield, Clock, DollarSign, TrendingUp, Users, etc.
+                colorOptions: ['blue', 'green', 'orange', 'purple', 'red', 'indigo'],
+                requiredFields: ['id', 'title', 'description', 'impact', 'color', 'icon', 'details', 'case_study'],
+                itemStructure: {
+                  id: 'text',
+                  title: 'text',
+                  description: 'textarea',
+                  impact: 'text',
+                  color: 'select',
+                  icon: 'icon-select',
+                  details: 'array',
+                  case_study: {
+                    project: 'text',
+                    result: 'textarea'
+                  }
+                }
+              }
             },
 
-            // Testimonials Section
+            // Testimonials Section - MEJORADO con componente especializado
             {
               key: 'testimonials.section.title',
-              label: 'Título Testimonios',
-              type: 'text',
-              group: 'testimonials'
+              label: 'Título Sección Testimonios',
+              type: 'text' as const,
+              required: true,
+              group: 'client_benefits_testimonials',
+              description: 'Título principal de testimonios ISO 9001'
             },
             {
               key: 'testimonials.section.subtitle',
               label: 'Subtítulo Testimonios',
-              type: 'text',
-              group: 'testimonials'
-            },
-            
-            // Testimonial 1
-            {
-              key: 'testimonials.testimonials_list.0.quote',
-              label: 'Testimonio 1 - Cita',
-              type: 'textarea',
-              group: 'testimonials'
+              type: 'text' as const,
+              required: true,
+              group: 'client_benefits_testimonials',
+              description: 'Descripción sobre testimonios de calidad certificada'
             },
             {
-              key: 'testimonials.testimonials_list.0.author',
-              label: 'Testimonio 1 - Autor',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.0.position',
-              label: 'Testimonio 1 - Cargo',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.0.company',
-              label: 'Testimonio 1 - Empresa',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.0.project',
-              label: 'Testimonio 1 - Proyecto',
-              type: 'text',
-              group: 'testimonials'
-            },
-            
-            // Testimonial 2
-            {
-              key: 'testimonials.testimonials_list.1.quote',
-              label: 'Testimonio 2 - Cita',
-              type: 'textarea',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.1.author',
-              label: 'Testimonio 2 - Autor',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.1.position',
-              label: 'Testimonio 2 - Cargo',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.1.company',
-              label: 'Testimonio 2 - Empresa',
-              type: 'text',
-              group: 'testimonials'
-            },
-            {
-              key: 'testimonials.testimonials_list.1.project',
-              label: 'Testimonio 2 - Proyecto',
-              type: 'text',
-              group: 'testimonials'
+              key: 'testimonials.testimonials_list',
+              label: 'Lista de Testimonios ISO',
+              type: 'custom' as const,
+              component: 'testimonials-editor' as const,
+              required: false,
+              group: 'client_benefits_testimonials',
+              customProps: { maxTestimonials: 5 },
+              description: 'Editor especializado de testimonios con ratings, avatares, proyectos y empresas',
+              config: {
+                maxItems: 8,
+                showRating: true,
+                showAvatar: true,
+                showProject: true,
+                showCompany: true,
+                showDate: true,
+                requiredFields: ['id', 'quote', 'author', 'position', 'company', 'project', 'rating'],
+                itemStructure: {
+                  id: 'auto-generated',
+                  quote: 'textarea',
+                  author: 'text',
+                  position: 'text',
+                  company: 'text',
+                  project: 'text',
+                  rating: 'rating',
+                  date: 'text',
+                  avatar: 'image-field'
+                },
+                defaultRating: 5,
+                maxQuoteLength: 500
+              }
             },
 
             // Process Overview
             {
               key: 'process_overview.section.title',
               label: 'Título Proceso',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
             {
               key: 'process_overview.section.subtitle',
               label: 'Subtítulo Proceso',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
 
@@ -1377,19 +1616,19 @@ const PagesManagement = () => {
             {
               key: 'process_overview.phases.0.title',
               label: 'Fase 1 - Título',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
             {
               key: 'process_overview.phases.0.description',
               label: 'Fase 1 - Descripción',
-              type: 'textarea',
+              type: 'textarea' as const,
               group: 'process_overview'
             },
             {
               key: 'process_overview.phases.0.duration',
               label: 'Fase 1 - Duración',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
 
@@ -1397,19 +1636,19 @@ const PagesManagement = () => {
             {
               key: 'process_overview.phases.1.title',
               label: 'Fase 2 - Título',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
             {
               key: 'process_overview.phases.1.description',
               label: 'Fase 2 - Descripción',
-              type: 'textarea',
+              type: 'textarea' as const,
               group: 'process_overview'
             },
             {
               key: 'process_overview.phases.1.duration',
               label: 'Fase 2 - Duración',
-              type: 'text',
+              type: 'text' as const,
               group: 'process_overview'
             },
 
@@ -1417,13 +1656,13 @@ const PagesManagement = () => {
             {
               key: 'certifications_standards.section.title',
               label: 'Título Certificaciones',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
             {
               key: 'certifications_standards.section.subtitle',
               label: 'Subtítulo Certificaciones',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
 
@@ -1431,31 +1670,31 @@ const PagesManagement = () => {
             {
               key: 'certifications_standards.certifications.0.name',
               label: 'Certificación 1 - Nombre',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
             {
               key: 'certifications_standards.certifications.0.description',
               label: 'Certificación 1 - Descripción',
-              type: 'textarea',
+              type: 'textarea' as const,
               group: 'certifications'
             },
             {
               key: 'certifications_standards.certifications.0.year_obtained',
               label: 'Certificación 1 - Año Obtenida',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
             {
               key: 'certifications_standards.certifications.0.validity',
               label: 'Certificación 1 - Vigencia',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
             {
               key: 'certifications_standards.certifications.0.certifying_body',
               label: 'Certificación 1 - Entidad',
-              type: 'text',
+              type: 'text' as const,
               group: 'certifications'
             },
 
@@ -1463,13 +1702,13 @@ const PagesManagement = () => {
             {
               key: 'quality_metrics.section.title',
               label: 'Título Métricas',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.section.subtitle',
               label: 'Subtítulo Métricas',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
 
@@ -1477,31 +1716,31 @@ const PagesManagement = () => {
             {
               key: 'quality_metrics.kpis.0.category',
               label: 'KPI 1 - Categoría',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.0.current_value',
               label: 'KPI 1 - Valor Actual',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.0.target',
               label: 'KPI 1 - Objetivo',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.0.trend',
               label: 'KPI 1 - Tendencia',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.0.description',
               label: 'KPI 1 - Descripción',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
 
@@ -1509,31 +1748,31 @@ const PagesManagement = () => {
             {
               key: 'quality_metrics.kpis.1.category',
               label: 'KPI 2 - Categoría',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.1.current_value',
               label: 'KPI 2 - Valor Actual',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.1.target',
               label: 'KPI 2 - Objetivo',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.1.trend',
               label: 'KPI 2 - Tendencia',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.1.description',
               label: 'KPI 2 - Descripción',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
 
@@ -1541,31 +1780,31 @@ const PagesManagement = () => {
             {
               key: 'quality_metrics.kpis.2.category',
               label: 'KPI 3 - Categoría',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.2.current_value',
               label: 'KPI 3 - Valor Actual',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.2.target',
               label: 'KPI 3 - Objetivo',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.2.trend',
               label: 'KPI 3 - Tendencia',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
             {
               key: 'quality_metrics.kpis.2.description',
               label: 'KPI 3 - Descripción',
-              type: 'text',
+              type: 'text' as const,
               group: 'quality_metrics'
             },
 
@@ -1573,43 +1812,43 @@ const PagesManagement = () => {
             {
               key: 'audit_information.section.title',
               label: 'Título Auditorías',
-              type: 'text',
+              type: 'text' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.section.subtitle',
               label: 'Subtítulo Auditorías',
-              type: 'text',
+              type: 'text' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.audit_results.last_external_audit.date',
               label: 'Última Auditoría - Fecha',
-              type: 'date',
+              type: 'date' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.audit_results.last_external_audit.result',
               label: 'Última Auditoría - Resultado',
-              type: 'text',
+              type: 'text' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.audit_results.last_external_audit.auditor',
               label: 'Última Auditoría - Auditor',
-              type: 'text',
+              type: 'text' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.audit_results.last_external_audit.recommendations',
               label: 'Última Auditoría - Recomendaciones',
-              type: 'number',
+              type: 'number' as const,
               group: 'audit_info'
             },
             {
               key: 'audit_information.audit_results.last_external_audit.non_conformities',
               label: 'Última Auditoría - No Conformidades',
-              type: 'number',
+              type: 'number' as const,
               group: 'audit_info'
             }
           ]
@@ -1617,7 +1856,7 @@ const PagesManagement = () => {
       
       case 'home.json':
         return {
-          title: 'Editar Página Principal - Optimizado',
+          title: '',
           groups: [
             // Básicos (siempre expandidos)
             {
@@ -1666,10 +1905,10 @@ const PagesManagement = () => {
             },
             {
               name: 'services_items',
-              label: 'Servicios Individuales (5 items)',
-              description: 'Servicio principal + 4 servicios secundarios',
+              label: 'Editor Visual de Servicios',
+              description: 'Editor dinámico - puede agregar/eliminar servicios según necesidad',
               collapsible: true,
-              defaultExpanded: false
+              defaultExpanded: true
             },
             {
               name: 'portfolio_config',
@@ -1712,7 +1951,7 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_seo',
               description: 'Título para SEO y pestaña del navegador'
@@ -1720,7 +1959,7 @@ const PagesManagement = () => {
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_seo',
               description: 'Meta description para motores de búsqueda'
@@ -1730,7 +1969,7 @@ const PagesManagement = () => {
             {
               key: 'hero.title.main',
               label: 'Título Principal',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'hero_basic',
               description: 'Primera línea del título principal'
@@ -1738,7 +1977,7 @@ const PagesManagement = () => {
             {
               key: 'hero.title.secondary',
               label: 'Título Secundario',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'hero_basic',
               description: 'Segunda línea del título principal'
@@ -1746,7 +1985,7 @@ const PagesManagement = () => {
             {
               key: 'hero.subtitle',
               label: 'Subtítulo',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'hero_basic',
               description: 'Texto que acompaña al título principal'
@@ -1754,7 +1993,7 @@ const PagesManagement = () => {
             {
               key: 'hero.cta.text',
               label: 'Texto del Botón CTA',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'hero_basic',
               description: 'Texto del botón de llamada a la acción'
@@ -1762,7 +2001,7 @@ const PagesManagement = () => {
             {
               key: 'hero.cta.target',
               label: 'Enlace del Botón CTA',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'hero_basic',
               description: 'Destino del botón (ej: #services, /contacto)'
@@ -1771,36 +2010,38 @@ const PagesManagement = () => {
             // ===== HERO BACKGROUND GROUP =====
             {
               key: 'hero.background.video_url',
-              label: 'URL Video Principal',
-              type: 'url',
+              label: 'Video de Fondo',
+              type: 'video' as const,
+              placeholder: 'Seleccionar video de fondo',
               group: 'hero_background',
-              description: 'URL del video de fondo (externa)'
+              description: 'Video de fondo para el hero. Puedes subir un archivo o usar una URL externa (YouTube, Vimeo, etc.).'
             },
             {
               key: 'hero.background.video_url_fallback',
               label: 'URL Video Fallback',
-              type: 'text',
+              type: 'text' as const,
               group: 'hero_background',
               description: 'Ruta local del video como respaldo'
             },
             {
               key: 'hero.background.image_fallback',
-              label: 'Imagen Fallback Externa',
-              type: 'url',
+              label: 'Imagen Fallback',
+              type: 'image' as const,
+              placeholder: 'Seleccionar imagen fallback',
               group: 'hero_background',
-              description: 'URL de imagen si el video no carga'
+              description: 'Imagen que se muestra si el video no carga. Puedes subir un archivo o usar una URL externa.'
             },
             {
               key: 'hero.background.image_fallback_internal',
               label: 'Imagen Fallback Interna',
-              type: 'text',
+              type: 'text' as const,
               group: 'hero_background',
               description: 'Ruta local de imagen como último respaldo'
             },
             {
               key: 'hero.background.overlay_opacity',
               label: 'Opacidad del Overlay (0-1)',
-              type: 'number',
+              type: 'number' as const,
               group: 'hero_background',
               description: 'Intensidad de la capa oscura sobre el fondo',
               min: 0,
@@ -1812,7 +2053,7 @@ const PagesManagement = () => {
             {
               key: 'hero.rotating_words',
               label: 'Palabras Rotatorias',
-              type: 'custom',
+              type: 'custom' as const,
               component: 'rotating-words',
               required: true,
               group: 'hero_animations',
@@ -1826,7 +2067,7 @@ const PagesManagement = () => {
             {
               key: 'hero.transition_text',
               label: 'Texto de Transición',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'hero_animations',
               description: 'Texto que aparece después de las palabras rotatorias'
@@ -1836,7 +2077,7 @@ const PagesManagement = () => {
             {
               key: 'stats.statistics',
               label: 'Estadísticas Principales',
-              type: 'custom',
+              type: 'custom' as const,
               component: 'statistics-grid',
               required: true,
               group: 'statistics_section',
@@ -1851,7 +2092,7 @@ const PagesManagement = () => {
             {
               key: 'services.section.title',
               label: 'Título Sección Servicios',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'services_config',
               description: 'Título principal de la sección de servicios'
@@ -1859,7 +2100,7 @@ const PagesManagement = () => {
             {
               key: 'services.section.subtitle',
               label: 'Subtítulo Sección Servicios',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'services_config',
               description: 'Descripción general de la sección de servicios'
@@ -1867,43 +2108,13 @@ const PagesManagement = () => {
 
             // ===== SERVICES ITEMS GROUP =====
             {
-              key: 'services.main_service.title',
-              label: 'Servicio Principal - Título',
-              type: 'text',
-              required: true,
-              group: 'services_items',
-              description: 'Título del servicio destacado (DIP)'
-            },
-            {
-              key: 'services.main_service.description',
-              label: 'Servicio Principal - Descripción',
-              type: 'textarea',
-              required: true,
-              group: 'services_items',
-              description: 'Descripción del servicio principal'
-            },
-            {
-              key: 'services.main_service.cta.text',
-              label: 'Servicio Principal - Texto CTA',
-              type: 'text',
-              group: 'services_items',
-              description: 'Texto del botón del servicio principal'
-            },
-            {
-              key: 'services.main_service.cta.url',
-              label: 'Servicio Principal - URL CTA',
-              type: 'text',
-              group: 'services_items',
-              description: 'Enlace del botón del servicio principal'
-            },
-            {
               key: 'services',
               label: 'Editor Visual de Servicios',
-              type: 'custom',
-              component: 'service-builder',
+              type: 'custom' as const,
+              component: 'service-builder' as const,
               required: true,
               group: 'services_items',
-              description: 'Editor completo para servicio principal (DIP) y 4 servicios secundarios',
+              description: 'Editor dinámico para servicio principal (DIP) y servicios secundarios. Puede agregar, eliminar y duplicar servicios.',
               customProps: {
                 imageUpload: true,
                 iconLibrary: true
@@ -1914,7 +2125,7 @@ const PagesManagement = () => {
             {
               key: 'portfolio.section.title',
               label: 'Título Sección Portfolio',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'portfolio_config',
               description: 'Título principal de la sección de portfolio'
@@ -1922,7 +2133,7 @@ const PagesManagement = () => {
             {
               key: 'portfolio.section.subtitle',
               label: 'Subtítulo Sección Portfolio',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'portfolio_config',
               description: 'Descripción general del portfolio'
@@ -1930,14 +2141,14 @@ const PagesManagement = () => {
             {
               key: 'portfolio.section.cta.text',
               label: 'Texto CTA Portfolio',
-              type: 'text',
+              type: 'text' as const,
               group: 'portfolio_config',
               description: 'Texto del botón "Ver más"'
             },
             {
               key: 'portfolio.section.cta.url',
               label: 'URL CTA Portfolio',
-              type: 'text',
+              type: 'text' as const,
               group: 'portfolio_config',
               description: 'Enlace hacia la página completa del portfolio'
             },
@@ -1946,7 +2157,7 @@ const PagesManagement = () => {
             {
               key: 'portfolio.featured_projects',
               label: 'Portfolio Project Manager',
-              type: 'custom',
+              type: 'custom' as const,
               component: 'portfolio-manager',
               required: true,
               group: 'portfolio_projects',
@@ -1961,7 +2172,7 @@ const PagesManagement = () => {
             {
               key: 'pillars.section.title',
               label: 'Título Sección Pilares',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'pillars_dip',
               description: 'Título de la sección "¿Qué es DIP?"'
@@ -1969,7 +2180,7 @@ const PagesManagement = () => {
             {
               key: 'pillars.section.subtitle',
               label: 'Subtítulo Sección Pilares',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'pillars_dip',
               description: 'Descripción de los pilares de DIP'
@@ -1977,8 +2188,8 @@ const PagesManagement = () => {
             {
               key: 'pillars.pillars',
               label: 'Pillars DIP Editor',
-              type: 'custom',
-              component: 'pillars-editor',
+              type: 'custom' as const,
+              component: 'pillars-editor' as const,
               required: true,
               group: 'pillars_dip',
               description: 'Editor completo para los 6 pilares fundamentales de DIP',
@@ -1993,7 +2204,7 @@ const PagesManagement = () => {
             {
               key: 'policies.section.title',
               label: 'Título Sección Políticas',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'policies_company',
               description: 'Título de las políticas empresariales'
@@ -2001,7 +2212,7 @@ const PagesManagement = () => {
             {
               key: 'policies.section.subtitle',
               label: 'Subtítulo Sección Políticas',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'policies_company',
               description: 'Descripción de las políticas corporativas'
@@ -2009,7 +2220,7 @@ const PagesManagement = () => {
             {
               key: 'policies.policies',
               label: 'Policies Manager',
-              type: 'custom',
+              type: 'custom' as const,
               component: 'policies-manager',
               required: true,
               group: 'policies_company',
@@ -2035,7 +2246,7 @@ const PagesManagement = () => {
             {
               key: 'newsletter.section.title',
               label: 'Título Newsletter',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'newsletter_setup',
               description: 'Título de la sección de suscripción'
@@ -2043,7 +2254,7 @@ const PagesManagement = () => {
             {
               key: 'newsletter.section.subtitle',
               label: 'Subtítulo Newsletter',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'newsletter_setup',
               description: 'Descripción del beneficio de suscribirse'
@@ -2051,35 +2262,35 @@ const PagesManagement = () => {
             {
               key: 'newsletter.form.placeholder_text',
               label: 'Placeholder del Input',
-              type: 'text',
+              type: 'text' as const,
               group: 'newsletter_setup',
               description: 'Texto placeholder del campo email'
             },
             {
               key: 'newsletter.form.cta_text',
               label: 'Texto Botón Suscripción',
-              type: 'text',
+              type: 'text' as const,
               group: 'newsletter_setup',
               description: 'Texto del botón de suscripción'
             },
             {
               key: 'newsletter.form.loading_text',
               label: 'Texto de Carga',
-              type: 'text',
+              type: 'text' as const,
               group: 'newsletter_setup',
               description: 'Texto mostrado durante el proceso'
             },
             {
               key: 'newsletter.form.success_message',
               label: 'Mensaje de Éxito',
-              type: 'text',
+              type: 'text' as const,
               group: 'newsletter_setup',
               description: 'Título del mensaje de confirmación'
             },
             {
               key: 'newsletter.form.success_description',
               label: 'Descripción de Éxito',
-              type: 'text',
+              type: 'text' as const,
               group: 'newsletter_setup',
               description: 'Descripción del mensaje de confirmación'
             }
@@ -2110,21 +2321,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'contact_info_note',
               label: 'Información de Contacto',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de contacto. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'contact_info'
@@ -2155,21 +2366,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'blog_config_note',
               label: 'Configuración del Blog',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de blog. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'blog_config'
@@ -2200,21 +2411,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'services_info_note',
               label: 'Información de Servicios',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de servicios. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'services_info'
@@ -2245,21 +2456,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'commitment_info_note',
               label: 'Información de Compromiso',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de compromiso. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'commitment_info'
@@ -2290,21 +2501,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'portfolio_info_note',
               label: 'Información del Portafolio',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de portafolio. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'portfolio_info'
@@ -2335,21 +2546,21 @@ const PagesManagement = () => {
             {
               key: 'page.title',
               label: 'Título SEO',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'page.description',
               label: 'Descripción SEO',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               group: 'page_info'
             },
             {
               key: 'careers_info_note',
               label: 'Información de Carreras',
-              type: 'textarea',
+              type: 'textarea' as const,
               disabled: true,
               defaultValue: 'Esta página contiene estructura compleja de carreras. Para editar completamente, use el editor JSON avanzado o contacte al desarrollador.',
               group: 'careers_info'
@@ -2364,21 +2575,21 @@ const PagesManagement = () => {
             {
               key: 'title',
               label: 'Título',
-              type: 'text',
+              type: 'text' as const,
               required: true,
               placeholder: 'Título de la página'
             },
             {
               key: 'description',
               label: 'Descripción',
-              type: 'textarea',
+              type: 'textarea' as const,
               required: true,
               placeholder: 'Descripción de la página'
             },
             {
               key: 'status',
               label: 'Estado',
-              type: 'select',
+              type: 'select' as const,
               required: true,
               options: [
                 { value: 'active', label: 'Activa' },
@@ -2780,14 +2991,33 @@ const PagesManagement = () => {
                           return null;
                         })()}
                         
-                        <DynamicForm
-                          fields={getFormSchema(selectedPage.name).fields}
-                          groups={getFormSchema(selectedPage.name).groups || []}
-                          title={getFormSchema(selectedPage.name).title}
-                          initialValues={selectedPage}
-                          onSubmit={handleSavePage}
-                          onCancel={() => setActiveTab('list')}
-                        />
+                        {/* Formulario optimizado para ISO con validaciones específicas */}
+                        {selectedPage.name === 'iso.json' ? (
+                          <DynamicForm
+                            fields={getFormSchema(selectedPage.name).fields}
+                            groups={getFormSchema(selectedPage.name).groups || []}
+                            title={`${getFormSchema(selectedPage.name).title} - Con Validaciones ISO ✅`}
+                            subtitle="Editor especializado con auto-save, validación de certificados y cumplimiento ISO 9001:2015"
+                            initialValues={selectedPage}
+                            onSubmit={handleSavePage}
+                            onCancel={() => setActiveTab('list')}
+                            enableISOValidation={true}
+                            enableAutoSave={true}
+                            autoSaveInterval={30000}
+                            resource={`page_${selectedPage.name}`}
+                            enableKeyboardShortcuts={true}
+                            showContextualHelp={true}
+                          />
+                        ) : (
+                          <DynamicForm
+                            fields={getFormSchema(selectedPage.name).fields}
+                            groups={getFormSchema(selectedPage.name).groups || []}
+                            title={getFormSchema(selectedPage.name).title}
+                            initialValues={selectedPage}
+                            onSubmit={handleSavePage}
+                            onCancel={() => setActiveTab('list')}
+                          />
+                        )}
                       </>
                     )}
                   </CardContent>

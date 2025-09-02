@@ -158,35 +158,37 @@ export default function CierreTransform({ historiaData }: CierreTransformProps) 
       </section>
 
       {/* CTA Final */}
-      <section className="relative bg-background py-24 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-4xl md:text-5xl font-alliance-extrabold text-primary mb-8">
-            ¿Listo para construir el futuro juntos?
-          </h3>
-          
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Únete a más de 200 proyectos exitosos que han transformado la infraestructura del Perú.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link 
-              href="/services"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full font-alliance-medium hover:bg-primary/90 transition-all duration-300 hover:scale-105"
-            >
-              <span>Conoce nuestros servicios</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Link>
+      {historiaData?.call_to_action && (
+        <section className="relative bg-background py-24 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-4xl md:text-5xl font-alliance-extrabold text-primary mb-8">
+              {historiaData.call_to_action.title}
+            </h3>
             
-            <Link 
-              href="/contact"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-white rounded-full font-alliance-medium hover:bg-accent/90 transition-all duration-300 hover:scale-105"
-            >
-              <span>Contáctanos</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Link>
+            <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+              {historiaData.call_to_action.description}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link 
+                href={historiaData.call_to_action.primary_button.href}
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full font-alliance-medium hover:bg-primary/90 transition-all duration-300 hover:scale-105"
+              >
+                <span>{historiaData.call_to_action.primary_button.text}</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              
+              <Link 
+                href={historiaData.call_to_action.secondary_button.href}
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-white rounded-full font-alliance-medium hover:bg-accent/90 transition-all duration-300 hover:scale-105"
+              >
+                <span>{historiaData.call_to_action.secondary_button.text}</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }

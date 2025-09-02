@@ -347,7 +347,12 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
         {/* Lista de categorías */}
         {allowReordering ? (
           <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="categories">
+            <Droppable 
+              droppableId="categories" 
+              isDropDisabled={false} 
+              isCombineEnabled={false}
+              ignoreContainerClipping={false}
+            >
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-2">
                   {rootCategories.map((category, index) => (

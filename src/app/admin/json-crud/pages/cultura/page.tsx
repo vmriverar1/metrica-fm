@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { CulturaPageEditor } from '@/components/admin/pages';
-import type { CulturaConfiguration } from '@/components/admin/pages/CulturaPageEditor';
+import CulturaPageEditorNew from '@/components/admin/pages/CulturaPageEditorNew';
+import type { CulturaPageData } from '@/components/admin/pages/CulturaPageEditorNew';
 
 export default function CulturaAdminPage() {
-  const [culturaData, setCulturaData] = useState<Partial<CulturaConfiguration>>({});
+  const [culturaData, setCulturaData] = useState<Partial<CulturaPageData>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,6 +19,7 @@ export default function CulturaAdminPage() {
       const response = await fetch('/api/admin/pages/cultura');
       if (response.ok) {
         const data = await response.json();
+        console.log('Admin cultura page - loaded data:', data);
         setCulturaData(data);
       } else if (response.status === 404) {
         // No data exists yet, use defaults
@@ -34,7 +35,7 @@ export default function CulturaAdminPage() {
     }
   };
 
-  const handleSave = async (data: CulturaConfiguration) => {
+  const handleSave = async (data: CulturaPageData) => {
     try {
       const response = await fetch('/api/admin/pages/cultura', {
         method: 'PUT',
@@ -60,7 +61,7 @@ export default function CulturaAdminPage() {
     }
   };
 
-  const handlePreview = (data: CulturaConfiguration) => {
+  const handlePreview = (data: CulturaPageData) => {
     // Abrir preview en nueva ventana
     window.open('/cultura?preview=true', '_blank');
   };
@@ -96,7 +97,7 @@ export default function CulturaAdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <CulturaPageEditor
+      <CulturaPageEditorNew
         slug="cultura"
         initialData={culturaData}
         onSave={handleSave}
