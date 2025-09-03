@@ -13,7 +13,6 @@ import {
   Building2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useResourceOptimization } from '@/hooks/usePerformanceMonitor';
 
 interface OptimizedLoadingProps {
   type: 'blog' | 'careers' | 'article' | 'job' | 'search';

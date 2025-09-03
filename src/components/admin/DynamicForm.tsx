@@ -36,7 +36,6 @@ import {
   ScopeItemsEditor
 } from './iso';
 import BackupManager from './BackupManager';
-import PerformanceMonitor from './PerformanceMonitor';
 import { useSmartValidation } from '@/hooks/useSmartValidation';
 import { useISOValidation } from '@/hooks/useISOValidation';
 import { useAutoSave } from '@/hooks/useAutoSave';
@@ -136,7 +135,6 @@ export interface DynamicFormProps {
   showValidationPanel?: boolean;
   showBackupManager?: boolean;
   backupResource?: string;
-  showPerformanceMonitor?: boolean;
   enableISOValidation?: boolean;
   enableAutoSave?: boolean;
   autoSaveInterval?: number;
@@ -162,7 +160,6 @@ export default function DynamicForm({
   showValidationPanel = false,
   showBackupManager = false,
   backupResource = 'unknown',
-  showPerformanceMonitor = false,
   enableISOValidation = false,
   enableAutoSave = false,
   autoSaveInterval = 30000,
@@ -1416,17 +1413,7 @@ export default function DynamicForm({
         </div>
       )}
 
-      {/* Performance Monitor */}
-      {showPerformanceMonitor && (
-        <div className="mt-6 border-t pt-6">
-          <PerformanceMonitor
-            resource={backupResource}
-            realTime={true}
-            showSystemMetrics={true}
-            showUserMetrics={true}
-          />
-        </div>
-      )}
+      {/* Performance monitoring removed */}
 
       {/* Preview Modal */}
       {showPreviewButton && (

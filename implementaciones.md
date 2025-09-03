@@ -8,6 +8,7 @@
 - [2025-09-01] Añadida funcionalidad de export/import de configuraciones - Features: exportar/importar elementos dinámicos completos
 - [2025-09-01] Agregado módulo Mega Menu y Contenido Dinámico a navegación admin - Modified: src/components/admin/AdminNavigation.tsx
 - [2025-09-01] Corregido error NaN en estadísticas del mega menu - Fixed: src/components/admin/megamenu/MegaMenuStats.tsx
+- [2025-09-03] Cleanup completo: eliminados archivos PWA, cache y performance - Removed: components/performance/, hooks/cache, config turbopack
 
 ## Fase 6 - Sistema Avanzado para Formulario ISO 9001
 

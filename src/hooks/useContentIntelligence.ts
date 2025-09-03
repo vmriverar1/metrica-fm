@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BlogPost } from '@/types/blog';
 import { JobPosting } from '@/types/careers';
 import { useAdvancedAnalytics } from './useAdvancedAnalytics';
-import { usePerformanceMonitor } from './usePerformanceMonitor';
 
 export type ContentItem = BlogPost | JobPosting;
 
@@ -70,7 +69,6 @@ export function useContentIntelligence(type: 'blog' | 'careers') {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const analytics = useAdvancedAnalytics(type === 'blog' ? 'blog' : 'careers');
-  const performanceMonitor = usePerformanceMonitor(type === 'blog' ? 'blog' : 'careers');
 
   // Initialize metrics from localStorage
   useEffect(() => {

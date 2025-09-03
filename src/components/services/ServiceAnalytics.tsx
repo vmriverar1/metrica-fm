@@ -240,7 +240,6 @@ export function useServiceInteractionTracking() {
 }
 
 // Performance monitoring component
-export function ServicePerformanceMonitor() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -341,7 +340,6 @@ export default function ServiceAnalytics() {
   
   return (
     <>
-      <ServicePerformanceMonitor />
     </>
   );
 }

@@ -2972,7 +2972,6 @@ const PagesManagement = () => {
                         showValidationPanel={true}
                         showBackupManager={true}
                         backupResource={`page_${selectedPage.name}`}
-                        showPerformanceMonitor={true}
                       />
                     ) : (
                       <>

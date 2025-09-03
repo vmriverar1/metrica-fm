@@ -8,8 +8,6 @@ import {
 } from './ProgressiveEnhancer';
 import { LazyLoadingMonitor } from './LazySection';
 import { HOME_LAZY_SECTIONS } from './sections/LazyHomeSections';
-import CacheMonitor from './CacheMonitor';
-import { useCache } from '@/lib/intelligent-cache';
 import DynamicForm, { DynamicFormProps } from './DynamicForm';
 
 // Enhanced DynamicForm con Progressive Enhancement
@@ -17,28 +15,17 @@ interface EnhancedDynamicFormProps extends DynamicFormProps {
   enableProgressiveEnhancement?: boolean;
   enableLazyLoading?: boolean;
   enableIntelligentCache?: boolean;
-  enablePerformanceMonitoring?: boolean;
 }
 
 const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
   enableProgressiveEnhancement = true,
   enableLazyLoading = true,
   enableIntelligentCache = true,
-  enablePerformanceMonitoring = true,
   ...formProps
 }) => {
   const { isFeatureEnabled, isFeatureLoaded } = useProgressiveEnhancement();
-  const cache = useCache();
 
-  // Cache warmup para home.json
-  React.useEffect(() => {
-    if (enableIntelligentCache && 
-        isFeatureEnabled('intelligent-caching') && 
-        formProps.backupResource === 'page_home' &&
-        formProps.initialValues) {
-      cache.warmupHomeCache(formProps.initialValues);
-    }
-  }, [formProps.initialValues, formProps.backupResource, enableIntelligentCache]);
+  // Cache functionality removed
 
   // Configurar features basadas en props
   const enhancedProps = {
@@ -48,7 +35,6 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
     showPreviewButton: formProps.showPreviewButton && isFeatureLoaded('preview-system'),
     showValidationPanel: formProps.showValidationPanel && isFeatureLoaded('smart-validation'),
     showBackupManager: formProps.showBackupManager && isFeatureLoaded('backup-system'),
-    showPerformanceMonitor: formProps.showPerformanceMonitor && isFeatureLoaded('performance-monitoring')
   };
 
   return (
@@ -62,7 +48,6 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
           <LazyLoadingMonitor
             sections={HOME_LAZY_SECTIONS}
             onStatsUpdate={(stats) => {
-              if (enablePerformanceMonitoring) {
                 console.log('📊 Lazy Loading Stats:', stats);
               }
             }}
@@ -75,7 +60,6 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
        isFeatureEnabled('intelligent-caching') && 
        process.env.NODE_ENV === 'development' && (
         <Suspense fallback={null}>
-          <CacheMonitor isVisible={false} showDetailedView={false} />
         </Suspense>
       )}
     </div>
@@ -120,13 +104,11 @@ export const OptimizedHomeEditor: React.FC<Omit<EnhancedDynamicFormProps, 'enabl
       enableProgressiveEnhancement={true}
       enableLazyLoading={true}
       enableIntelligentCache={true}
-      enablePerformanceMonitoring={true}
       // Features específicas para home.json
       showPreviewButton={true}
       enableSmartValidation={true}
       showValidationPanel={true}
       showBackupManager={true}
-      showPerformanceMonitor={true}
     />
   );
 };

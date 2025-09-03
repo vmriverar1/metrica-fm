@@ -16,7 +16,6 @@ import ProjectComparison from '@/components/portfolio/ProjectComparison';
 import FavoritesShare from '@/components/portfolio/FavoritesShare';
 import PresentationMode from '@/components/portfolio/PresentationMode';
 import FloatingButtons from '@/components/portfolio/FloatingButtons';
-import PerformanceMonitor from '@/components/portfolio/PerformanceMonitor';
 import { PortfolioProvider } from '@/contexts/PortfolioContext';
 import { BarChart3, Calendar, Grid3x3, Map, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -119,7 +118,6 @@ export default function PortfolioPage() {
         />
         
         {/* Performance monitoring for development */}
-        {process.env.NODE_ENV === 'development' && <PerformanceMonitor />}
       </div>
     </PortfolioProvider>
   );

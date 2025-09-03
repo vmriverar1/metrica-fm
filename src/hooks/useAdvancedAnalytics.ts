@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { usePerformanceMonitor, useABTesting } from './usePerformanceMonitor';
-import { useCacheMonitoring } from './useAdvancedCache';
+// Performance monitoring and cache imports removed
 
 interface AnalyticsEvent {
   name: string;
@@ -57,9 +56,7 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
   const [contentEngagement, setContentEngagement] = useState<ContentEngagement | null>(null);
   const [funnelData, setFunnelData] = useState<FunnelStep[]>([]);
   
-  const performanceMonitor = usePerformanceMonitor(pageType);
-  const abTesting = useABTesting();
-  const cacheMonitoring = useCacheMonitoring();
+  // Performance and cache monitoring removed
   
   const startTime = useRef<number>(Date.now());
   const interactionCount = useRef<number>(0);
@@ -134,9 +131,9 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
       properties: {
         ...properties,
         pageType,
-        abTestVariant: abTesting.variant,
-        cacheHitRate: cacheMonitoring.getTotalHitRate(),
-        performanceScore: performanceMonitor.getPerformanceScore()
+        abTestVariant: null,
+        cacheHitRate: 0,
+        performanceScore: 0
       },
       timestamp: Date.now(),
       sessionId: session.sessionId,
@@ -154,14 +151,13 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
       bounced: prev.events.length > 0 ? false : prev.bounced
     } : prev);
 
-    // Track A/B test events
-    abTesting.trackEvent(eventName, properties);
+    // A/B testing removed
 
     // Auto-flush events every 10 events or 30 seconds
     if (eventsQueue.current.length >= 10) {
       flushEvents();
     }
-  }, [session, pageType, abTesting, cacheMonitoring, performanceMonitor]);
+  }, [session, pageType]);
 
   // Flush events to analytics service
   const flushEvents = useCallback(async () => {
@@ -360,14 +356,10 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
       insights.push('High interaction rate - user is actively engaged');
     }
 
-    // Performance insights
-    const perfScore = performanceMonitor.getPerformanceScore();
-    if (perfScore < 50) {
-      insights.push('Poor performance may be affecting engagement');
-    }
+    // Performance insights removed
 
     return insights;
-  }, [session, contentEngagement, performanceMonitor]);
+  }, [session, contentEngagement]);
 
   // Real-time metrics
   const getRealTimeMetrics = useCallback(() => {
@@ -377,11 +369,11 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
       pageViews: session?.pageViews || 0,
       eventsCount: session?.events.length || 0,
       contentEngagementScore: contentEngagement?.conversionScore || 0,
-      performanceScore: performanceMonitor.getPerformanceScore(),
-      cacheHitRate: cacheMonitoring.getTotalHitRate(),
+      performanceScore: 0,
+      cacheHitRate: 0,
       currentFunnel: funnelData
     };
-  }, [session, contentEngagement, performanceMonitor, cacheMonitoring, funnelData]);
+  }, [session, contentEngagement, funnelData]);
 
   // Export session data
   const exportSessionData = useCallback(() => {
@@ -389,8 +381,8 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
       session,
       contentEngagement,
       funnelData,
-      performance: performanceMonitor.metrics,
-      abTestVariant: abTesting.variant,
+      performance: null,
+      abTestVariant: null,
       insights: generateInsights(),
       realTimeMetrics: getRealTimeMetrics()
     };
@@ -402,7 +394,7 @@ export function useAdvancedAnalytics(pageType: 'blog' | 'careers' | 'article' | 
     a.download = `analytics-session-${session?.sessionId || 'unknown'}.json`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [session, contentEngagement, funnelData, performanceMonitor, abTesting, generateInsights, getRealTimeMetrics]);
+  }, [session, contentEngagement, funnelData, generateInsights, getRealTimeMetrics]);
 
   return {
     // Core tracking
