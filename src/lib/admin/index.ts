@@ -23,14 +23,7 @@ export {
   type FileValidationError
 } from './core/file-manager';
 
-export { 
-  CacheManager, 
-  JSONCacheManager,
-  type CacheEntry,
-  type CacheOptions,
-  type CacheStats,
-  type InvalidationPattern
-} from './core/cache-manager';
+// Cache manager exports removed
 
 export { 
   FlexibleValidator,
@@ -77,7 +70,6 @@ export {
 
 // Instancias singleton pre-configuradas
 import { fileManager } from './core/file-manager';
-import { cacheManager } from './core/cache-manager';
 import { validator } from './core/validator';
 import { logger } from './core/logger';
 import { backupManager } from './core/backup-manager';
@@ -87,7 +79,6 @@ import { backupManager } from './core/backup-manager';
  */
 export class JSONCRUDSystem {
   public readonly fileManager = fileManager;
-  public readonly cacheManager = cacheManager;
   public readonly validator = validator;
   public readonly logger = logger;
   public readonly backupManager = backupManager;
@@ -116,7 +107,6 @@ export class JSONCRUDSystem {
       await this.logger.info('system', 'JSON CRUD System initialized successfully', {
         components: {
           fileManager: 'ready',
-          cacheManager: 'ready',
           validator: 'ready',
           logger: 'ready',
           backupManager: 'ready'
@@ -133,23 +123,7 @@ export class JSONCRUDSystem {
    * Configurar listeners para integración entre componentes
    */
   private setupEventListeners(): void {
-    // FileManager -> Cache invalidation
-    this.fileManager.on && this.fileManager.on('file-written', (filePath: string) => {
-      this.cacheManager.invalidateFile(filePath);
-    });
-
-    this.fileManager.on && this.fileManager.on('file-deleted', (filePath: string) => {
-      this.cacheManager.invalidateFile(filePath);
-    });
-
-    // Cache -> Logger para estadísticas
-    this.cacheManager.on('hit', (key: string) => {
-      this.logger.debug('cache', `Cache hit: ${key}`);
-    });
-
-    this.cacheManager.on('miss', (key: string) => {
-      this.logger.debug('cache', `Cache miss: ${key}`);
-    });
+    // Event listeners simplified - cache functionality removed
 
     // BackupManager -> Logger para auditoría
     this.backupManager.on('backup-completed', async (metadata: any) => {
@@ -174,24 +148,8 @@ export class JSONCRUDSystem {
     const startTime = Date.now();
     
     try {
-      // Intentar obtener del cache primero
-      if (useCache) {
-        const cached = this.cacheManager.get<T>(filePath);
-        if (cached !== null) {
-          await this.logger.debug('system', `Read from cache: ${filePath}`);
-          return cached;
-        }
-      }
-
-      // Leer del sistema de archivos
+      // Leer del sistema de archivos (cache functionality removed)
       const result = await this.fileManager.readJSON<T>(filePath);
-      
-      // Almacenar en cache
-      if (useCache) {
-        this.cacheManager.set(filePath, result.data, {
-          tags: [this.getFileCategory(filePath)]
-        });
-      }
 
       // Log de performance
       const duration = Date.now() - startTime;
@@ -272,10 +230,7 @@ export class JSONCRUDSystem {
         ensureDirectory: true
       });
 
-      // Invalidar cache
-      if (!opts.skipCache) {
-        this.cacheManager.invalidateFile(filePath);
-      }
+      // Cache invalidation removed
 
       // Log de auditoría
       await this.logger.audit({
@@ -320,13 +275,11 @@ export class JSONCRUDSystem {
    * Obtener estadísticas del sistema
    */
   async getSystemStats(): Promise<{
-    cache: any;
     backups: any;
     validation: any;
     logs: any;
   }> {
     return {
-      cache: this.cacheManager.getStats(),
       backups: this.backupManager.getBackupStats(),
       validation: this.validator.getValidationStats(),
       logs: this.logger.getStats()
@@ -357,8 +310,7 @@ export class JSONCRUDSystem {
     await this.logger.info('system', 'Shutting down JSON CRUD System...');
     
     try {
-      // Limpiar cache
-      this.cacheManager.clear();
+      // Cache cleanup removed
       
       // Destruir backup manager
       await this.backupManager.destroy();

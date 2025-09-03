@@ -11,7 +11,6 @@
  */
 
 import { FileManager } from '../core/file-manager';
-import { JSONCacheManager } from '../core/cache-manager';
 import { FlexibleValidator } from '../core/validator';
 import { JSONCRUDLogger } from '../core/logger';
 import fs from 'fs/promises';

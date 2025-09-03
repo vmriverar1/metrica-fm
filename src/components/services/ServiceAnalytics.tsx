@@ -239,7 +239,8 @@ export function useServiceInteractionTracking() {
   };
 }
 
-// Performance monitoring component
+// Performance monitoring hook
+function usePerformanceTracking() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -337,9 +338,7 @@ declare global {
 
 export default function ServiceAnalytics() {
   useServiceAnalytics();
+  usePerformanceTracking();
   
-  return (
-    <>
-    </>
-  );
+  return null;
 }
