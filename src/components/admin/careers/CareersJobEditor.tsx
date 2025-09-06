@@ -302,7 +302,7 @@ export default function CareersJobEditor({
         custom_benefits: []
       },
       company_info: {
-        name: 'Métrica DIP',
+        name: 'Métrica FM',
         description: 'Dirección Integral de Proyectos especializada en infraestructura',
         size: 'medium',
         industry: 'Infraestructura',
@@ -1754,7 +1754,7 @@ export default function CareersJobEditor({
                                 application: { ...prev.application, custom_questions: newQuestions }
                               }))
                             }}
-                            placeholder="¿Por qué te interesa trabajar en Métrica DIP?"
+                            placeholder="¿Por qué te interesa trabajar en Métrica FM?"
                             disabled={isReadOnly}
                           />
                         </div>
@@ -1865,7 +1865,7 @@ export default function CareersJobEditor({
                     ...prev, 
                     seo: { ...prev.seo, meta_title: e.target.value }
                   }))}
-                  placeholder="Ingeniero de Proyectos Senior - Métrica DIP | Únete a nuestro equipo"
+                  placeholder="Ingeniero de Proyectos Senior - Métrica FM | Únete a nuestro equipo"
                   disabled={isReadOnly}
                 />
                 <p className="text-sm text-gray-500 mt-1">
@@ -1882,7 +1882,7 @@ export default function CareersJobEditor({
                     ...prev, 
                     seo: { ...prev.seo, meta_description: e.target.value }
                   }))}
-                  placeholder="Únete como Ingeniero de Proyectos Senior en Métrica DIP. Oportunidad de crecimiento en proyectos de infraestructura. Aplicar ahora."
+                  placeholder="Únete como Ingeniero de Proyectos Senior en Métrica FM. Oportunidad de crecimiento en proyectos de infraestructura. Aplicar ahora."
                   rows={3}
                   disabled={isReadOnly}
                 />

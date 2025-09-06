@@ -130,7 +130,7 @@ const MegaMenuPreview: React.FC<MegaMenuPreviewProps> = ({
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
               <span className="text-sm font-bold">M</span>
             </div>
-            <span className="font-bold">Métrica DIP</span>
+            <span className="font-bold">Métrica FM</span>
           </div>
           
           <nav className="flex items-center gap-1">

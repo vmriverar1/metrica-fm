@@ -24,7 +24,7 @@ const BlogPageRenderer: React.FC<BlogPageRendererProps> = ({ data, isPreview = f
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-20">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {hero.title || 'Blog Métrica DIP'}
+            {hero.title || 'Blog Métrica FM'}
           </h1>
           {hero.subtitle && (
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">

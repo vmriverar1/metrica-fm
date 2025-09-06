@@ -31,7 +31,7 @@ const generateExtendedData = (timelineEvents: any[]) => {
         ? event.gallery.filter(img => img && img.trim() !== '') 
         : [event.image, event.image_fallback].filter(img => img && img.trim() !== ''),
       quote: event.impact || '',
-      quoteAuthor: 'Métrica DIP'
+      quoteAuthor: 'Métrica FM'
     };
   });
   
@@ -294,7 +294,7 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
           key={hito.id}
           isActive={index === activeIndex && showPanel}
           hitoData={hitosExtendidos[hito.id as keyof typeof hitosExtendidos]}
-          color={index % 2 === 0 ? '#E84E0F' : '#003F6F'}
+          color={index % 2 === 0 ? '#007bc4' : '#003F6F'}
           onClose={() => setShowPanel(false)}
         />
       ))}

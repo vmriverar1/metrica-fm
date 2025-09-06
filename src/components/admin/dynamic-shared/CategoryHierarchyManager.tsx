@@ -83,13 +83,13 @@ export default function CategoryHierarchyManager({
       title: 'Categorías de Artículos',
       icon: '📰',
       defaultCategories: ['Tendencias', 'Casos de Estudio', 'Guías Técnicas', 'Liderazgo'],
-      colors: ['#E84E0F', '#003F6F', '#34D399', '#8B5CF6', '#F59E0B']
+      colors: ['#007bc4', '#003F6F', '#34D399', '#8B5CF6', '#F59E0B']
     },
     portfolio: {
       title: 'Categorías de Proyectos',
       icon: '🏗️',
       defaultCategories: ['Oficina', 'Retail', 'Industria', 'Hotelería', 'Educación', 'Vivienda', 'Salud'],
-      colors: ['#E84E0F', '#003F6F', '#34D399', '#8B5CF6', '#F59E0B', '#EF4444', '#06B6D4']
+      colors: ['#007bc4', '#003F6F', '#34D399', '#8B5CF6', '#F59E0B', '#EF4444', '#06B6D4']
     },
     careers: {
       title: 'Departamentos',

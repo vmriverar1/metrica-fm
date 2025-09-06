@@ -253,7 +253,7 @@ export const PUT = withAuth(
           (Array.isArray(tags) ? tags : []) : currentJob.tags,
         hiring_manager: hiring_manager !== undefined ? hiring_manager : currentJob.hiring_manager,
         seo: seo !== undefined ? {
-          meta_title: seo.meta_title || `${title} | Carreras Métrica DIP`,
+          meta_title: seo.meta_title || `${title} | Carreras Métrica FM`,
           meta_description: seo.meta_description || short_description,
           keywords: Array.isArray(seo.keywords) ? seo.keywords : []
         } : currentJob.seo,

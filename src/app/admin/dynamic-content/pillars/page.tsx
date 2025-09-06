@@ -46,7 +46,7 @@ export default function PillarsManagementPage() {
         <CardHeader>
           <CardTitle className="text-xl">Pilares de la Empresa</CardTitle>
           <CardDescription>
-            Los pilares representan los fundamentos estratégicos de Métrica DIP. 
+            Los pilares representan los fundamentos estratégicos de Métrica FM. 
             Son elementos clave que se muestran en la página principal del sitio web, 
             comunicando los valores y enfoques principales de la empresa a los visitantes.
           </CardDescription>

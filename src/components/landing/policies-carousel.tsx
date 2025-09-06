@@ -34,7 +34,7 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
     ...policy,
     icon: iconMap[policy.icon as keyof typeof iconMap] || Award,
     image: policy.image || policy.image_fallback,
-    color: '#E84E0F'
+    color: '#007bc4'
   }));
   const sectionRef = useRef<HTMLElement>(null);
   const swiperRef = useRef<any>(null);
@@ -205,13 +205,24 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
                 <div className="card group relative h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-accent">
                   {/* Imagen */}
                   <div className="media-container relative aspect-[8/5] overflow-hidden">
-                    <Image 
-                      src={policy.image}
-                      alt={policy.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    {policy.image && policy.image !== '/img/policies/policy1.jpg' && policy.image !== '/img/policies/policy2.jpg' ? (
+                      <Image 
+                        src={policy.image}
+                        alt={policy.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                        <div className="text-center text-white/80">
+                          <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                            <span className="text-2xl">📜</span>
+                          </div>
+                          <p className="text-sm">Imagen de política</p>
+                        </div>
+                      </div>
+                    )}
                     <div 
                       className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
                     />
@@ -278,8 +289,8 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
         }
 
         .policies-swiper .card:hover {
-          border-color: rgba(232, 78, 15, 0.5);
-          box-shadow: 0 20px 50px rgba(232, 78, 15, 0.3);
+          border-color: rgba(0, 123, 196, 0.5);
+          box-shadow: 0 20px 50px rgba(0, 123, 196, 0.3);
         }
 
         .policies-swiper .media-container {

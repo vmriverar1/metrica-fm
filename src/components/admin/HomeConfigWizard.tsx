@@ -198,7 +198,7 @@ const HomeConfigWizard: React.FC<HomeConfigWizardProps> = ({
         <Input
           value={getNestedValue(formData, 'page.title') || ''}
           onChange={(e) => handleFieldChange('page.title', e.target.value)}
-          placeholder="ej: Métrica DIP - Dirección Integral de Proyectos"
+          placeholder="ej: Métrica FM - Dirección Integral de Proyectos"
           maxLength={60}
         />
         <p className="text-xs text-gray-500 mt-1">

@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 const filters = [
   { id: 'all', name: 'Todos', color: '#6B7280', icon: '⭐' },
   { id: 'corporate', name: 'Corporativo', color: '#003F6F', icon: '🔵' },
-  { id: 'celebrations', name: 'Celebraciones', color: '#E84E0F', icon: '🟠' },
+  { id: 'celebrations', name: 'Celebraciones', color: '#007bc4', icon: '🟠' },
   { id: 'sustainability', name: 'Sostenibilidad', color: '#059669', icon: '🟢' },
   { id: 'legacy', name: 'Historia', color: '#374151', icon: '⚪' }
 ];
@@ -278,7 +278,7 @@ export default function MomentsMosaic() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="w-24 h-1 bg-gradient-to-r from-[#E84E0F] to-[#003F6F] mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#007bc4] to-[#003F6F] mx-auto rounded-full"></div>
         </motion.div>
 
         {/* Filtros visuales */}

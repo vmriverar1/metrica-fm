@@ -207,7 +207,7 @@ export default function QualityPolicy() {
             Nuestra <span className="text-primary">Política de Calidad</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Los principios y compromisos que guían cada decisión y acción en Métrica DIP, 
+            Los principios y compromisos que guían cada decisión y acción en Métrica FM, 
             asegurando la excelencia en todos nuestros proyectos de construcción e infraestructura.
           </p>
         </motion.div>
@@ -295,7 +295,7 @@ export default function QualityPolicy() {
                     Declaración de Política de Calidad
                   </h3>
                   <blockquote className="text-lg leading-relaxed text-muted-foreground italic border-l-4 border-primary/30 pl-6">
-                    "En Métrica DIP nos comprometemos a ser líderes en la dirección integral de proyectos 
+                    "En Métrica FM nos comprometemos a ser líderes en la dirección integral de proyectos 
                     de construcción e infraestructura, proporcionando servicios que superen consistentemente 
                     las expectativas de nuestros clientes. Basamos nuestro éxito en un equipo altamente 
                     competente, procesos eficientes, mejora continua y un inquebrantable compromiso con 
@@ -307,7 +307,7 @@ export default function QualityPolicy() {
                     </div>
                     <div>
                       <p className="font-semibold text-foreground">Dirección General</p>
-                      <p className="text-sm text-muted-foreground">Métrica DIP S.A.C.</p>
+                      <p className="text-sm text-muted-foreground">Métrica FM S.A.C.</p>
                     </div>
                   </div>
                 </div>

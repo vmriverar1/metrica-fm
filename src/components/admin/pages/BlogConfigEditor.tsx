@@ -133,7 +133,7 @@ export const BlogConfigEditor: React.FC<BlogConfigEditorProps> = ({
 }) => {
   const [config, setConfig] = useState<BlogConfiguration>({
     basic: {
-      title: 'Blog Métrica DIP',
+      title: 'Blog Métrica FM',
       subtitle: 'Noticias, insights y actualizaciones',
       description: 'Mantente informado sobre las últimas tendencias en infraestructura y gestión de proyectos.',
       slug: 'blog',
@@ -142,7 +142,7 @@ export const BlogConfigEditor: React.FC<BlogConfigEditorProps> = ({
       timezone: 'America/Lima'
     },
     hero: {
-      title: 'Blog Métrica DIP',
+      title: 'Blog Métrica FM',
       subtitle: 'Insights y Experiencias en Infraestructura',
       description: 'Descubre las últimas tendencias, casos de éxito y conocimientos especializados en gestión de proyectos de infraestructura.',
       show_search: true,
@@ -401,7 +401,7 @@ export const BlogConfigEditor: React.FC<BlogConfigEditorProps> = ({
                   <Input
                     value={config.basic.title}
                     onChange={(e) => updateConfig('basic.title', e.target.value)}
-                    placeholder="Blog Métrica DIP"
+                    placeholder="Blog Métrica FM"
                     className={validationErrors.title ? 'border-red-500' : ''}
                     disabled={readOnly}
                   />
@@ -504,7 +504,7 @@ export const BlogConfigEditor: React.FC<BlogConfigEditorProps> = ({
                 <Input
                   value={config.hero.title}
                   onChange={(e) => updateConfig('hero.title', e.target.value)}
-                  placeholder="Blog Métrica DIP"
+                  placeholder="Blog Métrica FM"
                   disabled={readOnly}
                 />
               </div>

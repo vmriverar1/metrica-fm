@@ -593,7 +593,7 @@ export default function SmartContactForm() {
 
                 {/* Why Choose Us */}
                 <Card className="p-6">
-                  <h3 className="font-semibold mb-4">¿Por qué Métrica DIP?</h3>
+                  <h3 className="font-semibold mb-4">¿Por qué Métrica FM?</h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />

@@ -417,7 +417,7 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
               <p className="text-xs text-gray-600">Total Políticas</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#E84E0F]">
+              <p className="text-2xl font-bold text-[#007bc4]">
                 {policies.filter(p => p.title && p.description).length}
               </p>
               <p className="text-xs text-gray-600">Completas</p>

@@ -120,7 +120,7 @@ export default function JobDescription({ job, onApply, className }: JobDescripti
             <Building2 className="w-5 h-5" />
             <span>{job.department}</span>
             <span>•</span>
-            <span>Métrica DIP</span>
+            <span>Métrica FM</span>
           </div>
         </div>
 
@@ -338,7 +338,7 @@ export default function JobDescription({ job, onApply, className }: JobDescripti
           {/* Company Info */}
           <Card className="p-6">
             <h3 className="text-lg font-semibold text-foreground mb-4">
-              Sobre Métrica DIP
+              Sobre Métrica FM
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Somos líderes en gestión integral de proyectos de infraestructura en Perú, 

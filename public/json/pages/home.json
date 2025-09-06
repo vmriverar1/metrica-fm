@@ -5,8 +5,8 @@
   "description": "Contenido de la página principal del sitio",
   "path": "/public/json/pages/home.json",
   "status": "active",
-  "lastModified": "2025-08-20T10:00:00Z",
-  "size": "15.2 KB",
+  "lastModified": "2025-01-01T10:00:00Z",
+  "size": "0.5 KB",
   "type": "static",
   "metadata": {
     "author": "Admin",
@@ -15,145 +15,117 @@
       "landing"
     ],
     "category": "main",
-    "seoTitle": "Métrica DIP - Dirección Integral de Proyectos",
-    "seoDescription": "Empresa líder en dirección integral de proyectos en Perú"
+    "seoTitle": "Tu Empresa - Título Principal",
+    "seoDescription": "Descripción de tu empresa"
   },
   "page": {
-    "title": "Métrica DIP - Dirección Integral de Proyectos",
-    "description": "Líderes en dirección integral de proyectos de infraestructura en Perú desde 2010"
+    "title": "Tu Empresa - Título Principal",
+    "description": "Descripción breve de tu empresa"
   },
   "hero": {
     "title": {
-      "main": "Gerencia de Proyectos",
-      "secondary": "y Supervisión de Obras"
+      "main": "Título Principal",
+      "secondary": "Subtítulo"
     },
-    "subtitle": "Liderando el sector construcción",
+    "subtitle": "Descripción de tu empresa",
     "background": {
-      "video_url": "https://statom.co.uk/assets/video/2024/Oct/rc-frame-video.mp4",
+      "video_url": "",
       "video_url_fallback": "/video/hero-background.mp4",
-      "image_fallback": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
+      "image_fallback": "/img/hero-background.jpg",
       "image_fallback_internal": "/img/hero-background.jpg",
       "overlay_opacity": 0.6
     },
     "rotating_words": [
-      "Cuidamos",
-      "Mejoramos"
+      "Palabra 1",
+      "Palabra 2"
     ],
-    "transition_text": "Somos el socio estratégico que asegura la rentabilidad de tu proyecto, especializados en el sector industrial.",
+    "transition_text": "Texto de transición que describe tu empresa",
     "cta": {
-      "text": "DESCUBRE DIP",
+      "text": "BOTÓN PRINCIPAL",
       "target": "#services"
     }
   },
   "stats": {
     "statistics": [
       {
-        "id": "projects",
+        "id": "stat1",
         "icon": "Building",
-        "value": 2,
-        "suffix": "M",
-        "label": "M2 Construidos",
-        "description": "Metros cuadrados construidos"
+        "value": 0,
+        "suffix": "",
+        "label": "Estadística 1",
+        "description": "Descripción de estadística 1"
       },
       {
-        "id": "clients",
-        "icon": "TrendingUp",
-        "value": 450,
-        "suffix": "K",
-        "label": "M2 Construidos Industrial",
-        "description": "Metros cuadrados construidos en el sector industrial"
+        "id": "stat2",
+        "icon": "Users",
+        "value": 0,
+        "suffix": "",
+        "label": "Estadística 2", 
+        "description": "Descripción de estadística 2"
       },
       {
-        "id": "professionals",
-        "icon": "Briefcase",
-        "value": 3100,
-        "suffix": "M",
-        "label": "Soles Invertidos",
-        "description": "Millones de soles invertidos"
-      },
-      {
-        "id": "years",
+        "id": "stat3",
         "icon": "Award",
-        "value": 97,
-        "suffix": "%",
-        "label": "Retencion Clientes",
-        "description": "Nuestros clientes nos eligen denuevo"
+        "value": 0,
+        "suffix": "",
+        "label": "Estadística 3",
+        "description": "Descripción de estadística 3"
+      },
+      {
+        "id": "stat4",
+        "icon": "TrendingUp",
+        "value": 0,
+        "suffix": "",
+        "label": "Estadística 4",
+        "description": "Descripción de estadística 4"
       }
     ]
   },
   "services": {
     "section": {
       "title": "Nuestros Servicios",
-      "subtitle": "Ofrecemos un portafolio de servicios especializados para cuidar la rentabilidad y el éxito de proyectos del sector construcción."
+      "subtitle": "Descripción de los servicios que ofreces"
     },
-    "main_service": {
-      "id": "main",
-      "title": "Dirección Integral de Proyectos (DIP)",
-      "description": "Lideramos tu proyecto desde la concepción hasta la entrega, asegurando el cumplimiento de objetivos en tiempo, costo y calidad.",
-      "image_url": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-      "image_url_fallback": "/img/services/dip-main.jpg",
-      "icon_url": "/img/icono-logo-2.png",
-      "is_main": true,
-      "width": "3/3",
-      "cta": {
-        "text": "Conoce más sobre DIP",
-        "url": "/services"
-      }
-    },
-    "secondary_services": [
+    "services_list": [
       {
-        "id": "pmo",
-        "title": "Gerencia de Proyectos (PMO)",
-        "description": "Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_url_fallback": "/img/services/pmo-service.jpg",
+        "id": "servicio1",
+        "title": "Servicio 1",
+        "description": "Descripción del servicio 1",
+        "image_url": "/img/services/servicio1.jpg",
+        "image_url_fallback": "/img/services/servicio1.jpg",
+        "icon_url": "/img/ico-service-1.png",
+        "is_main": false,
+        "width": "1/3",
+        "cta": {
+          "text": "Ver Más",
+          "url": "/services"
+        }
+      },
+      {
+        "id": "servicio2",
+        "title": "Servicio 2",
+        "description": "Descripción del servicio 2",
+        "image_url": "/img/services/servicio2.jpg",
+        "image_url_fallback": "/img/services/servicio2.jpg",
         "icon_url": "/img/ico-service-2.png",
         "is_main": false,
         "width": "1/3",
         "cta": {
-          "text": "Ver PMO",
+          "text": "Ver Más",
           "url": "/services"
         }
       },
       {
-        "id": "supervision",
-        "title": "Supervisión de Obras",
-        "description": "Vigilancia técnica y administrativa para que la construcción se ejecute según los planos y normativas.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-        "image_url_fallback": "/img/services/supervision-service.jpg",
+        "id": "servicio3",
+        "title": "Servicio 3",
+        "description": "Descripción del servicio 3",
+        "image_url": "/img/services/servicio3.jpg",
+        "image_url_fallback": "/img/services/servicio3.jpg",
         "icon_url": "/img/ico-service-3.png",
         "is_main": false,
         "width": "1/3",
         "cta": {
-          "text": "Ver Supervisión",
-          "url": "/services"
-        }
-      },
-      {
-        "id": "contracts",
-        "title": "Gestión de Contratos",
-        "description": "Administramos los contratos de obra para prevenir conflictos y asegurar el cumplimiento de las obligaciones.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-        "image_url_fallback": "/img/services/contracts-service.jpg",
-        "icon_url": "/img/ico-service-4.png",
-        "is_main": false,
-        "width": "2/3",
-        "cta": {
-          "text": "Ver Contratos",
-          "url": "/services"
-        }
-      },
-      {
-        "id": "quality",
-        "title": "Control de Calidad",
-        "description": "Aseguramos que todos los materiales y procesos constructivos cumplan con los más altos estándares.",
-        "icon_url": "/img/ico-service-5.png",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/07.jpg",
-        "image_url_fallback": "/img/services/quality-service.jpg",
-        "is_main": false,
-        "width": "1/3",
-        "cta": {
-          "text": "Ver Calidad",
+          "text": "Ver Más",
           "url": "/services"
         }
       }
@@ -162,7 +134,7 @@
   "portfolio": {
     "section": {
       "title": "Proyectos Destacados",
-      "subtitle": "Conoce el impacto de nuestro trabajo a través de algunos de los proyectos que hemos dirigido.",
+      "subtitle": "Conoce algunos de nuestros trabajos más importantes",
       "cta": {
         "text": "Ver más detalles",
         "url": "/portfolio"
@@ -170,178 +142,106 @@
     },
     "featured_projects": [
       {
-        "id": "hospital-nacional",
-        "name": "Hotel Hilton balta",
-        "type": "Comercial",
-        "description": "Supervisión integral de la construcción y equipamiento del hospital más moderno de la región.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-        "image_url_fallback": "/img/portfolio/hospital-nacional.jpg"
+        "id": "proyecto1",
+        "name": "Proyecto 1",
+        "type": "Categoría",
+        "description": "Descripción del proyecto 1",
+        "image_url": "/img/portfolio/proyecto1.jpg",
+        "image_url_fallback": "/img/portfolio/proyecto1.jpg"
       },
       {
-        "id": "institucion-educativa",
-        "name": "Parque logístico callao",
-        "type": "Industrial",
-        "description": "Dirección del proyecto para la modernización de infraestructura educativa para más de 5,000 estudiantes.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_url_fallback": "/img/portfolio/institucion-educativa.jpg"
+        "id": "proyecto2",
+        "name": "Proyecto 2",
+        "type": "Categoría",
+        "description": "Descripción del proyecto 2",
+        "image_url": "/img/portfolio/proyecto2.jpg",
+        "image_url_fallback": "/img/portfolio/proyecto2.jpg"
       },
       {
-        "id": "autopista-sol",
-        "name": "Parque Lima sur",
-        "type": "Industrial",
-        "description": "Control de calidad y supervisión técnica en uno de los corredores viales más importantes del país.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-        "image_url_fallback": "/img/portfolio/autopista-sol.jpg"
+        "id": "proyecto3",
+        "name": "Proyecto 3",
+        "type": "Categoría",
+        "description": "Descripción del proyecto 3",
+        "image_url": "/img/portfolio/proyecto3.jpg",
+        "image_url_fallback": "/img/portfolio/proyecto3.jpg"
       },
       {
-        "id": "planta-tratamiento",
-        "name": "Clínica Aviva",
-        "type": "Sanitaria",
-        "description": "Gestión de proyecto para la ampliación y modernización de la planta, beneficiando a 2 millones de personas.",
-        "image_url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-        "image_url_fallback": "/img/portfolio/planta-tratamiento.jpg"
+        "id": "proyecto4",
+        "name": "Proyecto 4",
+        "type": "Categoría",
+        "description": "Descripción del proyecto 4",
+        "image_url": "/img/portfolio/proyecto4.jpg",
+        "image_url_fallback": "/img/portfolio/proyecto4.jpg"
       }
     ]
   },
   "pillars": {
     "section": {
-      "title": "¿Qué es DIP?",
-      "subtitle": "Nuestra Dirección Integral de Proyectos (DIP para el sector construcción se fundamenta en 5 pilares claves que cuidan y mejoran la rentabilidad.\n"
+      "title": "Nuestros Pilares",
+      "subtitle": "Los fundamentos de nuestro trabajo"
     },
     "pillars": [
       {
         "id": 1,
-        "icon": "Compass",
-        "title": "Curva de protocolo",
-        "description": "Curva de protocolo",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-        "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
+        "icon": "Target",
+        "title": "Pilar 1",
+        "description": "Descripción del pilar 1",
+        "image": "/img/pillars/pilar1.jpg",
+        "image_fallback": "/img/pillars/pilar1.jpg"
       },
       {
         "id": 2,
-        "icon": "Network",
-        "title": "Sistema de Gestión basado en PMI",
-        "description": "Integramos equipos de diseño, construcción y fiscalización para una ejecución sin fisuras.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_fallback": "/img/pillars/coordinacion-multidisciplinaria.jpg"
+        "icon": "Users",
+        "title": "Pilar 2",
+        "description": "Descripción del pilar 2",
+        "image": "/img/pillars/pilar2.jpg",
+        "image_fallback": "/img/pillars/pilar2.jpg"
       },
       {
         "id": 3,
-        "icon": "ScanSearch",
-        "title": "Estimaciones Paramétricas",
-        "description": "Garantizamos que cada etapa de la construcción cumpla con los más altos estándares de ingeniería.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-        "image_fallback": "/img/pillars/supervision-tecnica.jpg"
-      },
-      {
-        "id": 4,
-        "icon": "ChartBar",
-        "title": "Experiencia Específica por Sector",
-        "description": "Implementamos un riguroso control para asegurar la calidad de los materiales y la eficiencia del presupuesto.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-        "image_fallback": "/img/pillars/control-calidad-costos.jpg"
-      },
-      {
-        "id": 5,
-        "icon": "AlertTriangle",
-        "title": "Enfoque en la Rentabilidad",
-        "description": "Identificamos y mitigamos proactivamente los posibles riesgos que puedan afectar al proyecto.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-        "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
-      },
-      {
-        "id": 6,
-        "icon": "Building2",
-        "title": "Representación del Cliente",
-        "description": "Actuamos como sus ojos y oídos en el campo, defendiendo sus intereses en cada decisión.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_fallback": "/img/pillars/coordinacion-multidisciplinaria.jpg"
+        "icon": "Shield",
+        "title": "Pilar 3",
+        "description": "Descripción del pilar 3",
+        "image": "/img/pillars/pilar3.jpg",
+        "image_fallback": "/img/pillars/pilar3.jpg"
       }
     ]
   },
   "policies": {
     "section": {
-      "title": "Nuestras Políticas Empresariales",
-      "subtitle": "Comprometidos con la excelencia, integridad y desarrollo sostenible en cada proyecto que emprendemos."
+      "title": "Nuestras Políticas",
+      "subtitle": "Nuestro compromiso con la excelencia"
     },
     "policies": [
       {
         "id": 1,
         "icon": "Award",
-        "title": "Política de Calidad",
-        "description": "Compromiso con la excelencia en cada proyecto, superando las expectativas de nuestros clientes.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-        "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
+        "title": "Política 1",
+        "description": "Descripción de la política 1",
+        "image": "/img/policies/policy1.jpg",
+        "image_fallback": "/img/policies/policy1.jpg"
       },
       {
         "id": 2,
         "icon": "Shield",
-        "title": "Política de Seguridad y Salud en el Trabajo",
-        "description": "Priorizamos la seguridad de nuestros trabajadores con protocolos estrictos y capacitación continua.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_fallback": "/img/pillars/coordinacion-multidisciplinaria.jpg"
-      },
-      {
-        "id": 3,
-        "icon": "Leaf",
-        "title": "Política de Medio Ambiente",
-        "description": "Construimos de manera sostenible, minimizando el impacto ambiental en cada etapa del proyecto.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-        "image_fallback": "/img/pillars/supervision-tecnica.jpg"
-      },
-      {
-        "id": 4,
-        "icon": "Heart",
-        "title": "Política de Responsabilidad Social",
-        "description": "Contribuimos al desarrollo de las comunidades donde operamos, generando valor compartido.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-        "image_fallback": "/img/pillars/control-calidad-costos.jpg"
-      },
-      {
-        "id": 5,
-        "icon": "Scale",
-        "title": "Política de Ética y Cumplimiento",
-        "description": "Actuamos con integridad y transparencia, cumpliendo estrictamente las normativas vigentes.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-        "image_fallback": "/img/pillars/planificacion-estrategica.jpg"
-      },
-      {
-        "id": 6,
-        "icon": "AlertCircle",
-        "title": "Política de Gestión de Riesgos",
-        "description": "Identificamos y gestionamos proactivamente los riesgos para asegurar el éxito del proyecto.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-        "image_fallback": "/img/pillars/coordinacion-multidisciplinaria.jpg"
-      },
-      {
-        "id": 7,
-        "icon": "Lightbulb",
-        "title": "Política de Innovación y Mejora Continua",
-        "description": "Adoptamos tecnologías innovadoras y mejoramos constantemente nuestros procesos.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-        "image_fallback": "/img/pillars/supervision-tecnica.jpg"
-      },
-      {
-        "id": 8,
-        "icon": "Lock",
-        "title": "Política de Confidencialidad y Protección de Datos",
-        "description": "Protegemos la información confidencial de nuestros clientes con los más altos estándares.",
-        "image": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-        "image_fallback": "/img/pillars/control-calidad-costos.jpg"
+        "title": "Política 2",
+        "description": "Descripción de la política 2",
+        "image": "/img/policies/policy2.jpg",
+        "image_fallback": "/img/policies/policy2.jpg"
       }
     ]
   },
   "newsletter": {
     "section": {
       "title": "Suscríbete a nuestro Newsletter",
-      "subtitle": "Recibe las últimas noticias, análisis y casos de éxito del sector de infraestructura directamente en tu correo."
+      "subtitle": "Recibe las últimas noticias y novedades"
     },
     "form": {
       "placeholder_text": "Tu correo electrónico",
       "cta_text": "Suscribirme",
       "loading_text": "Suscribiendo...",
       "success_message": "¡Gracias por suscribirte!",
-      "success_description": "Pronto recibirás nuestro contenido exclusivo"
+      "success_description": "Pronto recibirás nuestro contenido"
     }
   }
 }

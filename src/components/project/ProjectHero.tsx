@@ -80,7 +80,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
                 <span className={cn(
                   "w-2 h-2 rounded-full",
                   project.category === 'oficina' ? 'bg-blue-400' :
-                  project.category === 'retail' ? 'bg-orange-400' :
+                  project.category === 'retail' ? 'bg-sky-400' :
                   project.category === 'industria' ? 'bg-gray-400' :
                   project.category === 'hoteleria' ? 'bg-purple-400' :
                   project.category === 'educacion' ? 'bg-green-400' :

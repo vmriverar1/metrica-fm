@@ -296,7 +296,7 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
               <p className="text-xs text-gray-600">Suma Total</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#E84E0F]">
+              <p className="text-2xl font-bold text-[#007bc4]">
                 {statistics.length > 0 ? 
                   formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0) / statistics.length) : 
                   '0'

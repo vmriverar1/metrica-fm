@@ -153,7 +153,7 @@ const testimonials = [
     project: 'Torres Residenciales Barranco',
     position: 'Gerente General',
     name: 'Carlos Mendoza',
-    quote: 'La certificación ISO 9001 de Métrica DIP nos dio la confianza total para confiarles nuestro proyecto más importante. La calidad y puntualidad fueron excepcionales.',
+    quote: 'La certificación ISO 9001 de Métrica FM nos dio la confianza total para confiarles nuestro proyecto más importante. La calidad y puntualidad fueron excepcionales.',
     rating: 5,
     image: '/images/clients/carlos-mendoza.jpg'
   },
@@ -173,7 +173,7 @@ const testimonials = [
     project: 'Hospital Moderno Arequipa',
     position: 'CEO',
     name: 'Dr. Miguel Torres',
-    quote: 'En un sector tan exigente como salud, la certificación ISO 9001 de Métrica DIP fue un factor decisivo. La calidad de construcción es impecable.',
+    quote: 'En un sector tan exigente como salud, la certificación ISO 9001 de Métrica FM fue un factor decisivo. La calidad de construcción es impecable.',
     rating: 5,
     image: '/images/clients/miguel-torres.jpg'
   }

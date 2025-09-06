@@ -159,7 +159,7 @@ export default function ValoresCore() {
             Nuestros Valores
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-alliance-medium">
-            Los principios fundamentales que guían cada decisión y acción en Métrica DIP
+            Los principios fundamentales que guían cada decisión y acción en Métrica FM
           </p>
         </div>
 

@@ -67,8 +67,8 @@ export default function SectionLoading({
           style={{
             width: `calc(100% - 8px)`,
             height: `calc(100% - 8px)`,
-            borderBottomColor: '#E84E0F',
-            borderLeftColor: 'rgba(232, 78, 15, 0.2)',
+            borderBottomColor: '#007bc4',
+            borderLeftColor: 'rgba(0, 123, 196, 0.2)',
           }}
           animate={{ rotate: -360 }}
           transition={{
@@ -87,8 +87,8 @@ export default function SectionLoading({
             transition={{ duration: 0.5 }}
           >
             <Image
-              src="/img/logo-color.png"
-              alt="Métrica DIP"
+              src="/img/logo-color.webp"
+              alt="Métrica FM"
               width={size === 'large' ? 48 : size === 'medium' ? 32 : 24}
               height={size === 'large' ? 48 : size === 'medium' ? 32 : 24}
               className="object-contain"

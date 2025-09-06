@@ -244,7 +244,7 @@ ${quickProfile.experience ? `EXPERIENCIA LABORAL\n${quickProfile.experience}\n` 
 
 ${quickProfile.skills ? `HABILIDADES\n${quickProfile.skills}` : ''}
 
-Generado con Métrica DIP Career Portal
+Generado con Métrica FM Career Portal
 Fecha: ${new Date().toLocaleDateString('es-PE')}
     `.trim();
 

@@ -42,7 +42,7 @@ npm run build
 
 Based on the blueprint.md, the design follows:
 
-* **Primary Colors**: Deep blue (#003F6F) and vibrant orange (#E84E0F)
+* **Primary Colors**: Deep blue (#003f6f) and light blue (#007bc4)
 * **Secondary Colors**: Light gray (#D0D0D0), medium gray (#9D9D9C), dark gray (#646363), and deep black (#1D1D1B)
 * **Typography**:
 

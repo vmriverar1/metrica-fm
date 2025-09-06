@@ -4,7 +4,7 @@ import UniversalHero from '@/components/ui/universal-hero';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 
 export const metadata: Metadata = {
-  title: 'Mi Perfil | Carreras Métrica DIP',
+  title: 'Mi Perfil | Carreras Métrica FM',
   description: 'Dashboard personal para candidatos: seguimiento de aplicaciones, estado de procesos y oportunidades recomendadas.',
   robots: 'noindex, nofollow' // Perfil personal no debe ser indexado
 };

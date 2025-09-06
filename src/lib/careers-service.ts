@@ -104,7 +104,7 @@ export class CareersService {
         name: 'Gestión y Dirección',
         slug: 'gestion-direccion',
         description: 'Liderar equipos y dirigir proyectos de construcción e infraestructura de gran escala.',
-        color: '#E84E0F',
+        color: '#007bc4',
         icon: '👨‍💼',
         count: sampleJobPostings.filter(j => j.category === 'gestion-direccion').length
       },

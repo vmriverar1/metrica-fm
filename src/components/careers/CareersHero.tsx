@@ -118,7 +118,7 @@ export default function CareersHero({ heroData }: CareersHeroProps) {
       >
         <Image
           src={heroData.background.image}
-          alt="Equipo Métrica DIP"
+          alt="Equipo Métrica FM"
           fill
           className="object-cover"
           priority
@@ -195,7 +195,7 @@ export default function CareersHero({ heroData }: CareersHeroProps) {
 
           {/* Call to Actions - Botónes mejorados */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-gradient-to-r from-[#E84E0F] to-[#E84E0F]/80 hover:from-[#E84E0F]/90 hover:to-[#E84E0F] text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+            <Button asChild size="lg" className="bg-gradient-to-r from-[#007bc4] to-[#007bc4]/80 hover:from-[#007bc4]/90 hover:to-[#007bc4] text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
               <Link href={heroData.cta.primary.href}>
                 {heroData.cta.primary.text}
                 <span className="ml-2">→</span>

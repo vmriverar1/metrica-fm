@@ -27,7 +27,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         "description": job.description,
         "identifier": {
           "@type": "PropertyValue",
-          "name": "Métrica DIP Job ID",
+          "name": "Métrica FM Job ID",
           "value": job.id
         },
         "datePosted": postedDate,
@@ -36,7 +36,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         "hiringOrganization": {
           "@type": "Organization",
           "@id": "https://metricadip.com#organization",
-          "name": "Métrica DIP",
+          "name": "Métrica FM",
           "alternateName": "Métrica Dirección Integral de Proyectos",
           "url": "https://metricadip.com",
           "logo": {
@@ -118,7 +118,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         "@type": "WebPage",
         "@id": url,
         "url": url,
-        "name": `${job.title} - ${job.department} | Métrica DIP`,
+        "name": `${job.title} - ${job.department} | Métrica FM`,
         "description": job.description,
         "datePublished": postedDate,
         "dateModified": postedDate,
@@ -136,7 +136,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
       {
         "@type": "Organization",
         "@id": "https://metricadip.com#organization",
-        "name": "Métrica DIP",
+        "name": "Métrica FM",
         "alternateName": "Métrica Dirección Integral de Proyectos",
         "url": "https://metricadip.com",
         "logo": {
@@ -179,7 +179,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         ],
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
-          "name": "Carreras en Métrica DIP",
+          "name": "Carreras en Métrica FM",
           "itemListElement": [
             {
               "@type": "Offer",
@@ -204,7 +204,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
 
   const ogImage = `https://metricadip.com/api/og/job?title=${encodeURIComponent(job.title)}&department=${encodeURIComponent(job.department)}&location=${encodeURIComponent(locationString)}`;
   
-  const pageTitle = `${job.title} - ${job.department} | Careers Métrica DIP`;
+  const pageTitle = `${job.title} - ${job.department} | Careers Métrica FM`;
   const pageDescription = `Únete a nuestro equipo como ${job.title} en ${job.department}. ${job.description.substring(0, 150)}...`;
 
   return (
@@ -213,7 +213,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         {/* Basic Meta Tags */}
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={`${job.title}, ${job.department}, ${locationString}, ${job.tags.join(', ')}, carreras Métrica DIP, empleos ingeniería, trabajos construcción Perú`} />
+        <meta name="keywords" content={`${job.title}, ${job.department}, ${locationString}, ${job.tags.join(', ')}, carreras Métrica FM, empleos ingeniería, trabajos construcción Perú`} />
         <meta name="robots" content="index, follow, max-image-preview:large" />
         
         {/* Job-specific meta tags */}
@@ -237,15 +237,15 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={`${job.title} position at Métrica DIP`} />
-        <meta property="og:site_name" content="Métrica DIP Careers" />
+        <meta property="og:image:alt" content={`${job.title} position at Métrica FM`} />
+        <meta property="og:site_name" content="Métrica FM Careers" />
         <meta property="og:locale" content="es_PE" />
         
         {/* Job-specific Open Graph */}
         <meta property="job:posting_date" content={postedDate} />
         <meta property="job:expiration_date" content={validThroughDate} />
         <meta property="job:location" content={locationString} />
-        <meta property="job:company" content="Métrica DIP" />
+        <meta property="job:company" content="Métrica FM" />
         <meta property="job:job_type" content={getJobTypeLabel(job.type)} />
         {job.salary && (
           <>
@@ -273,7 +273,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
         <link rel="alternate" hrefLang="x-default" href={url} />
         
         {/* RSS Feed for Jobs */}
-        <link rel="alternate" type="application/rss+xml" title="Métrica DIP Careers RSS" href="/careers/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Métrica FM Careers RSS" href="/careers/feed.xml" />
         
         {/* Preload Critical Resources */}
         <link rel="preload" href={ogImage} as="image" />
@@ -329,7 +329,7 @@ export default function JobSEO({ job, canonicalUrl }: JobSEOProps) {
               "employmentType": job.type.toUpperCase().replace('-', '_'),
               "hiringOrganization": {
                 "@type": "Organization",
-                "name": "Métrica DIP",
+                "name": "Métrica FM",
                 "logo": "https://metricadip.com/images/logo.png"
               },
               "jobLocation": typeof job.location === 'string' ? {

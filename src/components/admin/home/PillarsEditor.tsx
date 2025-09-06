@@ -330,7 +330,7 @@ const PillarsEditor: React.FC<PillarsEditorProps> = ({
               <p className="text-xs text-gray-600">Total Pilares</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#E84E0F]">
+              <p className="text-2xl font-bold text-[#007bc4]">
                 {pillars.filter(p => p.title && p.description).length}
               </p>
               <p className="text-xs text-gray-600">Completos</p>

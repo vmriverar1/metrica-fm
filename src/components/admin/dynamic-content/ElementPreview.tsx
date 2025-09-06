@@ -39,7 +39,7 @@ export default function ElementPreview({ element, elementType }: ElementPreviewP
   );
 
   const renderPillarPreview = (pillar: PillarElement) => (
-    <Card className="group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-500 hover:shadow-[0_20px_50px_rgba(232,78,15,0.3)] hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
+    <Card className="group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,123,196,0.3)] hover:-translate-y-2 hover:scale-[1.02] overflow-hidden">
       <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-primary to-accent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
       <div className="relative">

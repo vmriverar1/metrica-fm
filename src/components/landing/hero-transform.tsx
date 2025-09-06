@@ -275,17 +275,34 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
               ref={heroBackgroundRef}
               className="hero-background absolute inset-0 z-0"
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              >
-                <source src={getProxiedVideoUrl(data.background.video_url)} type="video/mp4" />
-                <source src={getProxiedVideoUrl(data.background.video_url_fallback)} type="video/mp4" />
-                Su navegador no soporta el elemento de video.
-              </video>
+              {(data.background.video_url || data.background.video_url_fallback) ? (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                >
+                  {data.background.video_url && (
+                    <source src={getProxiedVideoUrl(data.background.video_url)} type="video/mp4" />
+                  )}
+                  {data.background.video_url_fallback && (
+                    <source src={getProxiedVideoUrl(data.background.video_url_fallback)} type="video/mp4" />
+                  )}
+                  Su navegador no soporta el elemento de video.
+                </video>
+              ) : (
+                <div 
+                  className="w-full h-full bg-gradient-to-br from-primary/90 to-accent/90"
+                  style={{
+                    backgroundImage: data.background.image_fallback 
+                      ? `url(${data.background.image_fallback})`
+                      : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                />
+              )}
               <div 
                 ref={heroOverlayRef}
                 className="hero-overlay absolute inset-0"
@@ -303,7 +320,7 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
                   ref={heroTitleRef}
                   className="hero-title text-5xl md:text-7xl tracking-tight text-white mb-4"
                 >
-                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(232, 78, 15, 0.5)' }}>{data.title.main}</span>
+                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(0, 123, 196, 0.5)' }}>{data.title.main}</span>
                   <span className="block">{data.title.secondary}</span>
                 </h1>
                 

@@ -181,16 +181,16 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
   // Estado principal que coincide exactamente con el JSON
   const [config, setConfig] = useState<CulturaPageData>({
     page: {
-      title: 'Cultura y Personas - Métrica DIP',
+      title: 'Cultura y Personas - Métrica FM',
       description: 'Conoce nuestra cultura empresarial, valores, equipo multidisciplinario y tecnologías innovadoras que nos distinguen en la industria.',
       keywords: ['cultura', 'equipo', 'valores', 'innovación', 'métrica dip'],
       url: '/about/cultura',
       openGraph: {
-        title: 'Cultura y Personas - Métrica DIP',
+        title: 'Cultura y Personas - Métrica FM',
         description: 'Conoce nuestra cultura empresarial, valores, equipo multidisciplinario y tecnologías innovadoras que nos distinguen en la industria.',
         type: 'website',
         locale: 'es_PE',
-        siteName: 'Métrica DIP'
+        siteName: 'Métrica FM'
       }
     },
     hero: {
@@ -234,7 +234,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
         historia: {
           title: 'Nuestra Historia',
           icon: 'Clock',
-          color: '#E84E0F',
+          color: '#007bc4',
           stats: []
         },
         equipo: {
@@ -246,7 +246,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
         alcance: {
           title: 'Alcance Nacional',
           icon: 'MapPin',
-          color: '#E84E0F',
+          color: '#007bc4',
           stats: []
         },
         logros: {
@@ -362,7 +362,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
       title: '',
       description: '',
       icon: 'Target',
-      color: '#E84E0F',
+      color: '#007bc4',
       size: 'medium',
       images: [],
       image_descriptions: []
@@ -498,7 +498,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
       title: '',
       subtitle: '',
       icon: 'Layers',
-      color: '#E84E0F',
+      color: '#007bc4',
       description: '',
       features: [],
       image: '',
@@ -675,7 +675,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                   id="pageTitle"
                   value={config.page.title}
                   onChange={(e) => handleConfigChange('page', 'title', e.target.value)}
-                  placeholder="Cultura y Personas - Métrica DIP"
+                  placeholder="Cultura y Personas - Métrica FM"
                   disabled={readOnly}
                 />
               </div>
@@ -934,7 +934,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                           <Input
                             value={value.color}
                             onChange={(e) => updateValue(value.id, { color: e.target.value })}
-                            placeholder="#E84E0F"
+                            placeholder="#007bc4"
                             disabled={readOnly}
                           />
                         </div>
@@ -1180,7 +1180,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                                 }
                               }));
                             }}
-                            placeholder="#E84E0F"
+                            placeholder="#007bc4"
                             disabled={readOnly}
                           />
                         </div>
@@ -1590,7 +1590,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                           <Input
                             value={tech.color}
                             onChange={(e) => updateTechnology(tech.id, { color: e.target.value })}
-                            placeholder="#E84E0F"
+                            placeholder="#007bc4"
                             disabled={readOnly}
                           />
                         </div>
@@ -1770,7 +1770,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                       id="ogTitle"
                       value={config.page.openGraph?.title || ''}
                       onChange={(e) => handleConfigChange('page', 'openGraph', { ...config.page.openGraph, title: e.target.value })}
-                      placeholder="Cultura y Personas - Métrica DIP"
+                      placeholder="Cultura y Personas - Métrica FM"
                       disabled={readOnly}
                     />
                   </div>
@@ -1813,9 +1813,9 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                     <Label htmlFor="ogSiteName">Site Name</Label>
                     <Input
                       id="ogSiteName"
-                      value={config.page.openGraph?.siteName || 'Métrica DIP'}
+                      value={config.page.openGraph?.siteName || 'Métrica FM'}
                       onChange={(e) => handleConfigChange('page', 'openGraph', { ...config.page.openGraph, siteName: e.target.value })}
-                      placeholder="Métrica DIP"
+                      placeholder="Métrica FM"
                       disabled={readOnly}
                     />
                   </div>

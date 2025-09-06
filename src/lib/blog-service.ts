@@ -197,7 +197,7 @@ export class BlogService {
         name: 'Industria & Tendencias',
         slug: 'industria-tendencias',
         description: 'Análisis de mercado inmobiliario, tendencias en construcción sostenible e innovaciones tecnológicas del sector.',
-        color: '#E84E0F',
+        color: '#007bc4',
         icon: '📈',
         count: sampleBlogPosts.filter(p => p.category === 'industria-tendencias').length
       },

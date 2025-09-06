@@ -507,7 +507,7 @@ export default function ISOCTA() {
                       ¡Solicitud Enviada Exitosamente!
                     </h3>
                     <p className="text-green-700 mb-6">
-                      Gracias por confiar en Métrica DIP. Nuestro equipo certificado ISO 9001 
+                      Gracias por confiar en Métrica FM. Nuestro equipo certificado ISO 9001 
                       se pondrá en contacto contigo dentro de las próximas 24 horas.
                     </p>
                     <div className="space-y-3">

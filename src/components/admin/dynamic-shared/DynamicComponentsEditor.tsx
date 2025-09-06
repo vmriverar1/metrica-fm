@@ -419,7 +419,7 @@ export default function DynamicComponentsEditor() {
       page_name: 'Página Principal',
       position: { x: 0, y: 0, z: 0 },
       properties: {
-        title: 'Métrica DIP - Construyendo el Futuro',
+        title: 'Métrica FM - Construyendo el Futuro',
         subtitle: 'Líderes en dirección integral de proyectos de infraestructura',
         background_image: '/images/hero-construccion.jpg',
         cta_text: 'Ver Proyectos',

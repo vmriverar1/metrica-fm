@@ -341,7 +341,7 @@ export default function VirtualOfficeToursAndAssessments({
     return (
       <div className={cn("space-y-6", className)}>
         <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold">Experiencia Virtual Métrica DIP</h2>
+          <h2 className="text-3xl font-bold">Experiencia Virtual Métrica FM</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Explora nuestras oficinas y proyectos a través de tours virtuales inmersivos, 
             y evalúa tus habilidades con assessments interactivos.

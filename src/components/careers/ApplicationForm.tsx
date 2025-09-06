@@ -483,7 +483,7 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
                 Acepto los términos y condiciones *
               </Label>
               <p className="text-xs text-muted-foreground">
-                He leído y acepto los términos y condiciones de Métrica DIP
+                He leído y acepto los términos y condiciones de Métrica FM
               </p>
             </div>
           </div>
@@ -506,7 +506,7 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
                 Autorizo el tratamiento de mis datos personales *
               </Label>
               <p className="text-xs text-muted-foreground">
-                Autorizo a Métrica DIP a procesar mis datos para fines de reclutamiento
+                Autorizo a Métrica FM a procesar mis datos para fines de reclutamiento
               </p>
             </div>
           </div>

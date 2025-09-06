@@ -353,7 +353,7 @@ export const ContentSectionsManager: React.FC<ContentSectionsManagerProps> = ({
           content: '',
           content_data: {
             quote_text: 'Comprometidos con la excelencia y la sostenibilidad en cada proyecto.',
-            quote_author: 'Equipo Métrica DIP',
+            quote_author: 'Equipo Métrica FM',
             quote_source: 'Política de Calidad'
           }
         },

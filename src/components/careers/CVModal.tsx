@@ -267,7 +267,7 @@ export default function CVModal({ isOpen, onClose }: CVModalProps) {
                     <Textarea
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
-                      placeholder="Cuéntanos sobre ti, tus objetivos profesionales y por qué te gustaría formar parte de Métrica DIP..."
+                      placeholder="Cuéntanos sobre ti, tus objetivos profesionales y por qué te gustaría formar parte de Métrica FM..."
                       rows={4}
                     />
                   </div>

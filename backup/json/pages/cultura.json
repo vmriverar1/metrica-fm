@@ -1,0 +1,469 @@
+{
+  "page": {
+    "title": "Cultura y Personas - Métrica DIP",
+    "description": "Conoce nuestra cultura empresarial, valores, equipo multidisciplinario y tecnologías innovadoras que nos distinguen en la industria."
+  },
+  "hero": {
+    "title": "Cultura y Personas",
+    "subtitle": "Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo",
+    "background_image": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
+    "background_image_fallback": "/img/cultura/hero-background.jpg",
+    "team_gallery": {
+      "columns": [
+        [
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face"
+        ],
+        [
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=face"
+        ],
+        [
+          "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop&crop=face",
+          "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=700&fit=crop&crop=face"
+        ]
+      ]
+    }
+  },
+  "values": {
+    "section": {
+      "title": "Nuestros Valores",
+      "subtitle": "Los principios que guían nuestro trabajo y definen nuestra identidad como empresa"
+    },
+    "values_list": [
+      {
+        "id": "excellence",
+        "title": "Excelencia",
+        "description": "Buscamos la perfección en cada detalle de nuestros proyectos, estableciendo estándares de calidad superiores en la industria de la construcción.",
+        "icon": "Target",
+        "color": "#E84E0F",
+        "size": "large",
+        "images": [
+          "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Supervisión de obra con los más altos estándares de calidad y precisión técnica",
+          "Planificación meticulosa que considera cada aspecto del proyecto constructivo",
+          "Uso de tecnología avanzada para garantizar resultados excepcionales",
+          "Control de calidad exhaustivo en cada fase de construcción"
+        ]
+      },
+      {
+        "id": "collaboration",
+        "title": "Colaboración",
+        "description": "Trabajamos en equipo con nuestros clientes, socios y comunidades para crear soluciones que beneficien a todos los involucrados.",
+        "icon": "Users",
+        "color": "#003F6F",
+        "size": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=500&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=500&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Reuniones de coordinación multidisciplinaria para asegurar la excelencia",
+          "Trabajo conjunto con clientes para entender y superar expectativas",
+          "Colaboración estrecha entre equipos especializados de ingeniería"
+        ]
+      },
+      {
+        "id": "innovation",
+        "title": "Innovación",
+        "description": "Implementamos las últimas tecnologías y metodologías para ofrecer soluciones constructivas eficientes y sostenibles.",
+        "icon": "Lightbulb",
+        "color": "#E84E0F",
+        "size": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=500&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=500&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Implementación de tecnología BIM para modelado inteligente de proyectos",
+          "Uso de drones para supervisión aérea y análisis de progreso",
+          "Aplicación de herramientas digitales para optimización de procesos"
+        ]
+      },
+      {
+        "id": "integrity",
+        "title": "Integridad",
+        "description": "Actuamos con transparencia y honestidad en todas nuestras relaciones comerciales, manteniendo los más altos estándares éticos.",
+        "icon": "Shield",
+        "color": "#003F6F",
+        "size": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=500&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Documentación transparente y reportes detallados de avance",
+          "Liderazgo ético en la dirección de proyectos complejos",
+          "Comunicación clara y honesta con todos los stakeholders"
+        ]
+      },
+      {
+        "id": "growth",
+        "title": "Crecimiento",
+        "description": "Fomentamos el desarrollo continuo de nuestro equipo y organización, adaptándonos a los desafíos del mercado peruano.",
+        "icon": "TrendingUp",
+        "color": "#E84E0F",
+        "size": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=500&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1558403194-611308249627?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Capacitación continua del equipo en nuevas metodologías y tecnologías",
+          "Desarrollo profesional y certificaciones especializadas",
+          "Adaptación constante a las tendencias del mercado constructivo"
+        ]
+      },
+      {
+        "id": "teamwork",
+        "title": "Trabajo en Equipo",
+        "description": "Valoramos la diversidad de perspectivas y habilidades, creando un ambiente donde cada miembro contribuye al éxito colectivo.",
+        "icon": "Users",
+        "color": "#003F6F",
+        "size": "large",
+        "images": [
+          "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=500&h=400&fit=crop&crop=center"
+        ],
+        "image_descriptions": [
+          "Equipos multidisciplinarios trabajando en sinergia perfecta",
+          "Colaboración efectiva entre diferentes especialidades de ingeniería",
+          "Ambiente de trabajo que fomenta la creatividad y innovación"
+        ]
+      }
+    ]
+  },
+  "culture_stats": {
+    "section": {
+      "title": "Cultura en Números",
+      "subtitle": "Datos que reflejan nuestro compromiso con la excelencia y el crecimiento"
+    },
+    "categories": {
+      "historia": {
+        "title": "Nuestra Historia",
+        "icon": "Clock",
+        "color": "#E84E0F",
+        "stats": [
+          {
+            "label": "Años en el mercado",
+            "value": "15+",
+            "description": "Experiencia consolidada en dirección de proyectos"
+          },
+          {
+            "label": "Proyectos completados",
+            "value": "200+",
+            "description": "Obras exitosas en todo el Perú"
+          },
+          {
+            "label": "Clientes satisfechos",
+            "value": "150+",
+            "description": "Empresas que confían en nosotros"
+          }
+        ]
+      },
+      "equipo": {
+        "title": "Nuestro Equipo",
+        "icon": "Users",
+        "color": "#003F6F",
+        "stats": [
+          {
+            "label": "Profesionales",
+            "value": "45+",
+            "description": "Especialistas multidisciplinarios"
+          },
+          {
+            "label": "Ingenierías",
+            "value": "8",
+            "description": "Diferentes especialidades técnicas"
+          },
+          {
+            "label": "Certificaciones",
+            "value": "25+",
+            "description": "Acreditaciones profesionales activas"
+          }
+        ]
+      },
+      "alcance": {
+        "title": "Alcance Nacional",
+        "icon": "MapPin",
+        "color": "#E84E0F",
+        "stats": [
+          {
+            "label": "Regiones",
+            "value": "12",
+            "description": "Presencia en todo el territorio peruano"
+          },
+          {
+            "label": "Sectores",
+            "value": "6",
+            "description": "Industrial, minero, energía, inmobiliario"
+          },
+          {
+            "label": "Especialidades",
+            "value": "10+",
+            "description": "Áreas de expertise técnico"
+          }
+        ]
+      },
+      "logros": {
+        "title": "Reconocimientos",
+        "icon": "Trophy",
+        "color": "#003F6F",
+        "stats": [
+          {
+            "label": "Premios",
+            "value": "8",
+            "description": "Reconocimientos a la excelencia"
+          },
+          {
+            "label": "Certificaciones ISO",
+            "value": "3",
+            "description": "Estándares internacionales de calidad"
+          },
+          {
+            "label": "Proyectos destacados",
+            "value": "25+",
+            "description": "Obras emblemáticas del sector"
+          }
+        ]
+      }
+    }
+  },
+  "team": {
+    "section": {
+      "title": "Nuestro Equipo",
+      "subtitle": "Profesionales altamente calificados comprometidos con la excelencia"
+    },
+    "members": [
+      {
+        "id": 1,
+        "name": "Carlos Mendoza",
+        "role": "Director Ejecutivo",
+        "description": "Ingeniero Civil con 20+ años liderando proyectos de infraestructura. Master en Project Management, especialista en metodologías PMI.",
+        "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/carlos-mendoza.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Ana Torres",
+        "role": "Gerente de Operaciones",
+        "description": "Arquitecta especializada en sostenibilidad y certificaciones LEED. Experta en BIM y tecnologías de construcción 4.0.",
+        "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/ana-torres.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Miguel Rodríguez",
+        "role": "Supervisor Técnico Senior",
+        "description": "Ingeniero con certificación ISO 9001, especialista en control de calidad y gestión de riesgos en construcción.",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/miguel-rodriguez.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Sofía Herrera",
+        "role": "Project Manager",
+        "description": "PMP certificada con experiencia en gestión integral de proyectos residenciales y comerciales de gran escala.",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/sofia-herrera.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Roberto Silva",
+        "role": "Consultor Estratégico",
+        "description": "MBA especializado en desarrollo inmobiliario, experto en análisis de factibilidad y optimización de ROI.",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/roberto-silva.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Carmen Vásquez",
+        "role": "Coordinadora de Calidad",
+        "description": "Ingeniera Industrial especializada en sistemas de gestión de calidad, auditora interna ISO 9001:2015.",
+        "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop&crop=face",
+        "image_fallback": "/img/team/carmen-vasquez.jpg"
+      }
+    ],
+    "moments": {
+      "title": "Momentos Destacados",
+      "subtitle": "Celebraciones, logros y experiencias que fortalecen nuestro equipo",
+      "gallery": [
+        {
+          "id": 1,
+          "title": "Celebración ISO 9001",
+          "description": "Renovación exitosa de nuestra certificación ISO 9001:2015",
+          "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop&crop=center",
+          "image_fallback": "/img/moments/iso-celebration.jpg"
+        },
+        {
+          "id": 2,
+          "title": "Workshop BIM 2024",
+          "description": "Capacitación especializada en modelado BIM avanzado",
+          "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop&crop=center",
+          "image_fallback": "/img/moments/bim-workshop.jpg"
+        },
+        {
+          "id": 3,
+          "title": "Premio Excelencia",
+          "description": "Reconocimiento a la mejor dirección de proyectos 2023",
+          "image": "https://images.unsplash.com/photo-1558403194-611308249627?w=800&h=600&fit=crop&crop=center",
+          "image_fallback": "/img/moments/premio-excelencia.jpg"
+        },
+        {
+          "id": 4,
+          "title": "Inauguración Oficina",
+          "description": "Apertura de nuestra nueva sede en el distrito de San Isidro",
+          "image": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop&crop=center",
+          "image_fallback": "/img/moments/inauguracion-oficina.jpg"
+        }
+      ]
+    }
+  },
+  "technologies": {
+    "section": {
+      "title": "Centro de Innovación Tecnológica",
+      "subtitle": "Implementamos las tecnologías más avanzadas para revolucionar la gestión de proyectos"
+    },
+    "tech_list": [
+      {
+        "id": "bim",
+        "title": "Modelado BIM",
+        "subtitle": "Building Information Modeling",
+        "icon": "Layers",
+        "color": "#E84E0F",
+        "description": "Modelado 3D inteligente que integra toda la información del proyecto",
+        "features": [
+          "Coordinación 3D",
+          "Detección de conflictos",
+          "Simulación 4D",
+          "Gestión 5D"
+        ],
+        "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/bim-modeling.jpg",
+        "case_study": {
+          "project": "Centro Comercial Plaza Norte",
+          "result": "35% reducción en tiempos de construcción",
+          "savings": "S/. 2.3M en ahorro de costos"
+        }
+      },
+      {
+        "id": "drones",
+        "title": "Tecnología Drone",
+        "subtitle": "Topografía y Supervisión Aérea",
+        "icon": "Eye",
+        "color": "#003F6F",
+        "description": "Inspección y monitoreo de obras con tecnología de punta",
+        "features": [
+          "Fotogrametría",
+          "Mapeo 3D",
+          "Inspección estructural",
+          "Seguimiento de progreso"
+        ],
+        "image": "https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/drone-technology.jpg",
+        "case_study": {
+          "project": "Hospital Nacional Dos de Mayo",
+          "result": "50% más precisión en mediciones",
+          "savings": "S/. 890K en ahorro operativo"
+        }
+      },
+      {
+        "id": "iot",
+        "title": "IoT & Sensores",
+        "subtitle": "Internet de las Cosas",
+        "icon": "Cpu",
+        "color": "#E84E0F",
+        "description": "Monitoreo inteligente y en tiempo real de estructuras",
+        "features": [
+          "Sensores estructurales",
+          "Monitoreo ambiental",
+          "Alertas automatizadas",
+          "Dashboard en tiempo real"
+        ],
+        "image": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/iot-sensors.jpg",
+        "case_study": {
+          "project": "Torre Empresarial Lima",
+          "result": "24/7 monitoreo estructural",
+          "savings": "S/. 1.2M en prevención de daños"
+        }
+      },
+      {
+        "id": "ai",
+        "title": "Inteligencia Artificial",
+        "subtitle": "Análisis Predictivo",
+        "icon": "Zap",
+        "color": "#003F6F",
+        "description": "Optimización de procesos mediante algoritmos avanzados",
+        "features": [
+          "Análisis predictivo",
+          "Optimización de recursos",
+          "Detección de anomalías",
+          "Mantenimiento preventivo"
+        ],
+        "image": "https://images.unsplash.com/photo-1555949963-ff9fe19c7df9?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/artificial-intelligence.jpg",
+        "case_study": {
+          "project": "Complejo Residencial Vista Verde",
+          "result": "40% mejora en eficiencia",
+          "savings": "S/. 1.8M optimización de recursos"
+        }
+      },
+      {
+        "id": "mobile",
+        "title": "Aplicaciones Móviles",
+        "subtitle": "Gestión desde Campo",
+        "icon": "Smartphone",
+        "color": "#E84E0F",
+        "description": "Herramientas móviles para supervisión y reportes en tiempo real",
+        "features": [
+          "Reportes móviles",
+          "Check-lists digitales",
+          "Geolocalización",
+          "Sincronización offline"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/mobile-apps.jpg",
+        "case_study": {
+          "project": "Proyecto Miraflores Corporate",
+          "result": "60% reducción en paperwork",
+          "savings": "S/. 450K en eficiencia administrativa"
+        }
+      },
+      {
+        "id": "cloud",
+        "title": "Cloud Computing",
+        "subtitle": "Infraestructura en la Nube",
+        "icon": "Cloud",
+        "color": "#003F6F",
+        "description": "Almacenamiento seguro y acceso global a información de proyectos",
+        "features": [
+          "Almacenamiento seguro",
+          "Acceso global",
+          "Backup automatizado",
+          "Colaboración remota"
+        ],
+        "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=600&fit=crop",
+        "image_fallback": "/img/tech/cloud-computing.jpg",
+        "case_study": {
+          "project": "Red de Oficinas Corporativas",
+          "result": "100% disponibilidad de datos",
+          "savings": "S/. 680K en infraestructura IT"
+        }
+      }
+    ]
+  }
+}

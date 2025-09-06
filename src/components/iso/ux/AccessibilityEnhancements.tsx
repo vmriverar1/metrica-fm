@@ -65,13 +65,13 @@ export function SkipLinks() {
     <div className="sr-only focus-within:not-sr-only">
       <a
         href="#main-content"
-        className="fixed top-4 left-4 z-50 bg-[#E84E0F] text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
+        className="fixed top-4 left-4 z-50 bg-[#007bc4] text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
       >
         Saltar al contenido principal
       </a>
       <a
         href="#navigation"
-        className="fixed top-4 left-32 z-50 bg-[#E84E0F] text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
+        className="fixed top-4 left-32 z-50 bg-[#007bc4] text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
       >
         Saltar a navegación
       </a>
@@ -107,7 +107,7 @@ export function AccessibleBreadcrumb({ items }: AccessibleBreadcrumbProps) {
             ) : (
               <a
                 href={item.href || '#'}
-                className="text-gray-600 hover:text-[#E84E0F] focus:outline-none focus:ring-2 focus:ring-[#E84E0F] focus:ring-offset-2 rounded-md px-1 py-0.5"
+                className="text-gray-600 hover:text-[#007bc4] focus:outline-none focus:ring-2 focus:ring-[#007bc4] focus:ring-offset-2 rounded-md px-1 py-0.5"
               >
                 {item.label}
               </a>
@@ -151,7 +151,7 @@ export function ScrollToTop() {
           <Button
             onClick={scrollToTop}
             size="sm"
-            className="rounded-full w-12 h-12 bg-[#E84E0F] hover:bg-[#E84E0F]/90 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#E84E0F] focus:ring-offset-2"
+            className="rounded-full w-12 h-12 bg-[#007bc4] hover:bg-[#007bc4]/90 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#007bc4] focus:ring-offset-2"
             aria-label="Volver al inicio de la página"
           >
             <ArrowUp className="w-5 h-5" />
@@ -274,7 +274,7 @@ export function ReadingProgress() {
       transition={{ duration: 0.3 }}
     >
       <motion.div
-        className="h-full bg-[#E84E0F] origin-left"
+        className="h-full bg-[#007bc4] origin-left"
         style={{ scaleX: progress / 100 }}
         transition={{ duration: 0.1 }}
       />
@@ -390,7 +390,7 @@ export function AccessibleTooltip({
       <div
         aria-describedby={isVisible ? tooltipId.current : undefined}
         tabIndex={0}
-        className="focus:outline-none focus:ring-2 focus:ring-[#E84E0F] focus:ring-offset-2 rounded"
+        className="focus:outline-none focus:ring-2 focus:ring-[#007bc4] focus:ring-offset-2 rounded"
       >
         {children}
       </div>
@@ -470,7 +470,7 @@ export function AccessibleLoading({
         >
           <div className="flex items-center gap-3">
             <motion.div
-              className="w-5 h-5 border-2 border-[#E84E0F] border-t-transparent rounded-full"
+              className="w-5 h-5 border-2 border-[#007bc4] border-t-transparent rounded-full"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             />
@@ -510,7 +510,7 @@ export const ACCESSIBILITY_CSS = `
   
   /* Focus visible */
   .focus-visible:focus {
-    outline: 2px solid #E84E0F !important;
+    outline: 2px solid #007bc4 !important;
     outline-offset: 2px !important;
   }
   

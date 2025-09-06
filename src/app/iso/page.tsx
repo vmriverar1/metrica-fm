@@ -2,29 +2,29 @@ import type { Metadata } from 'next';
 import ISOContentWrapper from '@/components/iso/ISOContentWrapper';
 
 export const metadata: Metadata = {
-  title: 'ISO 9001:2015 Certificación | Métrica DIP - Calidad Garantizada',
-  description: 'Métrica DIP cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos de construcción con estándares internacionales de calidad.',
+  title: 'ISO 9001:2015 Certificación | Métrica FM - Calidad Garantizada',
+  description: 'Métrica FM cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos de construcción con estándares internacionales de calidad.',
   keywords: 'ISO 9001, certificación calidad, construcción certificada, gestión calidad Perú, sistema gestión calidad, auditoría ISO, procesos calidad, mejora continua, satisfacción cliente, control calidad construcción',
   
   openGraph: {
-    title: 'ISO 9001:2015 Certificación | Métrica DIP',
+    title: 'ISO 9001:2015 Certificación | Métrica FM',
     description: 'Excelencia certificada en gestión de proyectos de construcción. Sistema de gestión de calidad ISO 9001:2015 verificado.',
     type: 'website',
     locale: 'es_PE',
-    siteName: 'Métrica DIP',
+    siteName: 'Métrica FM',
     images: [
       {
         url: '/images/iso-certificate-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'Certificación ISO 9001:2015 Métrica DIP'
+        alt: 'Certificación ISO 9001:2015 Métrica FM'
       }
     ]
   },
   
   twitter: {
     card: 'summary_large_image',
-    title: 'ISO 9001:2015 | Métrica DIP',
+    title: 'ISO 9001:2015 | Métrica FM',
     description: 'Sistema de gestión de calidad certificado para proyectos de construcción e infraestructura en Perú.',
     images: ['/images/iso-certificate-og.jpg'],
   },
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Métrica DIP",
+  "name": "Métrica FM",
   "url": "https://metricadip.com",
   "logo": "https://metricadip.com/images/logo.png",
   "description": "Empresa certificada ISO 9001:2015 especializada en dirección integral de proyectos de construcción e infraestructura en Perú",

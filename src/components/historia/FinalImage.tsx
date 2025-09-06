@@ -44,7 +44,7 @@ export default function FinalImage({ isActive }: FinalImageProps) {
       <div className="relative w-[60%] h-full">
         <Image
           src="https://metrica-dip.com/images/slider-inicio-es/01.jpg"
-          alt="Métrica DIP"
+          alt="Métrica FM"
           fill
           className="object-cover"
           priority
@@ -59,7 +59,7 @@ export default function FinalImage({ isActive }: FinalImageProps) {
               style={{
                 width: `${12 + i * 4}px`,
                 height: `${12 + i * 4}px`,
-                backgroundColor: i % 2 === 0 ? '#E84E0F' : '#003F6F',
+                backgroundColor: i % 2 === 0 ? '#007bc4' : '#003F6F',
                 opacity: 0.2,
                 left: `${15 + i * 10}%`,
                 top: `${25 + (i * 8) % 50}%`,

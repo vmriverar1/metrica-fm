@@ -1,0 +1,372 @@
+{
+  "page": {
+    "title": "Compromiso Social y Medioambiental - Métrica DIP",
+    "description": "Nuestro compromiso con el desarrollo sostenible, responsabilidad social y las mejores prácticas ambientales en la industria de la construcción."
+  },
+  "hero": {
+    "title": "Compromiso Social y Medioambiental",
+    "subtitle": "Construimos un futuro sostenible con responsabilidad social y las mejores prácticas ambientales",
+    "background_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
+    "background_image_fallback": "/img/compromiso/hero-background.jpg"
+  },
+  "main_content": {
+    "introduction": {
+      "title": "Nuestro Compromiso con el Futuro",
+      "description": "En Métrica DIP entendemos que nuestro trabajo va más allá de la construcción de infraestructuras. Tenemos la responsabilidad de contribuir al desarrollo sostenible del país, cuidando el medio ambiente y generando un impacto positivo en las comunidades donde operamos."
+    },
+    "sections": [
+      {
+        "id": "responsabilidad-social",
+        "title": "Responsabilidad Social",
+        "subtitle": "Compromiso con el desarrollo local y comunitario",
+        "description": "Creemos firmemente que el éxito de nuestros proyectos debe traducirse en beneficios tangibles para las comunidades donde trabajamos, fomentando el desarrollo local y el crecimiento sostenible.",
+        "pillars": [
+          {
+            "title": "Desarrollo Local",
+            "icon": "Users",
+            "color": "#E84E0F",
+            "initiatives": [
+              "Contratación de mano de obra local",
+              "Capacitación técnica para la comunidad",
+              "Apoyo a proveedores regionales",
+              "Transferencia de conocimientos técnicos",
+              "Programas de becas y educación"
+            ],
+            "metrics": {
+              "local_hiring": "85%",
+              "local_suppliers": "60%",
+              "training_hours": "2,400"
+            }
+          },
+          {
+            "title": "Impacto Comunitario",
+            "icon": "Heart",
+            "color": "#003F6F",
+            "initiatives": [
+              "Programas educativos en seguridad",
+              "Mejora de infraestructura comunitaria",
+              "Comunicación transparente con vecinos",
+              "Programas de salud ocupacional",
+              "Iniciativas deportivas y culturales"
+            ],
+            "metrics": {
+              "community_projects": "25+",
+              "beneficiaries": "15,000+",
+              "safety_programs": "40"
+            }
+          }
+        ],
+        "case_studies": [
+          {
+            "title": "Proyecto Hospital Regional Lambayeque",
+            "description": "Contratación del 90% de mano de obra local y capacitación de 150 técnicos especializados",
+            "impact": "Generación de 300 empleos directos y 800 indirectos",
+            "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop",
+            "image_fallback": "/img/compromiso/hospital-lambayeque.jpg"
+          },
+          {
+            "title": "Centro Educativo San Martín",
+            "description": "Mejoramiento de accesos vehiculares y peatonales de la comunidad como parte del proyecto",
+            "impact": "Benefició directamente a 2,500 familias de la zona",
+            "image": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop",
+            "image_fallback": "/img/compromiso/centro-educativo.jpg"
+          }
+        ]
+      },
+      {
+        "id": "compromiso-ambiental",
+        "title": "Compromiso Ambiental",
+        "subtitle": "Construcción sostenible y responsable",
+        "description": "Implementamos las mejores prácticas ambientales en cada proyecto, minimizando el impacto ecológico y promoviendo la conservación de recursos naturales para las futuras generaciones.",
+        "pillars": [
+          {
+            "title": "Gestión Ambiental",
+            "icon": "Leaf",
+            "color": "#22C55E",
+            "initiatives": [
+              "Planes de manejo ambiental",
+              "Monitoreo de calidad del aire y agua",
+              "Gestión responsable de residuos",
+              "Protección de flora y fauna local",
+              "Estudios de impacto ambiental"
+            ],
+            "metrics": {
+              "waste_reduction": "45%",
+              "recycling_rate": "70%",
+              "water_savings": "30%"
+            }
+          },
+          {
+            "title": "Sostenibilidad",
+            "icon": "Recycle",
+            "color": "#10B981",
+            "initiatives": [
+              "Uso eficiente de recursos naturales",
+              "Tecnologías limpias y eficientes",
+              "Compensación de huella de carbono",
+              "Energías renovables en obra",
+              "Construcción bioclimática"
+            ],
+            "metrics": {
+              "carbon_reduction": "25%",
+              "renewable_energy": "40%",
+              "green_certifications": "8"
+            }
+          }
+        ],
+        "environmental_programs": [
+          {
+            "title": "Programa Carbono Neutral",
+            "description": "Compensación del 100% de emisiones de CO2 en proyectos mayores a S/ 50M",
+            "achievement": "Neutralidad de carbono en 15 proyectos"
+          },
+          {
+            "title": "Gestión Integral de Residuos",
+            "description": "Clasificación, reutilización y reciclaje de materiales de construcción",
+            "achievement": "70% de residuos reciclados o reutilizados"
+          },
+          {
+            "title": "Conservación del Agua",
+            "description": "Sistemas de captación y reutilización de agua de lluvia",
+            "achievement": "30% reducción en consumo de agua potable"
+          }
+        ]
+      },
+      {
+        "id": "certificaciones",
+        "title": "Certificaciones y Estándares",
+        "subtitle": "Excelencia certificada internacionalmente",
+        "description": "Mantenemos las más altas certificaciones internacionales en gestión de calidad, medio ambiente y seguridad ocupacional, garantizando que nuestros procesos cumplan con los estándares más exigentes del sector construcción.",
+        "certifications": [
+          {
+            "name": "ISO 9001:2015",
+            "category": "Gestión de Calidad",
+            "description": "Sistema de gestión de calidad para la dirección integral de proyectos",
+            "year_obtained": "2018",
+            "validity": "2027",
+            "icon": "Award",
+            "color": "#E84E0F"
+          },
+          {
+            "name": "ISO 14001:2015",
+            "category": "Gestión Ambiental",
+            "description": "Sistema de gestión ambiental para proyectos de construcción",
+            "year_obtained": "2019",
+            "validity": "2028",
+            "icon": "Leaf",
+            "color": "#22C55E"
+          },
+          {
+            "name": "OHSAS 18001:2007",
+            "category": "Seguridad y Salud",
+            "description": "Sistema de gestión de seguridad y salud ocupacional",
+            "year_obtained": "2020",
+            "validity": "2029",
+            "icon": "Shield",
+            "color": "#3B82F6"
+          },
+          {
+            "name": "LEED AP",
+            "category": "Construcción Sostenible",
+            "description": "Profesionales acreditados en construcción verde y sostenible",
+            "year_obtained": "2021",
+            "validity": "Permanente",
+            "icon": "TreePine",
+            "color": "#10B981"
+          }
+        ],
+        "standards": [
+          {
+            "name": "PMI Project Management",
+            "description": "Metodologías del Project Management Institute para gestión de proyectos",
+            "compliance": "100%"
+          },
+          {
+            "name": "BIM Level 2",
+            "description": "Building Information Modeling para coordinación multidisciplinaria",
+            "compliance": "95%"
+          },
+          {
+            "name": "Protocolo GRI",
+            "description": "Global Reporting Initiative para reportes de sostenibilidad",
+            "compliance": "90%"
+          }
+        ]
+      }
+    ]
+  },
+  "impact_metrics": {
+    "title": "Nuestro Impacto en Números",
+    "subtitle": "Resultados medibles de nuestro compromiso social y ambiental",
+    "categories": [
+      {
+        "title": "Impacto Social",
+        "icon": "Users",
+        "color": "#E84E0F",
+        "metrics": [
+          {
+            "value": "15,000+",
+            "label": "Beneficiarios directos",
+            "description": "Personas impactadas positivamente por nuestros proyectos"
+          },
+          {
+            "value": "2,400",
+            "label": "Horas de capacitación",
+            "description": "Formación técnica brindada a comunidades locales"
+          },
+          {
+            "value": "85%",
+            "label": "Contratación local",
+            "description": "Porcentaje de mano de obra contratada localmente"
+          }
+        ]
+      },
+      {
+        "title": "Impacto Ambiental",
+        "icon": "Leaf",
+        "color": "#22C55E",
+        "metrics": [
+          {
+            "value": "45%",
+            "label": "Reducción de residuos",
+            "description": "Disminución en generación de desperdicios"
+          },
+          {
+            "value": "25%",
+            "label": "Reducción de CO2",
+            "description": "Disminución en emisiones de carbono"
+          },
+          {
+            "value": "70%",
+            "label": "Reciclaje de materiales",
+            "description": "Porcentaje de materiales reciclados o reutilizados"
+          }
+        ]
+      },
+      {
+        "title": "Desarrollo Local",
+        "icon": "Building2",
+        "color": "#003F6F",
+        "metrics": [
+          {
+            "value": "300",
+            "label": "Empleos generados",
+            "description": "Puestos de trabajo creados promedio por proyecto"
+          },
+          {
+            "value": "60%",
+            "label": "Proveedores locales",
+            "description": "Porcentaje de proveedores regionales utilizados"
+          },
+          {
+            "value": "25+",
+            "label": "Proyectos comunitarios",
+            "description": "Iniciativas de desarrollo comunitario ejecutadas"
+          }
+        ]
+      }
+    ]
+  },
+  "sustainability_goals": {
+    "title": "Objetivos de Desarrollo Sostenible",
+    "subtitle": "Alineados con la Agenda 2030 de las Naciones Unidas",
+    "description": "Contribuimos activamente al cumplimiento de los Objetivos de Desarrollo Sostenible de la ONU, integrando estos principios en cada proyecto que dirigimos.",
+    "goals": [
+      {
+        "number": 3,
+        "title": "Salud y Bienestar",
+        "description": "Construcción de infraestructura sanitaria y programas de salud ocupacional",
+        "icon": "Heart",
+        "color": "#DC2626",
+        "achievements": [
+          "8 hospitales y centros de salud dirigidos",
+          "Zero accidentes graves en 2023",
+          "100% del personal con seguro de salud"
+        ]
+      },
+      {
+        "number": 4,
+        "title": "Educación de Calidad",
+        "description": "Desarrollo de infraestructura educativa y programas de capacitación",
+        "icon": "GraduationCap",
+        "color": "#7C3AED",
+        "achievements": [
+          "15 centros educativos construidos",
+          "2,400 horas de capacitación técnica",
+          "50 becas universitarias otorgadas"
+        ]
+      },
+      {
+        "number": 8,
+        "title": "Trabajo Decente y Crecimiento Económico",
+        "description": "Generación de empleo local y desarrollo económico regional",
+        "icon": "Briefcase",
+        "color": "#059669",
+        "achievements": [
+          "85% contratación de mano de obra local",
+          "300 empleos promedio por proyecto",
+          "60% de proveedores regionales"
+        ]
+      },
+      {
+        "number": 11,
+        "title": "Ciudades y Comunidades Sostenibles",
+        "description": "Desarrollo urbano sostenible y mejora de infraestructura comunitaria",
+        "icon": "Building2",
+        "color": "#EA580C",
+        "achievements": [
+          "25 proyectos de infraestructura urbana",
+          "100% cumplimiento normativo municipal",
+          "8 certificaciones LEED obtenidas"
+        ]
+      },
+      {
+        "number": 13,
+        "title": "Acción por el Clima",
+        "description": "Mitigación del cambio climático y adaptación sostenible",
+        "icon": "Thermometer",
+        "color": "#0891B2",
+        "achievements": [
+          "25% reducción emisiones CO2",
+          "15 proyectos carbono neutral",
+          "40% uso de energías renovables"
+        ]
+      }
+    ]
+  },
+  "future_commitments": {
+    "title": "Compromisos Futuros",
+    "subtitle": "Nuestra hoja de ruta hacia la sostenibilidad total",
+    "description": "Definimos metas ambiciosas para los próximos años, consolidando nuestro liderazgo en construcción sostenible y responsabilidad social.",
+    "commitments": [
+      {
+        "year": "2025",
+        "title": "Carbono Neutral",
+        "description": "Lograr neutralidad de carbono en el 100% de nuestros proyectos",
+        "progress": 65,
+        "icon": "Leaf"
+      },
+      {
+        "year": "2026",
+        "title": "Certificación B-Corp",
+        "description": "Obtener la certificación B-Corporation como empresa de beneficio",
+        "progress": 40,
+        "icon": "Award"
+      },
+      {
+        "year": "2027",
+        "title": "Economía Circular",
+        "description": "Implementar modelo de economía circular en el 90% de operaciones",
+        "progress": 25,
+        "icon": "Recycle"
+      },
+      {
+        "year": "2030",
+        "title": "Impacto Social Total",
+        "description": "Beneficiar directamente a 50,000 personas en comunidades locales",
+        "progress": 30,
+        "icon": "Users"
+      }
+    ]
+  }
+}

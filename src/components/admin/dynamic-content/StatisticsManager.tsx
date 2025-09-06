@@ -211,7 +211,7 @@ export default function StatisticsManager({ className = '' }: StatisticsManagerP
         <CardHeader>
           <CardTitle>Estadísticas de Logros</CardTitle>
           <CardDescription>
-            Gestiona las métricas clave que destacan los logros y capacidades de Métrica DIP.
+            Gestiona las métricas clave que destacan los logros y capacidades de Métrica FM.
             Estas estadísticas se muestran prominentemente en la página principal con animaciones atractivas.
           </CardDescription>
         </CardHeader>

@@ -214,7 +214,7 @@ export default function GlobalSettingsManager() {
       description: 'Título principal que aparece en el navegador y SEO',
       type: 'text',
       group_id: 'site',
-      value: 'Métrica DIP - Dirección Integral de Proyectos',
+      value: 'Métrica FM - Dirección Integral de Proyectos',
       default_value: 'Mi Sitio Web',
       validation: { required: true, max: 100 },
       is_sensitive: false,

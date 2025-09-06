@@ -79,7 +79,7 @@ const iconMap = {
 };
 
 export const metadata: Metadata = {
-  title: 'Nuestros Clientes | Métrica DIP',
+  title: 'Nuestros Clientes | Métrica FM',
   description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos de infraestructura.',
 };
 

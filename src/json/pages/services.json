@@ -8,7 +8,7 @@
     "url": "/services"
   },
   "introduction": {
-    "text": "En Métrica DIP, entendemos que cada proyecto es único y requiere un enfoque personalizado. Nuestros servicios están diseñados para adaptarse a las necesidades específicas de cada cliente, desde la conceptualización hasta la entrega final.",
+    "text": "En Métrica FM, entendemos que cada proyecto es único y requiere un enfoque personalizado. Nuestros servicios están diseñados para adaptarse a las necesidades específicas de cada cliente, desde la conceptualización hasta la entrega final.",
     "value_proposition": "Nos convertimos en tu socio estratégico, aportando experiencia, metodología y tecnología para garantizar que tu proyecto se ejecute con excelencia, puntualidad y dentro del presupuesto establecido."
   },
   "service_philosophy": {
@@ -37,7 +37,7 @@
       "title": "Dirección Integral de Proyectos (DIP)",
       "subtitle": "El Servicio Principal que Define Nuestra Excelencia",
       "icon": "Building2",
-      "color": "#E84E0F",
+      "color": "#007bc4",
       "featured": true,
       "overview": {
         "description": "La Dirección Integral de Proyectos es nuestro servicio insignia, donde actuamos como el cerebro estratégico y operativo de tu proyecto. Nos convertimos en tus ojos, oídos y representantes técnicos, asumiendo la responsabilidad completa de coordinar, supervisar y dirigir todas las actividades para garantizar el éxito del proyecto.",

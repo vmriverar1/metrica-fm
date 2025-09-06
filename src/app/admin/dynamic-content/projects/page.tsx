@@ -52,7 +52,7 @@ export default function ProjectsManagementPage() {
         <CardHeader>
           <CardTitle className="text-xl">Portafolio de Proyectos Destacados</CardTitle>
           <CardDescription>
-            El portafolio representa la experiencia y capacidades de Métrica DIP a través de proyectos 
+            El portafolio representa la experiencia y capacidades de Métrica FM a través de proyectos 
             emblemáticos y casos de éxito. Se presenta de forma visual e interactiva para generar 
             confianza y demostrar la calidad técnica de los servicios ofrecidos.
           </CardDescription>
@@ -108,7 +108,7 @@ export default function ProjectsManagementPage() {
                 <h4 className="font-semibold mb-2 text-primary">Objetivos Comerciales</h4>
                 <p className="text-muted-foreground">
                   El portafolio debe generar confianza, demostrar capacidades técnicas 
-                  y posicionar a Métrica DIP como líder en gestión integral de proyectos.
+                  y posicionar a Métrica FM como líder en gestión integral de proyectos.
                 </p>
               </div>
 

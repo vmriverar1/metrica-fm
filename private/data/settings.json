@@ -144,7 +144,7 @@
   "ui_preferences": {
     "theme": "light",
     "primary_color": "#003F6F",
-    "secondary_color": "#E84E0F",
+    "secondary_color": "#007bc4",
     "font_family": "Alliance No.2",
     "sidebar_collapsed": false,
     "show_breadcrumbs": true,

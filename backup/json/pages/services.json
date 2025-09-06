@@ -1,0 +1,374 @@
+{
+  "page": {
+    "title": "Servicios de Dirección Integral de Proyectos | Métrica DIP",
+    "description": "Transformamos ideas en impacto con nuestros servicios especializados: Gestión Integral, Consultoría Estratégica, Supervisión Técnica y más. 15+ años de experiencia.",
+    "url": "/services"
+  },
+  "hero": {
+    "title": "Transformamos Ideas en Impacto",
+    "subtitle": "15+ años liderando proyectos de infraestructura que transforman el Perú",
+    "background_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
+    "stats": [
+      "S/ 2.5B+ Gestionados",
+      "300+ Proyectos Exitosos",
+      "99% Satisfacción Cliente"
+    ],
+    "buttons": {
+      "primary": {
+        "text": "Ver Proyectos Emblemáticos",
+        "href": "/portfolio"
+      },
+      "secondary": {
+        "text": "Consulta Gratuita",
+        "href": "#contact-form"
+      }
+    }
+  },
+  "services": {
+    "title": "Nuestros Servicios Especializados",
+    "subtitle": "Soluciones integrales que cubren cada etapa de tu proyecto",
+    "list": [
+      {
+        "id": "consultoria-estrategica",
+        "title": "Consultoría Estratégica",
+        "category": "Consultoría",
+        "icon": "Building2",
+        "description": "Asesoría integral desde la concepción hasta la viabilidad del proyecto",
+        "benefits": [
+          "Reducción de riesgos pre-construcción",
+          "Optimización de inversión inicial",
+          "Estrategia de desarrollo personalizada"
+        ],
+        "case_study_link": "/portfolio?service=consultoria",
+        "color": "from-blue-500 to-blue-600"
+      },
+      {
+        "id": "gestion-integral",
+        "title": "Gestión Integral",
+        "category": "Gestión",
+        "icon": "Cog",
+        "description": "Project Management completo con metodologías PMI certificadas",
+        "benefits": [
+          "Control total de cronograma",
+          "30% reducción en tiempo",
+          "Gestión proactiva de riesgos"
+        ],
+        "case_study_link": "/portfolio?service=gestion",
+        "color": "from-green-500 to-green-600"
+      },
+      {
+        "id": "supervision-tecnica",
+        "title": "Supervisión Técnica",
+        "category": "Supervisión",
+        "icon": "Shield",
+        "description": "Supervisión especializada que garantiza calidad y cumplimiento normativo",
+        "benefits": [
+          "Cumplimiento ISO 9001",
+          "Control de calidad 24/7",
+          "Reportes en tiempo real"
+        ],
+        "case_study_link": "/portfolio?service=supervision",
+        "color": "from-orange-500 to-orange-600"
+      },
+      {
+        "id": "desarrollo-inmobiliario",
+        "title": "Desarrollo Inmobiliario",
+        "category": "Desarrollo",
+        "icon": "Home",
+        "description": "Gestión completa de proyectos inmobiliarios desde terreno hasta entrega",
+        "benefits": [
+          "ROI optimizado garantizado",
+          "Gestión de permisos integral",
+          "Comercialización estratégica"
+        ],
+        "case_study_link": "/portfolio?category=vivienda",
+        "color": "from-purple-500 to-purple-600"
+      },
+      {
+        "id": "project-management",
+        "title": "Project Management",
+        "category": "PM",
+        "icon": "Settings",
+        "description": "Dirección de proyectos con estándares internacionales PMI/PRINCE2",
+        "benefits": [
+          "Metodología PMI certificada",
+          "Stakeholder management",
+          "Risk management avanzado"
+        ],
+        "case_study_link": "/portfolio?service=pm",
+        "color": "from-teal-500 to-teal-600"
+      },
+      {
+        "id": "control-calidad",
+        "title": "Control de Calidad",
+        "category": "Control",
+        "icon": "Award",
+        "description": "Aseguramiento de calidad con protocolos internacionales",
+        "benefits": [
+          "Certificación ISO 9001",
+          "Testing y validación",
+          "Trazabilidad completa"
+        ],
+        "case_study_link": "/iso",
+        "color": "from-red-500 to-red-600"
+      },
+      {
+        "id": "sostenibilidad",
+        "title": "Sostenibilidad & Certificación",
+        "category": "Sostenibilidad",
+        "icon": "Leaf",
+        "description": "Proyectos sostenibles con certificaciones LEED y BREEAM",
+        "benefits": [
+          "Certificación LEED Gold/Platinum",
+          "40% reducción energética",
+          "ROI verde a largo plazo"
+        ],
+        "case_study_link": "/portfolio?tag=sostenible",
+        "color": "from-emerald-500 to-emerald-600"
+      },
+      {
+        "id": "transformacion-digital",
+        "title": "Transformación Digital",
+        "category": "Digital",
+        "icon": "Cpu",
+        "description": "Implementación de tecnologías 4.0 en construcción",
+        "benefits": [
+          "Digitalización BIM 360°",
+          "IoT y sensores avanzados",
+          "Dashboard en tiempo real"
+        ],
+        "case_study_link": "/blog/guias-tecnicas",
+        "color": "from-indigo-500 to-indigo-600"
+      },
+      {
+        "id": "bim-tecnologia",
+        "title": "BIM & Tecnología",
+        "category": "Tecnología",
+        "icon": "MonitorPlay",
+        "description": "Modelado 3D/4D/5D con tecnologías de realidad virtual",
+        "benefits": [
+          "Modelado 5D completo",
+          "VR/AR para validación",
+          "Clash detection 99.9%"
+        ],
+        "case_study_link": "/blog/guias-tecnicas?tag=bim",
+        "color": "from-cyan-500 to-cyan-600"
+      }
+    ]
+  },
+  "project_showcase": {
+    "title": "Proyectos Emblemáticos",
+    "subtitle": "Casos de éxito que demuestran nuestra excelencia",
+    "projects": [
+      {
+        "id": "torre-san-isidro",
+        "title": "Torre Corporativa San Isidro",
+        "service": "Gestión Integral",
+        "category": "Oficinas",
+        "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+        "location": "San Isidro, Lima",
+        "area": "45,000 m²",
+        "budget": "S/ 120M",
+        "year": "2023",
+        "status": "completed",
+        "description": "Torre corporativa clase A+ con certificación LEED Gold y tecnología BIM 5D.",
+        "achievements": [
+          "15% bajo presupuesto",
+          "2 meses adelantado",
+          "LEED Gold certificado"
+        ],
+        "link": "/portfolio/oficina/torre-san-isidro",
+        "service_type": "gestion"
+      },
+      {
+        "id": "plaza-norte-retail",
+        "title": "Centro Comercial Plaza Norte",
+        "service": "Supervisión Técnica",
+        "category": "Retail",
+        "image": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&h=400&fit=crop",
+        "location": "Independencia, Lima",
+        "area": "80,000 m²",
+        "budget": "S/ 200M",
+        "year": "2022",
+        "status": "completed",
+        "description": "Supervisión integral de expansión del centro comercial más grande del norte de Lima.",
+        "achievements": [
+          "Cero accidentes laborales",
+          "99.8% calidad técnica",
+          "ISO 9001 compliance"
+        ],
+        "link": "/portfolio/retail/plaza-norte",
+        "service_type": "supervision"
+      },
+      {
+        "id": "hotel-miraflores",
+        "title": "Hotel Boutique Miraflores",
+        "service": "Desarrollo Inmobiliario",
+        "category": "Hotelería",
+        "image": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&h=400&fit=crop",
+        "location": "Miraflores, Lima",
+        "area": "12,000 m²",
+        "budget": "S/ 45M",
+        "year": "2024",
+        "status": "ongoing",
+        "description": "Hotel boutique de lujo con concepto eco-friendly y tecnología smart.",
+        "achievements": [
+          "ROI proyectado +25%",
+          "Certificación LEED Platinum",
+          "Smart building completo"
+        ],
+        "link": "/portfolio/hoteleria/hotel-miraflores",
+        "service_type": "desarrollo"
+      }
+    ]
+  },
+  "contact_form": {
+    "title": "Obtén una Consulta Personalizada",
+    "subtitle": "Cuéntanos sobre tu proyecto y te contactaremos en 24 horas",
+    "services_options": [
+      { "value": "consultoria-estrategica", "label": "Consultoría Estratégica" },
+      { "value": "gestion-integral", "label": "Gestión Integral" },
+      { "value": "supervision-tecnica", "label": "Supervisión Técnica" },
+      { "value": "desarrollo-inmobiliario", "label": "Desarrollo Inmobiliario" },
+      { "value": "project-management", "label": "Project Management" },
+      { "value": "control-calidad", "label": "Control de Calidad" },
+      { "value": "sostenibilidad", "label": "Sostenibilidad & Certificación" },
+      { "value": "transformacion-digital", "label": "Transformación Digital" },
+      { "value": "bim-tecnologia", "label": "BIM & Tecnología" },
+      { "value": "no-estoy-seguro", "label": "No estoy seguro / Consulta general" }
+    ],
+    "project_types": {
+      "consultoria-estrategica": [
+        "Estudio de Factibilidad",
+        "Due Diligence Técnico",
+        "Planificación Estratégica",
+        "Análisis de Riesgos"
+      ],
+      "gestion-integral": [
+        "Torre Corporativa",
+        "Centro Comercial",
+        "Proyecto Residencial",
+        "Infraestructura Industrial"
+      ],
+      "supervision-tecnica": [
+        "Supervisión de Obra",
+        "Control de Calidad",
+        "Inspecciones Técnicas",
+        "Validación de Entregables"
+      ],
+      "desarrollo-inmobiliario": [
+        "Proyecto Residencial",
+        "Desarrollo Comercial",
+        "Mixed-Use Development",
+        "Renovación Urbana"
+      ]
+    },
+    "budget_ranges": [
+      { "value": "100k-500k", "label": "S/ 100K - 500K" },
+      { "value": "500k-1m", "label": "S/ 500K - 1M" },
+      { "value": "1m-5m", "label": "S/ 1M - 5M" },
+      { "value": "5m-20m", "label": "S/ 5M - 20M" },
+      { "value": "20m-100m", "label": "S/ 20M - 100M" },
+      { "value": "100m+", "label": "S/ 100M+" }
+    ],
+    "timeline_options": [
+      { "value": "urgente", "label": "Urgente (1-3 meses)" },
+      { "value": "corto", "label": "Corto plazo (3-6 meses)" },
+      { "value": "medio", "label": "Mediano plazo (6-12 meses)" },
+      { "value": "largo", "label": "Largo plazo (12+ meses)" },
+      { "value": "planificacion", "label": "En etapa de planificación" }
+    ],
+    "form_fields": {
+      "name": {
+        "label": "Nombre completo",
+        "placeholder": "Tu nombre completo",
+        "required": true,
+        "type": "text"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "tu@empresa.com",
+        "required": true,
+        "type": "email"
+      },
+      "phone": {
+        "label": "Teléfono",
+        "placeholder": "+51 999 999 999",
+        "required": false,
+        "type": "tel"
+      },
+      "company": {
+        "label": "Empresa",
+        "placeholder": "Nombre de tu empresa",
+        "required": false,
+        "type": "text"
+      },
+      "message": {
+        "label": "Detalles del proyecto",
+        "placeholder": "Describe tu proyecto, objetivos, ubicación y cualquier detalle relevante...",
+        "required": true,
+        "type": "textarea",
+        "rows": 4
+      }
+    },
+    "submit_button": {
+      "text": "Solicitar Consulta Gratuita",
+      "icon": "Send"
+    },
+    "guarantees": [
+      "Respuesta garantizada en 24 horas",
+      "Consulta inicial gratuita",
+      "Propuesta personalizada sin compromiso"
+    ]
+  },
+  "value_propositions": {
+    "title": "¿Por Qué Elegir Métrica DIP?",
+    "items": [
+      {
+        "icon": "Award",
+        "title": "15+ Años de Experiencia",
+        "description": "Líderes comprobados en dirección integral de proyectos"
+      },
+      {
+        "icon": "Shield",
+        "title": "Certificación ISO 9001",
+        "description": "Procesos certificados que garantizan la máxima calidad"
+      },
+      {
+        "icon": "TrendingUp",
+        "title": "99% Satisfacción Cliente",
+        "description": "Historial comprobado de proyectos exitosos y clientes satisfechos"
+      },
+      {
+        "icon": "Cpu",
+        "title": "Tecnología de Vanguardia",
+        "description": "BIM 5D, IoT, VR/AR y las últimas innovaciones del sector"
+      }
+    ]
+  },
+  "settings": {
+    "form_action": "/api/services/contact",
+    "form_method": "POST",
+    "enable_analytics": true,
+    "mobile_optimized": true,
+    "response_time": "24 horas"
+  },
+  "seo": {
+    "meta_title": "Servicios de Dirección Integral de Proyectos | Métrica DIP",
+    "meta_description": "Transformamos ideas en impacto con nuestros servicios especializados: Gestión Integral, Consultoría Estratégica, Supervisión Técnica y más. 15+ años de experiencia.",
+    "keywords": [
+      "servicios construcción",
+      "gestión proyectos",
+      "consultoría construcción",
+      "supervisión técnica",
+      "project management",
+      "dirección integral proyectos",
+      "métrica dip servicios",
+      "construcción perú"
+    ],
+    "og_title": "Servicios de Dirección Integral de Proyectos | Métrica DIP",
+    "og_description": "Servicios especializados que transforman proyectos en éxitos garantizados. Consultoría, gestión, supervisión y más.",
+    "og_image": "/img/services-og.jpg",
+    "canonical_url": "https://metrica-dip.com/services"
+  }
+}

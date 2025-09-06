@@ -127,7 +127,7 @@ export default function CompanyBenefits({ benefitsData, className }: CompanyBene
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
             <Heart className="w-4 h-4" />
-            Beneficios Métrica DIP
+            Beneficios Métrica FM
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             {benefitsData.title}

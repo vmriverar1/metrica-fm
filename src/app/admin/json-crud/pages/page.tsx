@@ -70,7 +70,7 @@ const PagesManagement = () => {
           author: 'Admin',
           tags: ['homepage', 'landing'],
           category: 'main',
-          seoTitle: 'Métrica DIP - Dirección Integral de Proyectos',
+          seoTitle: 'Métrica FM - Dirección Integral de Proyectos',
           seoDescription: 'Empresa líder en dirección integral de proyectos en Perú'
         }
       },
@@ -78,7 +78,7 @@ const PagesManagement = () => {
         id: 'historia',
         name: 'historia.json',
         title: 'Historia de la Empresa',
-        description: 'Información sobre la historia y evolución de Métrica DIP',
+        description: 'Información sobre la historia y evolución de Métrica FM',
         path: '/public/json/pages/historia.json',
         status: 'active',
         lastModified: '2025-08-20T09:30:00Z',
@@ -88,8 +88,8 @@ const PagesManagement = () => {
           author: 'Content Team',
           tags: ['about', 'history'],
           category: 'about',
-          seoTitle: 'Historia - Métrica DIP',
-          seoDescription: 'Conoce la historia y evolución de Métrica DIP'
+          seoTitle: 'Historia - Métrica FM',
+          seoDescription: 'Conoce la historia y evolución de Métrica FM'
         }
       },
       {
@@ -106,7 +106,7 @@ const PagesManagement = () => {
           author: 'Portfolio Team',
           tags: ['portfolio', 'projects'],
           category: 'showcase',
-          seoTitle: 'Portafolio - Métrica DIP',
+          seoTitle: 'Portafolio - Métrica FM',
           seoDescription: 'Descubre nuestros proyectos exitosos'
         }
       },
@@ -124,7 +124,7 @@ const PagesManagement = () => {
           author: 'HR Team',
           tags: ['careers', 'jobs'],
           category: 'recruitment',
-          seoTitle: 'Carreras - Métrica DIP',
+          seoTitle: 'Carreras - Métrica FM',
           seoDescription: 'Únete a nuestro equipo de profesionales'
         }
       },
@@ -142,7 +142,7 @@ const PagesManagement = () => {
           author: 'Admin',
           tags: ['contact', 'forms', 'faq'],
           category: 'contact',
-          seoTitle: 'Contáctanos - Métrica DIP',
+          seoTitle: 'Contáctanos - Métrica FM',
           seoDescription: 'Ponte en contacto con nuestro equipo de expertos'
         }
       },
@@ -160,7 +160,7 @@ const PagesManagement = () => {
           author: 'Admin',
           tags: ['blog', 'content', 'categories'],
           category: 'content',
-          seoTitle: 'Blog - Métrica DIP',
+          seoTitle: 'Blog - Métrica FM',
           seoDescription: 'Insights y experiencias en infraestructura'
         }
       },
@@ -178,7 +178,7 @@ const PagesManagement = () => {
           author: 'Admin',
           tags: ['services', 'catalog', 'testimonials'],
           category: 'services',
-          seoTitle: 'Servicios - Métrica DIP',
+          seoTitle: 'Servicios - Métrica FM',
           seoDescription: 'Soluciones integrales en infraestructura'
         }
       },
@@ -196,7 +196,7 @@ const PagesManagement = () => {
           author: 'Admin',
           tags: ['compromiso', 'responsabilidad', 'sostenibilidad'],
           category: 'corporate',
-          seoTitle: 'Nuestro Compromiso - Métrica DIP',
+          seoTitle: 'Nuestro Compromiso - Métrica FM',
           seoDescription: 'Responsabilidad social y desarrollo sostenible'
         }
       },
@@ -204,7 +204,7 @@ const PagesManagement = () => {
         id: 'cultura',
         name: 'cultura.json',
         title: 'Cultura Organizacional',
-        description: 'Cultura, valores y ambiente de trabajo en Métrica DIP',
+        description: 'Cultura, valores y ambiente de trabajo en Métrica FM',
         path: '/public/json/pages/cultura.json',
         status: 'active',
         lastModified: '2025-08-21T14:00:00Z',
@@ -214,8 +214,8 @@ const PagesManagement = () => {
           author: 'HR Team',
           tags: ['cultura', 'valores', 'equipo', 'beneficios'],
           category: 'corporate',
-          seoTitle: 'Cultura Organizacional - Métrica DIP',
-          seoDescription: 'Descubre la cultura, valores y ambiente de trabajo en Métrica DIP'
+          seoTitle: 'Cultura Organizacional - Métrica FM',
+          seoDescription: 'Descubre la cultura, valores y ambiente de trabajo en Métrica FM'
         }
       },
       {
@@ -232,7 +232,7 @@ const PagesManagement = () => {
           author: 'Quality Team',
           tags: ['iso', 'quality'],
           category: 'certification',
-          seoTitle: 'Certificación ISO - Métrica DIP',
+          seoTitle: 'Certificación ISO - Métrica FM',
           seoDescription: 'Estándares de calidad y certificaciones ISO'
         }
       }
@@ -1170,7 +1170,7 @@ const PagesManagement = () => {
                         required: true,
                         group: 'page_info',
                         description: 'Título optimizado para motores de búsqueda (máximo 60 caracteres recomendados)',
-                        placeholder: 'ISO 9001:2015 Certificación | Métrica DIP - Calidad Garantizada'
+                        placeholder: 'ISO 9001:2015 Certificación | Métrica FM - Calidad Garantizada'
                       },
             {
               key: 'page.description',
@@ -1179,7 +1179,7 @@ const PagesManagement = () => {
               required: true,
               group: 'page_info',
               description: 'Meta descripción para buscadores (150-160 caracteres óptimo)',
-              placeholder: 'Métrica DIP cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos...'
+              placeholder: 'Métrica FM cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos...'
             },
 
             // Hero Section Group
@@ -2872,7 +2872,7 @@ const PagesManagement = () => {
                           <Sparkles className="h-6 w-6 text-orange-600" />
                           <div>
                             <CardTitle className="text-orange-800">
-                              {setupWizard.isFirstTime ? 'Bienvenido a Métrica DIP' : 'Configuración Recomendada'}
+                              {setupWizard.isFirstTime ? 'Bienvenido a Métrica FM' : 'Configuración Recomendada'}
                             </CardTitle>
                             <CardDescription className="text-orange-700">
                               {setupWizard.isFirstTime 

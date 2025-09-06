@@ -251,12 +251,12 @@ const DepartmentsManagement = () => {
       label: 'Color (Hex)',
       type: 'text' as const,
       required: true,
-      placeholder: '#E84E0F',
+      placeholder: '#007bc4',
       validation: { 
         pattern: '^#[0-9A-Fa-f]{6}$',
         custom: (value: string) => {
           if (!/^#[0-9A-Fa-f]{6}$/.test(value)) {
-            return 'El color debe ser un código hex válido (ej: #E84E0F)';
+            return 'El color debe ser un código hex válido (ej: #007bc4)';
           }
           return null;
         }

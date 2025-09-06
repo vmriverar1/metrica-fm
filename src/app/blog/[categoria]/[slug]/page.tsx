@@ -76,12 +76,12 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   
   if (!article) {
     return {
-      title: 'Artículo no encontrado | Blog Métrica DIP'
+      title: 'Artículo no encontrado | Blog Métrica FM'
     };
   }
 
   return {
-    title: `${article.title} | Blog Métrica DIP`,
+    title: `${article.title} | Blog Métrica FM`,
     description: article.excerpt,
     keywords: article.tags.join(', '),
     authors: [{ name: article.author.name }],

@@ -124,13 +124,13 @@ export async function generateMetadata({ params }: PreviewPageProps) {
 
   if (!previewData) {
     return {
-      title: 'Preview Expirado - Métrica DIP',
+      title: 'Preview Expirado - Métrica FM',
       description: 'Este preview temporal ha expirado',
     };
   }
 
   return {
-    title: `Preview: ${previewData.component} - Métrica DIP`,
+    title: `Preview: ${previewData.component} - Métrica FM`,
     description: `Preview temporal de ${previewData.component}`,
     robots: 'noindex, nofollow', // Evitar indexación de previews
   };

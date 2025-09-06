@@ -180,7 +180,7 @@ const RotatingWordsEditor: React.FC<RotatingWordsEditorProps> = ({
             type="button"
             onClick={handleAddWord}
             disabled={!newWord.trim() || words.length >= maxWords || words.includes(newWord.trim())}
-            className="bg-[#E84E0F] hover:bg-[#E84E0F]/90"
+            className="bg-[#007bc4] hover:bg-[#007bc4]/90"
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -262,7 +262,7 @@ const RotatingWordsEditor: React.FC<RotatingWordsEditorProps> = ({
                 <p className="text-xs text-gray-600">Palabras Total</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-[#E84E0F]">
+                <p className="text-2xl font-bold text-[#007bc4]">
                   {Math.round(words.reduce((acc, word) => acc + word.length, 0) / words.length)}
                 </p>
                 <p className="text-xs text-gray-600">Long. Promedio</p>

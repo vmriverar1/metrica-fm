@@ -21,7 +21,7 @@ interface FloatingParticlesProps {
 }
 
 // Valores por defecto constantes para evitar recreación
-const DEFAULT_COLORS = ['#E84E0F', '#003F6F', '#ffffff'];
+const DEFAULT_COLORS = ['#007bc4', '#003F6F', '#ffffff'];
 const DEFAULT_COUNT = 20;
 
 export default function FloatingParticles({

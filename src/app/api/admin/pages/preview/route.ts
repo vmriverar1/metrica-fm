@@ -90,7 +90,7 @@ function validateHomePageData(data: any) {
   // Validación para home page
   const validated = {
     page: {
-      title: data.page?.title || 'Métrica DIP - Preview',
+      title: data.page?.title || 'Métrica FM - Preview',
       description: data.page?.description || 'Preview de la página principal'
     },
     hero: {

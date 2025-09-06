@@ -1,17 +1,17 @@
 {
   "site": {
-    "title": "Métrica DIP - Dirección Integral de Proyectos",
-    "description": "Líderes en dirección integral de proyectos de infraestructura en Perú desde 2010. Transformamos la infraestructura del país con excelencia, innovación y sostenibilidad.",
-    "keywords": ["dirección integral de proyectos", "DIP", "infraestructura", "Perú", "construcción", "supervisión", "PMO"],
-    "url": "https://metrica-dip.com"
+    "title": "Métrica FM - Facility Management",
+    "description": "Líderes en facility management y mantenimiento integral en Perú desde 2015. Transformamos la gestión de activos con excelencia, innovación y sostenibilidad.",
+    "keywords": ["facility management", "FM", "mantenimiento", "Perú", "gestión de activos", "mantenimiento preventivo", "servicios integrales"],
+    "url": "https://metrica-fm.com"
   },
   "company": {
-    "name": "Métrica DIP",
-    "full_name": "Métrica - Dirección Integral de Proyectos",
-    "tagline": "que transforman la infraestructura del Perú",
-    "slogan": "Dirección Integral de Proyectos",
-    "founded": 2010,
-    "description": "Empresa líder en dirección integral de proyectos de infraestructura en Perú, especializada en PMO, supervisión técnica y gestión de calidad."
+    "name": "Métrica FM",
+    "full_name": "Métrica - Facility Management",
+    "tagline": "que transforman la gestión de activos del Perú",
+    "slogan": "Facility Management",
+    "founded": 2015,
+    "description": "Empresa líder en facility management en Perú, especializada en mantenimiento integral, gestión de activos y servicios de facility management."
   },
   "contact": {
     "main_office": {
@@ -30,18 +30,18 @@
   },
   "assets": {
     "logo_light": "/img/logo-blanco.png",
-    "logo_dark": "/img/logo-color.png",
-    "logo_footer": "/img/logo-color.png",
+    "logo_dark": "/img/logo-color.webp",
+    "logo_footer": "/img/logo-color.webp",
     "favicon": "/favicon.ico"
   },
   "seo": {
-    "meta_description": "Métrica DIP - Líderes en dirección integral de proyectos de infraestructura en Perú. PMO, supervisión técnica y gestión de calidad con más de 15 años de experiencia.",
+    "meta_description": "Métrica FM - Líderes en facility management en Perú. Mantenimiento integral, gestión de activos y servicios especializados con más de 10 años de experiencia.",
     "og_image": "/img/og-image.jpg",
-    "twitter_handle": "@metrica-dip"
+    "twitter_handle": "@metrica-fm"
   },
   "copyright": {
     "year": 2024,
-    "text": "© 2024 Métrica DIP. Todos los derechos reservados.",
-    "legal_notice": "Dirección Integral de Proyectos - RUC: 20123456789"
+    "text": "© 2024 Métrica FM. Todos los derechos reservados.",
+    "legal_notice": "Facility Management - RUC: 20123456789"
   }
 }

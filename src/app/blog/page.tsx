@@ -13,15 +13,15 @@ import { useAdvancedAnalytics } from '@/hooks/useAdvancedAnalytics';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Blog | Métrica DIP - Insights de Construcción e Infraestructura',
+  title: 'Blog | Métrica FM - Insights de Construcción e Infraestructura',
   description: 'Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas del sector construcción en Perú. Insights de expertos en dirección integral de proyectos.',
   keywords: 'blog construcción, arquitectura Perú, ingeniería civil, gestión proyectos, tendencias construcción, casos estudio infraestructura',
   openGraph: {
-    title: 'Blog | Métrica DIP - Insights de Construcción e Infraestructura',
+    title: 'Blog | Métrica FM - Insights de Construcción e Infraestructura',
     description: 'Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas del sector construcción en Perú.',
     type: 'website',
     locale: 'es_PE',
-    siteName: 'Métrica DIP'
+    siteName: 'Métrica FM'
   }
 };
 

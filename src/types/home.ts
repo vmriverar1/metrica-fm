@@ -38,7 +38,7 @@ export interface HomePageData {
       title: string;
       subtitle: string;
     };
-    main_service: {
+    main_service?: {
       id?: string;
       title: string;
       description: string;
@@ -52,7 +52,21 @@ export interface HomePageData {
         url: string;
       };
     };
-    secondary_services: Array<{
+    secondary_services?: Array<{
+      id: string;
+      title: string;
+      description: string;
+      image_url?: string;
+      image_url_fallback?: string;
+      icon_url?: string;
+      is_main?: boolean;
+      width?: '1/3' | '2/3' | '3/3';
+      cta?: {
+        text: string;
+        url: string;
+      };
+    }>;
+    services_list?: Array<{
       id: string;
       title: string;
       description: string;

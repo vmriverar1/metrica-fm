@@ -40,7 +40,7 @@ interface TeamAndMomentsProps {
 const filters = [
   { id: 'all', name: 'Todos', color: '#6B7280', icon: '⭐' },
   { id: 'corporate', name: 'Corporativo', color: '#003F6F', icon: '🔵' },
-  { id: 'celebrations', name: 'Celebraciones', color: '#E84E0F', icon: '🟠' },
+  { id: 'celebrations', name: 'Celebraciones', color: '#007bc4', icon: '🟠' },
   { id: 'sustainability', name: 'Sostenibilidad', color: '#059669', icon: '🟢' },
   { id: 'legacy', name: 'Historia', color: '#374151', icon: '⚪' }
 ];
@@ -246,7 +246,7 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-white drop-shadow-2xl" style={{
-              textShadow: '0 0 30px rgba(232, 78, 15, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3)'
+              textShadow: '0 0 30px rgba(0, 123, 196, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3)'
             }}>
               {teamSection?.title || 'Nuestro Equipo'}
             </span>
@@ -291,7 +291,7 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
                   <div 
                     className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
                     style={{
-                      background: `linear-gradient(45deg, transparent 20%, #E84E0F40 35%, #003F6F40 65%, transparent 80%)`
+                      background: `linear-gradient(45deg, transparent 20%, #007bc440 35%, #003F6F40 65%, transparent 80%)`
                     }}
                   />
                 </div>
@@ -301,7 +301,7 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
 
           {/* Efectos de desvanecimiento en los bordes con colores de marca */}
           <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-[#003F6F] via-[#002A4D]/10 to-transparent pointer-events-none z-10" />
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-[#003F6F] via-[#E84E0F]/10 to-transparent pointer-events-none z-10" />
+          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-[#003F6F] via-[#007bc4]/10 to-transparent pointer-events-none z-10" />
         </div>
 
         {/* Subtítulo para transición a momentos */}
@@ -313,7 +313,7 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
         >
           <h3 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="text-white drop-shadow-2xl" style={{
-              textShadow: '0 0 25px rgba(232, 78, 15, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4)'
+              textShadow: '0 0 25px rgba(0, 123, 196, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4)'
             }}>
               {moments?.title || 'Momentos que Nos Definen'}
             </span>
@@ -323,7 +323,7 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
           </p>
           
           {/* Separador visual */}
-          <div className="w-24 h-1 bg-gradient-to-r from-[#E84E0F] to-[#003F6F] mx-auto rounded-full mb-8"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#007bc4] to-[#003F6F] mx-auto rounded-full mb-8"></div>
 
           {/* Indicador visual con colores de marca */}
           <motion.div

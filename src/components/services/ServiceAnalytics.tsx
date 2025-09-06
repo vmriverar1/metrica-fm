@@ -24,7 +24,7 @@ export function useServiceAnalytics() {
       // Google Analytics 4
       if (window.gtag) {
         window.gtag('config', process.env.NEXT_PUBLIC_GA_ID, {
-          page_title: 'Servicios - Métrica DIP',
+          page_title: 'Servicios - Métrica FM',
           page_location: window.location.href,
           custom_map: {
             custom_parameter_1: 'service_page_view'

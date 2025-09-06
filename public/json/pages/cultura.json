@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Cultura y Personas - Métrica DIP",
+    "title": "Cultura y Personas - Tu Empresa",
     "description": "Conoce nuestra cultura empresarial, valores, equipo multidisciplinario y tecnologías innovadoras que nos distinguen en la industria."
   },
   "hero": {
@@ -39,7 +39,7 @@
         "title": "Excelencia",
         "description": "Buscamos la perfección en cada detalle de nuestros proyectos, estableciendo estándares de calidad superiores en la industria de la construcción.",
         "icon": "Target",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "size": "large",
         "images": [
           "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center",
@@ -77,7 +77,7 @@
         "title": "Innovación",
         "description": "Implementamos las últimas tecnologías y metodologías para ofrecer soluciones constructivas eficientes y sostenibles.",
         "icon": "Lightbulb",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "size": "medium",
         "images": [
           "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=500&fit=crop&crop=center",
@@ -111,9 +111,9 @@
       {
         "id": "growth",
         "title": "Crecimiento",
-        "description": "Fomentamos el desarrollo continuo de nuestro equipo y organización, adaptándonos a los desafíos del mercado peruano.",
+        "description": "Fomentamos el desarrollo continuo de nuestro equipo y organización, adaptándonos a los desafíos del mercado.",
         "icon": "TrendingUp",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "size": "medium",
         "images": [
           "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=500&fit=crop&crop=center",
@@ -155,21 +155,21 @@
       "historia": {
         "title": "Nuestra Historia",
         "icon": "Clock",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "stats": [
           {
             "label": "Años en el mercado",
-            "value": "15+",
+            "value": "X+",
             "description": "Experiencia consolidada en dirección de proyectos"
           },
           {
             "label": "Proyectos completados",
-            "value": "200+",
-            "description": "Obras exitosas en todo el Perú"
+            "value": "X+",
+            "description": "Obras exitosas a nivel nacional"
           },
           {
             "label": "Clientes satisfechos",
-            "value": "150+",
+            "value": "X+",
             "description": "Empresas que confían en nosotros"
           }
         ]
@@ -181,17 +181,17 @@
         "stats": [
           {
             "label": "Profesionales",
-            "value": "45+",
+            "value": "X+",
             "description": "Especialistas multidisciplinarios"
           },
           {
             "label": "Ingenierías",
-            "value": "8",
+            "value": "X+",
             "description": "Diferentes especialidades técnicas"
           },
           {
             "label": "Certificaciones",
-            "value": "25+",
+            "value": "X+",
             "description": "Acreditaciones profesionales activas"
           }
         ]
@@ -199,21 +199,21 @@
       "alcance": {
         "title": "Alcance Nacional",
         "icon": "MapPin",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "stats": [
           {
             "label": "Regiones",
-            "value": "12",
-            "description": "Presencia en todo el territorio peruano"
+            "value": "X+",
+            "description": "Presencia en todo el territorio actual"
           },
           {
             "label": "Sectores",
-            "value": "6",
+            "value": "X+",
             "description": "Industrial, minero, energía, inmobiliario"
           },
           {
             "label": "Especialidades",
-            "value": "10+",
+            "value": "X+",
             "description": "Áreas de expertise técnico"
           }
         ]
@@ -225,17 +225,17 @@
         "stats": [
           {
             "label": "Premios",
-            "value": "8",
+            "value": "X+",
             "description": "Reconocimientos a la excelencia"
           },
           {
             "label": "Certificaciones ISO",
-            "value": "3",
+            "value": "X+",
             "description": "Estándares internacionales de calidad"
           },
           {
             "label": "Proyectos destacados",
-            "value": "25+",
+            "value": "X+",
             "description": "Obras emblemáticas del sector"
           }
         ]
@@ -343,7 +343,7 @@
         "title": "Modelado BIM",
         "subtitle": "Building Information Modeling",
         "icon": "Layers",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "description": "Modelado 3D inteligente que integra toda la información del proyecto",
         "features": [
           "Coordinación 3D",
@@ -354,9 +354,9 @@
         "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
         "image_fallback": "/img/tech/bim-modeling.jpg",
         "case_study": {
-          "project": "Centro Comercial Plaza Norte",
+          "project": "Proyecto Ejemplo",
           "result": "35% reducción en tiempos de construcción",
-          "savings": "S/. 2.3M en ahorro de costos"
+          "savings": "$X en ahorro de costos"
         }
       },
       {
@@ -375,9 +375,9 @@
         "image": "https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800&h=600&fit=crop",
         "image_fallback": "/img/tech/drone-technology.jpg",
         "case_study": {
-          "project": "Hospital Nacional Dos de Mayo",
+          "project": "Proyecto Ejemplo",
           "result": "50% más precisión en mediciones",
-          "savings": "S/. 890K en ahorro operativo"
+          "savings": "$X en ahorro operativo"
         }
       },
       {
@@ -385,7 +385,7 @@
         "title": "IoT & Sensores",
         "subtitle": "Internet de las Cosas",
         "icon": "Cpu",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "description": "Monitoreo inteligente y en tiempo real de estructuras",
         "features": [
           "Sensores estructurales",
@@ -396,9 +396,9 @@
         "image": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop",
         "image_fallback": "/img/tech/iot-sensors.jpg",
         "case_study": {
-          "project": "Torre Empresarial Lima",
+          "project": "Proyecto Ejemplo",
           "result": "24/7 monitoreo estructural",
-          "savings": "S/. 1.2M en prevención de daños"
+          "savings": "$X en prevención de daños"
         }
       },
       {
@@ -427,7 +427,7 @@
         "title": "Aplicaciones Móviles",
         "subtitle": "Gestión desde Campo",
         "icon": "Smartphone",
-        "color": "#E84E0F",
+        "color": "#007bc4",
         "description": "Herramientas móviles para supervisión y reportes en tiempo real",
         "features": [
           "Reportes móviles",
@@ -438,9 +438,9 @@
         "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
         "image_fallback": "/img/tech/mobile-apps.jpg",
         "case_study": {
-          "project": "Proyecto Miraflores Corporate",
+          "project": "Proyecto Ejemplo",
           "result": "60% reducción en paperwork",
-          "savings": "S/. 450K en eficiencia administrativa"
+          "savings": "$X en eficiencia administrativa"
         }
       },
       {
@@ -459,9 +459,9 @@
         "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=600&fit=crop",
         "image_fallback": "/img/tech/cloud-computing.jpg",
         "case_study": {
-          "project": "Red de Oficinas Corporativas",
+          "project": "Proyecto Ejemplo",
           "result": "100% disponibilidad de datos",
-          "savings": "S/. 680K en infraestructura IT"
+          "savings": "$X en infraestructura IT"
         }
       }
     ]

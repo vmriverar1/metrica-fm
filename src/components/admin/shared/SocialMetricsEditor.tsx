@@ -517,7 +517,7 @@ export const SocialMetricsEditor: React.FC<SocialMetricsEditorProps> = ({
                         <Input
                           value={newPlatform.name || ''}
                           onChange={(e) => setNewPlatform(prev => ({ ...prev, name: e.target.value }))}
-                          placeholder="Facebook Métrica DIP"
+                          placeholder="Facebook Métrica FM"
                         />
                       </div>
 

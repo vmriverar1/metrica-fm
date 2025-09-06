@@ -150,9 +150,9 @@ const CareersDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Trabajos Activos</p>
-                <p className="text-3xl font-bold text-[#E84E0F]">{stats.activeJobs}</p>
+                <p className="text-3xl font-bold text-[#007bc4]">{stats.activeJobs}</p>
               </div>
-              <TrendingUp className="h-12 w-12 text-[#E84E0F] opacity-20" />
+              <TrendingUp className="h-12 w-12 text-[#007bc4] opacity-20" />
             </div>
           </CardContent>
         </Card>
@@ -236,7 +236,7 @@ const CareersDashboard = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-medium text-[#E84E0F]">{job.applications}</div>
+                      <div className="text-lg font-medium text-[#007bc4]">{job.applications}</div>
                       <div className="text-sm text-gray-500">aplicaciones</div>
                     </div>
                   </div>
@@ -283,7 +283,7 @@ const CareersDashboard = () => {
                       </div>
                       <div className="w-px h-8 bg-gray-300 mx-2" />
                       <div className="text-center">
-                        <div className="font-medium text-[#E84E0F]">{dept.applicationsCount}</div>
+                        <div className="font-medium text-[#007bc4]">{dept.applicationsCount}</div>
                         <div className="text-xs text-gray-500">postulantes</div>
                       </div>
                     </div>

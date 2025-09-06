@@ -257,7 +257,7 @@ export const certificationTimeline: CertificationTimeline[] = [
     certifyingBody: 'SGS Peru',
     outcome: 'certificate_issued',
     validUntil: new Date('2021-06-14'),
-    notes: 'Primera certificación ISO 9001:2015 para Métrica DIP'
+    notes: 'Primera certificación ISO 9001:2015 para Métrica FM'
   },
   {
     id: 'surv_2019',
@@ -327,13 +327,13 @@ export const certificationTimeline: CertificationTimeline[] = [
 
 export const qualityPolicy: QualityPolicy = {
   id: 'policy_2024',
-  title: 'Política de Calidad Métrica DIP',
+  title: 'Política de Calidad Métrica FM',
   version: '3.0',
   approvalDate: new Date('2024-01-15'),
   approvedBy: 'Carlos Mendoza - Director General',
   nextReview: new Date('2025-01-15'),
   content: {
-    commitment: 'Métrica DIP se compromete a proporcionar servicios de dirección integral de proyectos de construcción e infraestructura que cumplan y superen las expectativas de nuestros clientes, aplicando las mejores prácticas de la industria y manteniendo los más altos estándares de calidad.',
+    commitment: 'Métrica FM se compromete a proporcionar servicios de dirección integral de proyectos de construcción e infraestructura que cumplan y superen las expectativas de nuestros clientes, aplicando las mejores prácticas de la industria y manteniendo los más altos estándares de calidad.',
     objectives: [
       'Mantener un nivel de satisfacción del cliente superior al 95%',
       'Cumplir con todos los requisitos legales y reglamentarios aplicables',

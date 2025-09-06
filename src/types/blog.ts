@@ -163,7 +163,7 @@ El uso de materiales locales y reciclados se está convirtiendo en estándar de 
 Los edificios net-zero están ganando tracción en el mercado corporativo, especialmente en Lima y Arequipa. Las tecnologías de paneles solares integrados arquitectónicamente y sistemas geotérmicos adaptativos están demostrando viabilidad económica excepcional...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
     seo: {
-      metaTitle: 'El Futuro de la Construcción Sostenible en el Perú | Blog Métrica DIP',
+      metaTitle: 'El Futuro de la Construcción Sostenible en el Perú | Blog Métrica FM',
       metaDescription: 'Descubre las tendencias en construcción sostenible que transformarán el mercado inmobiliario peruano en 2025.',
       keywords: ['construcción sostenible', 'LEED Perú', 'edificios verdes', 'arquitectura sostenible'],
       schemaType: 'Article'
@@ -198,7 +198,7 @@ Implementamos modelado BIM 5D completo, integrando diseño arquitectónico, estr
 Desarrollamos un sistema constructivo híbrido que combina estructura metálica en niveles superiores con núcleo de concreto armado, optimizando tanto la velocidad de construcción como la resistencia sísmica. Los resultados excedieron las expectativas de performance estructural...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     seo: {
-      metaTitle: 'Caso de Estudio: Torre San Isidro | Blog Métrica DIP',
+      metaTitle: 'Caso de Estudio: Torre San Isidro | Blog Métrica FM',
       metaDescription: 'Análisis completo del proyecto Torre San Isidro: metodologías, desafíos y resultados de construcción.',
       keywords: ['torre san isidro', 'caso estudio construcción', 'oficinas lima', 'BIM'],
       schemaType: 'Article'
@@ -233,7 +233,7 @@ El registro del proyecto debe realizarse durante la fase de diseño conceptual. 
 La fase de diseño integrado es crítica para maximizar la puntuación LEED. Implementamos workshops colaborativos mensuales donde todos los especialistas optimizan soluciones de forma sinérgica...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     seo: {
-      metaTitle: 'Guía LEED Perú: Certificación Paso a Paso | Blog Métrica DIP',
+      metaTitle: 'Guía LEED Perú: Certificación Paso a Paso | Blog Métrica FM',
       metaDescription: 'Guía completa para obtener certificación LEED en Perú: proceso, requisitos, costos y beneficios.',
       keywords: ['LEED Perú', 'certificación verde', 'construcción sostenible', 'guía LEED'],
       schemaType: 'TechArticle'
@@ -264,7 +264,7 @@ La implementación de Building Information Modeling ha evolucionado de simples r
 Los sensores IoT están revolucionando el monitoreo en tiempo real de variables críticas: humedad del concreto, cargas estructurales, calidad del aire, temperatura ambiental y niveles de ruido. Esta data alimenta dashboards predictivos que permiten tomar decisiones informadas instantáneamente...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
     seo: {
-      metaTitle: 'Transformación Digital Construcción Perú | BIM IoT AI | Blog Métrica DIP',
+      metaTitle: 'Transformación Digital Construcción Perú | BIM IoT AI | Blog Métrica FM',
       metaDescription: 'Descubre cómo BIM, IoT y AI están revolucionando la construcción peruana con casos reales y resultados.',
       keywords: ['BIM Perú', 'IoT construcción', 'AI construcción', 'construcción 4.0', 'transformación digital'],
       schemaType: 'TechArticle'
@@ -295,7 +295,7 @@ Los líderes excepcionales de hoy dominan tres dimensiones críticas: excelencia
 La gestión de equipos distribuidos requiere metodologías específicas. Implementamos protocolos de comunicación estructurados, herramientas de colaboración sincrónica y asincrónica, y métricas de performance adaptadas a la realidad híbrida...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
     seo: {
-      metaTitle: 'Liderazgo Directores Proyecto Post-Pandemia | Blog Métrica DIP',
+      metaTitle: 'Liderazgo Directores Proyecto Post-Pandemia | Blog Métrica FM',
       metaDescription: 'Estrategias de liderazgo para directores de proyecto en construcción: equipos híbridos y metodologías ágiles.',
       keywords: ['liderazgo construcción', 'directores proyecto', 'equipos híbridos', 'post-pandemia'],
       schemaType: 'Article'
@@ -326,7 +326,7 @@ Renovar un centro comercial completamente operativo requirió desarrollar una me
 Implementamos el primer sistema de climatización geotérmica en un centro comercial peruano, aprovechando la temperatura constante del subsuelo limeño para reducir consumo energético en 40%. Adicionalmente, instalamos 2,400 m² de paneles solares integrados arquitectónicamente...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
     seo: {
-      metaTitle: 'Renovación Jockey Plaza: Caso Estudio Sostenibilidad | Blog Métrica DIP',
+      metaTitle: 'Renovación Jockey Plaza: Caso Estudio Sostenibilidad | Blog Métrica FM',
       metaDescription: 'Análisis técnico de la renovación sostenible del Centro Comercial Jockey Plaza con metodologías innovadoras.',
       keywords: ['Jockey Plaza', 'renovación comercial', 'sostenibilidad retail', 'modernización centros comerciales'],
       schemaType: 'Article'
@@ -357,7 +357,7 @@ La Norma E.030 introduce factores de amplificación sísmica actualizados para 1
 La Norma A.120 amplía significativamente los requisitos de accesibilidad, incluyendo por primera vez edificaciones residenciales multifamiliares de más de 3 pisos. Las nuevas exigencias incluyen rutas accesibles, sistemas de evacuación para personas con discapacidad y señalización táctil obligatoria...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
     seo: {
-      metaTitle: 'RNE 2024: Nueva Normativa Construcción Perú | Blog Métrica DIP',
+      metaTitle: 'RNE 2024: Nueva Normativa Construcción Perú | Blog Métrica FM',
       metaDescription: 'Análisis completo de las actualizaciones RNE 2024: cambios sísmicos, accesibilidad y compliance.',
       keywords: ['RNE 2024', 'normativa construcción Perú', 'reglamento edificaciones', 'compliance construcción'],
       schemaType: 'TechArticle'
@@ -389,7 +389,7 @@ Los distritos premium mantienen liderazgo en valorización, con incrementos prom
 San Borja emerge como el distrito con mayor potencial de revalorización, registrando incrementos del 15.7% anual. Los proyectos mixed-use están redefiniendo la oferta, con precios promedio de $1,890/m²...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     seo: {
-      metaTitle: 'Mercado Inmobiliario Lima 2024: Análisis y Proyecciones | Blog Métrica DIP',
+      metaTitle: 'Mercado Inmobiliario Lima 2024: Análisis y Proyecciones | Blog Métrica FM',
       metaDescription: 'Análisis completo del mercado inmobiliario limeño 2024: precios, tendencias y proyecciones para 2025.',
       keywords: ['mercado inmobiliario Lima', 'precios inmobiliarios 2024', 'tendencias inmobiliarias', 'inversión inmobiliaria'],
       schemaType: 'Article'
@@ -420,7 +420,7 @@ Los sensores IoT distribuidos estratégicamente en obra monitorean constantement
 Los algoritmos de machine learning analizan patrones de comportamiento y condiciones ambientales para predecir situaciones de riesgo antes de que ocurran, activando alertas automáticas y protocolos de respuesta inmediata...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     seo: {
-      metaTitle: 'Seguridad en Obra: Protocolos Avanzados | Blog Métrica DIP',
+      metaTitle: 'Seguridad en Obra: Protocolos Avanzados | Blog Métrica FM',
       metaDescription: 'Implementa protocolos de seguridad avanzados con tecnologías IoT y AI para reducir accidentes en obra.',
       keywords: ['seguridad obra', 'protocolos construcción', 'prevención accidentes', 'IoT construcción'],
       schemaType: 'TechArticle'
@@ -451,7 +451,7 @@ Las plataformas de crowdfunding inmobiliario han procesado más de $45 millones 
 La tokenización permite fraccionar la propiedad de activos inmobiliarios de alto valor, creando liquidez en un mercado tradicionalmente ilíquido y abriendo oportunidades de inversión granular...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
     seo: {
-      metaTitle: 'Financiamiento Proyectos Inmobiliarios 2024 | Blog Métrica DIP',
+      metaTitle: 'Financiamiento Proyectos Inmobiliarios 2024 | Blog Métrica FM',
       metaDescription: 'Descubre las nuevas modalidades de financiamiento inmobiliario: crowdfunding, tokenización y más.',
       keywords: ['financiamiento inmobiliario', 'crowdfunding', 'tokenización', 'inversión inmobiliaria'],
       schemaType: 'Article'
@@ -482,7 +482,7 @@ Implementamos técnicas de construcción industrializada que redujeron tiempos d
 El proyecto incluye sistemas de captación y tratamiento de aguas grises, paneles solares comunitarios y áreas verdes productivas que generan alimentos para los residentes, creando un ecosistema autosustentable...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
     seo: {
-      metaTitle: 'Residencial Las Flores: Vivienda Social Sostenible | Blog Métrica DIP',
+      metaTitle: 'Residencial Las Flores: Vivienda Social Sostenible | Blog Métrica FM',
       metaDescription: 'Caso de estudio completo del primer proyecto de vivienda social sostenible en Lima Norte.',
       keywords: ['vivienda social', 'construcción sostenible', 'Lima Norte', 'innovación social'],
       schemaType: 'Article'
@@ -513,7 +513,7 @@ Desarrollamos matrices dinámicas que categorizan stakeholders por nivel de infl
 Implementamos protocolos de comunicación diferenciados por perfil de stakeholder: reportes ejecutivos para inversionistas, dashboards técnicos para autoridades y comunicados vecinales para comunidades locales...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
     seo: {
-      metaTitle: 'Gestión Stakeholders Proyectos Gran Escala | Blog Métrica DIP',
+      metaTitle: 'Gestión Stakeholders Proyectos Gran Escala | Blog Métrica FM',
       metaDescription: 'Metodologías efectivas para gestionar stakeholders en proyectos de infraestructura complejos.',
       keywords: ['gestión stakeholders', 'proyectos gran escala', 'comunicación proyecto', 'liderazgo'],
       schemaType: 'Article'
@@ -544,7 +544,7 @@ Los nuevos concretos incorporan nanocápsulas que liberan agentes reparadores cu
 Materiales cultivados a partir de organismos vivos, como el "micelio brick" fabricado con hongos, ofrecen propiedades únicas: son naturalmente ignífugos, tienen excelente aislamiento térmico y son completamente biodegradables...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
     seo: {
-      metaTitle: 'Materiales Construcción Futuro: Innovaciones | Blog Métrica DIP',
+      metaTitle: 'Materiales Construcción Futuro: Innovaciones | Blog Métrica FM',
       metaDescription: 'Descubre los materiales innovadores que revolucionarán la construcción: nanotecnología, biomateriales y más.',
       keywords: ['materiales innovadores', 'nanotecnología construcción', 'biomateriales', 'construcción futuro'],
       schemaType: 'TechArticle'
@@ -575,7 +575,7 @@ Los robots de albañilería pueden colocar hasta 3,000 ladrillos por día con pr
 Los drones equipados con LiDAR y cámaras multiespectrales realizan levantamientos topográficos completos en horas en lugar de semanas, con precisión superior a métodos tradicionales...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
     seo: {
-      metaTitle: 'Automatización Construcción: Robots y Drones | Blog Métrica DIP',
+      metaTitle: 'Automatización Construcción: Robots y Drones | Blog Métrica FM',
       metaDescription: 'Implementa robots y drones en construcción para multiplicar productividad y reducir errores.',
       keywords: ['automatización construcción', 'robots construcción', 'drones construcción', 'construcción 4.0'],
       schemaType: 'TechArticle'
@@ -606,7 +606,7 @@ La planificación urbana debe aprovechar las condiciones climáticas locales: or
 Los corredores ecológicos urbanos no son solo espacios verdes, sino sistemas multifuncionales que gestionan aguas pluviales, mejoran calidad del aire, regulan temperatura urbana y proporcionan espacios de recreación y biodiversidad...`,
     featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
     seo: {
-      metaTitle: 'Desarrollo Urbano Sostenible: Ciudades Futuro | Blog Métrica DIP',
+      metaTitle: 'Desarrollo Urbano Sostenible: Ciudades Futuro | Blog Métrica FM',
       metaDescription: 'Planificación integral para desarrollo urbano sostenible: smart cities, infraestructura verde y más.',
       keywords: ['desarrollo urbano sostenible', 'ciudades sostenibles', 'smart cities', 'planificación urbana'],
       schemaType: 'Article'

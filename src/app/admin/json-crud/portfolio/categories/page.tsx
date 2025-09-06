@@ -68,7 +68,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 12,
         sortOrder: 1,
-        seoTitle: 'Proyectos de Educación - Métrica DIP',
+        seoTitle: 'Proyectos de Educación - Métrica FM',
         seoDescription: 'Infraestructura educativa de calidad para el desarrollo académico',
         createdAt: '2024-01-15T10:00:00Z',
         updatedAt: '2025-08-20T10:00:00Z'
@@ -84,7 +84,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 8,
         sortOrder: 2,
-        seoTitle: 'Proyectos de Salud - Métrica DIP',
+        seoTitle: 'Proyectos de Salud - Métrica FM',
         seoDescription: 'Infraestructura de salud moderna y funcional',
         createdAt: '2024-01-20T10:00:00Z',
         updatedAt: '2025-08-19T15:30:00Z'
@@ -100,7 +100,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 15,
         sortOrder: 3,
-        seoTitle: 'Proyectos de Oficinas - Métrica DIP',
+        seoTitle: 'Proyectos de Oficinas - Métrica FM',
         seoDescription: 'Espacios de trabajo modernos y eficientes',
         createdAt: '2024-02-01T10:00:00Z',
         updatedAt: '2025-08-18T09:45:00Z'
@@ -116,7 +116,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 6,
         sortOrder: 4,
-        seoTitle: 'Proyectos de Hotelería - Métrica DIP',
+        seoTitle: 'Proyectos de Hotelería - Métrica FM',
         seoDescription: 'Infraestructura turística y hotelera de calidad',
         createdAt: '2024-02-10T10:00:00Z',
         updatedAt: '2025-08-17T14:20:00Z'
@@ -132,7 +132,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 10,
         sortOrder: 5,
-        seoTitle: 'Proyectos Industriales - Métrica DIP',
+        seoTitle: 'Proyectos Industriales - Métrica FM',
         seoDescription: 'Infraestructura industrial eficiente y segura',
         createdAt: '2024-02-15T10:00:00Z',
         updatedAt: '2025-08-16T11:10:00Z'
@@ -148,7 +148,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 9,
         sortOrder: 6,
-        seoTitle: 'Proyectos Retail - Métrica DIP',
+        seoTitle: 'Proyectos Retail - Métrica FM',
         seoDescription: 'Espacios comerciales atractivos y funcionales',
         createdAt: '2024-03-01T10:00:00Z',
         updatedAt: '2025-08-15T16:30:00Z'
@@ -164,7 +164,7 @@ const PortfolioCategoriesPage = () => {
         isActive: true,
         projectCount: 18,
         sortOrder: 7,
-        seoTitle: 'Proyectos de Vivienda - Métrica DIP',
+        seoTitle: 'Proyectos de Vivienda - Métrica FM',
         seoDescription: 'Proyectos residenciales modernos y confortables',
         createdAt: '2024-03-10T10:00:00Z',
         updatedAt: '2025-08-14T13:45:00Z'
@@ -180,7 +180,7 @@ const PortfolioCategoriesPage = () => {
         isActive: false,
         projectCount: 4,
         sortOrder: 8,
-        seoTitle: 'Proyectos de Infraestructura - Métrica DIP',
+        seoTitle: 'Proyectos de Infraestructura - Métrica FM',
         seoDescription: 'Infraestructura pública para el desarrollo urbano',
         createdAt: '2024-03-20T10:00:00Z',
         updatedAt: '2025-08-13T08:15:00Z'
@@ -434,7 +434,7 @@ const PortfolioCategoriesPage = () => {
         <div className="flex gap-2 w-full sm:w-auto">
           <Button
             onClick={() => setActiveTab('create')}
-            className="bg-[#E84E0F] hover:bg-[#E84E0F]/90 flex-1 sm:flex-none"
+            className="bg-[#007bc4] hover:bg-[#007bc4]/90 flex-1 sm:flex-none"
           >
             <Plus className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Nueva Categoría</span>
@@ -460,7 +460,7 @@ const PortfolioCategoriesPage = () => {
         <Card>
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-[#E84E0F] flex-shrink-0" />
+              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-[#007bc4] flex-shrink-0" />
               <div className="min-w-0">
                 <p className="text-xl md:text-2xl font-bold">{totalProjects}</p>
                 <p className="text-xs md:text-sm text-gray-600">Total Proyectos</p>

@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import PortfolioProgress from '@/components/ui/portfolio-progress';
 import PortfolioTransition from '@/components/ui/portfolio-transition';
 import { HomePageData } from '@/types/home';
+import { EmptyContentNotice, PlaceholderNotice } from '@/components/ui/development-notice';
 
 
 interface PortfolioProps {
@@ -30,6 +31,10 @@ export default function Portfolio({ data }: PortfolioProps) {
     ...project,
     imageUrl: project.image_url || project.image_url_fallback
   }));
+  
+  // Check if we have projects or placeholder data
+  const hasProjects = data?.featured_projects && data.featured_projects.length > 0;
+  const isPlaceholder = data?.section?.title?.includes('Agrega') || data?.section?.subtitle?.includes('importantes') || false;
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -156,16 +161,16 @@ export default function Portfolio({ data }: PortfolioProps) {
             // Aplicar clases CSS para transición de color
             if (sectionRef.current) {
               if (progress >= 0.3) {
-                // Agregar clase naranja y mantenerla
-                if (!sectionRef.current.classList.contains('overlay-orange-in')) {
-                  sectionRef.current.classList.add('overlay-orange-in');
-                  sectionRef.current.classList.remove('overlay-orange-out');
+                // Agregar clase azul y mantenerla
+                if (!sectionRef.current.classList.contains('overlay-blue-in')) {
+                  sectionRef.current.classList.add('overlay-blue-in');
+                  sectionRef.current.classList.remove('overlay-blue-out');
                 }
               } else if (progress < 0.3) {
-                // Solo quitar clase naranja cuando se hace scroll hacia arriba
-                if (sectionRef.current.classList.contains('overlay-orange-in')) {
-                  sectionRef.current.classList.remove('overlay-orange-in');
-                  sectionRef.current.classList.add('overlay-orange-out');
+                // Solo quitar clase azul cuando se hace scroll hacia arriba
+                if (sectionRef.current.classList.contains('overlay-blue-in')) {
+                  sectionRef.current.classList.remove('overlay-blue-in');
+                  sectionRef.current.classList.add('overlay-blue-out');
                 }
               }
             }
@@ -468,14 +473,14 @@ export default function Portfolio({ data }: PortfolioProps) {
             const progress = self.progress;
             if (sectionRef.current) {
               if (progress >= 0.3) {
-                if (!sectionRef.current.classList.contains('overlay-orange-in')) {
-                  sectionRef.current.classList.add('overlay-orange-in');
-                  sectionRef.current.classList.remove('overlay-orange-out');
+                if (!sectionRef.current.classList.contains('overlay-blue-in')) {
+                  sectionRef.current.classList.add('overlay-blue-in');
+                  sectionRef.current.classList.remove('overlay-blue-out');
                 }
               } else if (progress < 0.3) {
-                if (sectionRef.current.classList.contains('overlay-orange-in')) {
-                  sectionRef.current.classList.remove('overlay-orange-in');
-                  sectionRef.current.classList.add('overlay-orange-out');
+                if (sectionRef.current.classList.contains('overlay-blue-in')) {
+                  sectionRef.current.classList.remove('overlay-blue-in');
+                  sectionRef.current.classList.add('overlay-blue-out');
                 }
               }
             }
@@ -556,6 +561,14 @@ export default function Portfolio({ data }: PortfolioProps) {
   return (
     <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background transition-colors duration-1000">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+            {/* Development notices */}
+            {isPlaceholder && (
+              <PlaceholderNotice section="el portafolio" />
+            )}
+            {!hasProjects && !isPlaceholder && (
+              <EmptyContentNotice section="proyectos destacados" />
+            )}
+            
             <div className="text-center mb-12">
                 <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">{data.section.title}</h2>
                 <p ref={subtitleRef} className="portfolio-subtitle mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
@@ -576,13 +589,25 @@ export default function Portfolio({ data }: PortfolioProps) {
                             <CarouselItem key={index}>
                                 <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group" data-index={index}>
                                         <div className="absolute inset-0 overflow-hidden">
-                                            <Image
-                                                src={project.imageUrl}
-                                                alt={project.name}
-                                                fill
-                                                sizes="100vw"
-                                                className="project-image object-cover z-0 transition-all ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
-                                            />
+                                            {project.imageUrl && project.imageUrl !== '/img/portfolio/proyecto1.jpg' ? (
+                                              <Image
+                                                  src={project.imageUrl}
+                                                  alt={project.name}
+                                                  fill
+                                                  sizes="100vw"
+                                                  className="project-image object-cover z-0 transition-all ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
+                                              />
+                                            ) : (
+                                              <div className="w-full h-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                                                <div className="text-center text-white">
+                                                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
+                                                    <span className="text-3xl">🏗️</span>
+                                                  </div>
+                                                  <h3 className="text-xl font-bold mb-2">{project.name}</h3>
+                                                  <p className="text-sm opacity-90">Imagen del proyecto</p>
+                                                </div>
+                                              </div>
+                                            )}
                                         </div>
                                         <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>
                                         <div className="project-content relative z-10 text-white text-center p-8 max-w-4xl mx-auto">

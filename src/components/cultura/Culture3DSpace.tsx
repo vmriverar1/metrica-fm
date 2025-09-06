@@ -276,7 +276,7 @@ export default function CultureShowcase({ title, subtitle, categories }: Culture
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-gradient-to-r from-[#E84E0F] to-[#003F6F] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            className="px-8 py-3 bg-gradient-to-r from-[#007bc4] to-[#003F6F] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Únete al Equipo
           </motion.button>

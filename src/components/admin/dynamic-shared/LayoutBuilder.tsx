@@ -180,7 +180,7 @@ export default function LayoutBuilder() {
     {
       id: '1',
       name: 'Landing Page Principal',
-      description: 'Página de inicio para Métrica DIP',
+      description: 'Página de inicio para Métrica FM',
       layout: {
         id: 'root',
         type: 'container',

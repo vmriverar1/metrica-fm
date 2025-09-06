@@ -153,7 +153,7 @@ function AuditTimeline({ audits }: { audits: AuditScheduleItem[] }) {
   return (
     <div className="space-y-6">
       <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-        <Calendar className="w-5 h-5 text-[#E84E0F]" />
+        <Calendar className="w-5 h-5 text-[#007bc4]" />
         Cronograma de Auditorías
       </h3>
       
@@ -182,7 +182,7 @@ function AuditResults({ results }: { results: AuditResults }) {
   return (
     <div className="space-y-6">
       <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-        <TrendingUp className="w-5 h-5 text-[#E84E0F]" />
+        <TrendingUp className="w-5 h-5 text-[#007bc4]" />
         Resultados de Auditorías
       </h3>
       
@@ -297,7 +297,7 @@ export function AuditInformationSection({ data }: AuditInformationSectionProps) 
                 <Button
                   variant="outline"
                   onClick={() => setShowAllAudits(!showAllAudits)}
-                  className="border-[#E84E0F] text-[#E84E0F] hover:bg-[#E84E0F] hover:text-white"
+                  className="border-[#007bc4] text-[#007bc4] hover:bg-[#007bc4] hover:text-white"
                 >
                   {showAllAudits ? 'Ver menos' : 'Ver todas las auditorías'}
                   <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showAllAudits ? 'rotate-180' : ''}`} />
@@ -332,28 +332,28 @@ export function AuditInformationSection({ data }: AuditInformationSectionProps) 
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#E84E0F] mb-1">
+                  <div className="text-3xl font-bold text-[#007bc4] mb-1">
                     {data.audit_schedule.filter(a => a.status === 'completada').length}
                   </div>
                   <div className="text-sm text-gray-600">Auditorías Completadas</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#E84E0F] mb-1">
+                  <div className="text-3xl font-bold text-[#007bc4] mb-1">
                     {data.audit_schedule.filter(a => a.status === 'programada').length}
                   </div>
                   <div className="text-sm text-gray-600">Auditorías Programadas</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#E84E0F] mb-1">
+                  <div className="text-3xl font-bold text-[#007bc4] mb-1">
                     {data.audit_results.last_external_audit.non_conformities}
                   </div>
                   <div className="text-sm text-gray-600">No Conformidades</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-[#E84E0F] mb-1">
+                  <div className="text-3xl font-bold text-[#007bc4] mb-1">
                     {data.audit_results.internal_audits_2023.improvement_opportunities}
                   </div>
                   <div className="text-sm text-gray-600">Mejoras Identificadas</div>

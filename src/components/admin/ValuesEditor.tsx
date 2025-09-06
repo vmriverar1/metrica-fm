@@ -38,7 +38,7 @@ const availableIcons = [
 ];
 
 const availableColors = [
-  { value: '#E84E0F', label: 'Naranja Principal', color: '#E84E0F' },
+  { value: '#007bc4', label: 'Naranja Principal', color: '#007bc4' },
   { value: '#003F6F', label: 'Azul Principal', color: '#003F6F' },
   { value: '#D0D0D0', label: 'Gris Claro', color: '#D0D0D0' },
   { value: '#9D9D9C', label: 'Gris Medio', color: '#9D9D9C' },
@@ -50,7 +50,7 @@ const defaultValue: Omit<Value, 'id'> = {
   title: '',
   description: '',
   icon: 'Target',
-  color: '#E84E0F',
+  color: '#007bc4',
   size: 'medium',
   images: [],
   image_descriptions: []

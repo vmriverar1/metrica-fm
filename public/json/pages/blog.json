@@ -1,21 +1,21 @@
 {
   "page": {
-    "title": "Blog | Métrica DIP - Insights de Construcción e Infraestructura",
-    "description": "Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas del sector construcción en Perú. Insights de expertos en dirección integral de proyectos.",
-    "keywords": ["blog construcción", "arquitectura Perú", "ingeniería civil", "gestión proyectos", "tendencias construcción", "casos estudio infraestructura"],
+    "title": "Blog | Tu Empresa - Insights y Artículos",
+    "description": "Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas de la industria. Insights de expertos.",
+    "keywords": ["blog empresa", "artículos", "gestión proyectos", "tendencias industria", "casos estudio"],
     "url": "/blog",
     "openGraph": {
-      "title": "Blog | Métrica DIP - Insights de Construcción e Infraestructura",
-      "description": "Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas del sector construcción en Perú.",
+      "title": "Blog | Tu Empresa - Insights y Artículos",
+      "description": "Descubre las últimas tendencias, análisis de mercado, casos de estudio y guías técnicas de la industria.",
       "type": "website",
       "locale": "es_PE",
-      "siteName": "Métrica DIP"
+      "siteName": "Tu Empresa"
     }
   },
   "hero": {
-    "title": "Blog Métrica DIP",
-    "subtitle": "Insights, tendencias y casos de estudio del sector construcción e infraestructura en Perú",
-    "description": "Nuestro equipo de expertos comparte conocimientos, análisis profundos y mejores prácticas del sector construcción e infraestructura en Perú y la región.",
+    "title": "Blog Tu Empresa",
+    "subtitle": "Insights, tendencias y casos de estudio de la industria",
+    "description": "Nuestro equipo de expertos comparte conocimientos, análisis profundos y mejores prácticas de la industria.",
     "background": {
       "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630",
       "image_fallback": "/img/blog/hero-background.jpg",
@@ -275,7 +275,7 @@
       {
         "type": "email", 
         "label": "Escríbenos",
-        "value": "contacto@metrica-dip.com",
+        "value": "contacto@tuempresa.com",
         "response_time": "Respuesta en 24 horas"
       }
     ]

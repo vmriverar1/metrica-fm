@@ -773,7 +773,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
               <p className="text-xs text-gray-600">Total Servicios</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#E84E0F]">
+              <p className="text-2xl font-bold text-[#007bc4]">
                 {[mainService, ...secondaryServices].filter(s => s.title && s.description).length}
               </p>
               <p className="text-xs text-gray-600">Completos</p>

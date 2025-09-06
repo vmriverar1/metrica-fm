@@ -271,7 +271,7 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
           name: 'María González',
           position: 'Gerente de Proyectos',
           company: 'Constructora ABC',
-          testimonial: 'El servicio de consultoría de Métrica DIP fue excepcional. Su expertise técnico y profesionalismo nos ayudó a completar nuestro proyecto a tiempo y dentro del presupuesto.',
+          testimonial: 'El servicio de consultoría de Métrica FM fue excepcional. Su expertise técnico y profesionalismo nos ayudó a completar nuestro proyecto a tiempo y dentro del presupuesto.',
           rating: 5,
           context: 'services' as const,
           service_related: 'Consultoría en Gestión de Proyectos',
@@ -281,7 +281,7 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
           name: 'Carlos Mendoza',
           position: 'Director de Obra',
           company: 'Empresa Constructora XYZ',
-          testimonial: 'La supervisión técnica brindada por Métrica DIP garantizó la calidad y seguridad en cada etapa de construcción. Altamente recomendado.',
+          testimonial: 'La supervisión técnica brindada por Métrica FM garantizó la calidad y seguridad en cada etapa de construcción. Altamente recomendado.',
           rating: 5,
           context: 'services' as const,
           service_related: 'Supervisión de Obras',
@@ -293,7 +293,7 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
           name: 'Ana López',
           position: 'Alcaldesa',
           company: 'Municipalidad de San Martín',
-          testimonial: 'Métrica DIP no solo cumplió con sus compromisos técnicos, sino que también demostró un verdadero compromiso social con nuestra comunidad.',
+          testimonial: 'Métrica FM no solo cumplió con sus compromisos técnicos, sino que también demostró un verdadero compromiso social con nuestra comunidad.',
           rating: 5,
           context: 'compromiso' as const,
           tags: ['compromiso social', 'comunidad', 'responsabilidad']
@@ -302,7 +302,7 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
           name: 'Roberto Vásquez',
           position: 'Líder Comunitario',
           company: 'Asociación Vecinal Los Pinos',
-          testimonial: 'Durante el proyecto de infraestructura, Métrica DIP mantuvo una comunicación constante con la comunidad y respetó nuestras tradiciones locales.',
+          testimonial: 'Durante el proyecto de infraestructura, Métrica FM mantuvo una comunicación constante con la comunidad y respetó nuestras tradiciones locales.',
           rating: 5,
           context: 'compromiso' as const,
           tags: ['comunicación', 'respeto cultural', 'participación']
@@ -312,8 +312,8 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
         {
           name: 'José Ramírez',
           position: 'Ingeniero Senior',
-          company: 'Métrica DIP',
-          testimonial: 'Trabajar en Métrica DIP ha sido una experiencia enriquecedora. La cultura de excelencia y el trabajo en equipo son pilares fundamentales de la empresa.',
+          company: 'Métrica FM',
+          testimonial: 'Trabajar en Métrica FM ha sido una experiencia enriquecedora. La cultura de excelencia y el trabajo en equipo son pilares fundamentales de la empresa.',
           rating: 5,
           context: 'cultura' as const,
           tags: ['cultura organizacional', 'excelencia', 'trabajo en equipo']
@@ -321,7 +321,7 @@ export const TestimonialsManager: React.FC<TestimonialsManagerProps> = ({
         {
           name: 'Lucía Torres',
           position: 'Arquitecta',
-          company: 'Métrica DIP',
+          company: 'Métrica FM',
           testimonial: 'La empresa fomenta la innovación y el crecimiento profesional. Me siento valorada como profesional y como persona.',
           rating: 5,
           context: 'cultura' as const,

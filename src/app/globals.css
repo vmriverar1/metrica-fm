@@ -123,10 +123,10 @@ strong, b, .font-bold {
 
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(232, 78, 15, 0.5);
+    box-shadow: 0 0 20px rgba(0, 123, 196, 0.5);
   }
   50% {
-    box-shadow: 0 0 35px rgba(232, 78, 15, 0.8);
+    box-shadow: 0 0 35px rgba(0, 123, 196, 0.8);
   }
 }
 
@@ -163,28 +163,28 @@ strong, b, .font-bold {
 
 @layer base {
   :root {
-    /* Métrica DIP Brand Colors */
+    /* Métrica FM Brand Colors */
     --background: 0 0% 100%;
     --foreground: 0 0% 11%; /* Deep black #1D1D1B */
     --card: 0 0% 98%;
     --card-foreground: 0 0% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
-    --primary: 204 100% 22%; /* Deep blue #003F6F */
+    --primary: 210 100% 22%; /* Deep blue #003f6f */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 82%; /* Light gray #D0D0D0 */
     --secondary-foreground: 0 0% 11%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 39%; /* Dark gray #646363 */
-    --accent: 17 92% 48%; /* Vibrant orange #E84E0F */
+    --accent: 200 100% 39%; /* Light blue #007bc4 */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 82%; /* Light gray */
     --input: 0 0% 82%;
-    --ring: 204 100% 22%; /* Deep blue focus ring */
-    --chart-1: 204 100% 22%; /* Deep blue for charts */
-    --chart-2: 17 92% 48%;
+    --ring: 210 100% 22%; /* Deep blue focus ring */
+    --chart-1: 210 100% 22%; /* Deep blue for charts */
+    --chart-2: 200 100% 39%;
     --chart-3: 0 0% 62%;
     --chart-4: 0 0% 40%;
     --chart-5: 0 0% 82%;
@@ -197,21 +197,21 @@ strong, b, .font-bold {
     --card-foreground: 0 0% 98%;
     --popover: 228 9% 11%;
     --popover-foreground: 0 0% 98%;
-    --primary: 209 100% 22%;
+    --primary: 210 100% 22%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 20%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 17 92% 48%;
+    --accent: 200 100% 39%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 25%;
     --input: 0 0% 25%;
-    --ring: 17 92% 48%;
-    --chart-1: 209 100% 22%;
-    --chart-2: 17 92% 48%;
+    --ring: 200 100% 39%;
+    --chart-1: 210 100% 22%;
+    --chart-2: 200 100% 39%;
     --chart-3: 0 0% 62%;
     --chart-4: 0 0% 40%;
     --chart-5: 0 0% 82%;
@@ -315,11 +315,11 @@ strong, b, .font-bold {
                  0 0 20px hsl(var(--accent) / 0.2);
   }
   
-  .text-glow-orange {
+  .text-glow-blue {
     text-shadow: 
-      0 0 10px #E84E0F,
-      0 0 20px #E84E0F,
-      0 0 30px #E84E0F;
+      0 0 10px #007bc4,
+      0 0 20px #007bc4,
+      0 0 30px #007bc4;
     filter: brightness(1.1) contrast(1.2);
     color: #fff;
   }
@@ -390,7 +390,7 @@ strong, b, .font-bold {
     background: radial-gradient(
       circle at center,
       transparent 30%,
-      rgba(232, 78, 15, 0.1) 50%,
+      rgba(0, 123, 196, 0.1) 50%,
       transparent 70%
     );
     opacity: 0;
@@ -453,13 +453,13 @@ strong, b, .font-bold {
     transform: translateY(-50%) scale(0.95);
   }
 
-  /* Portfolio Section Orange Overlay */
-  #portfolio.overlay-orange-in {
-    background-color: #E84E0F !important;
+  /* Portfolio Section Blue Overlay */
+  #portfolio.overlay-blue-in {
+    background-color: #007bc4 !important;
     transition: background-color 1s ease-in-out;
   }
   
-  #portfolio.overlay-orange-out {
+  #portfolio.overlay-blue-out {
     background-color: transparent;
     transition: background-color 1s ease-in-out;
   }
@@ -634,8 +634,8 @@ strong, b, .font-bold {
 
   /* Efecto glow para años activos */
   .timeline-year-active {
-    color: #E84E0F;
-    text-shadow: 0 0 20px rgba(232, 78, 15, 0.8);
+    color: #007bc4;
+    text-shadow: 0 0 20px rgba(0, 123, 196, 0.8);
     transform: scale(1.2) !important;
     opacity: 1 !important;
   }
@@ -774,7 +774,7 @@ strong, b, .font-bold {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #E84E0F;
+    background-color: #007bc4;
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -820,13 +820,13 @@ strong, b, .font-bold {
   /* Cinematic glow effects */
   @keyframes cinematicGlow {
     0% {
-      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
     }
     50% {
-      box-shadow: 0 0 40px rgba(232, 78, 15, 0.6), 0 0 60px rgba(232, 78, 15, 0.3);
+      box-shadow: 0 0 40px rgba(0, 123, 196, 0.6), 0 0 60px rgba(0, 123, 196, 0.3);
     }
     100% {
-      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
     }
   }
 
@@ -925,10 +925,10 @@ strong, b, .font-bold {
 
   @keyframes pulseGlow {
     0%, 100% {
-      box-shadow: 0 0 20px rgba(232, 78, 15, 0.3);
+      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
     }
     50% {
-      box-shadow: 0 0 40px rgba(232, 78, 15, 0.6);
+      box-shadow: 0 0 40px rgba(0, 123, 196, 0.6);
     }
   }
 

@@ -141,7 +141,7 @@ function DocumentInfoEditor({
           <Input
             value={document.title}
             onChange={(e) => onUpdate('title', e.target.value)}
-            placeholder="Ej: Política de Calidad Métrica DIP"
+            placeholder="Ej: Política de Calidad Métrica FM"
           />
         </FormField>
         
@@ -628,7 +628,7 @@ export function QualityPolicyEditor({ data, onSave, onCancel }: QualityPolicyEdi
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-[#E84E0F]" />
+                <FileText className="w-5 h-5 text-[#007bc4]" />
                 Información del Documento
               </CardTitle>
             </CardHeader>

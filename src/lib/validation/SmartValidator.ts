@@ -29,7 +29,7 @@ export class SmartValidator {
         'Keep it under 60 characters for better SEO',
         'Make it descriptive and compelling'
       ],
-      autoFix: 'Métrica DIP - Dirección Integral de Proyectos en Perú'
+      autoFix: 'Métrica FM - Dirección Integral de Proyectos en Perú'
     },
     'page.description': {
       minLength: 50,
@@ -272,9 +272,9 @@ export class SmartValidator {
         field,
         type: 'seo',
         severity: 'info',
-        message: 'Considere incluir su marca "Métrica DIP"',
+        message: 'Considere incluir su marca "Métrica FM"',
         suggestion: 'Incluya su marca para mejor reconocimiento',
-        autoFix: `Métrica DIP - ${value}`
+        autoFix: `Métrica FM - ${value}`
       });
     }
 

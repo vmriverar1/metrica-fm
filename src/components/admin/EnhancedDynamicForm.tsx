@@ -49,9 +49,8 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
             sections={HOME_LAZY_SECTIONS}
             onStatsUpdate={(stats) => {
                 console.log('📊 Lazy Loading Stats:', stats);
-              }
-            }}
-          />
+              }}
+            />
         </Suspense>
       )}
       

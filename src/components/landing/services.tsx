@@ -13,6 +13,7 @@ import CanvasParticles from '@/components/canvas-particles';
 import TiltCard from '@/components/tilt-card';
 import NavigationLink from '@/components/ui/NavigationLink';
 import { HomePageData } from '@/types/home';
+import { EmptyContentNotice, PlaceholderNotice } from '@/components/ui/development-notice';
 
 
 interface ServiceCardProps {
@@ -123,7 +124,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           <CanvasParticles 
             isActive={isHovered}
             particleCount={30}
-            color={service.isMain ? '#ffffff' : '#E84E0F'}
+            color={service.isMain ? '#ffffff' : '#007bc4'}
             className="z-10"
           />
           <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow relative z-20">
@@ -311,6 +312,10 @@ export default function Services({ data }: ServicesProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   
+  // Check if we have actual services or placeholder data
+  const hasServices = data?.services_list && data.services_list.length > 0;
+  const isPlaceholder = data?.section?.title?.includes('Configura') || false;
+  
   useGSAP(() => {
     // Animate section title
     const tl = gsap.timeline({
@@ -346,15 +351,25 @@ export default function Services({ data }: ServicesProps) {
     }
   };
 
-  // Determinar si hay servicio principal válido
-  const hasMainService = data.main_service.is_main && 
-    (data.main_service.title || data.main_service.description || data.main_service.image_url);
-
-  // Combinar todos los servicios para renderizado dinámico
-  const allServices = [
-    ...(hasMainService ? [{ ...data.main_service, isMain: true }] : []),
-    ...data.secondary_services.map(service => ({ ...service, isMain: false }))
-  ];
+  // Check if data has the expected structure
+  const hasExpectedStructure = data.main_service && data.secondary_services;
+  
+  let allServices: any[] = [];
+  let hasMainService = false;
+  
+  if (hasExpectedStructure) {
+    // Handle the expected structure with main_service and secondary_services
+    hasMainService = data.main_service?.is_main && 
+      (data.main_service?.title || data.main_service?.description || data.main_service?.image_url);
+    
+    allServices = [
+      ...(hasMainService ? [{ ...data.main_service, isMain: true }] : []),
+      ...data.secondary_services.map(service => ({ ...service, isMain: false }))
+    ];
+  } else if ((data as any).services_list) {
+    // Handle the actual structure with services_list
+    allServices = (data as any).services_list.map((service: any) => ({ ...service, isMain: false }));
+  }
   
   return (
     <section ref={sectionRef} id="services" className="py-24 bg-white overflow-hidden relative">
@@ -364,6 +379,14 @@ export default function Services({ data }: ServicesProps) {
       </ParallaxWrapper>
       
       <div className="container mx-auto px-4 relative z-10">
+        {/* Development notices */}
+        {isPlaceholder && (
+          <PlaceholderNotice section="la sección de servicios" />
+        )}
+        {!hasServices && !isPlaceholder && (
+          <EmptyContentNotice section="servicios" />
+        )}
+        
         <ParallaxWrapper speed={0.1} className="text-center mb-12">
           <h2 ref={titleRef} className="title-section text-4xl md:text-5xl">
             {data.section.title}
@@ -375,7 +398,7 @@ export default function Services({ data }: ServicesProps) {
 
         {/* Grid dinámico con ancho respetado */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {allServices.map((service, index) => (
+          {allServices.map((service: any, index: number) => (
             <div 
               key={service.id} 
               className={getWidthClass(service.width)}

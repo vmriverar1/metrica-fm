@@ -49,7 +49,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         "publisher": {
           "@type": "Organization",
           "@id": "https://metricadip.com#organization",
-          "name": "Métrica DIP",
+          "name": "Métrica FM",
           "url": "https://metricadip.com",
           "logo": {
             "@type": "ImageObject",
@@ -102,7 +102,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
       {
         "@type": "Organization",
         "@id": "https://metricadip.com#organization",
-        "name": "Métrica DIP",
+        "name": "Métrica FM",
         "alternateName": "Métrica Dirección Integral de Proyectos",
         "url": "https://metricadip.com",
         "logo": {
@@ -116,7 +116,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         "founders": [
           {
             "@type": "Person",
-            "name": "Fundadores Métrica DIP"
+            "name": "Fundadores Métrica FM"
           }
         ],
         "contactPoint": {
@@ -143,7 +143,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
     <>
       <Head>
         {/* Basic Meta Tags */}
-        <title>{article.seo?.title || `${article.title} | Blog Métrica DIP`}</title>
+        <title>{article.seo?.title || `${article.title} | Blog Métrica FM`}</title>
         <meta name="description" content={article.seo?.description || article.excerpt} />
         <meta name="keywords" content={article.seo?.keywords || article.tags.join(', ')} />
         <meta name="author" content={article.author.name} />
@@ -161,7 +161,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={article.title} />
-        <meta property="og:site_name" content="Métrica DIP" />
+        <meta property="og:site_name" content="Métrica FM" />
         <meta property="og:locale" content="es_PE" />
         <meta property="article:published_time" content={publishedDate} />
         <meta property="article:modified_time" content={modifiedDate} />
@@ -200,7 +200,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         <link rel="alternate" hrefLang="x-default" href={url} />
         
         {/* RSS Feed */}
-        <link rel="alternate" type="application/rss+xml" title="Métrica DIP Blog RSS" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Métrica FM Blog RSS" href="/feed.xml" />
         
         {/* Preload Critical Resources */}
         <link rel="preload" href={article.featuredImage} as="image" />

@@ -129,10 +129,10 @@ function CaseStudyCard({ project, result }: CaseStudy) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-[#E84E0F]/10 to-[#FF6B35]/10 p-4 rounded-lg border border-[#E84E0F]/20"
+      className="bg-gradient-to-r from-[#007bc4]/10 to-[#FF6B35]/10 p-4 rounded-lg border border-[#007bc4]/20"
     >
       <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-        <Star className="w-4 h-4 text-[#E84E0F]" />
+        <Star className="w-4 h-4 text-[#007bc4]" />
         Caso de Éxito
       </h4>
       <div className="space-y-2">
@@ -189,7 +189,7 @@ function BenefitCard({ benefit, index }: { benefit: Benefit, index: number }) {
             <AccordionItem value="case-study" className="border-none">
               <AccordionTrigger className="text-left hover:no-underline py-3 px-4 bg-gray-50 rounded-lg mt-2">
                 <div className="flex items-center gap-2">
-                  <Star className="w-4 h-4 text-[#E84E0F]" />
+                  <Star className="w-4 h-4 text-[#007bc4]" />
                   <span className="font-medium">Caso de Estudio</span>
                 </div>
               </AccordionTrigger>
@@ -260,7 +260,7 @@ export function ClientBenefitsSection({ data }: ClientBenefitsSectionProps) {
                 Conoce más sobre nuestros procesos certificados ISO 9001
               </p>
             </div>
-            <Button className="bg-[#E84E0F] hover:bg-[#E84E0F]/90 text-white">
+            <Button className="bg-[#007bc4] hover:bg-[#007bc4]/90 text-white">
               Contactar Ahora
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

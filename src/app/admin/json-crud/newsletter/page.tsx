@@ -144,9 +144,9 @@ const NewsletterDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Publicados</p>
-                <p className="text-3xl font-bold text-[#E84E0F]">{stats.publishedArticles}</p>
+                <p className="text-3xl font-bold text-[#007bc4]">{stats.publishedArticles}</p>
               </div>
-              <Send className="h-12 w-12 text-[#E84E0F] opacity-20" />
+              <Send className="h-12 w-12 text-[#007bc4] opacity-20" />
             </div>
           </CardContent>
         </Card>
@@ -311,7 +311,7 @@ const NewsletterDashboard = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium text-[#E84E0F]">{author.views}</div>
+                    <div className="font-medium text-[#007bc4]">{author.views}</div>
                     <div className="text-xs text-gray-500">vistas totales</div>
                   </div>
                 </div>

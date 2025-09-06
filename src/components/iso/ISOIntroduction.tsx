@@ -176,7 +176,7 @@ export default function ISOIntroduction() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Card className="bg-gradient-to-br from-[#E84E0F] to-[#D63D0A] border-none shadow-lg">
+              <Card className="bg-gradient-to-br from-[#007bc4] to-[#D63D0A] border-none shadow-lg">
                 <CardContent className="p-6 text-center">
                   <div className="grid grid-cols-2 gap-4">
                     <div>

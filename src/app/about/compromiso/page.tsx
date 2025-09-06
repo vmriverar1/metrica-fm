@@ -37,7 +37,7 @@ const iconMap = {
 };
 
 export const metadata: Metadata = {
-  title: 'Compromiso Social y Medioambiental | Métrica DIP',
+  title: 'Compromiso Social y Medioambiental | Métrica FM',
   description: 'Nuestro compromiso con el desarrollo sostenible, responsabilidad social y las mejores prácticas ambientales en la industria de la construcción.',
 };
 

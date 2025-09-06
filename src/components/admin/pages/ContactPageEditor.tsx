@@ -321,7 +321,7 @@ export const ContactPageEditor: React.FC<ContactPageEditorProps> = ({
                 <Input
                   value={data.page.title}
                   onChange={(e) => updateField('page.title', e.target.value)}
-                  placeholder="Contáctanos | Métrica DIP"
+                  placeholder="Contáctanos | Métrica FM"
                   disabled={readonly}
                 />
               </div>
@@ -665,7 +665,7 @@ export const ContactPageEditor: React.FC<ContactPageEditorProps> = ({
             data={data.seo}
             onChange={(seoData) => updateField('seo', seoData)}
             contextType="contact"
-            siteName="Métrica DIP"
+            siteName="Métrica FM"
             siteUrl="https://metrica-dip.com"
             showAnalytics={true}
             showSchema={true}
@@ -681,7 +681,7 @@ export const ContactPageEditor: React.FC<ContactPageEditorProps> = ({
 function getDefaultContactData(): ContactPageData {
   return {
     page: {
-      title: 'Contáctanos | Métrica DIP',
+      title: 'Contáctanos | Métrica FM',
       description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.',
       url: '/contact'
     },
@@ -728,10 +728,10 @@ function getDefaultContactData(): ContactPageData {
       }
     },
     seo: {
-      title: 'Contáctanos | Métrica DIP',
+      title: 'Contáctanos | Métrica FM',
       description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.',
       keywords: ['contacto', 'metrica dip', 'proyectos', 'construcción', 'perú'],
-      og_title: 'Contáctanos | Métrica DIP',
+      og_title: 'Contáctanos | Métrica FM',
       og_description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos.',
       og_type: 'website',
       twitter_card: 'summary',

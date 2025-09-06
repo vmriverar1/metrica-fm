@@ -84,7 +84,7 @@ function FormSection({
     <Card className={`mb-6 ${className}`}>
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Icon className="w-5 h-5 text-[#E84E0F]" />
+          <Icon className="w-5 h-5 text-[#007bc4]" />
           {title}
         </CardTitle>
       </CardHeader>

@@ -191,7 +191,7 @@ export const CompromisoPageEditor: React.FC<CompromisoPageEditorProps> = ({
     hero: {
       title: 'Compromiso con el Futuro',
       subtitle: 'Responsabilidad Social y Desarrollo Sostenible',
-      description: 'En Métrica DIP, entendemos que nuestro éxito está intrínsecamente ligado al bienestar de las comunidades y el cuidado del medio ambiente.',
+      description: 'En Métrica FM, entendemos que nuestro éxito está intrínsecamente ligado al bienestar de las comunidades y el cuidado del medio ambiente.',
       show_stats: true,
       show_values_preview: true,
       values_preview_count: 4,
@@ -210,7 +210,7 @@ export const CompromisoPageEditor: React.FC<CompromisoPageEditorProps> = ({
           unit: '%',
           description: 'De nuestros proyectos incluyen componentes de responsabilidad social',
           icon: 'heart',
-          color: '#E84E0F',
+          color: '#007bc4',
           trend: 'up',
           order: 0
         },
@@ -730,7 +730,7 @@ export const CompromisoPageEditor: React.FC<CompromisoPageEditorProps> = ({
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3 flex-1">
-                            <div className="w-10 h-10 bg-[#E84E0F] text-white rounded-full flex items-center justify-center">
+                            <div className="w-10 h-10 bg-[#007bc4] text-white rounded-full flex items-center justify-center">
                               <Heart className="w-5 h-5" />
                             </div>
                             <div className="flex-1">

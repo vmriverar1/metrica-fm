@@ -52,7 +52,7 @@ export default function StatisticsManagementPage() {
         <CardHeader>
           <CardTitle className="text-xl">Estadísticas de Logros y Métricas</CardTitle>
           <CardDescription>
-            Las estadísticas comunican los logros más importantes de Métrica DIP de forma visual e impactante. 
+            Las estadísticas comunican los logros más importantes de Métrica FM de forma visual e impactante. 
             Se presentan con animaciones de conteo y efectos visuales que captan la atención de los visitantes, 
             generando credibilidad y confianza en los servicios de la empresa.
           </CardDescription>

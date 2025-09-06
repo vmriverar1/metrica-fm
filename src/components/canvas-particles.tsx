@@ -22,7 +22,7 @@ interface CanvasParticlesProps {
 export default function CanvasParticles({ 
   className = '', 
   particleCount = 50,
-  color = '#E84E0F',
+  color = '#007bc4',
   isActive = false
 }: CanvasParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

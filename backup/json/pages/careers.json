@@ -1,0 +1,363 @@
+{
+  "page": {
+    "title": "Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo",
+    "description": "Descubre oportunidades laborales en Métrica DIP. Construye tu carrera profesional en proyectos de construcción e infraestructura de gran impacto en Perú.",
+    "keywords": ["trabajos construcción", "empleos arquitectura", "carreras ingeniería civil", "oportunidades laborales Perú", "trabajo project manager"],
+    "url": "/careers",
+    "openGraph": {
+      "title": "Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo",
+      "description": "Descubre oportunidades laborales en Métrica DIP. Construye tu carrera profesional en proyectos de gran impacto.",
+      "type": "website",
+      "locale": "es_PE",
+      "siteName": "Métrica DIP"
+    }
+  },
+  "hero": {
+    "background": {
+      "image": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=800",
+      "image_fallback": "/img/careers/hero-background.jpg",
+      "overlay_opacity": 0.7,
+      "overlay_color": "#000000"
+    },
+    "badge": {
+      "icon": "Users",
+      "text": "Construye tu carrera con nosotros"
+    },
+    "title": "Únete a Métrica DIP",
+    "subtitle": "Forma parte del equipo líder en gestión integral de proyectos de infraestructura en Perú",
+    "typing_effect": {
+      "enabled": true,
+      "speed": 80,
+      "cursor": true
+    },
+    "stats": [
+      {
+        "icon": "Building2",
+        "number": "14",
+        "label": "Posiciones Abiertas",
+        "description": "Oportunidades en múltiples departamentos"
+      },
+      {
+        "icon": "Users",
+        "number": "78+",
+        "label": "Profesionales",
+        "description": "Equipo multidisciplinario en crecimiento"
+      },
+      {
+        "icon": "MapPin",
+        "number": "5",
+        "label": "Departamentos",
+        "description": "Áreas especializadas de trabajo"
+      },
+      {
+        "icon": "Clock",
+        "number": "20%",
+        "label": "Crecimiento Anual",
+        "description": "Expansión constante del equipo"
+      }
+    ],
+    "cta": {
+      "primary": {
+        "text": "Ver Oportunidades",
+        "href": "#job-opportunities",
+        "scroll": true
+      },
+      "secondary": {
+        "text": "Conoce Nuestros Beneficios",
+        "href": "#company-benefits",
+        "scroll": true
+      }
+    }
+  },
+  "company_benefits": {
+    "title": "¿Por Qué Trabajar en Métrica DIP?",
+    "subtitle": "Ofrecemos un ambiente de trabajo excepcional con beneficios que van más allá del salario",
+    "description": "En Métrica DIP valoramos el bienestar integral de nuestros colaboradores. Creemos que un equipo satisfecho y motivado es la clave del éxito en nuestros proyectos.",
+    "categories": [
+      {
+        "id": "salud",
+        "name": "Salud y Bienestar",
+        "icon": "Heart",
+        "color": "#E84E0F"
+      },
+      {
+        "id": "desarrollo",
+        "name": "Desarrollo Profesional",
+        "icon": "GraduationCap",
+        "color": "#003F6F"
+      },
+      {
+        "id": "bienestar",
+        "name": "Bienestar Laboral",
+        "icon": "Coffee",
+        "color": "#34D399"
+      },
+      {
+        "id": "compensacion",
+        "name": "Compensación",
+        "icon": "Trophy",
+        "color": "#F59E0B"
+      }
+    ],
+    "benefits": [
+      {
+        "id": "seguro-salud",
+        "title": "Seguro de Salud Integral",
+        "description": "Cobertura médica completa para ti y tu familia, incluyendo atención dental y oftalmológica.",
+        "icon": "Heart",
+        "category": "salud",
+        "highlight": true,
+        "details": [
+          "Cobertura médica 100% para titular",
+          "Cobertura 80% para dependientes",
+          "Incluye dental y oftalmológica",
+          "Red de clínicas de primer nivel"
+        ]
+      },
+      {
+        "id": "capacitacion",
+        "title": "Capacitación Continua",
+        "description": "Programas de desarrollo profesional, certificaciones y cursos especializados pagados por la empresa.",
+        "icon": "GraduationCap",
+        "category": "desarrollo",
+        "highlight": true,
+        "details": [
+          "Cursos y certificaciones pagadas",
+          "Conferencias internacionales",
+          "Programas de liderazgo",
+          "Mentoring personalizado"
+        ]
+      },
+      {
+        "id": "work-life",
+        "title": "Balance Vida-Trabajo",
+        "description": "Horarios flexibles, trabajo remoto y políticas que priorizan tu bienestar personal y familiar.",
+        "icon": "Clock",
+        "category": "bienestar",
+        "highlight": true,
+        "details": [
+          "Horarios flexibles",
+          "Trabajo híbrido (presencial/remoto)",
+          "Días libres por cumpleaños",
+          "Política de desconexión digital"
+        ]
+      },
+      {
+        "id": "salario-competitivo",
+        "title": "Salario Competitivo",
+        "description": "Remuneración por encima del mercado con bonos por performance y participación en utilidades.",
+        "icon": "Trophy",
+        "category": "compensacion",
+        "highlight": true,
+        "details": [
+          "Salarios por encima del mercado",
+          "Bonos por performance trimestral",
+          "Participación en utilidades",
+          "Aumentos anuales programados"
+        ]
+      },
+      {
+        "id": "vacaciones",
+        "title": "Vacaciones Extendidas",
+        "description": "Días de vacaciones adicionales y flexibilidad para tomarlas cuando las necesites.",
+        "icon": "Plane",
+        "category": "bienestar",
+        "details": [
+          "30 días de vacaciones anuales",
+          "Flexibilidad en fechas",
+          "Bonus vacacional",
+          "No caducan si no se usan"
+        ]
+      },
+      {
+        "id": "gym",
+        "title": "Membresía Gimnasio",
+        "description": "Membresía pagada en gimnasios afiliados para mantener tu salud física.",
+        "icon": "Dumbbell",
+        "category": "salud",
+        "details": [
+          "Membresía 100% pagada",
+          "Red de gimnasios afiliados",
+          "Clases grupales incluidas",
+          "Evaluaciones físicas"
+        ]
+      },
+      {
+        "id": "transporte",
+        "title": "Subsidio de Transporte",
+        "description": "Apoyo económico para movilidad o estacionamiento en nuestras oficinas.",
+        "icon": "Car",
+        "category": "compensacion",
+        "details": [
+          "Subsidio mensual de transporte",
+          "Estacionamiento gratuito",
+          "Transporte corporativo para obras",
+          "Reembolso de combustible"
+        ]
+      },
+      {
+        "id": "eventos",
+        "title": "Eventos y Celebraciones",
+        "description": "Actividades de integración, celebraciones y eventos corporativos regulares.",
+        "icon": "Gift",
+        "category": "bienestar",
+        "details": [
+          "Celebración de cumpleaños",
+          "Eventos de integración trimestral",
+          "Fiesta de fin de año",
+          "Team building activities"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "¿Listo para Formar Parte del Equipo?",
+      "description": "Explora nuestras oportunidades laborales y encuentra la posición perfecta para tu perfil profesional.",
+      "button": {
+        "text": "Envía tu CV",
+        "href": "/careers/apply",
+        "type": "primary"
+      }
+    }
+  },
+  "job_opportunities": {
+    "title": "Oportunidades Laborales",
+    "subtitle": "Encuentra la posición perfecta para tu perfil profesional",
+    "description": "Nuestras posiciones abiertas abarcan diferentes áreas de especialización. Las tarjetas de departamentos se cargan dinámicamente desde nuestro sistema de gestión de talento.",
+    "note": "Las posiciones específicas y departamentos se cargan dinámicamente desde public/json/dynamic-content/careers/content.json",
+    "filters": {
+      "title": "Filtrar Oportunidades",
+      "options": [
+        {
+          "id": "all",
+          "label": "Todas las Posiciones",
+          "count": "dynamic"
+        },
+        {
+          "id": "featured",
+          "label": "Posiciones Destacadas",
+          "count": "dynamic"
+        },
+        {
+          "id": "remote",
+          "label": "Trabajo Remoto",
+          "count": "dynamic"
+        },
+        {
+          "id": "senior",
+          "label": "Posiciones Senior",
+          "count": "dynamic"
+        }
+      ]
+    },
+    "empty_state": {
+      "title": "¡Pronto Nuevas Oportunidades!",
+      "description": "Aunque no hay posiciones abiertas en este momento, siempre estamos en búsqueda de talento excepcional.",
+      "cta": {
+        "text": "Envía tu CV",
+        "description": "Te contactaremos cuando surjan oportunidades que coincidan con tu perfil"
+      }
+    }
+  },
+  "culture_preview": {
+    "title": "Nuestra Cultura",
+    "subtitle": "Más que un trabajo, una comunidad profesional",
+    "description": "En Métrica DIP fomentamos un ambiente colaborativo donde cada profesional puede crecer, innovar y contribuir al éxito de proyectos que transforman el Perú.",
+    "values": [
+      {
+        "title": "Excelencia Técnica",
+        "description": "Buscamos la perfección en cada proyecto, aplicando las mejores prácticas y tecnologías disponibles.",
+        "icon": "Target"
+      },
+      {
+        "title": "Trabajo en Equipo",
+        "description": "Creemos que los mejores resultados se logran cuando trabajamos unidos hacia un objetivo común.",
+        "icon": "Users"
+      },
+      {
+        "title": "Innovación Constante",
+        "description": "Adoptamos nuevas tecnologías y metodologías para mantenernos a la vanguardia del sector.",
+        "icon": "Lightbulb"
+      },
+      {
+        "title": "Compromiso Social",
+        "description": "Nuestros proyectos contribuyen al desarrollo del país y mejoran la calidad de vida de las personas.",
+        "icon": "Heart"
+      }
+    ],
+    "cta": {
+      "text": "Conoce Más Sobre Nuestra Cultura",
+      "href": "/about/cultura"
+    }
+  },
+  "application_process": {
+    "title": "Proceso de Aplicación",
+    "subtitle": "Tu camino para unirte al equipo Métrica DIP",
+    "steps": [
+      {
+        "step": 1,
+        "title": "Aplicación Online",
+        "description": "Envía tu CV y carta de presentación a través de nuestro formulario.",
+        "icon": "FileText",
+        "duration": "5 minutos"
+      },
+      {
+        "step": 2,
+        "title": "Revisión de Perfil",
+        "description": "Nuestro equipo de RRHH evaluará tu experiencia y ajuste cultural.",
+        "icon": "Search",
+        "duration": "3-5 días"
+      },
+      {
+        "step": 3,
+        "title": "Entrevista Inicial",
+        "description": "Entrevista virtual con el área de Recursos Humanos.",
+        "icon": "Video",
+        "duration": "45 minutos"
+      },
+      {
+        "step": 4,
+        "title": "Evaluación Técnica",
+        "description": "Demuestras tus habilidades técnicas específicas para la posición.",
+        "icon": "Code",
+        "duration": "1-2 horas"
+      },
+      {
+        "step": 5,
+        "title": "Entrevista Final",
+        "description": "Reunión con el equipo directivo y líder del área correspondiente.",
+        "icon": "Users",
+        "duration": "60 minutos"
+      },
+      {
+        "step": 6,
+        "title": "Oferta de Trabajo",
+        "description": "Recibe nuestra oferta oficial con detalles de compensación y beneficios.",
+        "icon": "Award",
+        "duration": "2-3 días"
+      }
+    ],
+    "average_time": "2-3 semanas",
+    "note": "El proceso puede variar según la posición y urgencia. Mantenemos comunicación constante durante todo el proceso."
+  },
+  "final_cta": {
+    "title": "¿No encontraste la posición ideal?",
+    "subtitle": "Siempre estamos buscando talento excepcional",
+    "description": "Envía tu CV y te contactaremos cuando surjan oportunidades que se alineen con tu perfil profesional. También puedes conocer más sobre nuestra cultura empresarial.",
+    "primary_button": {
+      "text": "Enviar CV",
+      "href": "/careers/apply",
+      "description": "Proceso de aplicación simple y rápido"
+    },
+    "secondary_button": {
+      "text": "Conoce Nuestra Cultura",
+      "href": "/about/cultura",
+      "description": "Descubre qué nos hace únicos"
+    },
+    "contact_info": {
+      "title": "¿Tienes Preguntas?",
+      "description": "Nuestro equipo de RRHH está aquí para ayudarte",
+      "email": "careers@metrica-dip.com",
+      "phone": "+51 1 234-5678"
+    }
+  }
+}

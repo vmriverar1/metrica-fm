@@ -268,7 +268,7 @@ export const CareersPageEditor: React.FC<CareersPageEditorProps> = ({
     company_info: {
       show_company_culture: true,
       culture_title: 'Nuestra Cultura',
-      culture_description: 'En Métrica DIP creemos en el poder del trabajo en equipo, la innovación y el crecimiento personal.',
+      culture_description: 'En Métrica FM creemos en el poder del trabajo en equipo, la innovación y el crecimiento personal.',
       values: [
         {
           title: 'Excelencia',

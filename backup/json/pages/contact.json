@@ -1,0 +1,95 @@
+{
+  "page": {
+    "title": "Contáctanos | Métrica DIP",
+    "description": "Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.",
+    "url": "/contact"
+  },
+  "hero": {
+    "title": "Contáctanos",
+    "subtitle": "Estamos aquí para ayudarte a transformar tus proyectos en realidad",
+    "background_image": "https://metrica-dip.com/images/slider-inicio-es/05.jpg"
+  },
+  "sections": {
+    "intro": {
+      "title": "Hablemos de Tu Proyecto",
+      "description": "Nuestro equipo de expertos está listo para asesorarte en cada etapa de tu proyecto de infraestructura. Desde la conceptualización hasta la entrega final, estamos comprometidos con tu éxito."
+    },
+    "contact_info": {
+      "title": "Información de Contacto",
+      "items": [
+        {
+          "icon": "MapPin",
+          "title": "Oficina Principal",
+          "content": "Av. El Derby 055, Piso 9\nSantiago de Surco, Lima - Perú"
+        },
+        {
+          "icon": "Phone",
+          "title": "Teléfonos",
+          "content": "+51 1 719-5990\n+51 999 999 999 (WhatsApp)"
+        },
+        {
+          "icon": "Mail",
+          "title": "Email",
+          "content": "info@metrica-dip.com\nproyectos@metrica-dip.com"
+        },
+        {
+          "icon": "Clock",
+          "title": "Horarios de Atención",
+          "content": "Lunes a Viernes: 8:00 AM - 6:00 PM\nSábados: 9:00 AM - 1:00 PM"
+        }
+      ]
+    },
+    "map": {
+      "title": "Mapa Interactivo",
+      "subtitle": "Santiago de Surco, Lima",
+      "show_placeholder": true
+    },
+    "urgent_quote": {
+      "title": "¿Necesitas una Cotización Urgente?",
+      "description": "Para proyectos con fechas límite ajustadas, contamos con un equipo especializado en respuesta rápida que puede brindarte una cotización preliminar en 48 horas.",
+      "button": {
+        "text": "Llamar Ahora: +51 1 719-5990",
+        "icon": "Phone",
+        "variant": "outline"
+      }
+    },
+    "process": {
+      "title": "Proceso de Contacto",
+      "steps": [
+        {
+          "number": "1",
+          "title": "Consulta Inicial",
+          "description": "Conversamos sobre tu proyecto y necesidades específicas"
+        },
+        {
+          "number": "2",
+          "title": "Propuesta Técnica",
+          "description": "Desarrollamos una propuesta detallada y personalizada"
+        },
+        {
+          "number": "3",
+          "title": "Inicio del Proyecto",
+          "description": "Comenzamos a trabajar juntos en la ejecución de tu visión"
+        }
+      ]
+    }
+  },
+  "settings": {
+    "form_action": "/api/contact",
+    "form_method": "POST",
+    "show_map_placeholder": true,
+    "response_time": "24 horas",
+    "urgent_response_time": "48 horas"
+  },
+  "seo": {
+    "meta_title": "Contacto - Métrica DIP | Dirección Integral de Proyectos",
+    "meta_description": "Contáctanos para iniciar tu proyecto de infraestructura. Equipo experto en dirección integral de proyectos con más de 15 años de experiencia en Perú.",
+    "keywords": [
+      "contacto métrica dip",
+      "dirección integral proyectos perú",
+      "consultoría construcción lima",
+      "gestión proyectos infraestructura",
+      "contacto empresa construcción"
+    ]
+  }
+}

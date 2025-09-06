@@ -168,7 +168,7 @@ export default function ServicesManager({ className = '' }: ServicesManagerProps
         <CardHeader>
           <CardTitle>Servicios Secundarios</CardTitle>
           <CardDescription>
-            Gestiona los servicios complementarios y especializados que ofrece Métrica DIP.
+            Gestiona los servicios complementarios y especializados que ofrece Métrica FM.
             Estos servicios se muestran en una sección dedicada de la página principal.
           </CardDescription>
         </CardHeader>

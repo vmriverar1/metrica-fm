@@ -69,18 +69,18 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
   const [palettes, setPalettes] = useState<ColorPalette[]>([
     {
       id: 'default',
-      name: 'Métrica DIP Original',
+      name: 'Métrica FM Original',
       colors: {
         primary: '#003F6F',
-        secondary: '#E84E0F',
+        secondary: '#007bc4',
         accent: '#F59E0B',
         background: '#FFFFFF',
         foreground: '#1F2937'
       },
       gradients: [
-        'linear-gradient(135deg, #003F6F 0%, #E84E0F 100%)',
+        'linear-gradient(135deg, #003F6F 0%, #007bc4 100%)',
         'linear-gradient(45deg, #003F6F 0%, #F59E0B 100%)',
-        'radial-gradient(circle, #003F6F 0%, #E84E0F 100%)'
+        'radial-gradient(circle, #003F6F 0%, #007bc4 100%)'
       ],
       created_at: '2025-09-01T00:00:00Z',
       is_default: true
@@ -129,9 +129,9 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
       direction: 135,
       stops: [
         { color: '#003F6F', position: 0 },
-        { color: '#E84E0F', position: 100 }
+        { color: '#007bc4', position: 100 }
       ],
-      css: 'linear-gradient(135deg, #003F6F 0%, #E84E0F 100%)'
+      css: 'linear-gradient(135deg, #003F6F 0%, #007bc4 100%)'
     }
   ]);
 
@@ -144,7 +144,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
     direction: 135,
     stops: [
       { color: '#003F6F', position: 0 },
-      { color: '#E84E0F', position: 100 }
+      { color: '#007bc4', position: 100 }
     ],
     css: ''
   });
@@ -306,7 +306,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
       direction: 135,
       stops: [
         { color: '#003F6F', position: 0 },
-        { color: '#E84E0F', position: 100 }
+        { color: '#007bc4', position: 100 }
       ],
       css: ''
     });
@@ -361,7 +361,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
                     name: 'Nueva Paleta',
                     colors: {
                       primary: '#003F6F',
-                      secondary: '#E84E0F',
+                      secondary: '#007bc4',
                       accent: '#F59E0B',
                       background: '#FFFFFF',
                       foreground: '#1F2937'

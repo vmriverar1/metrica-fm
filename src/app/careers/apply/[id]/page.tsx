@@ -19,13 +19,13 @@ export async function generateMetadata({ params }: ApplyPageProps): Promise<Meta
   
   if (!job) {
     return {
-      title: 'Aplicar a Posición | Carreras Métrica DIP'
+      title: 'Aplicar a Posición | Carreras Métrica FM'
     };
   }
 
   return {
-    title: `Aplicar a ${job.title} | Carreras Métrica DIP`,
-    description: `Completa tu aplicación para la posición de ${job.title} en ${job.location.city}. Únete al equipo de Métrica DIP.`,
+    title: `Aplicar a ${job.title} | Carreras Métrica FM`,
+    description: `Completa tu aplicación para la posición de ${job.title} en ${job.location.city}. Únete al equipo de Métrica FM.`,
     keywords: `aplicar ${job.title.toLowerCase()}, postular empleo, aplicación trabajo construcción`,
     robots: 'noindex, nofollow' // No indexar formularios de aplicación
   };

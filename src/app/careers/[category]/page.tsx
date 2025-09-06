@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: CareerCategoryPageProps): Pro
   const categoryLabel = getJobCategoryLabel(resolvedParams.category as any);
   
   return {
-    title: `${categoryLabel} | Carreras Métrica DIP`,
-    description: `Oportunidades laborales en ${categoryLabel.toLowerCase()}: posiciones disponibles, requisitos y beneficios en Métrica DIP.`,
+    title: `${categoryLabel} | Carreras Métrica FM`,
+    description: `Oportunidades laborales en ${categoryLabel.toLowerCase()}: posiciones disponibles, requisitos y beneficios en Métrica FM.`,
     keywords: `empleos ${categoryLabel.toLowerCase()}, trabajos construcción, carreras ingeniería, oportunidades ${categoryLabel.toLowerCase()}`,
     openGraph: {
-      title: `${categoryLabel} | Carreras Métrica DIP`,
-      description: `Oportunidades laborales en ${categoryLabel.toLowerCase()}: posiciones disponibles, requisitos y beneficios en Métrica DIP.`,
+      title: `${categoryLabel} | Carreras Métrica FM`,
+      description: `Oportunidades laborales en ${categoryLabel.toLowerCase()}: posiciones disponibles, requisitos y beneficios en Métrica FM.`,
       type: 'website'
     }
   };

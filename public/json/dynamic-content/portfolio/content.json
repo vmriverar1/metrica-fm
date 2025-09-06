@@ -1,421 +1,85 @@
 {
   "categories": [
     {
-      "id": "oficina",
-      "name": "Oficina",
-      "slug": "oficina",
-      "description": "Espacios corporativos modernos y funcionales que potencian la productividad.",
-      "icon": "Building2",
+      "id": "categoria1",
+      "name": "Categoría Ejemplo",
+      "slug": "categoria-ejemplo",
+      "description": "Descripción de la categoría ejemplo",
+      "icon": "Building",
       "color": "#E84E0F",
-      "featured_image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200",
-      "projects_count": 4,
-      "total_investment": "$66M USD",
-      "total_area": "54,300 m²",
+      "featured_image": "/img/categories/placeholder.jpg",
+      "projects_count": 0,
+      "total_investment": "$0 USD",
+      "total_area": "0 m²",
       "featured": true,
       "order": 1
     },
     {
-      "id": "retail",
-      "name": "Retail",
-      "slug": "retail",
-      "description": "Centros comerciales y tiendas que crean experiencias de compra excepcionales.",
-      "icon": "ShoppingBag",
+      "id": "categoria2",
+      "name": "Otra Categoría",
+      "slug": "otra-categoria",
+      "description": "Descripción de otra categoría",
+      "icon": "Home",
       "color": "#003F6F", 
-      "featured_image": "https://images.unsplash.com/photo-1555529902-5bb2fd13fa7d?w=1200",
-      "projects_count": 3,
-      "total_investment": "$132M USD",
-      "total_area": "228,000 m²",
+      "featured_image": "/img/categories/placeholder.jpg",
+      "projects_count": 0,
+      "total_investment": "$0 USD",
+      "total_area": "0 m²",
       "featured": true,
       "order": 2
-    },
-    {
-      "id": "industria",
-      "name": "Industria",
-      "slug": "industria", 
-      "description": "Infraestructura industrial optimizada para procesos productivos eficientes.",
-      "icon": "Factory",
-      "color": "#34D399",
-      "featured_image": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=1200",
-      "projects_count": 3,
-      "total_investment": "$68M USD",
-      "total_area": "145,000 m²",
-      "featured": true,
-      "order": 3
-    },
-    {
-      "id": "hoteleria",
-      "name": "Hotelería",
-      "slug": "hoteleria",
-      "description": "Hoteles y complejos turísticos que combinan confort y elegancia.",
-      "icon": "Hotel",
-      "color": "#8B5CF6",
-      "featured_image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200", 
-      "projects_count": 3,
-      "total_investment": "$108M USD",
-      "total_area": "44,700 m²",
-      "featured": false,
-      "order": 4
-    },
-    {
-      "id": "educacion",
-      "name": "Educación",
-      "slug": "educacion",
-      "description": "Instituciones educativas que inspiran el aprendizaje y desarrollo.",
-      "icon": "GraduationCap",
-      "color": "#F59E0B",
-      "featured_image": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200",
-      "projects_count": 3,
-      "total_investment": "$112M USD",
-      "total_area": "152,000 m²",
-      "featured": false,
-      "order": 5
-    },
-    {
-      "id": "vivienda",
-      "name": "Vivienda",
-      "slug": "vivienda", 
-      "description": "Complejos residenciales que ofrecen calidad de vida y bienestar.",
-      "icon": "Home",
-      "color": "#EF4444",
-      "featured_image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200",
-      "projects_count": 3,
-      "total_investment": "$171M USD",
-      "total_area": "230,000 m²",
-      "featured": false,
-      "order": 6
-    },
-    {
-      "id": "salud",
-      "name": "Salud",
-      "slug": "salud",
-      "description": "Infraestructura hospitalaria de vanguardia para el cuidado de la salud.",
-      "icon": "Heart",
-      "color": "#06B6D4",
-      "featured_image": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200",
-      "projects_count": 3,
-      "total_investment": "$207M USD",
-      "total_area": "141,000 m²",
-      "featured": true,
-      "order": 7
     }
   ],
   "projects": [
     {
       "id": "1",
-      "title": "Torre Empresarial San Isidro",
-      "slug": "torre-empresarial-san-isidro",
-      "category": "oficina",
+      "title": "Proyecto Ejemplo",
+      "slug": "proyecto-ejemplo",
+      "category": "categoria-ejemplo",
       "location": {
-        "city": "Lima",
-        "region": "Lima",
-        "address": "Av. El Derby 254, San Isidro",
-        "coordinates": [-77.0365, -12.0931]
+        "city": "Ciudad Ejemplo",
+        "region": "Región Ejemplo",
+        "address": "Dirección del proyecto",
+        "coordinates": [0.0, 0.0]
       },
-      "featured_image": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-      "thumbnail_image": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
+      "featured_image": "/img/projects/proyecto1.jpg",
+      "thumbnail_image": "/img/projects/proyecto1-thumb.jpg",
       "gallery": [
         {
           "id": "1-1",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "caption": "Vista frontal inicial del terreno",
+          "url": "/img/projects/proyecto1-1.jpg",
+          "thumbnail": "/img/projects/proyecto1-1-thumb.jpg",
+          "caption": "Descripción de la imagen",
           "stage": "inicio",
           "order": 1
-        },
-        {
-          "id": "1-2",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-          "caption": "Planos arquitectónicos y diseño conceptual",
-          "stage": "inicio",
-          "order": 2
-        },
-        {
-          "id": "1-3",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-          "caption": "Excavación y cimentación en proceso",
-          "stage": "proceso",
-          "order": 1
-        },
-        {
-          "id": "1-4",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-          "caption": "Estructura de concreto en construcción",
-          "stage": "proceso",
-          "order": 2
-        },
-        {
-          "id": "1-5",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-          "caption": "Instalación de fachada de vidrio",
-          "stage": "proceso",
-          "order": 3
-        },
-        {
-          "id": "1-6",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "caption": "Vista frontal del edificio completado",
-          "stage": "final",
-          "order": 1
-        },
-        {
-          "id": "1-7",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-          "caption": "Lobby principal con acabados de lujo",
-          "stage": "final",
-          "order": 2
-        },
-        {
-          "id": "1-8",
-          "url": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400",
-          "caption": "Espacios de trabajo colaborativo",
-          "stage": "final",
-          "order": 3
-        },
-        {
-          "id": "1-9",
-          "url": "https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?w=400",
-          "caption": "Sala de juntas ejecutiva",
-          "stage": "final",
-          "order": 4
-        },
-        {
-          "id": "1-10",
-          "url": "https://images.unsplash.com/photo-1569074187119-c87815b476da?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1569074187119-c87815b476da?w=400",
-          "caption": "Vista nocturna de la fachada",
-          "stage": "final",
-          "order": 5
-        },
-        {
-          "id": "1-11",
-          "url": "https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1590764258395-1b8b8f83feca?w=400",
-          "caption": "Avance estructural fase 1",
-          "stage": "proceso",
-          "order": 4
-        },
-        {
-          "id": "1-12",
-          "url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400",
-          "caption": "Trabajos de cimentación",
-          "stage": "proceso",
-          "order": 5
-        },
-        {
-          "id": "1-13",
-          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
-          "caption": "Instalaciones MEP en progreso",
-          "stage": "proceso",
-          "order": 6
-        },
-        {
-          "id": "1-14",
-          "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400",
-          "caption": "Renders arquitectónicos iniciales",
-          "stage": "inicio",
-          "order": 3
-        },
-        {
-          "id": "1-15",
-          "url": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400",
-          "caption": "Estudios de factibilidad",
-          "stage": "inicio",
-          "order": 4
         }
       ],
-      "description": "Edificio corporativo de 25 pisos con certificación LEED Gold, featuring espacios de trabajo colaborativo y tecnología de punta.",
-      "short_description": "Torre corporativa de 25 pisos con certificación LEED Gold",
+      "description": "Descripción detallada del proyecto",
+      "short_description": "Descripción breve del proyecto",
       "details": {
-        "client": "Grupo Inmobiliario San Isidro",
-        "duration": "24 meses",
-        "investment": "$25M USD",
-        "team": ["Arquitectura", "Ingeniería Estructural", "Supervisión"],
-        "certifications": ["LEED Gold", "ISO 9001"],
-        "area": "15,000 m²"
+        "client": "Cliente Ejemplo",
+        "duration": "12 meses",
+        "investment": "$100K USD",
+        "team": ["Equipo A", "Equipo B"],
+        "certifications": [],
+        "area": "1,000 m²"
       },
-      "featured": true,
-      "completed_at": "2023-06-15",
-      "tags": ["sostenible", "premiado", "corporativo"],
-      "url": "/portfolio/oficina/torre-empresarial-san-isidro"
-    },
-    {
-      "id": "2",
-      "title": "Centro Comercial Plaza Norte",
-      "slug": "centro-comercial-plaza-norte",
-      "category": "retail",
-      "location": {
-        "city": "Lima",
-        "region": "Lima",
-        "address": "Av. Alfredo Mendiola 3698, Independencia",
-        "coordinates": [-77.0667, -11.9833]
-      },
-      "featured_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-      "thumbnail_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-      "gallery": [
-        {
-          "id": "2-1",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
-          "caption": "Terreno inicial para el centro comercial",
-          "stage": "inicio",
-          "order": 1
-        },
-        {
-          "id": "2-2",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/03.jpg",
-          "caption": "Diseño arquitectónico y masterplan",
-          "stage": "inicio",
-          "order": 2
-        },
-        {
-          "id": "2-3",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/04.jpg",
-          "caption": "Construcción de la estructura principal",
-          "stage": "proceso",
-          "order": 1
-        },
-        {
-          "id": "2-4",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/05.jpg",
-          "caption": "Instalación de sistemas MEP",
-          "stage": "proceso",
-          "order": 2
-        },
-        {
-          "id": "2-5",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/06.jpg",
-          "caption": "Acabados interiores en progreso",
-          "stage": "proceso",
-          "order": 3
-        },
-        {
-          "id": "2-6",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-          "caption": "Vista general del centro comercial terminado",
-          "stage": "final",
-          "order": 1
-        },
-        {
-          "id": "2-7",
-          "url": "https://metrica-dip.com/images/slider-inicio-es/07.jpg",
-          "thumbnail": "https://metrica-dip.com/images/slider-inicio-es/07.jpg",
-          "caption": "Food court y áreas de entretenimiento",
-          "stage": "final",
-          "order": 2
-        },
-        {
-          "id": "2-8",
-          "url": "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=400",
-          "caption": "Atrium central con lucernario",
-          "stage": "final",
-          "order": 3
-        },
-        {
-          "id": "2-9",
-          "url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=400",
-          "caption": "Tiendas ancla principales",
-          "stage": "final",
-          "order": 4
-        },
-        {
-          "id": "2-10",
-          "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400",
-          "caption": "Cines multiplex",
-          "stage": "final",
-          "order": 5
-        },
-        {
-          "id": "2-11",
-          "url": "https://images.unsplash.com/photo-1596003906949-67221c37965c?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1596003906949-67221c37965c?w=400",
-          "caption": "Estacionamiento con 1,500 plazas",
-          "stage": "final",
-          "order": 6
-        },
-        {
-          "id": "2-12",
-          "url": "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=400",
-          "caption": "Instalación de fachada comercial",
-          "stage": "proceso",
-          "order": 4
-        },
-        {
-          "id": "2-13",
-          "url": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400",
-          "caption": "Montaje de estructuras metálicas",
-          "stage": "proceso",
-          "order": 5
-        },
-        {
-          "id": "2-14",
-          "url": "https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=400",
-          "caption": "Masterplan del proyecto comercial",
-          "stage": "inicio",
-          "order": 3
-        },
-        {
-          "id": "2-15",
-          "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200",
-          "thumbnail": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400",
-          "caption": "Estudios de impacto comercial",
-          "stage": "inicio",
-          "order": 4
-        }
-      ],
-      "description": "Centro comercial de gran formato con más de 200 tiendas, cines, food court y espacios de entretenimiento.",
-      "short_description": "Centro comercial con más de 200 tiendas",
-      "details": {
-        "client": "Mall Plaza",
-        "duration": "18 meses",
-        "investment": "$45M USD",
-        "team": ["Arquitectura", "Ingeniería MEP", "Supervisión"],
-        "area": "85,000 m²"
-      },
-      "featured": true,
-      "completed_at": "2023-03-20",
-      "tags": ["retail", "entretenimiento", "gran formato"],
-      "url": "/portfolio/retail/centro-comercial-plaza-norte"
+      "featured": false,
+      "completed_at": "2025-01-01",
+      "tags": ["ejemplo", "placeholder"],
+      "url": "/portfolio/categoria-ejemplo/proyecto-ejemplo"
     }
   ],
   "metadata": {
-    "total_categories": 7,
-    "featured_categories": 4,
-    "total_projects": 21,
-    "total_investment": "$864M USD",
-    "total_area": "994,000 m²",
-    "most_popular": "oficina",
-    "highest_investment": "salud",
-    "last_updated": "2025-01-19T00:00:00Z"
+    "total_categories": 2,
+    "featured_categories": 2,
+    "total_projects": 1,
+    "total_investment": "$100K USD",
+    "total_area": "1,000 m²",
+    "most_popular": "categoria-ejemplo",
+    "highest_investment": "categoria-ejemplo",
+    "last_updated": "2025-01-01T00:00:00Z"
   },
   "geographic_distribution": {
-    "lima": 15,
-    "callao": 2,
-    "arequipa": 1,
-    "trujillo": 1,
-    "paracas": 1,
-    "cusco": 1
+    "ciudad-ejemplo": 1
   }
 }

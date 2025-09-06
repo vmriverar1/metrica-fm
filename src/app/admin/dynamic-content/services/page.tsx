@@ -52,7 +52,7 @@ export default function ServicesManagementPage() {
         <CardHeader>
           <CardTitle className="text-xl">Servicios Secundarios y Especializados</CardTitle>
           <CardDescription>
-            Los servicios secundarios complementan la oferta principal de Métrica DIP, 
+            Los servicios secundarios complementan la oferta principal de Métrica FM, 
             mostrando capacidades adicionales en consultoría, supervisión, auditoría y capacitación. 
             Se presentan en una sección dedicada para destacar la amplitud de expertise de la empresa.
           </CardDescription>
@@ -101,7 +101,7 @@ export default function ServicesManagementPage() {
               <div className="p-3 bg-primary/5 rounded-lg border border-primary/20">
                 <h4 className="font-semibold mb-2 text-primary">Diferenciación Competitiva</h4>
                 <p className="text-muted-foreground">
-                  Los servicios secundarios posicionan a Métrica DIP como un socio integral 
+                  Los servicios secundarios posicionan a Métrica FM como un socio integral 
                   capaz de acompañar proyectos desde la concepción hasta la operación.
                 </p>
               </div>
@@ -186,7 +186,7 @@ export default function ServicesManagementPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <ul className="space-y-1 text-muted-foreground">
                 <li>• Incrementar consultas por servicios especializados</li>
-                <li>• Posicionar a Métrica DIP como consultor integral</li>
+                <li>• Posicionar a Métrica FM como consultor integral</li>
                 <li>• Generar leads calificados en nichos específicos</li>
               </ul>
               <ul className="space-y-1 text-muted-foreground">

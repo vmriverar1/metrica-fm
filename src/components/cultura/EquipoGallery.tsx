@@ -201,12 +201,12 @@ export default function EquipoGallery() {
 
         .image:hover img {
           box-shadow: 
-            0 5.6px 4.4px rgba(232, 78, 15, 0.034),
-            0 13.4px 10.6px rgba(232, 78, 15, 0.048), 
-            0 25px 20px rgba(232, 78, 15, 0.06),
-            0 44.6px 35.8px rgba(232, 78, 15, 0.072), 
-            0 83.6px 66.8px rgba(232, 78, 15, 0.086),
-            0 200px 160px rgba(232, 78, 15, 0.12);
+            0 5.6px 4.4px rgba(0, 123, 196, 0.3),
+            0 13.4px 10.6px rgba(0, 123, 196, 0.3), 
+            0 25px 20px rgba(0, 123, 196, 0.3),
+            0 44.6px 35.8px rgba(0, 123, 196, 0.3), 
+            0 83.6px 66.8px rgba(0, 123, 196, 0.3),
+            0 200px 160px rgba(0, 123, 196, 0.3);
         }
 
         /* Responsive */

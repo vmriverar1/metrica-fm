@@ -59,7 +59,7 @@ export default function CertificateViewer() {
 
   const handleShare = async (platform: string) => {
     const url = window.location.href;
-    const text = `Certificación ISO 9001:2015 - Métrica DIP - Vigente hasta ${currentCertification.expiryDate.getFullYear()}`;
+    const text = `Certificación ISO 9001:2015 - Métrica FM - Vigente hasta ${currentCertification.expiryDate.getFullYear()}`;
 
     switch (platform) {
       case 'copy':

@@ -232,7 +232,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>&copy; 2024 Métrica DIP. Sistema seguro de gestión empresarial.</p>
+          <p>&copy; 2024 Métrica FM. Sistema seguro de gestión empresarial.</p>
         </div>
       </div>
     </div>

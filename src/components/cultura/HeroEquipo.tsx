@@ -195,7 +195,7 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
             135deg,
             rgba(0, 63, 111, 0.1) 0%,
             rgba(0, 63, 111, 0.3) 50%,
-            rgba(232, 78, 15, 0.2) 100%
+            rgba(0, 123, 196, 0.2) 100%
           );
           z-index: 2;
         }
@@ -265,8 +265,8 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
 
         .image:hover img {
           box-shadow: 
-            0 8px 16px rgba(232, 78, 15, 0.3),
-            0 16px 32px rgba(232, 78, 15, 0.2);
+            0 8px 16px rgba(0, 123, 196, 0.3),
+            0 16px 32px rgba(0, 123, 196, 0.2);
         }
 
         .hero-content {

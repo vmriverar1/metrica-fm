@@ -273,7 +273,7 @@ export default function ContentTemplateManager() {
       ],
       layout_template: 'blog-post-layout',
       seo_template: {
-        title_pattern: '{{title}} - Métrica DIP Blog',
+        title_pattern: '{{title}} - Métrica FM Blog',
         description_pattern: '{{excerpt}}',
         keywords: ['construcción', 'proyectos', 'bim', 'arquitectura']
       },
@@ -628,7 +628,7 @@ export default function ContentTemplateManager() {
         revision_count: 3
       },
       seo: {
-        title: 'El Futuro de la Construcción Sostenible en Perú - Métrica DIP Blog',
+        title: 'El Futuro de la Construcción Sostenible en Perú - Métrica FM Blog',
         description: 'Exploramos las tendencias y tecnologías que están transformando la industria de la construcción hacia un enfoque más sostenible.',
         keywords: ['construcción sostenible', 'perú', 'sostenibilidad', 'construcción'],
         og_image: '/blog/construccion-sostenible-og.jpg'
@@ -669,7 +669,7 @@ export default function ContentTemplateManager() {
         revision_count: 5
       },
       seo: {
-        title: 'Centro Comercial Plaza Norte - Proyecto Métrica DIP',
+        title: 'Centro Comercial Plaza Norte - Proyecto Métrica FM',
         description: 'Desarrollo integral de centro comercial con enfoque en sostenibilidad y experiencia del usuario.',
         keywords: ['centro comercial', 'plaza norte', 'arquitectura', 'construcción']
       },

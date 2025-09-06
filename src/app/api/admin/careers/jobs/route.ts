@@ -381,7 +381,7 @@ export const POST = withAuth(
         view_count: 0,
         hiring_manager: hiring_manager || null,
         seo: {
-          meta_title: seo.meta_title || `${title} | Carreras Métrica DIP`,
+          meta_title: seo.meta_title || `${title} | Carreras Métrica FM`,
           meta_description: seo.meta_description || short_description,
           keywords: Array.isArray(seo.keywords) ? seo.keywords : []
         },

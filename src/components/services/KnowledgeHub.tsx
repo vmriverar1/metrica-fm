@@ -108,7 +108,7 @@ const knowledgeCards: KnowledgeCard[] = [
     readTime: '10 min',
     category: 'Liderazgo & Visión',
     link: '/blog/liderazgo-vision/futuro-construccion-peru',
-    author: 'CEO Métrica DIP',
+    author: 'CEO Métrica FM',
     views: 2134,
     rating: 4.9
   }

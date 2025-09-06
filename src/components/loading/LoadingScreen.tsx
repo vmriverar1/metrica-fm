@@ -48,7 +48,7 @@ export default function LoadingScreen() {
           className="w-full h-full"
           style={{
             backgroundImage: `radial-gradient(circle at 25% 25%, #003F6F 0%, transparent 50%), 
-                             radial-gradient(circle at 75% 75%, #E84E0F 0%, transparent 50%)`,
+                             radial-gradient(circle at 75% 75%, #007bc4 0%, transparent 50%)`,
             backgroundSize: '100px 100px'
           }}
         />
@@ -87,10 +87,10 @@ export default function LoadingScreen() {
             }}
             style={{
               borderWidth: '2px',
-              borderBottomColor: '#E84E0F',
-              borderLeftColor: 'rgba(232, 78, 15, 0.3)',
-              borderTopColor: 'rgba(232, 78, 15, 0.1)',
-              borderRightColor: 'rgba(232, 78, 15, 0.3)'
+              borderBottomColor: '#007bc4',
+              borderLeftColor: 'rgba(0, 123, 196, 0.3)',
+              borderTopColor: 'rgba(0, 123, 196, 0.1)',
+              borderRightColor: 'rgba(0, 123, 196, 0.3)'
             }}
           />
 
@@ -119,8 +119,8 @@ export default function LoadingScreen() {
               {/* Logo Image */}
               <div className="relative w-full h-full flex items-center justify-center">
                 <Image
-                  src="/img/logo-color.png"
-                  alt="Métrica DIP"
+                  src="/img/logo-color.webp"
+                  alt="Métrica FM"
                   width={60}
                   height={60}
                   className="object-contain"

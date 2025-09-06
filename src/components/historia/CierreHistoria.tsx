@@ -86,7 +86,7 @@ export default function CierreHistoria() {
           style={{
             maskImage: 'radial-gradient(circle, black 100%, transparent 100%)',
             WebkitMaskImage: 'radial-gradient(circle, black 100%, transparent 100%)',
-            boxShadow: '0 0 100px rgba(232, 78, 15, 0.3), 0 0 200px rgba(0, 63, 111, 0.2)'
+            boxShadow: '0 0 100px rgba(0, 123, 196, 0.3), 0 0 200px rgba(0, 63, 111, 0.2)'
           }}
         >
           <Image
@@ -141,7 +141,7 @@ export default function CierreHistoria() {
                 Conoce nuestros servicios
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-accent to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
 
             <Link 

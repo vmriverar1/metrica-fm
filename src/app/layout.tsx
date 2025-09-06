@@ -6,7 +6,7 @@ import RobustNavigationProvider from '@/components/loading/RobustNavigationProvi
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Métrica DIP Landing',
+  title: 'Métrica FM Landing',
   description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú',
 };
 

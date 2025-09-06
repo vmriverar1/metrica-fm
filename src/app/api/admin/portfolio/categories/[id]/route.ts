@@ -147,7 +147,7 @@ export const PUT = withAuth(
         slug,
         description: description || '',
         icon: icon || '',
-        color: color || '#E84E0F',
+        color: color || '#007bc4',
         featured_image: featured_image || '',
         featured: !!featured,
         order: order !== undefined ? Number(order) : categories[categoryIndex].order,

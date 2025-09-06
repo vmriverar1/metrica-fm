@@ -128,8 +128,8 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
               className={`
                 group relative overflow-hidden px-6 py-3 font-semibold transition-all duration-300
                 ${isPrimary 
-                  ? 'bg-[#E84E0F] hover:bg-[#D63E0A] text-white shadow-lg hover:shadow-xl border-[#E84E0F]' 
-                  : 'border-[#E84E0F] text-[#E84E0F] hover:bg-[#E84E0F] hover:text-white'
+                  ? 'bg-[#007bc4] hover:bg-[#D63E0A] text-white shadow-lg hover:shadow-xl border-[#007bc4]' 
+                  : 'border-[#007bc4] text-[#007bc4] hover:bg-[#007bc4] hover:text-white'
                 }
               `}
             >
@@ -143,8 +143,8 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
                 className={`
                   absolute inset-0 -z-0 transition-transform duration-300
                   ${isPrimary 
-                    ? 'bg-gradient-to-r from-[#FF6B35] to-[#E84E0F]' 
-                    : 'bg-[#E84E0F]'
+                    ? 'bg-gradient-to-r from-[#FF6B35] to-[#007bc4]' 
+                    : 'bg-[#007bc4]'
                   }
                 `}
                 initial={{ x: '-100%' }}
@@ -173,7 +173,7 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
           onClick={handleViewDetails}
           variant="ghost"
           size="lg"
-          className="px-6 py-3 text-gray-600 hover:text-[#E84E0F] hover:bg-[#E84E0F]/10 transition-all"
+          className="px-6 py-3 text-gray-600 hover:text-[#007bc4] hover:bg-[#007bc4]/10 transition-all"
         >
           <Eye className="w-5 h-5 mr-2" />
           Ver Detalles del Certificado

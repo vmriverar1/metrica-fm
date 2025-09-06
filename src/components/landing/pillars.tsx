@@ -41,7 +41,7 @@ const pillars = [
 const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: number }) => {
   return (
     <Card
-      className="pillar-card group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-500 hover:shadow-[0_20px_50px_rgba(232,78,15,0.3)] hover:-translate-y-2 hover:scale-[1.02] overflow-hidden"
+      className="pillar-card group relative h-full bg-card/80 backdrop-blur-sm border-primary/20 hover:border-accent transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,123,196,0.3)] hover:-translate-y-2 hover:scale-[1.02] overflow-hidden"
       style={{ 
         animationDelay: `${index * 0.1}s`,
         animation: 'fadeInUp 0.8s ease-out forwards',
@@ -53,7 +53,7 @@ const PillarCard = ({ pillar, index }: { pillar: (typeof pillars)[0], index: num
       <div className="relative">
         <CardHeader className="flex flex-col items-center text-center gap-4 pb-4">
           <div className="p-3 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-            <pillar.icon className="h-12 w-12 text-accent transition-all duration-500 group-hover:text-white group-hover:scale-125 group-hover:drop-shadow-[0_0_20px_rgba(232,78,15,0.5)]" />
+            <pillar.icon className="h-12 w-12 text-accent transition-all duration-500 group-hover:text-white group-hover:scale-125 group-hover:drop-shadow-[0_0_20px_rgba(0,123,196,0.5)]" />
           </div>
           <CardTitle className="text-xl text-foreground transition-colors duration-300 group-hover:text-white">{pillar.title}</CardTitle>
         </CardHeader>

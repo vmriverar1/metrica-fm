@@ -228,12 +228,12 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
   const [config, setConfig] = useState<CulturaConfiguration>({
     isEnabled: true,
     title: 'Nuestra Cultura',
-    description: 'Descubre nuestra cultura organizacional, valores y el ambiente de trabajo en Métrica DIP.',
+    description: 'Descubre nuestra cultura organizacional, valores y el ambiente de trabajo en Métrica FM.',
     lastUpdated: new Date().toISOString(),
     hero: {
       title: 'Nuestra Cultura',
       subtitle: 'Un lugar donde crecer profesional y personalmente',
-      description: 'En Métrica DIP creamos un ambiente de trabajo colaborativo, innovador y orientado al crecimiento de nuestro equipo.',
+      description: 'En Métrica FM creamos un ambiente de trabajo colaborativo, innovador y orientado al crecimiento de nuestro equipo.',
       backgroundImage: '/images/cultura/hero-bg.jpg',
       overlayOpacity: 0.6,
       ctaText: 'Únete a nuestro equipo',
@@ -293,8 +293,8 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
     },
     sections: [],
     seo: {
-      title: 'Cultura Organizacional - Métrica DIP',
-      description: 'Descubre la cultura, valores y ambiente de trabajo en Métrica DIP. Únete a nuestro equipo de profesionales.',
+      title: 'Cultura Organizacional - Métrica FM',
+      description: 'Descubre la cultura, valores y ambiente de trabajo en Métrica FM. Únete a nuestro equipo de profesionales.',
       keywords: ['cultura organizacional', 'valores empresariales', 'ambiente de trabajo', 'equipo', 'beneficios laborales'],
       ogImage: '/images/cultura/og-cultura.jpg',
       canonical: `/cultura`
@@ -396,7 +396,7 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
       title: '',
       description: '',
       icon: 'heart',
-      color: '#E84E0F',
+      color: '#007bc4',
       examples: [],
       metrics: {
         adherenceScore: 85,
@@ -1316,7 +1316,7 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
                               <Input
                                 value={value.color}
                                 onChange={(e) => updateCoreValue(value.id, { color: e.target.value })}
-                                placeholder="#E84E0F"
+                                placeholder="#007bc4"
                                 disabled={readOnly}
                               />
                             </div>

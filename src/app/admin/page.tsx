@@ -53,7 +53,7 @@ export default function AdminRedirectPage() {
           <div className="space-y-3">
             <div className="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
               <LogIn className="w-4 h-4 mr-2" />
-              <span>Métrica DIP - Sistema Administrativo</span>
+              <span>Métrica FM - Sistema Administrativo</span>
             </div>
             
             {!isAuthenticated && (

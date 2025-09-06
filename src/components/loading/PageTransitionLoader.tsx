@@ -63,8 +63,8 @@ export default function PageTransitionLoader() {
               className="relative z-10 flex items-center justify-center"
             >
               <Image
-                src="/img/logo-color.png"
-                alt="Métrica DIP"
+                src="/img/logo-color.webp"
+                alt="Métrica FM"
                 width={140}
                 height={140}
                 className="object-contain drop-shadow-lg"
@@ -91,8 +91,8 @@ export default function PageTransitionLoader() {
               >
                 <defs>
                   <linearGradient id="loading-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#E84E0F" stopOpacity="0.1" />
-                    <stop offset="25%" stopColor="#E84E0F" stopOpacity="1" />
+                    <stop offset="0%" stopColor="#007bc4" stopOpacity="0.1" />
+                    <stop offset="25%" stopColor="#007bc4" stopOpacity="1" />
                     <stop offset="75%" stopColor="#003F6F" stopOpacity="1" />
                     <stop offset="100%" stopColor="#003F6F" stopOpacity="0.1" />
                   </linearGradient>

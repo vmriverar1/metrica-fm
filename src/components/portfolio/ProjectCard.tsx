@@ -87,7 +87,7 @@ export default function ProjectCard({
           ? `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0) scale(1.02)` 
           : 'translate3d(0, 0, 0) scale(1)',
         boxShadow: isHovered 
-          ? `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(232, 78, 15, 0.3)`
+          ? `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(0, 123, 196, 0.3)`
           : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
       }}
       onMouseEnter={handleMouseEnter}

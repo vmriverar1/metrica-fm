@@ -52,7 +52,7 @@ export default function PoliciesManagementPage() {
         <CardHeader>
           <CardTitle className="text-xl">Políticas Empresariales</CardTitle>
           <CardDescription>
-            Las políticas representan los compromisos y estándares de calidad de Métrica DIP. 
+            Las políticas representan los compromisos y estándares de calidad de Métrica FM. 
             Se presentan a los visitantes a través de un carousel interactivo en la página principal, 
             comunicando los valores institucionales y los marcos de trabajo de la empresa.
           </CardDescription>

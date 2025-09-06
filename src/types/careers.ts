@@ -642,8 +642,8 @@ export const sampleJobPostings: JobPosting[] = [
     },
     
     seo: {
-      metaTitle: 'Director de Proyectos Senior | Carreras Métrica DIP',
-      metaDescription: 'Únete como Director de Proyectos Senior en Métrica DIP. Lidera proyectos de infraestructura de gran escala en Lima.',
+      metaTitle: 'Director de Proyectos Senior | Carreras Métrica FM',
+      metaDescription: 'Únete como Director de Proyectos Senior en Métrica FM. Lidera proyectos de infraestructura de gran escala en Lima.',
       keywords: ['director proyectos', 'gestión construcción', 'PMP', 'BIM', 'infraestructura Lima']
     }
   },
@@ -725,7 +725,7 @@ export const sampleJobPostings: JobPosting[] = [
     viewCount: 987,
     
     seo: {
-      metaTitle: 'Ingeniero Civil Senior | Carreras Métrica DIP',
+      metaTitle: 'Ingeniero Civil Senior | Carreras Métrica FM',
       metaDescription: 'Oportunidad para Ingeniero Civil Senior especializado en estructuras. Únete a proyectos innovadores en Lima.',
       keywords: ['ingeniero civil', 'estructuras', 'ETABS', 'supervisión obras', 'Lima']
     }
@@ -808,7 +808,7 @@ export const sampleJobPostings: JobPosting[] = [
     viewCount: 756,
     
     seo: {
-      metaTitle: 'Arquitecto Senior Comercial | Carreras Métrica DIP',
+      metaTitle: 'Arquitecto Senior Comercial | Carreras Métrica FM',
       metaDescription: 'Oportunidad para Arquitecto Senior en proyectos comerciales. Diseña los centros comerciales del futuro.',
       keywords: ['arquitecto senior', 'proyectos comerciales', 'centros comerciales', 'BIM', 'retail']
     }

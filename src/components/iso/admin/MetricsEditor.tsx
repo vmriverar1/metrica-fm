@@ -311,8 +311,8 @@ function MetricEditCard({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E84E0F]/10 flex items-center justify-center">
-                <IconComponent className="w-5 h-5 text-[#E84E0F]" />
+              <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
+                <IconComponent className="w-5 h-5 text-[#007bc4]" />
               </div>
               <div>
                 <CardTitle className="text-lg">
@@ -449,7 +449,7 @@ function MetricEditCard({
                 {/* Metric Values */}
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="text-3xl font-bold text-[#E84E0F]">
+                    <div className="text-3xl font-bold text-[#007bc4]">
                       {kpi.current_value}
                     </div>
                     <div className="text-sm text-gray-600">
@@ -601,7 +601,7 @@ export function MetricsEditor({ data, onSave, onCancel }: MetricsEditorProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-[#E84E0F]" />
+            <BarChart3 className="w-5 h-5 text-[#007bc4]" />
             Información de la Sección
           </CardTitle>
         </CardHeader>

@@ -191,7 +191,7 @@ export default function TechInnovationHub({ section, technologies }: TechInnovat
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E84E0F] to-[#003F6F]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007bc4] to-[#003F6F]">
               {section?.title || 'Centro de Innovación Tecnológica'}
             </span>
           </h2>
@@ -386,7 +386,7 @@ export default function TechInnovationHub({ section, technologies }: TechInnovat
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-gradient-to-r from-[#E84E0F] to-[#003F6F] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            className="px-8 py-4 bg-gradient-to-r from-[#007bc4] to-[#003F6F] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Solicitar Demostración Técnica
           </motion.button>

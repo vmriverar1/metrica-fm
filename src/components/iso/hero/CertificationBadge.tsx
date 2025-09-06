@@ -56,7 +56,7 @@ export function CertificationBadge({ status, since, statusText }: CertificationB
       {/* Since Badge */}
       <Badge 
         variant="secondary" 
-        className="flex items-center gap-2 px-3 py-1 text-xs bg-[#E84E0F]/10 text-[#E84E0F] border border-[#E84E0F]/20"
+        className="flex items-center gap-2 px-3 py-1 text-xs bg-[#007bc4]/10 text-[#007bc4] border border-[#007bc4]/20"
       >
         <Calendar className="w-3 h-3" />
         Certificados desde {since}
@@ -82,7 +82,7 @@ export function CertificationBadge({ status, since, statusText }: CertificationB
           repeat: Infinity,
           ease: "linear"
         }}
-        className="w-16 h-16 bg-gradient-to-br from-[#E84E0F] to-[#FF6B35] rounded-full flex items-center justify-center shadow-lg"
+        className="w-16 h-16 bg-gradient-to-br from-[#007bc4] to-[#FF6B35] rounded-full flex items-center justify-center shadow-lg"
       >
         <CheckCircle className="w-8 h-8 text-white" />
       </motion.div>

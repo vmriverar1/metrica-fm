@@ -35,7 +35,7 @@ export default function BlogHero() {
   }
 
   // Use dynamic data from JSON or fallback to defaults
-  const heroTitle = pageData?.hero.title || 'Blog Métrica DIP';
+  const heroTitle = pageData?.hero.title || 'Blog Métrica FM';
   const heroSubtitle = pageData?.hero.subtitle || 'Insights, tendencias y casos de estudio del sector construcción e infraestructura en Perú';
   const heroBackground = pageData?.hero.background.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630';
 

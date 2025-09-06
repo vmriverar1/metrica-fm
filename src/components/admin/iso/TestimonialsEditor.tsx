@@ -56,12 +56,12 @@ const defaultAvatars = [
 // Plantillas de testimonios comunes
 const testimonialTemplates = [
   {
-    quote: "La certificación ISO 9001 de Métrica DIP nos da la confianza total de que nuestros proyectos serán ejecutados con los más altos estándares de calidad. Su sistema de gestión es impecable.",
+    quote: "La certificación ISO 9001 de Métrica FM nos da la confianza total de que nuestros proyectos serán ejecutados con los más altos estándares de calidad. Su sistema de gestión es impecable.",
     position: "Director de Proyectos",
     project: "Torres del Parque"
   },
   {
-    quote: "Desde que trabajamos con Métrica DIP certificada ISO 9001, la predictibilidad de nuestros proyectos mejoró drásticamente. Cumplimiento de plazos y calidad garantizada.",
+    quote: "Desde que trabajamos con Métrica FM certificada ISO 9001, la predictibilidad de nuestros proyectos mejoró drásticamente. Cumplimiento de plazos y calidad garantizada.",
     position: "Gerente General",
     project: "Centro Comercial"
   },

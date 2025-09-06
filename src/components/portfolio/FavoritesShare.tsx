@@ -66,8 +66,8 @@ export default function FavoritesShare({ project, showFavoritesPanel = false }: 
     : typeof window !== 'undefined' ? window.location.href : '';
 
   const shareTitle = project 
-    ? `${project.title} - Métrica DIP`
-    : 'Portafolio de Proyectos - Métrica DIP';
+    ? `${project.title} - Métrica FM`
+    : 'Portafolio de Proyectos - Métrica FM';
 
   const shareDescription = project?.description || 'Explora nuestro portafolio de proyectos de infraestructura';
 
@@ -133,19 +133,19 @@ export default function FavoritesShare({ project, showFavoritesPanel = false }: 
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Portafolio Favoritos - Métrica DIP</title>
+          <title>Portafolio Favoritos - Métrica FM</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 40px; }
             h1 { color: #003F6F; }
             .project { margin-bottom: 30px; page-break-inside: avoid; }
             .project img { max-width: 100%; height: auto; }
-            .project h2 { color: #E84E0F; }
+            .project h2 { color: #007bc4; }
             .meta { color: #666; font-size: 14px; }
           </style>
         </head>
         <body>
           <h1>Portafolio de Proyectos Favoritos</h1>
-          <p>Métrica DIP - Dirección Integral de Proyectos</p>
+          <p>Métrica FM - Dirección Integral de Proyectos</p>
           <hr>
           ${favoriteProjects.map(p => `
             <div class="project">

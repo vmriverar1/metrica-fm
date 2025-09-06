@@ -31,7 +31,7 @@ export default function HistoriaPage() {
         <Header />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-500">Error: {error || 'No se pudo cargar la historia'}</p>
+            <p className="text-destructive">Error: {error || 'No se pudo cargar la historia'}</p>
             <p className="mt-2 text-foreground/70">Usando datos por defecto...</p>
           </div>
         </div>

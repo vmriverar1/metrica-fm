@@ -80,7 +80,7 @@ export function ResponsiveMetricCard({
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-full bg-[#E84E0F]/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center flex-shrink-0">
                   {icon}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -88,7 +88,7 @@ export function ResponsiveMetricCard({
                     {title}
                   </CardTitle>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xl font-bold text-[#E84E0F]">{value}</span>
+                    <span className="text-xl font-bold text-[#007bc4]">{value}</span>
                     <Badge className={`${statusColors[status]} text-xs`}>
                       {status === 'achieved' ? 'Logrado' : status === 'in_progress' ? 'En Progreso' : 'Pendiente'}
                     </Badge>
@@ -123,7 +123,7 @@ export function ResponsiveMetricCard({
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <motion.div
-                          className="bg-[#E84E0F] h-2 rounded-full"
+                          className="bg-[#007bc4] h-2 rounded-full"
                           initial={{ width: 0 }}
                           animate={{ width: `${progress}%` }}
                           transition={{ duration: 1, delay: 0.2 }}
@@ -155,7 +155,7 @@ export function ResponsiveMetricCard({
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#E84E0F]/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
                   {icon}
                 </div>
                 <CardTitle className="text-lg font-bold text-gray-900">
@@ -171,7 +171,7 @@ export function ResponsiveMetricCard({
           <CardContent className="space-y-4">
             <div className="flex items-end justify-between">
               <div>
-                <div className="text-3xl font-bold text-[#E84E0F]">{value}</div>
+                <div className="text-3xl font-bold text-[#007bc4]">{value}</div>
                 <div className="text-sm text-gray-600">
                   Meta: <span className="font-medium">{target}</span>
                 </div>
@@ -188,7 +188,7 @@ export function ResponsiveMetricCard({
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <motion.div
-                  className="bg-[#E84E0F] h-2 rounded-full"
+                  className="bg-[#007bc4] h-2 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 1, delay: 0.2 }}
@@ -264,7 +264,7 @@ export function MobileNavigation({
       >
         <Button
           onClick={() => setIsOpen(true)}
-          className="w-14 h-14 rounded-full bg-[#E84E0F] hover:bg-[#E84E0F]/90 shadow-lg"
+          className="w-14 h-14 rounded-full bg-[#007bc4] hover:bg-[#007bc4]/90 shadow-lg"
         >
           <Menu className="w-6 h-6" />
         </Button>
@@ -312,7 +312,7 @@ export function MobileNavigation({
                     }}
                     className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
                       currentSection === section.id
-                        ? 'bg-[#E84E0F] text-white'
+                        ? 'bg-[#007bc4] text-white'
                         : 'hover:bg-gray-100 text-gray-700'
                     }`}
                   >
@@ -364,7 +364,7 @@ export function ResponsiveTestimonialCard({ testimonial }: ResponsiveTestimonial
           {breakpoint === 'mobile' ? (
             <>
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-full bg-[#E84E0F]/10 flex items-center justify-center text-[#E84E0F] font-semibold text-sm`}>
+                <div className={`w-8 h-8 rounded-full bg-[#007bc4]/10 flex items-center justify-center text-[#007bc4] font-semibold text-sm`}>
                   {testimonial.author.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -400,7 +400,7 @@ export function ResponsiveTestimonialCard({ testimonial }: ResponsiveTestimonial
             /* Desktop/Tablet: Full layout */
             <>
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-full bg-[#E84E0F]/10 flex items-center justify-center text-[#E84E0F] font-semibold`}>
+                <div className={`w-12 h-12 rounded-full bg-[#007bc4]/10 flex items-center justify-center text-[#007bc4] font-semibold`}>
                   {testimonial.author.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1">

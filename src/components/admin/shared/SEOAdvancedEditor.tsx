@@ -87,7 +87,7 @@ export const SEOAdvancedEditor: React.FC<SEOAdvancedEditorProps> = ({
   data,
   onChange,
   contextType = 'general',
-  siteName = 'Métrica DIP',
+  siteName = 'Métrica FM',
   siteUrl = 'https://metrica-dip.com',
   showAnalytics = true,
   showSchema = true,

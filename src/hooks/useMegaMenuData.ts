@@ -100,9 +100,15 @@ export function useMegaMenuData() {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch('/api/admin/megamenu');
+      const response = await fetch('/api/admin/megamenu', {
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
       if (!response.ok) {
-        throw new Error(`Error loading menu data: ${response.status}`);
+        throw new Error(`Error loading menu data: ${response.status} - ${response.statusText}`);
       }
 
       const megaMenuConfig = await response.json();
@@ -122,8 +128,21 @@ export function useMegaMenuData() {
 
     } catch (err) {
       console.error('Error loading mega menu data:', err);
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      setMenuData([]);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      
+      // Provide fallback menu data on error
+      const fallbackData = [
+        { id: 'inicio', label: 'Inicio', href: '/' },
+        { id: 'servicios', label: 'Qué Hacemos', href: '/services' },
+        { id: 'nosotros', label: 'Nosotros', href: '/about' },
+        { id: 'portfolio', label: 'Proyectos', href: '/portfolio' },
+        { id: 'iso', label: 'SIG', href: '/iso' },
+        { id: 'blog', label: 'Newsletter', href: '/blog' },
+        { id: 'contacto', label: 'Contáctanos', href: '/contact' }
+      ];
+      
+      setError(`Failed to fetch: ${errorMessage}`);
+      setMenuData(fallbackData);
     } finally {
       setIsLoading(false);
     }
@@ -139,10 +158,14 @@ export function useMegaMenuData() {
         body: JSON.stringify({
           action: 'track_click',
           item_id: itemId
-        })
+        }),
+        cache: 'no-store'
       });
     } catch (error) {
-      console.error('Error tracking click:', error);
+      // Silently fail for tracking - don't break user experience
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error tracking click:', error);
+      }
     }
   }, []);
 

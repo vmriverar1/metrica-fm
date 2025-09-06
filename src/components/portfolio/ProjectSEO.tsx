@@ -13,7 +13,7 @@ export default function ProjectSEO({
   project, 
   baseUrl = 'https://metrica-dip.com' 
 }: ProjectSEOProps) {
-  const title = `${project.title} | Métrica DIP - Dirección Integral de Proyectos`;
+  const title = `${project.title} | Métrica FM - Dirección Integral de Proyectos`;
   const description = project.description || project.shortDescription;
   const categoryLabel = getCategoryLabel(project.category);
   const url = `${baseUrl}/portfolio/${project.category}/${project.slug}`;
@@ -29,7 +29,7 @@ export default function ProjectSEO({
     "url": url,
     "creator": {
       "@type": "Organization",
-      "name": "Métrica DIP",
+      "name": "Métrica FM",
       "url": baseUrl
     },
     "dateCreated": project.completedAt.toISOString(),
@@ -82,7 +82,7 @@ export default function ProjectSEO({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={allKeywords} />
-      <meta name="author" content="Métrica DIP" />
+      <meta name="author" content="Métrica FM" />
       <meta name="robots" content="index, follow" />
       <meta name="language" content="es-PE" />
       
@@ -97,7 +97,7 @@ export default function ProjectSEO({
       <meta property="og:image" content={imageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:site_name" content="Métrica DIP" />
+      <meta property="og:site_name" content="Métrica FM" />
       <meta property="og:locale" content="es_PE" />
       
       {/* Twitter Card */}
@@ -146,10 +146,10 @@ export function useProjectMeta(project: Project | null) {
   if (!project) return {};
 
   return {
-    title: `${project.title} | Métrica DIP`,
+    title: `${project.title} | Métrica FM`,
     description: project.description || project.shortDescription,
     openGraph: {
-      title: `${project.title} | Métrica DIP`,
+      title: `${project.title} | Métrica FM`,
       description: project.description || project.shortDescription,
       images: [
         {
@@ -161,11 +161,11 @@ export function useProjectMeta(project: Project | null) {
       ],
       type: 'article',
       locale: 'es_PE',
-      siteName: 'Métrica DIP'
+      siteName: 'Métrica FM'
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.title} | Métrica DIP`,
+      title: `${project.title} | Métrica FM`,
       description: project.description || project.shortDescription,
       images: [project.featuredImage]
     }

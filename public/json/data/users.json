@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": "admin_ea27e689c06068a7",
-      "email": "admin@metrica-dip.com",
+      "id": "admin_placeholder",
+      "email": "admin@tuempresa.com",
       "name": "Administrador",
       "role": "admin",
       "status": "active",
-      "created_at": "2025-08-20T01:57:48.710Z",
+      "created_at": "2025-01-01T00:00:00.000Z",
       "login_attempts": 0
     }
   ]

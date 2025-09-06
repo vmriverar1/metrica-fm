@@ -131,9 +131,9 @@ const PortfolioDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Proyectos Activos</p>
-                <p className="text-3xl font-bold text-[#E84E0F]">{stats.activeProjects}</p>
+                <p className="text-3xl font-bold text-[#007bc4]">{stats.activeProjects}</p>
               </div>
-              <TrendingUp className="h-12 w-12 text-[#E84E0F] opacity-20" />
+              <TrendingUp className="h-12 w-12 text-[#007bc4] opacity-20" />
             </div>
           </CardContent>
         </Card>

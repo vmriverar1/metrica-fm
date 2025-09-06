@@ -18,7 +18,7 @@ export default function AnimatedProgress({
   size = 120, 
   strokeWidth = 8,
   className = '',
-  color = '#E84E0F'
+  color = '#007bc4'
 }: AnimatedProgressProps) {
   const progressRef = useRef<SVGCircleElement>(null);
   const valueRef = useRef<HTMLSpanElement>(null);

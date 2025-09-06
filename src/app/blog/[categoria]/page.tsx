@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: BlogCategoryPageProps): Promi
   const categoryLabel = getBlogCategoryLabel(resolvedParams.categoria as any);
   
   return {
-    title: `${categoryLabel} | Blog Métrica DIP`,
+    title: `${categoryLabel} | Blog Métrica FM`,
     description: `Artículos especializados en ${categoryLabel.toLowerCase()}: análisis, tendencias y guías técnicas del sector construcción e infraestructura en Perú.`,
     keywords: `${categoryLabel.toLowerCase()}, blog construcción, artículos arquitectura, análisis mercado inmobiliario`,
     openGraph: {
-      title: `${categoryLabel} | Blog Métrica DIP`,
+      title: `${categoryLabel} | Blog Métrica FM`,
       description: `Artículos especializados en ${categoryLabel.toLowerCase()}: análisis, tendencias y guías técnicas del sector construcción e infraestructura en Perú.`,
       type: 'website'
     }
