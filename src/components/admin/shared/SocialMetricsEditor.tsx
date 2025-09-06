@@ -34,7 +34,7 @@ import {
   Globe,
   ExternalLink
 } from 'lucide-react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 export interface SocialPlatform {
   id: string;

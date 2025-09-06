@@ -27,7 +27,7 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { BaseCardElement, ElementType, ELEMENT_CONFIGS } from '@/types/dynamic-elements';
 import ElementForm from './ElementForm';
 import ElementPreview from './ElementPreview';
