@@ -5,7 +5,7 @@ import BlogHero from '@/components/blog/BlogHero';
 import BlogGrid from '@/components/blog/BlogGrid';
 import BlogFilters from '@/components/blog/BlogFilters';
 import SectionTransition from '@/components/portfolio/SectionTransition';
-import FloatingParticles from '@/components/portfolio/FloatingParticles';
+// import FloatingParticles from '@/components/portfolio/FloatingParticles'; // Removed for server performance
 import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import { BlogProvider } from '@/contexts/BlogContext';
 import OptimizedLoading, { LoadingWrapper } from '@/components/loading/OptimizedLoading';
@@ -46,7 +46,7 @@ export default function BlogPage() {
             </div>
           </section>
           
-          <FloatingParticles />
+          {/* <FloatingParticles /> */}
           
           <PortfolioCTA 
             type="blog"

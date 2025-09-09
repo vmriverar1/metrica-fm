@@ -16,6 +16,8 @@ import { usePortfolio } from '@/contexts/PortfolioContext';
 import { Project, ProjectCategory, getCategoryLabel } from '@/types/portfolio';
 import { cn } from '@/lib/utils';
 
+// Note: Recharts removed for server optimization
+
 interface ChartData {
   label: string;
   value: number;

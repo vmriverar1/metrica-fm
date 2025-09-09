@@ -9,7 +9,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 import ParallaxWrapper from '@/components/parallax-wrapper';
-import CanvasParticles from '@/components/canvas-particles';
+// import CanvasParticles from '@/components/canvas-particles'; // Removed for server performance
 import TiltCard from '@/components/tilt-card';
 import NavigationLink from '@/components/ui/NavigationLink';
 import { HomePageData } from '@/types/home';
@@ -120,13 +120,13 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-          {/* Canvas particles overlay */}
-          <CanvasParticles 
+          {/* Canvas particles overlay - Disabled for server performance */}
+          {/* <CanvasParticles 
             isActive={isHovered}
             particleCount={30}
             color={service.isMain ? '#ffffff' : '#007bc4'}
             className="z-10"
-          />
+          /> */}
           <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow relative z-20">
             <div className="flex items-start gap-3 mb-2">
               {(service.iconUrl || service.icon_url) && (

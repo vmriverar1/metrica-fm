@@ -8,7 +8,7 @@ import FeaturedProjects from '@/components/portfolio/FeaturedProjects';
 import ProjectGrid from '@/components/portfolio/ProjectGrid';
 import ProjectFilter from '@/components/portfolio/ProjectFilter';
 import SmartFilters from '@/components/portfolio/SmartFilters';
-import MapSection from '@/components/portfolio/MapSection';
+// import MapSection from '@/components/portfolio/MapSection'; // Removed for server performance
 import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import DataVisualization from '@/components/portfolio/DataVisualization';
 import ProjectTimeline from '@/components/portfolio/ProjectTimeline';
@@ -76,7 +76,9 @@ export default function PortfolioPage() {
                     activeView={activeView}
                     onViewChange={setActiveView}
                   />
-                  <MapSection />
+                  <div className="text-center py-16 text-muted-foreground">
+                    <p>Vista de mapa temporalmente deshabilitada para optimización del servidor</p>
+                  </div>
                 </div>
               )}
               

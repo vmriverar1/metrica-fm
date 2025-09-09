@@ -4,9 +4,7 @@ import LoadingProvider from '@/components/loading/LoadingProvider';
 import AppInitializer from '@/components/loading/AppInitializer';
 import RobustNavigationProvider from '@/components/loading/RobustNavigationProvider';
 import { PageErrorBoundary } from '@/components/error-boundary';
-import { PWAInstallPrompt, PWAUpdatePrompt, OfflineIndicator } from '@/lib/pwa';
 import { initializeAccessibility } from '@/lib/accessibility';
-import { initializePWA } from '@/lib/pwa';
 import { initializeAnalytics } from '@/lib/analytics';
 import './globals.css';
 
@@ -87,7 +85,6 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <PageErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
-          <OfflineIndicator />
           <AppInitializer>
             <RobustNavigationProvider>
               <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
@@ -96,8 +93,6 @@ export default function RootLayout({
               <Toaster />
             </RobustNavigationProvider>
           </AppInitializer>
-          <PWAInstallPrompt />
-          <PWAUpdatePrompt />
         </PageErrorBoundary>
         <script
           dangerouslySetInnerHTML={{
@@ -105,11 +100,9 @@ export default function RootLayout({
               (function() {
                 if (typeof window !== 'undefined') {
                   ${initializeAccessibility.toString()}
-                  ${initializePWA.toString()}
                   ${initializeAnalytics.toString()}
                   
                   initializeAccessibility();
-                  initializePWA();
                   initializeAnalytics();
                 }
               })();
