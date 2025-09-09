@@ -26,7 +26,7 @@ interface PortfolioProps {
   data: HomePageData['portfolio'];
 }
 
-export default function Portfolio({ data }: PortfolioProps) {
+const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
   const projects = data.featured_projects.map(project => ({
     ...project,
     imageUrl: project.image_url || project.image_url_fallback
@@ -686,4 +686,6 @@ export default function Portfolio({ data }: PortfolioProps) {
         </div>
     </section>
   );
-}
+});
+
+export default Portfolio;

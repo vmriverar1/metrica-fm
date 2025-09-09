@@ -307,7 +307,7 @@ interface ServicesProps {
   data: HomePageData['services'];
 }
 
-export default function Services({ data }: ServicesProps) {
+const Services = React.memo(function Services({ data }: ServicesProps) {
   const sectionRef = useSectionAnimation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -434,4 +434,6 @@ export default function Services({ data }: ServicesProps) {
       </div>
     </section>
   );
-}
+});
+
+export default Services;

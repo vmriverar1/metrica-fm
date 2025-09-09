@@ -7,35 +7,9 @@ import { MoveRight } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { HomePageData } from '@/types/home';
+import VideoWithFallback from '@/components/ui/VideoWithFallback';
 
-// Utility function to get proxied video URL
-const getProxiedVideoUrl = (url: string): string => {
-  if (!url) return url;
-  
-  try {
-    const urlObj = new URL(url);
-    const hostname = urlObj.hostname.toLowerCase();
-    
-    // Don't proxy YouTube/Vimeo (they use embeds)
-    if (hostname.includes('youtube.com') || hostname.includes('youtu.be') || hostname.includes('vimeo.com')) {
-      return url;
-    }
-    
-    // Don't proxy local URLs
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || url.startsWith('/')) {
-      return url;
-    }
-    
-    // Use proxy for external direct video files
-    if (url.match(/\.(mp4|webm|ogg|mov|avi)(\?.*)?$/i)) {
-      return `/api/proxy/video?url=${encodeURIComponent(url)}`;
-    }
-    
-    return url;
-  } catch {
-    return url;
-  }
-};
+// Note: getProxiedVideoUrl is now handled by VideoWithFallback component
 
 interface HeroTransformProps {
   data: HomePageData['hero'];
@@ -275,34 +249,15 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
               ref={heroBackgroundRef}
               className="hero-background absolute inset-0 z-0"
             >
-              {(data.background.video_url || data.background.video_url_fallback) ? (
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
-                  {data.background.video_url && (
-                    <source src={getProxiedVideoUrl(data.background.video_url)} type="video/mp4" />
-                  )}
-                  {data.background.video_url_fallback && (
-                    <source src={getProxiedVideoUrl(data.background.video_url_fallback)} type="video/mp4" />
-                  )}
-                  Su navegador no soporta el elemento de video.
-                </video>
-              ) : (
-                <div 
-                  className="w-full h-full bg-gradient-to-br from-primary/90 to-accent/90"
-                  style={{
-                    backgroundImage: data.background.image_fallback 
-                      ? `url(${data.background.image_fallback})`
-                      : undefined,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                />
-              )}
+              <VideoWithFallback
+                primaryVideoUrl={data.background.video_url}
+                fallbackVideoUrl={data.background.video_url_fallback}
+                fallbackImageUrl={data.background.image_fallback}
+                alt="Background video"
+                className="w-full h-full object-cover"
+                priority={true}
+                showLoadingState={true}
+              />
               <div 
                 ref={heroOverlayRef}
                 className="hero-overlay absolute inset-0"

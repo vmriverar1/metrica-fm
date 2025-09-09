@@ -9,17 +9,22 @@ export async function GET(
   try {
     const { slug } = await params;
     
-    // Construct the path to the JSON file
-    const filePath = path.join(process.cwd(), 'public', 'json', 'pages', `${slug}.json`);
+    // Try both src and public paths for JSON files
+    let filePath = path.join(process.cwd(), 'src', 'json', 'pages', `${slug}.json`);
     
-    // Check if file exists
+    // Check if file exists in src, fallback to public
     try {
       await fs.access(filePath);
     } catch {
-      return NextResponse.json(
-        { error: 'File not found' },
-        { status: 404 }
-      );
+      filePath = path.join(process.cwd(), 'public', 'json', 'pages', `${slug}.json`);
+      try {
+        await fs.access(filePath);
+      } catch {
+        return NextResponse.json(
+          { error: 'File not found' },
+          { status: 404 }
+        );
+      }
     }
     
     // Read and parse the JSON file
@@ -49,8 +54,15 @@ export async function PUT(
     const { slug } = await params;
     const { content } = await request.json();
     
-    // Construct the path to the JSON file
-    const filePath = path.join(process.cwd(), 'public', 'json', 'pages', `${slug}.json`);
+    // Try to write to src first, fallback to public
+    let filePath = path.join(process.cwd(), 'src', 'json', 'pages', `${slug}.json`);
+    
+    // Check if src directory structure exists, otherwise use public
+    try {
+      await fs.access(path.dirname(filePath));
+    } catch {
+      filePath = path.join(process.cwd(), 'public', 'json', 'pages', `${slug}.json`);
+    }
     
     // Write the updated JSON file
     await fs.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');

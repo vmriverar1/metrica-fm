@@ -9,6 +9,7 @@ import ServiceAnalytics from '@/components/services/ServiceAnalytics';
 import ServiceSchema from '@/components/services/ServiceSchema';
 import MobileOptimizer from '@/components/services/MobileOptimizer';
 import Footer from '@/components/landing/footer';
+import { readPublicJSONAsync } from '@/lib/json-reader';
 
 export const metadata: Metadata = {
   title: 'Servicios de Dirección Integral de Proyectos | Métrica FM',
@@ -39,7 +40,89 @@ export const metadata: Metadata = {
   }
 };
 
-export default function ServicesPage() {
+// Define interface for services data
+interface ServicesPageData {
+  page: {
+    title: string;
+    subtitle: string;
+    hero_image: string;
+    hero_image_fallback: string;
+    description: string;
+    url: string;
+  };
+  introduction: {
+    text: string;
+    value_proposition: string;
+  };
+  service_philosophy: {
+    title: string;
+    principles: Array<{
+      title: string;
+      description: string;
+    }>;
+  };
+  main_service: {
+    dip: {
+      title: string;
+      subtitle: string;
+      icon: string;
+      color: string;
+      featured: boolean;
+      overview: {
+        description: string;
+        key_value: string;
+        differentiator: string;
+      };
+      pillars: Array<{
+        id: number;
+        name: string;
+        description: string;
+        tools: string[];
+        outcomes: string[];
+      }>;
+      benefits: {
+        quantitative: Array<{
+          metric: string;
+          value: string;
+          description: string;
+        }>;
+        qualitative: string[];
+      };
+    };
+  };
+  additional_services: Record<string, {
+    title: string;
+    description: string;
+    scope: string[];
+  }>;
+  methodology: {
+    title: string;
+    description: string;
+    phases: Array<{
+      phase: string;
+      description: string;
+      duration: string;
+    }>;
+  };
+  quality_assurance: {
+    title: string;
+    certifications: Array<{
+      name: string;
+      description: string;
+      year_obtained: number;
+    }>;
+    processes: string[];
+  };
+}
+
+// Function to load services data
+async function getServicesData(): Promise<ServicesPageData> {
+  return readPublicJSONAsync<ServicesPageData>('/json/pages/services.json');
+}
+
+export default async function ServicesPage() {
+  const data = await getServicesData();
+
   return (
     <MobileOptimizer>
       <div className="min-h-screen bg-background overflow-x-hidden">
@@ -49,13 +132,13 @@ export default function ServicesPage() {
         <Header />
         <main className="relative">
           <UniversalHero 
-            title="Transformamos Ideas en Impacto"
-            subtitle="15+ años liderando proyectos de infraestructura que transforman el Perú"
-            backgroundImage="https://metrica-dip.com/images/slider-inicio-es/02.jpg"
+            title={data.page.title}
+            subtitle={data.page.subtitle}
+            backgroundImage={data.page.hero_image}
             metadata={{
               stats: [
                 'S/ 2.5B+ Gestionados',
-                '300+ Proyectos Exitosos',
+                '300+ Proyectos Exitosos', 
                 '99% Satisfacción Cliente'
               ]
             }}
@@ -69,9 +152,9 @@ export default function ServicesPage() {
             }}
           />
           
-          <ServiceMatrix />
-          <ProjectShowcase />
-          <SmartContactForm />
+          <ServiceMatrix data={data} />
+          <ProjectShowcase data={data} />
+          <SmartContactForm data={data} />
           
           {/* Analytics and Performance Monitoring */}
           <ServiceAnalytics />

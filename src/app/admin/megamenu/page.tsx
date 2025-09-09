@@ -16,12 +16,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
+import dynamic from 'next/dynamic';
 import AdminLayout from '@/components/admin/AdminLayout';
-import MegaMenuStats from '@/components/admin/megamenu/MegaMenuStats';
-import MegaMenuFilters, { FilterState } from '@/components/admin/megamenu/MegaMenuFilters';
-import MenuTreeView from '@/components/admin/megamenu/MenuTreeView';
-import MegaMenuActions from '@/components/admin/megamenu/MegaMenuActions';
-import MegaMenuEditor from '@/components/admin/megamenu/MegaMenuEditor';
+import { FilterState } from '@/components/admin/megamenu/MegaMenuFilters';
+
+// Lazy load heavy admin components
+const MegaMenuStats = dynamic(() => import('@/components/admin/megamenu/MegaMenuStats'), {
+  loading: () => <div className="h-32 bg-muted/50 animate-pulse rounded-lg" />
+});
+
+const MegaMenuFilters = dynamic(() => import('@/components/admin/megamenu/MegaMenuFilters'), {
+  loading: () => <div className="h-20 bg-muted/30 animate-pulse rounded-lg" />
+});
+
+const MenuTreeView = dynamic(() => import('@/components/admin/megamenu/MenuTreeView'), {
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>
+});
+
+const MegaMenuEditor = dynamic(() => import('@/components/admin/megamenu/MegaMenuEditor'), {
+  loading: () => <div className="h-96 bg-muted/10 animate-pulse rounded-lg flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>
+});
 
 interface MegaMenuItem {
   id: string;

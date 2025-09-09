@@ -7,6 +7,7 @@ import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import VideoWithFallback from './VideoWithFallback';
 
 interface ButtonProps {
   text: string;
@@ -18,10 +19,19 @@ interface MetadataProps {
   stats?: string[];
 }
 
+interface BackgroundMedia {
+  type?: 'image' | 'video';
+  primaryUrl?: string;
+  fallbackUrl?: string;
+  overlayOpacity?: number;
+}
+
 interface UniversalHeroProps {
   title: string;
   subtitle?: string;
   description?: string;
+  background?: BackgroundMedia;
+  // Legacy support - deprecated but maintained for backwards compatibility
   backgroundImage?: string;
   overlay?: boolean;
   className?: string;
@@ -34,7 +44,8 @@ export default function UniversalHero({
   title, 
   subtitle, 
   description,
-  backgroundImage = 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+  background,
+  backgroundImage, // Legacy support
   overlay = true,
   className = '',
   primaryButton,
@@ -45,9 +56,41 @@ export default function UniversalHero({
   const backgroundRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const shadeRef = useRef<HTMLDivElement>(null);
+  
   // SIMPLIFICADO: Mostrar el título completo sin animación de escritura
   // Para evitar loops infinitos en el blog
   const [typedTitle, setTypedTitle] = useState(title);
+
+  // Determine background configuration
+  const backgroundConfig = React.useMemo(() => {
+    // If new background prop is provided, use it
+    if (background) {
+      return {
+        type: background.type || 'image',
+        primaryUrl: background.primaryUrl,
+        fallbackUrl: background.fallbackUrl,
+        overlayOpacity: background.overlayOpacity || 0.4
+      };
+    }
+    
+    // Legacy support: use backgroundImage if provided
+    if (backgroundImage) {
+      return {
+        type: 'image' as const,
+        primaryUrl: backgroundImage,
+        fallbackUrl: undefined,
+        overlayOpacity: 0.4
+      };
+    }
+    
+    // Default fallback
+    return {
+      type: 'image' as const,
+      primaryUrl: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+      fallbackUrl: undefined,
+      overlayOpacity: 0.4
+    };
+  }, [background, backgroundImage]);
   
   useEffect(() => {
     setTypedTitle(title);
@@ -116,7 +159,7 @@ export default function UniversalHero({
       ref={sectionRef} 
       className={`relative h-screen overflow-hidden ${className}`}
     >
-      {/* Background fijo (como en HTML original) */}
+      {/* Enhanced Background with Video Support */}
       <div 
         ref={backgroundRef}
         className="absolute inset-0 w-full h-full"
@@ -125,13 +168,25 @@ export default function UniversalHero({
           zIndex: 1
         }}
       >
-        <Image
-          src={backgroundImage}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-        />
+        {backgroundConfig.type === 'video' ? (
+          <VideoWithFallback
+            primaryVideoUrl={backgroundConfig.primaryUrl}
+            fallbackVideoUrl={backgroundConfig.fallbackUrl}
+            fallbackImageUrl={backgroundConfig.primaryUrl} // Use primary as image fallback if video fails
+            alt={title}
+            className="w-full h-full object-cover"
+            priority={true}
+            showLoadingState={true}
+          />
+        ) : (
+          <Image
+            src={backgroundConfig.primaryUrl || 'https://metrica-dip.com/images/slider-inicio-es/01.jpg'}
+            alt={title}
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
       </div>
 
       {/* Shade/overlay progresivo (como en HTML original) */}
@@ -144,11 +199,14 @@ export default function UniversalHero({
         }}
       />
 
-      {/* Overlay base inicial */}
+      {/* Overlay base inicial con opacidad dinámica */}
       {overlay && (
         <div 
-          className="absolute inset-0 w-full h-full bg-black/40" 
-          style={{ zIndex: 2 }} 
+          className="absolute inset-0 w-full h-full bg-black" 
+          style={{ 
+            opacity: backgroundConfig.overlayOpacity,
+            zIndex: 2 
+          }} 
         />
       )}
 
