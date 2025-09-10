@@ -30,7 +30,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/use-toast-simple'
 
 interface HeroData {
   title: string

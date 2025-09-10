@@ -10,7 +10,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast-simple';
 import { Button } from '@/components/ui/button';
 import {
   Settings,

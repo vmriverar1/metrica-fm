@@ -31,7 +31,7 @@ import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import ImageField from '@/components/admin/ImageField';
 import MegaMenuPreview from './MegaMenuPreview';
 import PageAutocomplete from './PageAutocomplete';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast-simple';
 
 interface MegaMenuSubLink {
   id: string;

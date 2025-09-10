@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast-simple';
 import { MoveRight, CheckCircle } from 'lucide-react';
 import { HomePageData } from '@/types/home';
 

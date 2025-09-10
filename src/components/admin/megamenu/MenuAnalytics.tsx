@@ -26,7 +26,7 @@ import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { DateRange } from 'react-day-picker';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast-simple';
 
 interface MenuInteraction {
   id: string;

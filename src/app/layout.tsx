@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Toaster } from "@/components/ui/toaster"
+// import { Toaster } from "@/components/ui/toaster"
 import LoadingProvider from '@/components/loading/LoadingProvider';
 import AppInitializer from '@/components/loading/AppInitializer';
 import RobustNavigationProvider from '@/components/loading/RobustNavigationProvider';
@@ -90,7 +90,7 @@ export default function RootLayout({
               <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
                 {children}
               </LoadingProvider>
-              <Toaster />
+              {/* <Toaster /> */}
             </RobustNavigationProvider>
           </AppInitializer>
         </PageErrorBoundary>

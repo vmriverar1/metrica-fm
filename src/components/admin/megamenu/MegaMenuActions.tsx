@@ -35,7 +35,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast-simple';
 
 interface MegaMenuItem {
   id: string;
