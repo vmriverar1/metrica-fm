@@ -19,6 +19,8 @@ interface TeamMember {
   image_fallback: string;
 }
 
+
+
 interface TeamMembersEditorProps {
   value?: TeamMember[];
   onChange: (value: TeamMember[]) => void;
@@ -187,6 +189,7 @@ export default function TeamMembersEditor({
           </CardContent>
         </Card>
       );
+      
     }
 
     return (
