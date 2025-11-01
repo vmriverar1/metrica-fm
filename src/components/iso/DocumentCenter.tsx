@@ -75,8 +75,8 @@ const documentCategories = {
   'audits': {
     label: 'Auditorías',
     icon: BarChart3,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-100',
     description: 'Reportes de auditorías y seguimientos'
   },
   'training': {
@@ -342,8 +342,8 @@ export default function DocumentCenter() {
 
           <Card>
             <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <RefreshCw className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <RefreshCw className="w-6 h-6 text-cyan-600" />
               </div>
               <div className="text-2xl font-bold text-foreground">100%</div>
               <div className="text-sm text-muted-foreground">Actualizados</div>

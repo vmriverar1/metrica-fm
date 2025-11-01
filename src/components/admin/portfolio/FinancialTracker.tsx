@@ -148,7 +148,7 @@ const TRANSACTION_STATUS = {
 const ALERT_SEVERITY = {
   low: { label: 'Bajo', color: 'bg-blue-100 text-blue-800' },
   medium: { label: 'Medio', color: 'bg-yellow-100 text-yellow-800' },
-  high: { label: 'Alto', color: 'bg-orange-100 text-orange-800' },
+  high: { label: 'Alto', color: 'bg-cyan-100 text-cyan-800' },
   critical: { label: 'Crítico', color: 'bg-red-100 text-red-800' }
 }
 
@@ -601,7 +601,7 @@ export default function FinancialTracker({
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium text-orange-600">
+                          <p className="font-medium text-cyan-600">
                             {formatCurrency(transaction.amount, transaction.currency)}
                           </p>
                           <Badge className="bg-yellow-100 text-yellow-800" size="sm">
@@ -671,7 +671,7 @@ export default function FinancialTracker({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Todos los proyectos</SelectItem>
-                      {uniqueProjects.map(project => (
+                      {uniqueProjects.filter(project => project.id && project.id.trim()).map(project => (
                         <SelectItem key={project.id} value={project.id}>{project.title}</SelectItem>
                       ))}
                     </SelectContent>
@@ -938,7 +938,7 @@ export default function FinancialTracker({
             {alerts.map((alert) => (
               <Card key={alert.id} className={`border-l-4 ${
                 alert.severity === 'critical' ? 'border-l-red-500' :
-                alert.severity === 'high' ? 'border-l-orange-500' :
+                alert.severity === 'high' ? 'border-l-cyan-500' :
                 alert.severity === 'medium' ? 'border-l-yellow-500' : 'border-l-blue-500'
               }`}>
                 <CardContent className="p-4">
@@ -947,7 +947,7 @@ export default function FinancialTracker({
                       <div className="flex items-center gap-2 mb-2">
                         <AlertTriangle className={`h-4 w-4 ${
                           alert.severity === 'critical' ? 'text-red-600' :
-                          alert.severity === 'high' ? 'text-orange-600' :
+                          alert.severity === 'high' ? 'text-cyan-600' :
                           alert.severity === 'medium' ? 'text-yellow-600' : 'text-blue-600'
                         }`} />
                         <Badge className={ALERT_SEVERITY[alert.severity].color}>

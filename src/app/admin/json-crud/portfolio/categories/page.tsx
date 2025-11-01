@@ -8,12 +8,12 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Eye, 
-  Trash2, 
+import {
+  Search,
+  Plus,
+  Edit,
+  Eye,
+  Trash2,
   Building2,
   Image,
   Tag,
@@ -26,6 +26,8 @@ import {
 import { useRouter } from 'next/navigation';
 import DataTable from '@/components/admin/DataTable';
 import DynamicForm from '@/components/admin/DynamicForm';
+import ImageSelector from '@/components/admin/ImageSelector';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
 
 interface PortfolioCategory {
   id: string;
@@ -34,7 +36,7 @@ interface PortfolioCategory {
   description: string;
   icon: string;
   color: string;
-  image?: string;
+  backgroundImage?: string; // Imagen para el hero de la categoría
   isActive: boolean;
   projectCount: number;
   sortOrder: number;
@@ -54,143 +56,29 @@ const PortfolioCategoriesPage = () => {
   const [filterActive, setFilterActive] = useState<boolean | null>(null);
   const router = useRouter();
 
-  // Datos simulados de categorías de portfolio
+  // Cargar categorías desde Firestore
   useEffect(() => {
-    const mockCategories: PortfolioCategory[] = [
-      {
-        id: '1',
-        name: 'Educación',
-        slug: 'educacion',
-        description: 'Proyectos de infraestructura educativa, colegios, universidades y centros de capacitación',
-        icon: '🎓',
-        color: '#2563eb',
-        image: '/images/categories/education.jpg',
-        isActive: true,
-        projectCount: 12,
-        sortOrder: 1,
-        seoTitle: 'Proyectos de Educación - Métrica FM',
-        seoDescription: 'Infraestructura educativa de calidad para el desarrollo académico',
-        createdAt: '2024-01-15T10:00:00Z',
-        updatedAt: '2025-08-20T10:00:00Z'
-      },
-      {
-        id: '2',
-        name: 'Salud',
-        slug: 'salud',
-        description: 'Hospitales, clínicas, centros de salud y proyectos de infraestructura médica',
-        icon: '🏥',
-        color: '#dc2626',
-        image: '/images/categories/health.jpg',
-        isActive: true,
-        projectCount: 8,
-        sortOrder: 2,
-        seoTitle: 'Proyectos de Salud - Métrica FM',
-        seoDescription: 'Infraestructura de salud moderna y funcional',
-        createdAt: '2024-01-20T10:00:00Z',
-        updatedAt: '2025-08-19T15:30:00Z'
-      },
-      {
-        id: '3',
-        name: 'Oficinas',
-        slug: 'oficina',
-        description: 'Edificios corporativos, oficinas administrativas y espacios de trabajo modernos',
-        icon: '🏢',
-        color: '#7c3aed',
-        image: '/images/categories/office.jpg',
-        isActive: true,
-        projectCount: 15,
-        sortOrder: 3,
-        seoTitle: 'Proyectos de Oficinas - Métrica FM',
-        seoDescription: 'Espacios de trabajo modernos y eficientes',
-        createdAt: '2024-02-01T10:00:00Z',
-        updatedAt: '2025-08-18T09:45:00Z'
-      },
-      {
-        id: '4',
-        name: 'Hotelería',
-        slug: 'hoteleria',
-        description: 'Hoteles, resorts, hostales y proyectos de turismo y hospitalidad',
-        icon: '🏨',
-        color: '#059669',
-        image: '/images/categories/hospitality.jpg',
-        isActive: true,
-        projectCount: 6,
-        sortOrder: 4,
-        seoTitle: 'Proyectos de Hotelería - Métrica FM',
-        seoDescription: 'Infraestructura turística y hotelera de calidad',
-        createdAt: '2024-02-10T10:00:00Z',
-        updatedAt: '2025-08-17T14:20:00Z'
-      },
-      {
-        id: '5',
-        name: 'Industria',
-        slug: 'industria',
-        description: 'Plantas industriales, fábricas, almacenes y proyectos de manufactura',
-        icon: '🏭',
-        color: '#ea580c',
-        image: '/images/categories/industry.jpg',
-        isActive: true,
-        projectCount: 10,
-        sortOrder: 5,
-        seoTitle: 'Proyectos Industriales - Métrica FM',
-        seoDescription: 'Infraestructura industrial eficiente y segura',
-        createdAt: '2024-02-15T10:00:00Z',
-        updatedAt: '2025-08-16T11:10:00Z'
-      },
-      {
-        id: '6',
-        name: 'Retail',
-        slug: 'retail',
-        description: 'Centros comerciales, tiendas, supermercados y espacios comerciales',
-        icon: '🛍️',
-        color: '#dc2626',
-        image: '/images/categories/retail.jpg',
-        isActive: true,
-        projectCount: 9,
-        sortOrder: 6,
-        seoTitle: 'Proyectos Retail - Métrica FM',
-        seoDescription: 'Espacios comerciales atractivos y funcionales',
-        createdAt: '2024-03-01T10:00:00Z',
-        updatedAt: '2025-08-15T16:30:00Z'
-      },
-      {
-        id: '7',
-        name: 'Vivienda',
-        slug: 'vivienda',
-        description: 'Condominios, departamentos, casas y proyectos residenciales',
-        icon: '🏠',
-        color: '#0891b2',
-        image: '/images/categories/residential.jpg',
-        isActive: true,
-        projectCount: 18,
-        sortOrder: 7,
-        seoTitle: 'Proyectos de Vivienda - Métrica FM',
-        seoDescription: 'Proyectos residenciales modernos y confortables',
-        createdAt: '2024-03-10T10:00:00Z',
-        updatedAt: '2025-08-14T13:45:00Z'
-      },
-      {
-        id: '8',
-        name: 'Infraestructura',
-        slug: 'infraestructura',
-        description: 'Carreteras, puentes, obras públicas y proyectos de infraestructura urbana',
-        icon: '🌉',
-        color: '#6b7280',
-        image: '/images/categories/infrastructure.jpg',
-        isActive: false,
-        projectCount: 4,
-        sortOrder: 8,
-        seoTitle: 'Proyectos de Infraestructura - Métrica FM',
-        seoDescription: 'Infraestructura pública para el desarrollo urbano',
-        createdAt: '2024-03-20T10:00:00Z',
-        updatedAt: '2025-08-13T08:15:00Z'
-      }
-    ];
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const result = await FirestoreCore.getDocuments('portfolio_categories', {
+          orderBy: [{ field: 'sortOrder', direction: 'asc' }]
+        });
 
-    setTimeout(() => {
-      setCategories(mockCategories);
-      setLoading(false);
-    }, 1000);
+        if (result.success && result.data) {
+          setCategories(result.data);
+          console.log(`✅ Loaded ${result.data.length} categories from Firestore`);
+        } else {
+          console.error('❌ Error loading categories:', result.error);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const filteredCategories = categories.filter(category => {
@@ -219,55 +107,166 @@ const PortfolioCategoriesPage = () => {
     setActiveTab('view');
   };
 
-  const handleSaveCategory = (data: any) => {
-    if (selectedCategory) {
-      setCategories(prev => prev.map(c => 
-        c.id === selectedCategory.id 
-          ? { 
-              ...c, 
-              ...data, 
-              updatedAt: new Date().toISOString(),
-              slug: data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-            }
-          : c
-      ));
-      setActiveTab('list');
-      setSelectedCategory(null);
+  const handleCreateCategory = async (data: any) => {
+    try {
+      const newCategory = {
+        name: data.name,
+        slug: data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+        description: data.description,
+        icon: data.icon || '📁',
+        color: data.color,
+        backgroundImage: data.backgroundImage || '',
+        isActive: data.isActive,
+        projectCount: 0,
+        sortOrder: data.sortOrder,
+        seoTitle: data.seoTitle,
+        seoDescription: data.seoDescription,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      const result = await FirestoreCore.createDocument('portfolio_categories', newCategory);
+
+      if (result.success) {
+        const createdCategory = { ...newCategory, id: result.data?.id };
+        setCategories(prev => [...prev, createdCategory]);
+        setActiveTab('list');
+        console.log('✅ Category created successfully');
+      } else {
+        console.error('❌ Error creating category:', result.error);
+        alert('Error al crear la categoría: ' + result.error);
+      }
+    } catch (error) {
+      console.error('❌ Error creating category:', error);
+      alert('Error al crear la categoría');
     }
   };
 
-  const handleDeleteCategory = (categoryId: string) => {
+  const handleSaveCategory = async (data: any) => {
+    if (!selectedCategory) return;
+
+    try {
+      const updatedCategory = {
+        ...data,
+        updatedAt: new Date().toISOString(),
+        slug: data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      };
+
+      const result = await FirestoreCore.updateDocument('portfolio_categories', selectedCategory.id, updatedCategory);
+
+      if (result.success) {
+        setCategories(prev => prev.map(c =>
+          c.id === selectedCategory.id ? { ...c, ...updatedCategory } : c
+        ));
+        setActiveTab('list');
+        setSelectedCategory(null);
+        console.log('✅ Category updated successfully');
+      } else {
+        console.error('❌ Error updating category:', result.error);
+        alert('Error al actualizar la categoría: ' + result.error);
+      }
+    } catch (error) {
+      console.error('❌ Error saving category:', error);
+      alert('Error al guardar la categoría');
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId: string) => {
     const category = categories.find(c => c.id === categoryId);
-    if (category && category.projectCount > 0) {
+    if (!category) return;
+
+    if (category.projectCount > 0) {
       alert(`No se puede eliminar la categoría "${category.name}" porque tiene ${category.projectCount} proyectos asociados.`);
       return;
     }
-    
-    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
-      setCategories(prev => prev.filter(c => c.id !== categoryId));
+
+    if (!confirm('¿Estás seguro de que deseas eliminar esta categoría?')) return;
+
+    try {
+      const result = await FirestoreCore.deleteDocument('portfolio_categories', categoryId);
+
+      if (result.success) {
+        setCategories(prev => prev.filter(c => c.id !== categoryId));
+        console.log('✅ Category deleted successfully');
+      } else {
+        console.error('❌ Error deleting category:', result.error);
+        alert('Error al eliminar la categoría: ' + result.error);
+      }
+    } catch (error) {
+      console.error('❌ Error deleting category:', error);
+      alert('Error al eliminar la categoría');
     }
   };
 
-  const handleToggleStatus = (categoryId: string) => {
-    setCategories(prev => prev.map(c => 
-      c.id === categoryId 
-        ? { ...c, isActive: !c.isActive, updatedAt: new Date().toISOString() }
-        : c
-    ));
+  const handleToggleStatus = async (categoryId: string) => {
+    const category = categories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    try {
+      const updatedData = {
+        isActive: !category.isActive,
+        updatedAt: new Date().toISOString()
+      };
+
+      const result = await FirestoreCore.updateDocument('portfolio_categories', categoryId, updatedData);
+
+      if (result.success) {
+        setCategories(prev => prev.map(c =>
+          c.id === categoryId ? { ...c, ...updatedData } : c
+        ));
+        console.log('✅ Category status updated successfully');
+      } else {
+        console.error('❌ Error updating category status:', result.error);
+        alert('Error al actualizar el estado: ' + result.error);
+      }
+    } catch (error) {
+      console.error('❌ Error toggling status:', error);
+      alert('Error al cambiar el estado');
+    }
   };
 
   const columns = [
     {
+      key: 'backgroundImage',
+      label: 'Imagen',
+      render: (value: string, row: PortfolioCategory) => (
+        <div className="w-16 h-12 rounded-lg bg-gray-200 overflow-hidden flex-shrink-0">
+          {value ? (
+            <img
+              src={value}
+              alt={`Imagen de ${row.name}`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-100">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs" style="background-color: ${row.color}20; color: ${row.color}">
+                      ${row.icon}
+                    </div>
+                  </div>`;
+                }
+              }}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <div
+                className="w-6 h-6 rounded-full flex items-center justify-center text-xs"
+                style={{ backgroundColor: `${row.color}20`, color: row.color }}
+              >
+                {row.icon}
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    },
+    {
       key: 'name',
       label: 'Categoría',
       render: (value: string, row: PortfolioCategory) => (
-        <div className="flex items-center gap-3 min-w-[200px]">
-          <div 
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
-            style={{ backgroundColor: `${row.color}20`, color: row.color }}
-          >
-            {row.icon}
-          </div>
+        <div className="flex items-center gap-3">
           <div className="min-w-0">
             <div className="font-medium truncate">{value}</div>
             <div className="text-xs text-gray-500 truncate">/{row.slug}</div>
@@ -276,29 +275,10 @@ const PortfolioCategoriesPage = () => {
       )
     },
     {
-      key: 'description',
-      label: 'Descripción',
-      render: (value: string) => (
-        <div className="max-w-[300px] min-w-[200px]">
-          <p className="text-sm text-gray-600 line-clamp-2">{value}</p>
-        </div>
-      )
-    },
-    {
-      key: 'projectCount',
-      label: 'Proyectos',
-      render: (value: number) => (
-        <div className="flex items-center gap-1 min-w-[80px]">
-          <Building2 className="h-4 w-4 text-gray-400 flex-shrink-0" />
-          <span className="font-medium">{value}</span>
-        </div>
-      )
-    },
-    {
       key: 'isActive',
       label: 'Estado',
       render: (value: boolean, row: PortfolioCategory) => (
-        <div className="flex flex-col items-center gap-1 min-w-[90px]">
+        <div className="flex flex-col items-center gap-1">
           <Badge className={getStatusColor(value)} size="sm">
             {value ? 'Activa' : 'Inactiva'}
           </Badge>
@@ -307,28 +287,6 @@ const PortfolioCategoriesPage = () => {
             onCheckedChange={() => handleToggleStatus(row.id)}
             size="sm"
           />
-        </div>
-      )
-    },
-    {
-      key: 'sortOrder',
-      label: 'Orden',
-      render: (value: number) => (
-        <div className="min-w-[60px]">
-          <Badge variant="outline" className="font-mono text-xs">
-            {value}
-          </Badge>
-        </div>
-      )
-    },
-    {
-      key: 'updatedAt',
-      label: 'Actualizado',
-      render: (value: string) => (
-        <div className="min-w-[100px]">
-          <span className="text-xs text-gray-500">
-            {new Date(value).toLocaleDateString('es-ES')}
-          </span>
         </div>
       )
     }
@@ -385,6 +343,13 @@ const PortfolioCategoriesPage = () => {
         required: true
       },
       {
+        key: 'backgroundImage',
+        label: 'Imagen de Fondo',
+        type: 'image',
+        placeholder: 'Seleccionar imagen para el hero de la categoría',
+        description: 'Imagen que se mostrará en el hero de la página de la categoría'
+      },
+      {
         key: 'sortOrder',
         label: 'Orden',
         type: 'number',
@@ -434,7 +399,7 @@ const PortfolioCategoriesPage = () => {
         <div className="flex gap-2 w-full sm:w-auto">
           <Button
             onClick={() => setActiveTab('create')}
-            className="bg-[#007bc4] hover:bg-[#007bc4]/90 flex-1 sm:flex-none"
+            className="bg-[#00A8E8] hover:bg-[#00A8E8]/90 flex-1 sm:flex-none"
           >
             <Plus className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Nueva Categoría</span>
@@ -460,7 +425,7 @@ const PortfolioCategoriesPage = () => {
         <Card>
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-2">
-              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-[#007bc4] flex-shrink-0" />
+              <Building2 className="h-6 w-6 md:h-8 md:w-8 text-[#00A8E8] flex-shrink-0" />
               <div className="min-w-0">
                 <p className="text-xl md:text-2xl font-bold">{totalProjects}</p>
                 <p className="text-xs md:text-sm text-gray-600">Total Proyectos</p>
@@ -728,13 +693,13 @@ const PortfolioCategoriesPage = () => {
                   </div>
 
                   <div className="space-y-4">
-                    {selectedCategory.image && (
+                    {selectedCategory.backgroundImage && (
                       <div>
-                        <label className="text-sm font-medium text-gray-600">Imagen:</label>
+                        <label className="text-sm font-medium text-gray-600">Imagen de Fondo:</label>
                         <div className="mt-1 w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center">
                           <Image className="h-12 w-12 text-gray-400" />
                           <span className="ml-2 text-sm text-gray-500">
-                            {selectedCategory.image}
+                            {selectedCategory.backgroundImage}
                           </span>
                         </div>
                       </div>
@@ -827,25 +792,7 @@ const PortfolioCategoriesPage = () => {
                   sortOrder: categories.length + 1,
                   color: '#6b7280'
                 }}
-                onSubmit={(data) => {
-                  const newCategory: PortfolioCategory = {
-                    id: Date.now().toString(),
-                    name: data.name,
-                    slug: data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-                    description: data.description,
-                    icon: data.icon || '📁',
-                    color: data.color,
-                    isActive: data.isActive,
-                    projectCount: 0,
-                    sortOrder: data.sortOrder,
-                    seoTitle: data.seoTitle,
-                    seoDescription: data.seoDescription,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                  };
-                  setCategories(prev => [...prev, newCategory]);
-                  setActiveTab('list');
-                }}
+                onSubmit={handleCreateCategory}
                 onCancel={() => setActiveTab('list')}
               />
             </CardContent>

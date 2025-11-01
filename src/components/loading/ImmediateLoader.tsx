@@ -55,8 +55,8 @@ export default function ImmediateLoader() {
         >
           <defs>
             <linearGradient id="loader-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#007bc4" stopOpacity="0.1" />
-              <stop offset="25%" stopColor="#007bc4" stopOpacity="1" />
+              <stop offset="0%" stopColor="#00A8E8" stopOpacity="0.1" />
+              <stop offset="25%" stopColor="#00A8E8" stopOpacity="1" />
               <stop offset="75%" stopColor="#003F6F" stopOpacity="1" />
               <stop offset="100%" stopColor="#003F6F" stopOpacity="0.1" />
             </linearGradient>

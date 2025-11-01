@@ -128,7 +128,7 @@ const ZONE_TYPES = [
   { value: 'rural', label: 'Rural', color: 'bg-green-100 text-green-800', icon: TreePine },
   { value: 'industrial', label: 'Industrial', color: 'bg-gray-100 text-gray-800', icon: Zap },
   { value: 'commercial', label: 'Comercial', color: 'bg-purple-100 text-purple-800', icon: DollarSign },
-  { value: 'residential', label: 'Residencial', color: 'bg-orange-100 text-orange-800', icon: Users }
+  { value: 'residential', label: 'Residencial', color: 'bg-cyan-100 text-cyan-800', icon: Users }
 ]
 
 const RISK_COLORS = {

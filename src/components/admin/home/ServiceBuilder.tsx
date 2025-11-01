@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings, Plus, Eye, EyeOff, Upload, ExternalLink, Star, Trash2, Edit3, Save, X } from 'lucide-react';
+import { Settings, Plus, Eye, EyeOff, Upload, ExternalLink, Star, Trash2, Edit3, Save, X, GripVertical } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import ImageField from '@/components/admin/ImageField';
+import ImageSelector from '@/components/admin/ImageSelector';
 
 interface Service {
   id: string;
@@ -38,6 +39,8 @@ interface ServiceBuilderProps {
   onChange: (services: ServicesData) => void;
   imageUpload?: boolean;
   iconLibrary?: boolean;
+  sectionTitle?: string;
+  sectionSubtitle?: string;
 }
 
 const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
@@ -45,7 +48,9 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   secondaryServices,
   onChange,
   imageUpload = true,
-  iconLibrary = true
+  iconLibrary = true,
+  sectionTitle = '',
+  sectionSubtitle = ''
 }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [editingService, setEditingService] = useState<number | null>(null); // null = main, 0-3 = secondary
@@ -53,7 +58,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   const handleMainServiceChange = (field: keyof Service, value: any) => {
     const updatedMainService = { ...mainService, [field]: value };
     onChange({
-      section: { title: '', subtitle: '' }, // These are managed separately
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: updatedMainService,
       secondary_services: secondaryServices
     });
@@ -63,7 +68,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     const updatedSecondaryServices = [...secondaryServices];
     updatedSecondaryServices[index] = { ...updatedSecondaryServices[index], [field]: value };
     onChange({
-      section: { title: '', subtitle: '' },
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: mainService,
       secondary_services: updatedSecondaryServices
     });
@@ -82,7 +87,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     
     const updatedSecondaryServices = [...secondaryServices, newService];
     onChange({
-      section: { title: '', subtitle: '' },
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: mainService,
       secondary_services: updatedSecondaryServices
     });
@@ -99,7 +104,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     
     const updatedSecondaryServices = secondaryServices.filter((_, i) => i !== index);
     onChange({
-      section: { title: '', subtitle: '' },
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: mainService,
       secondary_services: updatedSecondaryServices
     });
@@ -125,7 +130,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     updatedSecondaryServices.splice(index + 1, 0, newService);
     
     onChange({
-      section: { title: '', subtitle: '' },
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: mainService,
       secondary_services: updatedSecondaryServices
     });
@@ -134,11 +139,37 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     setEditingService(index + 1);
   };
 
+  // Handle drag and drop reordering
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(secondaryServices);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    onChange({
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
+      main_service: mainService,
+      secondary_services: items
+    });
+
+    // Update editing index if needed
+    if (editingService === result.source.index) {
+      setEditingService(result.destination.index);
+    } else if (editingService !== null) {
+      if (result.source.index < editingService && result.destination.index >= editingService) {
+        setEditingService(editingService - 1);
+      } else if (result.source.index > editingService && result.destination.index <= editingService) {
+        setEditingService(editingService + 1);
+      }
+    }
+  };
+
   const handleWidthChange = (index: number, newWidth: '1/3' | '2/3' | '3/3') => {
     const updatedSecondaryServices = [...secondaryServices];
     updatedSecondaryServices[index] = { ...updatedSecondaryServices[index], width: newWidth };
     onChange({
-      section: { title: '', subtitle: '' },
+      section: { title: sectionTitle, subtitle: sectionSubtitle },
       main_service: mainService,
       secondary_services: updatedSecondaryServices
     });
@@ -186,7 +217,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       const newSecondaryServices = [demotedMainService, ...secondaryServices];
         
       onChange({
-        section: { title: '', subtitle: '' },
+        section: { title: sectionTitle, subtitle: sectionSubtitle },
         main_service: emptyMain,
         secondary_services: newSecondaryServices
       });
@@ -211,7 +242,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       }
       
       onChange({
-        section: { title: '', subtitle: '' },
+        section: { title: sectionTitle, subtitle: sectionSubtitle },
         main_service: newMainService,
         secondary_services: newSecondaryServices
       });
@@ -353,7 +384,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
           )}
           <h4 className="font-semibold text-sm line-clamp-1">{service.title || 'Sin título'}</h4>
         </div>
-        <p className="text-xs text-gray-600 line-clamp-2">{service.description || 'Sin descripción'}</p>
+        <p className="text-xs text-gray-600 line-clamp-2">{service.description || ''}</p>
         
         {service.image_url && (
           <div className="w-full h-20 bg-gray-100 rounded border overflow-hidden relative">
@@ -501,7 +532,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
             <div className="space-y-4">
               {imageUpload && (
                 <div>
-                  <ImageField
+                  <ImageSelector
                     value={service.image_url || ''}
                     onChange={(newValue) => handleChange('image_url', newValue)}
                     label="Imagen del Servicio"
@@ -515,7 +546,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
 
               {iconLibrary && (
                 <div>
-                  <ImageField
+                  <ImageSelector
                     value={service.icon_url || ''}
                     onChange={(newValue) => handleChange('icon_url', newValue)}
                     label="Icono del Servicio"
@@ -638,22 +669,76 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                 </div>
                 
                 {/* Servicio Principal Card */}
-                <div className="mb-4">
+                <div className="mb-4 relative group">
+                  {/* Edit Button para servicio principal */}
+                  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setEditingService(null)} // null = main service
+                      className="h-8 w-8 p-0 bg-white shadow-md"
+                    >
+                      <Edit3 className="h-3 w-3" />
+                    </Button>
+                  </div>
                   <ServiceCard service={mainService} isMain={true} />
                 </div>
                 
-                {/* Servicios Secundarios Cards con ancho dinámico */}
-                <div className="grid grid-cols-3 gap-4">
-                  {secondaryServices.map((service, index) => (
-                    <div key={service.id} className={getWidthClass(service.width)}>
-                      <ServiceCard 
-                        service={service} 
-                        isMain={false} 
-                        index={index} 
-                      />
-                    </div>
-                  ))}
-                </div>
+                {/* Servicios Secundarios Cards con drag & drop */}
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable droppableId="services" direction="horizontal">
+                    {(provided) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className="grid grid-cols-3 gap-4"
+                      >
+                        {secondaryServices.map((service, index) => (
+                          <Draggable key={service.id} draggableId={service.id} index={index}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                className={`${getWidthClass(service.width)} ${snapshot.isDragging ? 'opacity-50' : ''}`}
+                              >
+                                <Card className="relative group">
+                                  {/* Drag Handle */}
+                                  <div
+                                    {...provided.dragHandleProps}
+                                    className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+                                  >
+                                    <div className="bg-white shadow-md rounded p-1">
+                                      <GripVertical className="h-4 w-4 text-gray-500" />
+                                    </div>
+                                  </div>
+
+                                  {/* Edit Button */}
+                                  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => setEditingService(index)}
+                                      className="h-8 w-8 p-0 bg-white shadow-md"
+                                    >
+                                      <Edit3 className="h-3 w-3" />
+                                    </Button>
+                                  </div>
+
+                                  <ServiceCard
+                                    service={service}
+                                    isMain={false}
+                                    index={index}
+                                  />
+                                </Card>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
                 
                 {/* Mensaje si no hay servicios secundarios */}
                 {secondaryServices.length === 0 && (
@@ -773,7 +858,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
               <p className="text-xs text-gray-600">Total Servicios</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#007bc4]">
+              <p className="text-2xl font-bold text-[#00A8E8]">
                 {[mainService, ...secondaryServices].filter(s => s.title && s.description).length}
               </p>
               <p className="text-xs text-gray-600">Completos</p>

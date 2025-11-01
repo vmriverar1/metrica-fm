@@ -328,7 +328,7 @@ const UserPermissionsManager: React.FC<UserPermissionsManagerProps> = ({
       case 'medium':
         return 'bg-yellow-100 text-yellow-800';
       case 'high':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-cyan-100 text-cyan-800';
       case 'critical':
         return 'bg-red-100 text-red-800';
       default:
@@ -423,7 +423,7 @@ const UserPermissionsManager: React.FC<UserPermissionsManagerProps> = ({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos los roles</SelectItem>
-                  {roles.map(role => (
+                  {roles.filter(role => role.id && role.id.trim()).map(role => (
                     <SelectItem key={role.id} value={role.id}>
                       {role.name}
                     </SelectItem>

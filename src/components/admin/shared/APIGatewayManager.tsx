@@ -1147,7 +1147,7 @@ export default function APIGatewayManager() {
         return <AlertTriangle className="h-4 w-4 text-yellow-500" />
       case 'deprecated':
       case 'maintenance':
-        return <Clock className="h-4 w-4 text-orange-500" />
+        return <Clock className="h-4 w-4 text-cyan-500" />
       case 'disabled':
       case 'down':
       case 'revoked':
@@ -1162,7 +1162,7 @@ export default function APIGatewayManager() {
     switch (method) {
       case 'GET': return 'border-blue-500 text-blue-700 bg-blue-50'
       case 'POST': return 'border-green-500 text-green-700 bg-green-50'
-      case 'PUT': return 'border-orange-500 text-orange-700 bg-orange-50'
+      case 'PUT': return 'border-cyan-500 text-cyan-700 bg-cyan-50'
       case 'DELETE': return 'border-red-500 text-red-700 bg-red-50'
       case 'PATCH': return 'border-purple-500 text-purple-700 bg-purple-50'
       default: return 'border-gray-500 text-gray-700 bg-gray-50'

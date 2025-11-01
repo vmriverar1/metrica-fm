@@ -142,7 +142,7 @@ const SIZE_OPTIONS = [
   { value: 'startup', label: 'Startup (1-10)', color: 'bg-green-100 text-green-800' },
   { value: 'small', label: 'Pequeña (11-50)', color: 'bg-blue-100 text-blue-800' },
   { value: 'medium', label: 'Mediana (51-200)', color: 'bg-yellow-100 text-yellow-800' },
-  { value: 'large', label: 'Grande (201-1000)', color: 'bg-orange-100 text-orange-800' },
+  { value: 'large', label: 'Grande (201-1000)', color: 'bg-cyan-100 text-cyan-800' },
   { value: 'enterprise', label: 'Corporativa (1000+)', color: 'bg-purple-100 text-purple-800' }
 ]
 
@@ -150,13 +150,13 @@ const TYPE_OPTIONS = [
   { value: 'public', label: 'Sector Público', icon: Building2, color: 'bg-blue-100 text-blue-800' },
   { value: 'private', label: 'Sector Privado', icon: Briefcase, color: 'bg-green-100 text-green-800' },
   { value: 'ngo', label: 'ONG', icon: Users, color: 'bg-purple-100 text-purple-800' },
-  { value: 'international', label: 'Internacional', icon: Globe, color: 'bg-orange-100 text-orange-800' }
+  { value: 'international', label: 'Internacional', icon: Globe, color: 'bg-cyan-100 text-cyan-800' }
 ]
 
 const PRIORITY_COLORS = {
   low: 'bg-gray-100 text-gray-800',
   medium: 'bg-yellow-100 text-yellow-800',
-  high: 'bg-orange-100 text-orange-800',
+  high: 'bg-cyan-100 text-cyan-800',
   critical: 'bg-red-100 text-red-800'
 }
 

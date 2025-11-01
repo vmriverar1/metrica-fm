@@ -48,7 +48,7 @@ export default function LoadingScreen() {
           className="w-full h-full"
           style={{
             backgroundImage: `radial-gradient(circle at 25% 25%, #003F6F 0%, transparent 50%), 
-                             radial-gradient(circle at 75% 75%, #007bc4 0%, transparent 50%)`,
+                             radial-gradient(circle at 75% 75%, #00A8E8 0%, transparent 50%)`,
             backgroundSize: '100px 100px'
           }}
         />
@@ -87,10 +87,10 @@ export default function LoadingScreen() {
             }}
             style={{
               borderWidth: '2px',
-              borderBottomColor: '#007bc4',
-              borderLeftColor: 'rgba(0, 123, 196, 0.3)',
-              borderTopColor: 'rgba(0, 123, 196, 0.1)',
-              borderRightColor: 'rgba(0, 123, 196, 0.3)'
+              borderBottomColor: '#00A8E8',
+              borderLeftColor: 'rgba(0, 168, 232, 0.3)',
+              borderTopColor: 'rgba(0, 168, 232, 0.1)',
+              borderRightColor: 'rgba(0, 168, 232, 0.3)'
             }}
           />
 

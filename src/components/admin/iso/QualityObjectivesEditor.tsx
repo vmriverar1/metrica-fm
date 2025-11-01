@@ -442,7 +442,7 @@ export default function QualityObjectivesEditor({
                       <p className="text-xs text-gray-500 mt-1">
                         {objective.description && objective.description.length > 100 
                           ? `${objective.description.substring(0, 100)}...`
-                          : objective.description || 'Sin descripción'
+                          : objective.description || ''
                         }
                       </p>
                     </div>

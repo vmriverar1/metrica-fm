@@ -153,7 +153,7 @@ const STATUS_CONFIG = {
 const RISK_CONFIG = {
   low: { label: 'Bajo', color: 'bg-green-100 text-green-800', icon: CheckCircle },
   medium: { label: 'Medio', color: 'bg-yellow-100 text-yellow-800', icon: AlertTriangle },
-  high: { label: 'Alto', color: 'bg-orange-100 text-orange-800', icon: AlertTriangle },
+  high: { label: 'Alto', color: 'bg-cyan-100 text-cyan-800', icon: AlertTriangle },
   critical: { label: 'Crítico', color: 'bg-red-100 text-red-800', icon: XCircle }
 }
 
@@ -610,7 +610,7 @@ export default function ProjectAnalytics({
                       <div className="flex justify-center mb-2">
                         <Icon className={`h-8 w-8 ${level === 'low' ? 'text-green-600' : 
                           level === 'medium' ? 'text-yellow-600' : 
-                          level === 'high' ? 'text-orange-600' : 'text-red-600'}`} />
+                          level === 'high' ? 'text-cyan-600' : 'text-red-600'}`} />
                       </div>
                       <p className="font-semibold">{config.label}</p>
                       <p className="text-2xl font-bold">{count}</p>
@@ -739,7 +739,7 @@ export default function ProjectAnalytics({
                     .map((project, index) => (
                       <div key={project.id} className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-500 to-cyan-600 flex items-center justify-center">
                             <span className="text-xs font-bold text-white">{index + 1}</span>
                           </div>
                           <div className="flex-1">

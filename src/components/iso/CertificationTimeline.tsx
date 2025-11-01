@@ -46,9 +46,9 @@ const eventTypeConfig = {
   scope_extension: {
     icon: TrendingUp,
     label: 'Ampliación de Alcance',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
-    borderColor: 'border-orange-200'
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-100',
+    borderColor: 'border-cyan-200'
   }
 };
 

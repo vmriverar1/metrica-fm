@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// Reglas de seguridad para Firebase Storage - Métrica
+// Sistema dual: local + Firebase Storage
+// Solo el servidor (Firebase Admin SDK) puede escribir
+// Lectura pública para imágenes
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Carpeta de imágenes de proyectos
+    match /images/proyectos/{allPaths=**} {
+      // Permitir lectura pública (necesario para mostrar en el sitio web)
+      allow read: if true;
+
+      // Solo el servidor puede escribir (Firebase Admin SDK no requiere autenticación)
+      allow write: if false;
+    }
+
+    // Carpeta de imágenes generales
+    match /images/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Por defecto, denegar todo acceso a otras rutas
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

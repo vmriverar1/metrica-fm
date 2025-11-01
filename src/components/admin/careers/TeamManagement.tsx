@@ -289,7 +289,7 @@ const EMPLOYMENT_TYPE_CONFIG = {
   full_time: { label: 'Tiempo Completo', color: 'bg-blue-100 text-blue-800' },
   part_time: { label: 'Tiempo Parcial', color: 'bg-green-100 text-green-800' },
   contract: { label: 'Contrato', color: 'bg-purple-100 text-purple-800' },
-  intern: { label: 'Practicante', color: 'bg-orange-100 text-orange-800' }
+  intern: { label: 'Practicante', color: 'bg-cyan-100 text-cyan-800' }
 }
 
 const ROLE_CONFIG = {
@@ -574,12 +574,12 @@ export default function TeamManagement({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Solicitudes Pendientes</p>
-                <p className="text-2xl font-bold text-orange-600">{teamAnalytics.pendingTimeOffRequests}</p>
+                <p className="text-2xl font-bold text-cyan-600">{teamAnalytics.pendingTimeOffRequests}</p>
                 <p className="text-xs text-gray-500 mt-1">
                   tiempo libre
                 </p>
               </div>
-              <Clock className="h-8 w-8 text-orange-600" />
+              <Clock className="h-8 w-8 text-cyan-600" />
             </div>
           </CardContent>
         </Card>
@@ -1142,7 +1142,7 @@ export default function TeamManagement({
                               perf.range.startsWith('4.5') ? 'bg-green-600' :
                               perf.range.startsWith('4.0') ? 'bg-blue-600' :
                               perf.range.startsWith('3.5') ? 'bg-yellow-600' :
-                              perf.range.startsWith('3.0') ? 'bg-orange-600' : 'bg-red-600'
+                              perf.range.startsWith('3.0') ? 'bg-cyan-600' : 'bg-red-600'
                             }`}
                             style={{ width: `${Math.max((perf.count / teamAnalytics.totalMembers) * 100, 5)}%` }}
                           />
@@ -1237,7 +1237,7 @@ export default function TeamManagement({
         <TabsContent value="time_off" className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">Solicitudes de Tiempo Libre</h3>
-            <Badge className="bg-orange-100 text-orange-800">
+            <Badge className="bg-cyan-100 text-cyan-800">
               {teamAnalytics.pendingTimeOffRequests} pendientes
             </Badge>
           </div>
@@ -1733,7 +1733,7 @@ export default function TeamManagement({
                               <div 
                                 className={`h-1 rounded-full ${
                                   skill.level === 'expert' ? 'bg-red-600' :
-                                  skill.level === 'advanced' ? 'bg-orange-600' :
+                                  skill.level === 'advanced' ? 'bg-cyan-600' :
                                   skill.level === 'intermediate' ? 'bg-blue-600' : 'bg-green-600'
                                 }`}
                                 style={{ 

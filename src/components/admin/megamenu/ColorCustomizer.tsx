@@ -22,7 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { toast } from '@/hooks/use-toast-simple';
+import { toast } from '@/hooks/use-toast';
 
 interface ColorPalette {
   id: string;
@@ -72,15 +72,15 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
       name: 'Métrica FM Original',
       colors: {
         primary: '#003F6F',
-        secondary: '#007bc4',
+        secondary: '#00A8E8',
         accent: '#F59E0B',
         background: '#FFFFFF',
         foreground: '#1F2937'
       },
       gradients: [
-        'linear-gradient(135deg, #003F6F 0%, #007bc4 100%)',
+        'linear-gradient(135deg, #003F6F 0%, #00A8E8 100%)',
         'linear-gradient(45deg, #003F6F 0%, #F59E0B 100%)',
-        'radial-gradient(circle, #003F6F 0%, #007bc4 100%)'
+        'radial-gradient(circle, #003F6F 0%, #00A8E8 100%)'
       ],
       created_at: '2025-09-01T00:00:00Z',
       is_default: true
@@ -129,9 +129,9 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
       direction: 135,
       stops: [
         { color: '#003F6F', position: 0 },
-        { color: '#007bc4', position: 100 }
+        { color: '#00A8E8', position: 100 }
       ],
-      css: 'linear-gradient(135deg, #003F6F 0%, #007bc4 100%)'
+      css: 'linear-gradient(135deg, #003F6F 0%, #00A8E8 100%)'
     }
   ]);
 
@@ -144,7 +144,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
     direction: 135,
     stops: [
       { color: '#003F6F', position: 0 },
-      { color: '#007bc4', position: 100 }
+      { color: '#00A8E8', position: 100 }
     ],
     css: ''
   });
@@ -306,7 +306,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
       direction: 135,
       stops: [
         { color: '#003F6F', position: 0 },
-        { color: '#007bc4', position: 100 }
+        { color: '#00A8E8', position: 100 }
       ],
       css: ''
     });
@@ -361,7 +361,7 @@ const ColorCustomizer: React.FC<ColorCustomizerProps> = ({
                     name: 'Nueva Paleta',
                     colors: {
                       primary: '#003F6F',
-                      secondary: '#007bc4',
+                      secondary: '#00A8E8',
                       accent: '#F59E0B',
                       background: '#FFFFFF',
                       foreground: '#1F2937'

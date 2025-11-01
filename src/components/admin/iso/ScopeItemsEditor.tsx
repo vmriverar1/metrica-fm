@@ -25,7 +25,6 @@ interface ScopeItemsEditorProps {
 
 // Plantillas para alcances de certificación ISO 9001
 const scopeTemplates = [
-  "Dirección integral de proyectos de construcción",
   "Gestión de proyectos de infraestructura",
   "Supervisión y control de obras",
   "Consultoría en construcción",
@@ -35,9 +34,9 @@ const scopeTemplates = [
   "Auditorías de procesos constructivos"
 ];
 
-export default function ScopeItemsEditor({ 
-  value = [], 
-  onChange, 
+export default function ScopeItemsEditor({
+  value = [],
+  onChange,
   disabled = false,
   maxItems = 10,
   title = "Alcance de Certificación",
@@ -45,27 +44,33 @@ export default function ScopeItemsEditor({
   placeholder = "ej. Dirección integral de proyectos de construcción"
 }: ScopeItemsEditorProps) {
 
+  // Asegurar que value es un array de strings válidos
+  const safeValue = React.useMemo(() => {
+    if (!Array.isArray(value)) return [];
+    return value.filter(item => item && typeof item === 'string').map(item => String(item));
+  }, [value]);
+
   const addItem = (template?: string) => {
-    if (value.length >= maxItems) return;
+    if (safeValue.length >= maxItems) return;
     
     const newItem = template || '';
-    onChange([...value, newItem]);
+    onChange([...safeValue, newItem]);
   };
 
   const removeItem = (index: number) => {
-    const newItems = value.filter((_, i) => i !== index);
+    const newItems = safeValue.filter((_, i) => i !== index);
     onChange(newItems);
   };
 
   const updateItem = (index: number, newValue: string) => {
-    const newItems = value.map((item, i) => 
+    const newItems = safeValue.map((item, i) =>
       i === index ? newValue : item
     );
     onChange(newItems);
   };
 
   const moveItem = (fromIndex: number, toIndex: number) => {
-    const newItems = [...value];
+    const newItems = [...safeValue];
     const [movedItem] = newItems.splice(fromIndex, 1);
     newItems.splice(toIndex, 0, movedItem);
     onChange(newItems);
@@ -96,13 +101,13 @@ export default function ScopeItemsEditor({
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant="outline" className="text-xs">
-            {value.length} / {maxItems}
+            {safeValue.length} / {maxItems}
           </Badge>
           <Button
             type="button"
             size="sm"
             onClick={() => addItem()}
-            disabled={disabled || value.length >= maxItems}
+            disabled={disabled || safeValue.length >= maxItems}
             className="h-8"
           >
             <Plus className="w-4 h-4 mr-1" />
@@ -111,7 +116,7 @@ export default function ScopeItemsEditor({
         </div>
       </div>
 
-      {value.length === 0 ? (
+      {safeValue.length === 0 ? (
         <Card className="border-2 border-dashed border-gray-300">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Building className="w-12 h-12 text-gray-400 mb-4" />
@@ -152,7 +157,7 @@ export default function ScopeItemsEditor({
         </Card>
       ) : (
         <div className="space-y-3">
-          {value.map((item, index) => (
+          {safeValue.map((item, index) => (
             <Card
               key={index}
               className="transition-all duration-200 hover:shadow-md"
@@ -199,12 +204,12 @@ export default function ScopeItemsEditor({
       )}
 
       {/* Vista previa compacta */}
-      {value.length > 0 && (
+      {safeValue.length > 0 && (
         <Card className="bg-gray-50 border-l-4 border-l-blue-500">
           <CardContent className="pt-6">
             <h4 className="font-medium text-gray-900 mb-3">📋 Vista Previa</h4>
             <ul className="space-y-2">
-              {value.filter(item => item.trim()).map((item, index) => (
+              {safeValue.filter(item => item && typeof item === 'string' && item.trim()).map((item, index) => (
                 <li key={index} className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">{item}</span>
@@ -216,13 +221,13 @@ export default function ScopeItemsEditor({
       )}
 
       {/* Plantillas disponibles */}
-      {value.length < maxItems && value.length > 0 && (
+      {safeValue.length < maxItems && safeValue.length > 0 && (
         <Card className="border-dashed border-2 border-gray-200">
           <CardContent className="pt-6">
             <h4 className="font-medium text-gray-900 mb-3">💡 Plantillas Sugeridas</h4>
             <div className="flex flex-wrap gap-2">
               {scopeTemplates
-                .filter(template => !value.includes(template))
+                .filter(template => !safeValue.includes(template))
                 .slice(0, 6)
                 .map((template, index) => (
                 <Button

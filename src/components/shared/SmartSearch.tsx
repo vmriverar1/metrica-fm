@@ -451,7 +451,7 @@ export default function SmartSearch<T extends Record<string, any>>({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {getSortOptions().map(option => (
+                      {getSortOptions().filter(option => option.value && option.value.trim()).map(option => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
@@ -491,8 +491,8 @@ export default function SmartSearch<T extends Record<string, any>>({
                         <SelectValue placeholder="Todas las ubicaciones" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Todas las ubicaciones</SelectItem>
-                        {filterOptions.locations.map(location => (
+                        <SelectItem value="all">Todas las ubicaciones</SelectItem>
+                        {filterOptions.locations.filter(location => location && location.trim()).map(location => (
                           <SelectItem key={location} value={location}>
                             {location}
                           </SelectItem>
@@ -515,8 +515,8 @@ export default function SmartSearch<T extends Record<string, any>>({
                         <SelectValue placeholder="Todos los niveles" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Todos los niveles</SelectItem>
-                        {filterOptions.levels.map(level => (
+                        <SelectItem value="all">Todos los niveles</SelectItem>
+                        {filterOptions.levels.filter(level => level && level.trim()).map(level => (
                           <SelectItem key={level} value={level}>
                             {level}
                           </SelectItem>

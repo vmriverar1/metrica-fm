@@ -53,7 +53,7 @@ const contactMethods = [
     icon: Phone,
     title: 'Llamada Directa',
     subtitle: 'Lun - Vie: 8:00 - 18:00',
-    value: '+51 1 234 5678',
+    value: '+51 989 742 678 ',
     action: 'Llamar ahora',
     color: 'text-blue-600',
     bgColor: 'bg-blue-100',
@@ -197,7 +197,7 @@ export default function ISOCTA() {
         className="absolute inset-0 opacity-10"
       >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" />
       </motion.div>
 
       {/* Grid Pattern */}

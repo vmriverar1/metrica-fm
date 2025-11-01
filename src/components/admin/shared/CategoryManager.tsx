@@ -76,7 +76,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
   const [newCategory, setNewCategory] = useState<Partial<Category>>({
     name: '',
     description: '',
-    color: '#007bc4',
+    color: '#00A8E8',
     status: 'active'
   });
 
@@ -115,7 +115,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
       name: newCategory.name.trim(),
       slug: generateSlug(newCategory.name.trim()),
       description: newCategory.description?.trim() || '',
-      color: newCategory.color || '#007bc4',
+      color: newCategory.color || '#00A8E8',
       icon: newCategory.icon || 'Tag',
       parent_id: newCategory.parent_id || null,
       order: categories.length,
@@ -125,7 +125,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
     };
 
     onChange([...categories, category]);
-    setNewCategory({ name: '', description: '', color: '#007bc4', status: 'active' });
+    setNewCategory({ name: '', description: '', color: '#00A8E8', status: 'active' });
     setShowAddForm(false);
   };
 
@@ -181,7 +181,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
       name: preset.name || '',
       slug: generateSlug(preset.name || ''),
       description: preset.description || '',
-      color: preset.color || '#007bc4',
+      color: preset.color || '#00A8E8',
       icon: preset.icon || 'Tag',
       parent_id: null,
       order: categories.length + index,
@@ -296,14 +296,14 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
                     <div className="flex gap-2">
                       <input
                         type="color"
-                        value={newCategory.color || '#007bc4'}
+                        value={newCategory.color || '#00A8E8'}
                         onChange={(e) => setNewCategory(prev => ({ ...prev, color: e.target.value }))}
                         className="w-10 h-10 rounded border"
                       />
                       <Input
-                        value={newCategory.color || '#007bc4'}
+                        value={newCategory.color || '#00A8E8'}
                         onChange={(e) => setNewCategory(prev => ({ ...prev, color: e.target.value }))}
-                        placeholder="#007bc4"
+                        placeholder="#00A8E8"
                       />
                     </div>
                   </div>
@@ -486,7 +486,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
                   <label className="text-sm font-medium">Color</label>
                   <input
                     type="color"
-                    value={editData.color || '#007bc4'}
+                    value={editData.color || '#00A8E8'}
                     onChange={(e) => setEditData(prev => ({ ...prev, color: e.target.value }))}
                     className="w-full h-10 rounded border"
                   />

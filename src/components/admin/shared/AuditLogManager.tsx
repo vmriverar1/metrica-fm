@@ -730,7 +730,7 @@ export default function AuditLogManager() {
     switch (risk) {
       case 'low': return 'text-green-600 border-green-200 bg-green-50'
       case 'medium': return 'text-yellow-600 border-yellow-200 bg-yellow-50'
-      case 'high': return 'text-orange-600 border-orange-200 bg-orange-50'
+      case 'high': return 'text-cyan-600 border-cyan-200 bg-cyan-50'
       case 'critical': return 'text-red-600 border-red-200 bg-red-50'
       default: return 'text-gray-600 border-gray-200 bg-gray-50'
     }
@@ -1148,8 +1148,8 @@ export default function AuditLogManager() {
                     <CardTitle className="text-base">High Risk Events</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-orange-600">{analytics.riskDistribution.high}</div>
-                    <div className="flex items-center text-xs text-orange-600">
+                    <div className="text-2xl font-bold text-cyan-600">{analytics.riskDistribution.high}</div>
+                    <div className="flex items-center text-xs text-cyan-600">
                       <TrendingUp className="h-3 w-3 mr-1" />
                       +3% from last month
                     </div>
@@ -1386,7 +1386,7 @@ export default function AuditLogManager() {
                                     <Badge variant="outline" className={cn(
                                       finding.severity === 'low' && "border-green-500 text-green-700",
                                       finding.severity === 'medium' && "border-yellow-500 text-yellow-700",
-                                      finding.severity === 'high' && "border-orange-500 text-orange-700",
+                                      finding.severity === 'high' && "border-cyan-500 text-cyan-700",
                                       finding.severity === 'critical' && "border-red-500 text-red-700"
                                     )}>
                                       {finding.severity}

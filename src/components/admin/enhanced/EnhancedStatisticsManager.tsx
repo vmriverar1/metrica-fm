@@ -1,18 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
+import {
   Plus,
-  GripVertical, 
-  Trash2, 
-  Eye, 
+  GripVertical,
+  Trash2,
+  Eye,
   EyeOff,
   Save,
   RefreshCw,
@@ -29,7 +30,10 @@ import {
   Building,
   Target,
   TrendingUp,
-  Zap
+  Zap,
+  X,
+  Factory,
+  DollarSign
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import BulkOperations from '../BulkOperations';
@@ -39,8 +43,8 @@ interface StatisticItem {
   icon: string;
   value: number;
   suffix: string;
+  prefix?: string;
   label: string;
-  description: string;
 }
 
 interface EnhancedStatisticsManagerProps {
@@ -49,7 +53,6 @@ interface EnhancedStatisticsManagerProps {
   onSave?: () => Promise<void>;
   loading?: boolean;
   title?: string;
-  description?: string;
   config?: Record<string, any>;
   className?: string;
 }
@@ -65,10 +68,65 @@ export default function EnhancedStatisticsManager({
   loading = false,
   className = ''
 }: EnhancedStatisticsManagerProps) {
+  console.log('🔄 [ENHANCED STATS] Recibiendo statistics:', statistics);
+  console.log('🔄 [ENHANCED STATS] Tipo y longitud:', typeof statistics, Array.isArray(statistics) ? statistics.length : 'no es array');
+
+  // Debugging específico de cada item
+  if (Array.isArray(statistics)) {
+    statistics.forEach((stat, index) => {
+      console.log(`🔍 [ENHANCED STATS] Item ${index}:`, {
+        raw: stat,
+        hasId: !!stat?.id,
+        idValue: stat?.id,
+        idType: typeof stat?.id,
+        hasLabel: !!stat?.label,
+        hasValue: !!stat?.value,
+      });
+    });
+  }
+
   const [previewMode, setPreviewMode] = useState(false);
   const [errors, setErrors] = useState<StatisticValidationErrors>({});
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showBulkOps, setShowBulkOps] = useState(false);
+
+  // Procesar estadísticas sin memoización compleja para evitar problemas
+  const cleanedStatistics = useMemo(() => {
+    // Asegurar que siempre tenemos un array
+    const safeStatistics = Array.isArray(statistics) ? statistics : [];
+    console.log('🔄 [STATS CLEAN] Procesando:', safeStatistics.length, 'estadísticas');
+    console.log('🔄 [STATS CLEAN] Datos de entrada:', safeStatistics);
+
+    const cleaned = safeStatistics.filter((stat, index) => {
+      const hasStatObject = !!stat;
+      const hasId = !!stat?.id;
+      const isStringId = typeof stat?.id === 'string';
+      const isNotEmpty = stat?.id?.trim() !== '';
+
+      const isValid = hasStatObject && hasId && isStringId && isNotEmpty;
+
+      console.log(`🔍 [STATS CLEAN] Filtro item ${index}:`, {
+        stat,
+        hasStatObject,
+        hasId,
+        isStringId,
+        isNotEmpty,
+        idValue: stat?.id,
+        isValid,
+        willPass: isValid ? '✅ PASS' : '❌ FILTERED OUT'
+      });
+
+      return isValid;
+    }).map((stat, index) => ({
+      ...stat,
+      id: stat.id || `stat-fallback-${index}-${Date.now()}`
+    }));
+
+    console.log('🔄 [STATS CLEAN] Resultado:', cleaned.length, 'estadísticas limpias de', safeStatistics.length, 'originales');
+    console.log('🔄 [STATS CLEAN] Estadísticas limpias:', cleaned);
+
+    return cleaned;
+  }, [statistics]);
 
   // Iconos disponibles con sus nombres
   const availableIcons = {
@@ -79,35 +137,43 @@ export default function EnhancedStatisticsManager({
     'Building': { icon: Building, label: 'Edificio' },
     'Target': { icon: Target, label: 'Objetivo' },
     'TrendingUp': { icon: TrendingUp, label: 'Tendencia' },
-    'Zap': { icon: Zap, label: 'Energía' }
+    'Zap': { icon: Zap, label: 'Energía' },
+    'Factory': { icon: Factory, label: 'Fábrica (Industria)' },
+    'DollarSign': { icon: DollarSign, label: 'Dinero (Ingresos)' }
   };
 
-  // Validar estadística individual
-  const validateStatistic = (stat: StatisticItem): string[] => {
-    const errors: string[] = [];
-    
-    if (!stat.label.trim()) {
-      errors.push('La etiqueta es requerida');
-    }
-    
-    if (!stat.description.trim()) {
-      errors.push('La descripción es requerida');
-    }
-    
-    if (stat.value < 0) {
-      errors.push('El valor debe ser positivo');
-    }
-    
-    if (stat.value > 999999) {
-      errors.push('El valor es demasiado grande');
-    }
-    
-    if (!stat.icon || !availableIcons[stat.icon as keyof typeof availableIcons]) {
-      errors.push(`Ícono "${stat.icon}" no es válido`);
-    }
-    
-    return errors;
-  };
+  // Validar estadística individual (memoizada)
+  const validateStatistic = useMemo(() => {
+    return (stat: StatisticItem): string[] => {
+      const errors: string[] = [];
+
+      if (!stat.label.trim()) {
+        errors.push('La etiqueta es requerida');
+      }
+
+      if (stat.prefix && stat.prefix.length > 10) {
+        errors.push('El prefijo no puede exceder 10 caracteres');
+      }
+
+      if (stat.suffix && stat.suffix.length > 10) {
+        errors.push('El sufijo no puede exceder 10 caracteres');
+      }
+
+      if (stat.value < 0) {
+        errors.push('El valor debe ser positivo');
+      }
+
+      if (stat.value > 999999) {
+        errors.push('El valor es demasiado grande');
+      }
+
+      if (!stat.icon || !availableIcons[stat.icon as keyof typeof availableIcons]) {
+        errors.push(`Ícono "${stat.icon}" no es válido`);
+      }
+
+      return errors;
+    };
+  }, [availableIcons]);
 
   // Renderizar icono
   const renderIcon = (iconName: string, className = "h-8 w-8") => {
@@ -117,27 +183,32 @@ export default function EnhancedStatisticsManager({
 
   // Obtener color de la estadística
   const getStatisticColor = (index: number) => {
-    const colors = ['text-blue-600', 'text-green-600', 'text-purple-600', 'text-orange-600'];
+    const colors = ['text-blue-600', 'text-green-600', 'text-purple-600', 'text-cyan-600'];
     return colors[index] || 'text-gray-600';
   };
 
-  // Validar todas las estadísticas
-  useEffect(() => {
+  // Validar todas las estadísticas con memoización
+  const validationErrors = useMemo(() => {
     const newErrors: StatisticValidationErrors = {};
-    statistics.forEach(stat => {
+    cleanedStatistics.forEach(stat => {
       const statErrors = validateStatistic(stat);
       if (statErrors.length > 0) {
         newErrors[stat.id] = statErrors;
       }
     });
-    setErrors(newErrors);
-  }, [statistics]);
+    return newErrors;
+  }, [cleanedStatistics]);
+
+  // Actualizar errores solo cuando cambien
+  useEffect(() => {
+    setErrors(validationErrors);
+  }, [validationErrors]);
 
   // Manejar reordenamiento
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const items = Array.from(statistics);
+    const items = Array.from(cleanedStatistics);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
@@ -147,53 +218,69 @@ export default function EnhancedStatisticsManager({
   // Agregar nueva estadística
   const addStatistic = () => {
     const newStat: StatisticItem = {
-      id: `stat-${Date.now()}`,
+      id: `stat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       icon: 'Award',
       value: 0,
-      suffix: '+',
-      label: 'Nueva Estadística',
-      description: 'Descripción de la estadística'
+      suffix: '',
+      prefix: '',
+      label: 'Nueva Estadística'
     };
-    onChange([...statistics, newStat]);
+    onChange([...cleanedStatistics, newStat]);
     setEditingId(newStat.id);
   };
 
   // Eliminar estadística
   const removeStatistic = (id: string) => {
-    onChange(statistics.filter(stat => stat.id !== id));
+    onChange(cleanedStatistics.filter(stat => stat.id !== id));
   };
 
   // Duplicar estadística
   const duplicateStatistic = (stat: StatisticItem) => {
     const duplicated: StatisticItem = {
       ...stat,
-      id: `stat-${Date.now()}`,
+      id: `stat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       label: `${stat.label} (Copia)`
     };
-    const index = statistics.findIndex(s => s.id === stat.id);
-    const newStats = [...statistics];
+    const index = cleanedStatistics.findIndex(s => s.id === stat.id);
+    const newStats = [...cleanedStatistics];
     newStats.splice(index + 1, 0, duplicated);
     onChange(newStats);
   };
 
   // Actualizar estadística
   const updateStatistic = (id: string, field: keyof StatisticItem, value: any) => {
-    onChange(statistics.map(stat => 
-      stat.id === id 
-        ? { ...stat, [field]: field === 'value' ? Number(value) || 0 : value }
-        : stat
-    ));
+    console.log('🔧 updateStatistic called:', {
+      id,
+      field,
+      value,
+      currentStats: cleanedStatistics.find(s => s.id === id)
+    });
+
+    const updatedStats = cleanedStatistics.map(stat => {
+      if (stat.id === id) {
+        const updated = {
+          ...stat,
+          [field]: field === 'value' ? Number(value) || 0 : value
+        };
+        console.log('🔧 Updated stat:', updated);
+        return updated;
+      }
+      return stat;
+    });
+
+    console.log('🔧 All updated statistics:', updatedStats);
+    onChange(updatedStats);
   };
 
   // Formatear número para display
-  const formatNumber = (num: number): string => {
+  const formatNumber = (num: number | undefined | null): string => {
     // Validar que num es un número válido
-    if (num == null || isNaN(num)) {
+    if (num == null || isNaN(Number(num))) {
       return '0';
     }
-    
+
     const numValue = Number(num);
-    
+
     if (numValue >= 1000000) {
       return (numValue / 1000000).toFixed(1) + 'M';
     }
@@ -219,24 +306,26 @@ export default function EnhancedStatisticsManager({
           {renderIcon(stat.icon, "h-12 w-12 mx-auto")}
         </div>
 
-        {/* Valor y sufijo */}
+        {/* Valor con prefijo y sufijo */}
         <div className="mb-2">
+          {stat.prefix && (
+            <span className="text-2xl font-semibold text-primary/80 mr-1">
+              {stat.prefix}
+            </span>
+          )}
           <span className="text-4xl font-bold text-primary">
             {formatNumber(stat.value)}
           </span>
-          <span className="text-2xl font-semibold text-primary/80 ml-1">
-            {stat.suffix}
-          </span>
+          {stat.suffix && (
+            <span className="text-2xl font-semibold text-primary/80 ml-1">
+              {stat.suffix}
+            </span>
+          )}
         </div>
 
         {/* Etiqueta */}
         <div className="text-lg font-semibold text-foreground mb-1">
           {stat.label}
-        </div>
-
-        {/* Descripción */}
-        <div className="text-sm text-muted-foreground line-clamp-2">
-          {stat.description}
         </div>
 
         {/* Indicador de errores */}
@@ -249,198 +338,6 @@ export default function EnhancedStatisticsManager({
     );
   };
 
-  // Renderizar formulario de edición
-  const renderStatisticForm = (stat: StatisticItem, index: number) => {
-    const statErrors = errors[stat.id] || [];
-    const isEditing = editingId === stat.id;
-
-    return (
-      <Draggable draggableId={stat.id} index={index}>
-        {(provided, snapshot) => (
-          <Card
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            className={`
-              transition-all duration-200
-              ${snapshot.isDragging ? 'shadow-lg scale-105 rotate-1' : ''}
-              ${statErrors.length > 0 ? 'border-red-200' : ''}
-              ${isEditing ? 'border-primary shadow-md' : ''}
-            `}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div {...provided.dragHandleProps}>
-                    <GripVertical className="h-5 w-5 text-muted-foreground cursor-move" />
-                  </div>
-                  <Badge variant={statErrors.length > 0 ? 'destructive' : 'secondary'}>
-                    Estadística #{index + 1}
-                  </Badge>
-                  {statErrors.length === 0 && (
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                  )}
-                </div>
-                
-                <div className="flex items-center gap-1">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingId(isEditing ? null : stat.id)}
-                    title="Editar"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => duplicateStatistic(stat)}
-                    title="Duplicar"
-                  >
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => removeStatistic(stat.id)}
-                    title="Eliminar"
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Errores */}
-              {statErrors.length > 0 && (
-                <Alert variant="destructive" className="mt-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    <ul className="list-disc list-inside space-y-1">
-                      {statErrors.map((error, i) => (
-                        <li key={i}>{error}</li>
-                      ))}
-                    </ul>
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-              {/* Preview en modo compacto */}
-              {!isEditing && (
-                <div className="p-4 bg-muted/30 rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="text-primary">
-                      {renderIcon(stat.icon, "h-8 w-8 flex-shrink-0")}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold text-primary">
-                          {formatNumber(stat.value)}
-                        </span>
-                        <span className="text-lg font-semibold text-primary/80">
-                          {stat.suffix}
-                        </span>
-                      </div>
-                      <div className="font-medium text-sm truncate">{stat.label}</div>
-                      <div className="text-xs text-muted-foreground truncate">{stat.description}</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Formulario de edición */}
-              {isEditing && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>ID único</Label>
-                    <Input
-                      value={stat.id}
-                      onChange={(e) => updateStatistic(stat.id, 'id', e.target.value)}
-                      className="font-mono text-sm"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label>Ícono *</Label>
-                    <Select
-                      value={stat.icon}
-                      onValueChange={(value) => updateStatistic(stat.id, 'icon', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue>
-                          <div className="flex items-center gap-2">
-                            {renderIcon(stat.icon, "h-4 w-4")}
-                            {availableIcons[stat.icon as keyof typeof availableIcons]?.label || stat.icon}
-                          </div>
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(availableIcons).map(([key, iconData]) => (
-                          <SelectItem key={key} value={key}>
-                            <div className="flex items-center gap-2">
-                              <iconData.icon className="h-4 w-4" />
-                              {iconData.label}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label>Valor numérico</Label>
-                    <Input
-                      type="number"
-                      min="0"
-                      max="999999"
-                      step="0.1"
-                      value={stat.value}
-                      onChange={(e) => updateStatistic(stat.id, 'value', e.target.value)}
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Sufijo</Label>
-                    <Input
-                      value={stat.suffix}
-                      onChange={(e) => updateStatistic(stat.id, 'suffix', e.target.value)}
-                      placeholder="+, %, K, M, etc."
-                      maxLength={3}
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Etiqueta *</Label>
-                    <Input
-                      value={stat.label}
-                      onChange={(e) => updateStatistic(stat.id, 'label', e.target.value)}
-                      placeholder="Ej: Proyectos Completados"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label>Descripción *</Label>
-                    <Input
-                      value={stat.description}
-                      onChange={(e) => updateStatistic(stat.id, 'description', e.target.value)}
-                      placeholder="Descripción detallada..."
-                      required
-                    />
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-      </Draggable>
-    );
-  };
-
   const hasErrors = Object.keys(errors).length > 0;
 
   return (
@@ -450,7 +347,7 @@ export default function EnhancedStatisticsManager({
         <div>
           <h3 className="text-xl font-semibold flex items-center gap-2">
             <BarChart3 className="h-5 w-5" />
-            Estadísticas ({statistics.length})
+            Estadísticas ({cleanedStatistics.length})
           </h3>
           <p className="text-sm text-muted-foreground">
             Arrastra para reordenar, haz clic en editar para modificar
@@ -527,7 +424,7 @@ export default function EnhancedStatisticsManager({
       {/* Preview Mode */}
       {previewMode ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statistics.map(stat => (
+          {cleanedStatistics.map(stat => (
             <div key={stat.id}>
               {renderStatisticPreview(stat)}
             </div>
@@ -546,12 +443,34 @@ export default function EnhancedStatisticsManager({
                   ${snapshot.isDraggingOver ? 'bg-primary/5 border-2 border-dashed border-primary/20' : ''}
                 `}
               >
-                {statistics.map((stat, index) => {
+                {(() => {
+                  console.log('🎯 [RENDER START] cleanedStatistics.length:', cleanedStatistics.length);
+                  console.log('🎯 [RENDER START] cleanedStatistics:', cleanedStatistics);
+                  return null;
+                })()}
+                {cleanedStatistics.map((stat, index) => {
+                  console.log(`🔍 [RENDER] Procesando stat ${index}:`, {
+                    stat,
+                    hasStat: !!stat,
+                    hasId: !!stat?.id,
+                    idType: typeof stat?.id,
+                    idValue: stat?.id
+                  });
+
+                  // Asegurar que stat.id existe y es válido
+                  if (!stat || !stat.id || typeof stat.id !== 'string') {
+                    console.error('🚨 [DRAG ERROR] Estadística sin ID válido, skipping render:', stat);
+                    return null;
+                  }
+
+                  console.log(`✅ [RENDER] Stat ${index} pasó validación, renderizando:`, stat);
+
                   const statErrors = errors[stat.id] || [];
                   const isEditing = editingId === stat.id;
+                  const uniqueId = `stat-${stat.id}-${index}`;
 
                   return (
-                    <Draggable key={stat.id} draggableId={stat.id} index={index}>
+                    <Draggable key={uniqueId} draggableId={uniqueId} index={index}>
                       {(provided, snapshot) => (
                         <Card
                           ref={provided.innerRef}
@@ -579,6 +498,7 @@ export default function EnhancedStatisticsManager({
                               </div>
                               <div className="flex items-center gap-1">
                                 <Button
+                                  type="button"
                                   variant={isEditing ? 'secondary' : 'ghost'}
                                   size="sm"
                                   onClick={() => setEditingId(isEditing ? null : stat.id)}
@@ -596,9 +516,10 @@ export default function EnhancedStatisticsManager({
                                   )}
                                 </Button>
                                 <Button
+                                  type="button"
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleDeleteStatistic(stat.id)}
+                                  onClick={() => removeStatistic(stat.id)}
                                   className="text-red-500 hover:text-red-700"
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -614,11 +535,8 @@ export default function EnhancedStatisticsManager({
                                 <div>
                                   <div className="text-sm font-medium text-muted-foreground">{stat.label}</div>
                                   <div className="text-lg font-bold text-primary">
-                                    {formatNumber(parseFloat(stat.number) || 0)}
+                                    {formatNumber(stat.value || 0)}
                                   </div>
-                                </div>
-                                <div className="text-xs text-right text-muted-foreground max-w-xs">
-                                  {stat.description || 'Sin descripción'}
                                 </div>
                               </div>
                             )}
@@ -626,17 +544,61 @@ export default function EnhancedStatisticsManager({
                             {/* Formulario de edición */}
                             {isEditing && (
                               <div className="space-y-4">
-                                {/* Número */}
+                                {/* Valor */}
                                 <div>
-                                  <Label htmlFor={`number-${stat.id}`}>Número *</Label>
+                                  <Label htmlFor={`value-${stat.id}`}>Valor *</Label>
                                   <Input
-                                    id={`number-${stat.id}`}
-                                    type="text"
-                                    value={stat.number}
-                                    onChange={(e) => updateStatistic(stat.id, 'number', e.target.value)}
-                                    placeholder="100, 1.2K, 5.5M, etc."
-                                    className={statErrors.some(err => err.includes('número')) ? 'border-red-300' : ''}
+                                    id={`value-${stat.id}`}
+                                    type="number"
+                                    min="0"
+                                    step="0.1"
+                                    value={stat.value || 0}
+                                    onChange={(e) => updateStatistic(stat.id, 'value', e.target.value)}
+                                    placeholder="100"
+                                    className={statErrors.some(err => err.includes('valor')) ? 'border-red-300' : ''}
                                   />
+                                </div>
+
+                                {/* Prefijo */}
+                                <div key={`prefix-container-${stat.id}-${stat.prefix}`}>
+                                  <Label>Prefijo</Label>
+                                  <input
+                                    type="text"
+                                    id={`stat-prefix-${stat.id}`}
+                                    name={`prefix-${stat.id}`}
+                                    defaultValue={stat.prefix || ''}
+                                    onBlur={(e) => {
+                                      console.log('🔍 Prefix onBlur:', { id: stat.id, value: e.target.value, field: 'prefix' });
+                                      updateStatistic(stat.id, 'prefix', e.target.value);
+                                    }}
+                                    placeholder="$, €, +, -, etc."
+                                    maxLength={10}
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                  />
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {(stat.prefix || '').length}/10 caracteres
+                                  </p>
+                                </div>
+
+                                {/* Sufijo */}
+                                <div key={`suffix-container-${stat.id}-${stat.suffix}`}>
+                                  <Label>Sufijo</Label>
+                                  <input
+                                    type="text"
+                                    id={`stat-suffix-${stat.id}`}
+                                    name={`suffix-${stat.id}`}
+                                    defaultValue={stat.suffix || ''}
+                                    onBlur={(e) => {
+                                      console.log('🔍 Suffix onBlur:', { id: stat.id, value: e.target.value, field: 'suffix' });
+                                      updateStatistic(stat.id, 'suffix', e.target.value);
+                                    }}
+                                    placeholder="+, %, K, M, años, proyectos, etc."
+                                    maxLength={10}
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                  />
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {(stat.suffix || '').length}/10 caracteres
+                                  </p>
                                 </div>
 
                                 {/* Etiqueta */}
@@ -651,16 +613,39 @@ export default function EnhancedStatisticsManager({
                                   />
                                 </div>
 
-                                {/* Descripción */}
+                                {/* Selector de Icono */}
                                 <div>
-                                  <Label htmlFor={`description-${stat.id}`}>Descripción</Label>
-                                  <Textarea
-                                    id={`description-${stat.id}`}
-                                    value={stat.description}
-                                    onChange={(e) => updateStatistic(stat.id, 'description', e.target.value)}
-                                    placeholder="Descripción detallada de la estadística"
-                                    rows={2}
-                                  />
+                                  <Label htmlFor={`icon-${stat.id}`}>Icono</Label>
+                                  <Select
+                                    key={`icon-select-${stat.id}-${stat.icon}`}
+                                    value={stat.icon || 'Award'}
+                                    onValueChange={(value) => {
+                                      console.log('🎨 Cambiando icono de', stat.icon, 'a', value, 'para stat.id:', stat.id);
+                                      updateStatistic(stat.id, 'icon', value);
+                                    }}
+                                  >
+                                    <SelectTrigger id={`icon-${stat.id}`}>
+                                      <SelectValue placeholder="Seleccionar icono">
+                                        <div className="flex items-center gap-2">
+                                          {renderIcon(stat.icon || 'Award', "h-4 w-4")}
+                                          <span>{availableIcons[stat.icon as keyof typeof availableIcons]?.label || 'Seleccionar icono'}</span>
+                                        </div>
+                                      </SelectValue>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {Object.entries(availableIcons).map(([key, iconData]) => (
+                                        <SelectItem key={key} value={key}>
+                                          <div className="flex items-center gap-2">
+                                            <iconData.icon className="h-4 w-4" />
+                                            <span>{iconData.label}</span>
+                                          </div>
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    Icono actual: {stat.icon || 'Award'}
+                                  </p>
                                 </div>
 
                                 {/* Errores */}
@@ -690,11 +675,19 @@ export default function EnhancedStatisticsManager({
                 {provided.placeholder}
                 
                 {/* Mensaje cuando no hay estadísticas */}
-                {statistics.length === 0 && (
+                {cleanedStatistics.length === 0 && (
                   <div className="text-center py-12 text-muted-foreground">
                     <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p className="text-lg font-medium">No hay estadísticas</p>
-                    <p className="text-sm">Haz clic en "Agregar Estadística" para comenzar</p>
+                    <p className="text-lg font-medium">No hay estadísticas configuradas</p>
+                    <p className="text-sm mb-4">Haz clic en "Agregar Estadística" para comenzar a crear tus métricas</p>
+                    <Button
+                      onClick={addStatistic}
+                      variant="outline"
+                      className="mx-auto"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Agregar Primera Estadística
+                    </Button>
                   </div>
                 )}
               </div>
@@ -706,23 +699,13 @@ export default function EnhancedStatisticsManager({
       {/* Bulk Operations */}
       {showBulkOps && (
         <BulkOperations
-          items={statistics}
+          items={cleanedStatistics}
           itemType="statistics"
           onUpdate={onChange}
           maxItems={6}
         />
       )}
 
-      {/* Información adicional */}
-      <div className="text-xs text-muted-foreground space-y-1 p-4 bg-muted/30 rounded-lg">
-        <p><strong>💡 Consejos:</strong></p>
-        <ul className="space-y-1 ml-4 list-disc">
-          <li>Usa números realistas y verificables</li>
-          <li>Los sufijos más comunes son: +, %, K (miles), M (millones)</li>
-          <li>Arrastra las estadísticas para cambiar el orden de aparición</li>
-          <li>Los iconos recomendados aparecen marcados con ⭐</li>
-        </ul>
-      </div>
     </div>
   );
 }

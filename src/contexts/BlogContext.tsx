@@ -2,46 +2,49 @@
 
 import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode, useEffect } from 'react';
 import { BlogPost, BlogFilters, BlogCategory, Author } from '@/types/blog';
-import { useBlogService, BlogHookResult } from '@/hooks/useBlogService';
-import { BlogServiceCategory } from '@/lib/blog-service';
 import { BlogPageData, BlogContentData } from '@/types/blog-page';
+import { BlogArticle, BlogAuthor, BlogCategory as BlogCat } from '@/hooks/useBlogWithRelations';
 
-interface BlogContextType extends Omit<BlogHookResult, 'posts'> {
+interface BlogContextType {
   // Combined page and content data
   pageData: BlogPageData | null;
   contentData: BlogContentData | null;
-  
-  // Data extendida del hook
-  allPosts: BlogPost[];
-  filteredPosts: BlogPost[];
-  selectedPost: BlogPost | null;
-  
+
+  // Data from Firestore with cross-references
+  allPosts: BlogArticle[];
+  filteredPosts: BlogArticle[];
+  selectedPost: BlogArticle | null;
+
   // Filters
   filters: BlogFilters;
   setFilters: (filters: BlogFilters) => void;
   updateFilters: (newFilters: Partial<BlogFilters>) => void;
-  
+
   // Actions
-  selectPost: (post: BlogPost | null) => void;
+  selectPost: (post: BlogArticle | null) => void;
   searchPosts: (term: string) => void;
   filterByCategory: (category: BlogCategory | 'all') => void;
   filterByAuthor: (authorId: string | 'all') => void;
   filterByTags: (tags: string[]) => void;
   toggleFeatured: () => void;
   resetFilters: () => void;
-  
+
   // Computed values
-  uniqueCategories: BlogCategory[];
+  uniqueCategories: BlogCat[];
   uniqueAuthors: Author[];
   uniqueTags: string[];
-  featuredPosts: BlogPost[];
+  featuredPosts: BlogArticle[];
   postCount: number;
-  
+
   // Loading states
   isLoading: boolean;
   pageLoading: boolean;
   contentLoading: boolean;
   error: string | null;
+
+  // Firestore specific
+  refresh: () => Promise<void>;
+  getPostBySlug: (slug: string) => Promise<BlogArticle | null>;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -53,47 +56,173 @@ interface BlogProviderProps {
 export function BlogProvider({ children }: BlogProviderProps) {
   const [pageData, setPageData] = useState<BlogPageData | null>(null);
   const [contentData, setContentData] = useState<BlogContentData | null>(null);
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [selectedPost, setSelectedPost] = useState<BlogArticle | null>(null);
   const [pageLoading, setPageLoading] = useState(true);
   const [contentLoading, setContentLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<BlogFilters>({
     searchQuery: ''
   });
 
-  // Fetch blog page and content data on mount
+  // Data from new cross-reference APIs
+  const [allPosts, setAllPosts] = useState<BlogArticle[]>([]);
+  const [allPostsForTags, setAllPostsForTags] = useState<BlogArticle[]>([]); // All posts without filters for tags
+  const [categories, setCategories] = useState<BlogCat[]>([]);
+  const [authors, setAuthors] = useState<BlogAuthor[]>([]);
+  const [articlesLoading, setArticlesLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [authorsLoading, setAuthorsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load articles with relations
+  const loadArticles = useCallback(async () => {
+    try {
+      setArticlesLoading(true);
+      setError(null);
+
+      // Build query parameters for the new cross-reference API
+      const params = new URLSearchParams();
+      if (filters.category && filters.category !== 'all') {
+        const category = categories.find(c => c.slug === filters.category);
+        if (category) {
+          params.set('category_id', category.id);
+        }
+      }
+      if (filters.author && filters.author !== 'all') {
+        params.set('author_id', filters.author);
+      }
+      if (filters.featured !== undefined) {
+        params.set('featured', String(filters.featured));
+      }
+
+      const url = `/api/blog/articles-with-relations${params.toString() ? `?${params.toString()}` : ''}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch articles: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to load articles');
+      }
+
+      setAllPosts(result.data || []);
+      console.log(`📰 Articles loaded with relations: ${result.data?.length || 0}`);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error loading articles');
+      console.error('Error loading articles:', err);
+    } finally {
+      setArticlesLoading(false);
+    }
+  }, [filters.category, filters.author, filters.featured, categories]);
+
+  // Load categories from new cross-reference API
+  const loadCategories = useCallback(async () => {
+    try {
+      setCategoriesLoading(true);
+      const response = await fetch('/api/blog/categories');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch categories: ${response.status}`);
+      }
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to load categories');
+      }
+      setCategories(result.data || []);
+      console.log(`📂 Blog categories loaded: ${result.data?.length || 0}`);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  }, []);
+
+  // Load authors from new cross-reference API
+  const loadAuthors = useCallback(async () => {
+    try {
+      setAuthorsLoading(true);
+      const response = await fetch('/api/blog/authors');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch authors: ${response.status}`);
+      }
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to load authors');
+      }
+      setAuthors(result.data || []);
+      console.log(`👥 Blog authors loaded: ${result.data?.length || 0}`);
+    } catch (err) {
+      console.error('Error loading authors:', err);
+    } finally {
+      setAuthorsLoading(false);
+    }
+  }, []);
+
+  // Apply local filters (search and tags only, since category/author/featured are handled server-side)
+  const filteredPosts = useMemo(() => {
+    let result = allPosts;
+
+    // Filter by tags
+    if (filters.tags && filters.tags.length > 0) {
+      result = result.filter(post =>
+        filters.tags!.some(tag => post.tags.includes(tag))
+      );
+    }
+
+    // Search filter
+    if (filters.searchQuery && filters.searchQuery.trim()) {
+      const searchTerm = filters.searchQuery.toLowerCase();
+      result = result.filter(post =>
+        post.title.toLowerCase().includes(searchTerm) ||
+        post.excerpt.toLowerCase().includes(searchTerm) ||
+        post.content.toLowerCase().includes(searchTerm) ||
+        post.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+        post.author?.name.toLowerCase().includes(searchTerm) ||
+        post.category?.name.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    return result;
+  }, [allPosts, filters.searchQuery, filters.tags]);
+
+  // Load initial data
   useEffect(() => {
     async function fetchBlogData() {
       try {
         setPageLoading(true);
         setContentLoading(true);
-        setError(null);
 
-        // Fetch both page content and dynamic content in parallel
+        // Fetch page content from Firestore and dynamic content from JSON
         const [pageResponse, contentResponse] = await Promise.all([
-          fetch('/json/pages/blog.json', { cache: 'no-store' }),
+          fetch('/api/admin/pages/blog', { cache: 'no-store' }),
           fetch('/json/dynamic-content/newsletter/content.json', { cache: 'no-store' })
         ]);
 
         if (!pageResponse.ok) {
-          throw new Error(`Failed to fetch page data: ${pageResponse.status}`);
+          throw new Error(`Failed to fetch page data from Firestore: ${pageResponse.status}`);
         }
 
         if (!contentResponse.ok) {
           throw new Error(`Failed to fetch content data: ${contentResponse.status}`);
         }
 
-        const [pageJson, contentJson] = await Promise.all([
+        const [pageApiResponse, contentJson] = await Promise.all([
           pageResponse.json(),
           contentResponse.json()
         ]);
 
-        setPageData(pageJson);
+        // Extract pageData from Firestore API response
+        if (pageApiResponse.success && pageApiResponse.data.content) {
+          setPageData(pageApiResponse.data.content);
+        } else {
+          throw new Error('Invalid page data structure from Firestore');
+        }
+
         setContentData(contentJson);
-        
+
       } catch (err) {
         console.error('Error fetching blog data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load blog data');
       } finally {
         setPageLoading(false);
         setContentLoading(false);
@@ -101,38 +230,55 @@ export function BlogProvider({ children }: BlogProviderProps) {
     }
 
     fetchBlogData();
-  }, []);
+    loadCategories();
+    loadAuthors();
+  }, [loadCategories, loadAuthors]);
 
-  // Usar el hook híbrido del BlogService
-  const blogService = useBlogService(filters);
+  // Load articles when filters change
+  useEffect(() => {
+    loadArticles();
+  }, [loadArticles]);
 
-  // Los posts filtrados vienen directamente del BlogService
-  const allPosts = blogService.posts;
-  const filteredPosts = blogService.posts; // Ya están filtrados por el service
-
-  // Memoized unique values basados en categorías del service
+  // Memoized unique categories from actual articles (dynamic)
   const uniqueCategories = useMemo(() => {
-    return blogService.categories.map(cat => cat.slug as BlogCategory);
-  }, [blogService.categories]);
+    // Extract unique categories from loaded articles
+    const categoryMap = new Map<string, BlogCat>();
+
+    allPosts.forEach(post => {
+      if (post.category && post.category.id) {
+        categoryMap.set(post.category.id, post.category);
+      }
+    });
+
+    return Array.from(categoryMap.values());
+  }, [allPosts]);
 
   const uniqueAuthors = useMemo(() => {
-    return blogService.authors || [];
-  }, [blogService.authors]);
+    return authors.map(autor => ({
+      id: autor.id,
+      name: autor.name,
+      role: autor.role,
+      bio: autor.bio,
+      avatar: autor.avatar,
+      linkedin: autor.linkedin,
+      email: autor.email
+    }));
+  }, [authors]);
 
   const uniqueTags = useMemo(() => {
     const tags = new Set<string>();
-    blogService.posts.forEach(post => {
+    allPosts.forEach(post => {
       post.tags.forEach(tag => tags.add(tag));
     });
     return Array.from(tags).sort();
-  }, [blogService.posts]);
+  }, [allPosts]);
 
   const featuredPosts = useMemo(() => {
-    return blogService.posts.filter(post => post.featured);
-  }, [blogService.posts]);
+    return allPosts.filter(post => post.featured);
+  }, [allPosts]);
 
   // Actions
-  const selectPost = useCallback((post: BlogPost | null) => {
+  const selectPost = useCallback((post: BlogArticle | null) => {
     setSelectedPost(post);
   }, []);
 
@@ -164,27 +310,51 @@ export function BlogProvider({ children }: BlogProviderProps) {
     setFilters({ searchQuery: '' });
   }, []);
 
-  const isLoading = pageLoading || contentLoading || blogService.loading;
+  // Function to get post by slug
+  const getPostBySlug = useCallback(async (slug: string): Promise<BlogArticle | null> => {
+    try {
+      const response = await fetch(`/api/blog/articles/${slug}`);
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error(`Failed to fetch article: ${response.status}`);
+      }
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to load article');
+      }
+      return result.data;
+    } catch (err) {
+      console.error('Error loading article by slug:', err);
+      return null;
+    }
+  }, []);
+
+  const refresh = useCallback(async () => {
+    await Promise.all([
+      loadArticles(),
+      loadCategories(),
+      loadAuthors()
+    ]);
+  }, [loadArticles, loadCategories, loadAuthors]);
+
+  const isLoading = pageLoading || contentLoading || articlesLoading || categoriesLoading || authorsLoading;
 
   const contextValue: BlogContextType = {
     // Combined data
     pageData,
     contentData,
-    
-    // Data del BlogService híbrido
+
+    // Data from Firestore
     allPosts,
     filteredPosts,
     selectedPost,
-    categories: blogService.categories,
-    authors: blogService.authors,
-    stats: blogService.stats,
-    
+
     // Filters
     filters,
     setFilters,
     updateFilters,
-    
-    // Actions del BlogService
+
+    // Actions
     selectPost,
     searchPosts,
     filterByCategory,
@@ -192,30 +362,21 @@ export function BlogProvider({ children }: BlogProviderProps) {
     filterByTags,
     toggleFeatured,
     resetFilters,
-    refresh: blogService.refresh,
-    getPostBySlug: blogService.getPostBySlug,
-    getRelatedPosts: blogService.getRelatedPosts,
-    clearCache: blogService.clearCache,
-    
+    refresh,
+    getPostBySlug,
+
     // Computed values
     uniqueCategories,
     uniqueAuthors,
     uniqueTags,
     featuredPosts,
     postCount: filteredPosts.length,
-    
-    // System info del BlogService
-    systemInfo: blogService.systemInfo,
-    
+
     // Loading states
     isLoading,
     pageLoading,
     contentLoading,
-    loading: blogService.loading,
-    categoriesLoading: blogService.categoriesLoading,
-    authorsLoading: blogService.authorsLoading,
-    statsLoading: blogService.statsLoading,
-    error: error || blogService.error
+    error
   };
 
   return (
@@ -233,67 +394,84 @@ export function useBlog() {
   return context;
 }
 
-// Hook para obtener un post específico por slug (usa BlogService híbrido)
-export function useBlogPost(slug: string): BlogPost | null {
+// Hook para obtener un post específico por slug (usa Firestore)
+export function useBlogPost(slug: string): BlogArticle | null {
   const { getPostBySlug } = useBlog();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  
+  const [post, setPost] = useState<BlogArticle | null>(null);
+
   useEffect(() => {
     getPostBySlug(slug).then(setPost);
   }, [slug, getPostBySlug]);
-  
+
   return post;
 }
 
-// Hook para obtener posts por categoría (usa BlogService híbrido)
-export function useBlogPostsByCategory(category: BlogCategory): BlogPost[] {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  
+// Hook para obtener posts por categoría (usa Firestore)
+export function useBlogPostsByCategory(category: BlogCategory): BlogArticle[] {
+  const { filteredPosts, filterByCategory } = useBlog();
+
   useEffect(() => {
-    import('@/lib/blog-service').then(({ BlogService }) => {
-      BlogService.getPosts({ category }).then(setPosts);
-    });
-  }, [category]);
-  
-  return posts;
+    filterByCategory(category);
+  }, [category, filterByCategory]);
+
+  return filteredPosts;
 }
 
-// Hook para obtener posts destacados (usa BlogService híbrido)
-export function useFeaturedBlogPosts(): BlogPost[] {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  
-  useEffect(() => {
-    import('@/lib/blog-service').then(({ BlogService }) => {
-      BlogService.getPosts({ featured: true }).then(setPosts);
-    });
-  }, []);
-  
-  return posts;
+// Hook para obtener posts destacados (usa Firestore)
+export function useFeaturedBlogPosts(): BlogArticle[] {
+  const { featuredPosts } = useBlog();
+  return featuredPosts;
 }
 
-// Hook para obtener posts recientes (usa BlogService híbrido)
-export function useRecentBlogPosts(limit: number = 5): BlogPost[] {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  
-  useEffect(() => {
-    import('@/lib/blog-service').then(({ BlogService }) => {
-      BlogService.getPosts({ limit }).then(setPosts);
+// Hook para obtener posts recientes (usa Firestore)
+export function useRecentBlogPosts(limit: number = 5): BlogArticle[] {
+  const { allPosts } = useBlog();
+
+  const recentPosts = useMemo(() => {
+    const sorted = [...allPosts].sort((a, b) => {
+      const aDate = a.published_at || a.publishedAt || a.created_at;
+      const bDate = b.published_at || b.publishedAt || b.created_at;
+      return new Date(bDate).getTime() - new Date(aDate).getTime();
     });
-  }, [limit]);
-  
-  return posts;
+    return sorted.slice(0, limit);
+  }, [allPosts, limit]);
+
+  return recentPosts;
 }
 
-// Hook para obtener posts relacionados (usa BlogService híbrido)
-export function useRelatedBlogPosts(currentPost: BlogPost, limit: number = 3): BlogPost[] {
-  const { getRelatedPosts } = useBlog();
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  
-  useEffect(() => {
-    getRelatedPosts(currentPost, limit).then(setPosts);
-  }, [currentPost, limit, getRelatedPosts]);
-  
-  return posts;
+// Hook para obtener posts relacionados (usa Firestore)
+export function useRelatedBlogPosts(currentPost: BlogArticle, limit: number = 3): BlogArticle[] {
+  const { allPosts } = useBlog();
+
+  const relatedPosts = useMemo(() => {
+    // Filtrar posts relacionados por categoría y tags
+    const related = allPosts.filter(post => {
+      if (post.id === currentPost.id) return false;
+
+      // Mismo categoría
+      const sameCategory = post.category_id === currentPost.category_id;
+
+      // Tags comunes
+      const commonTags = post.tags.filter(tag =>
+        currentPost.tags.includes(tag)
+      ).length;
+
+      return sameCategory || commonTags > 0;
+    });
+
+    // Ordenar por relevancia (categoría + tags comunes)
+    const sorted = related.sort((a, b) => {
+      const aScore = (a.category_id === currentPost.category_id ? 10 : 0) +
+        a.tags.filter(tag => currentPost.tags.includes(tag)).length;
+      const bScore = (b.category_id === currentPost.category_id ? 10 : 0) +
+        b.tags.filter(tag => currentPost.tags.includes(tag)).length;
+      return bScore - aScore;
+    });
+
+    return sorted.slice(0, limit);
+  }, [allPosts, currentPost, limit]);
+
+  return relatedPosts;
 }
 
 // Hook para cache similar al portfolio

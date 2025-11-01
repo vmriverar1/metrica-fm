@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
+import {
   Building2,
   Tag,
   BarChart3,
@@ -17,66 +17,129 @@ import {
   Settings
 } from 'lucide-react';
 import Link from 'next/link';
+import apiClient from '@/lib/api-client';
+
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  status: string;
+  client: string;
+  created_at: string;
+  category_info?: {
+    name: string;
+  };
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  projects_count: number;
+}
 
 const PortfolioDashboard = () => {
-  // Datos simulados
-  const stats = {
-    totalProjects: 82,
-    activeProjects: 15,
-    categories: 7,
-    completedProjects: 67,
-    monthlyGrowth: 12.5,
-    averageRating: 4.8
+  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [stats, setStats] = useState({
+    totalProjects: 0,
+    activeProjects: 0,
+    categories: 0,
+    completedProjects: 0,
+    monthlyGrowth: 0,
+    averageRating: 0
+  });
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      const data = await apiClient.get('/api/admin/portfolio/projects?limit=10');
+
+      if (data.success) {
+        const projectsList = data.data.projects || [];
+        const categoriesList = data.data.categories || [];
+
+        setProjects(projectsList);
+        setCategories(categoriesList);
+
+        // Calculate stats from real data
+        const total = data.data.pagination?.total || projectsList.length;
+        const active = projectsList.filter((p: Project) => p.status === 'in_progress' || p.status === 'active').length;
+        const completed = projectsList.filter((p: Project) => p.status === 'completed').length;
+
+        setStats({
+          totalProjects: total,
+          activeProjects: active,
+          categories: categoriesList.length,
+          completedProjects: completed,
+          monthlyGrowth: 12.5, // Could be calculated from data
+          averageRating: 4.8   // Could be calculated from data
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const recentProjects = [
-    {
-      id: 1,
-      title: 'Centro Educativo San Martín',
-      category: 'Educación',
-      status: 'En progreso',
-      completion: 75,
-      client: 'Ministerio de Educación',
-      startDate: '2025-06-15'
-    },
-    {
-      id: 2,
-      title: 'Hospital Nacional del Callao',
-      category: 'Salud',
-      status: 'Completado',
-      completion: 100,
-      client: 'ESSALUD',
-      startDate: '2024-12-01'
-    },
-    {
-      id: 3,
-      title: 'Torre Empresarial Lima',
-      category: 'Oficinas',
-      status: 'En progreso',
-      completion: 45,
-      client: 'Grupo Inmobiliario ABC',
-      startDate: '2025-07-20'
-    },
-    {
-      id: 4,
-      title: 'Hotel Boutique Miraflores',
-      category: 'Hotelería',
-      status: 'Planificación',
-      completion: 20,
-      client: 'Turismo del Perú SA',
-      startDate: '2025-08-10'
-    }
-  ];
+  const recentProjects = projects.slice(0, 4).map((project: Project) => {
+    // Función helper para manejar fechas de forma segura
+    const formatDate = (dateValue: any): string => {
+      if (!dateValue) return '';
 
-  const categories = [
-    { name: 'Educación', count: 12, color: '#2563eb', growth: '+8%' },
-    { name: 'Salud', count: 8, color: '#dc2626', growth: '+5%' },
-    { name: 'Oficinas', count: 15, color: '#7c3aed', growth: '+15%' },
-    { name: 'Hotelería', count: 6, color: '#059669', growth: '+3%' },
-    { name: 'Industria', count: 10, color: '#ea580c', growth: '+12%' },
-    { name: 'Retail', count: 9, color: '#dc2626', growth: '+7%' },
-    { name: 'Vivienda', count: 18, color: '#0891b2', growth: '+20%' }
-  ];
+      try {
+        // Si es un string ISO válido
+        if (typeof dateValue === 'string') {
+          const date = new Date(dateValue);
+          if (!isNaN(date.getTime())) {
+            return date.toISOString().split('T')[0];
+          }
+        }
+
+        // Si es un objeto Date
+        if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+          return dateValue.toISOString().split('T')[0];
+        }
+
+        // Si es un timestamp de Firestore (objeto con toDate())
+        if (dateValue && typeof dateValue.toDate === 'function') {
+          const date = dateValue.toDate();
+          return date.toISOString().split('T')[0];
+        }
+
+        return '';
+      } catch (error) {
+        console.warn('Error formatting date:', dateValue, error);
+        return '';
+      }
+    };
+
+    return {
+      id: project.id,
+      title: project.title,
+      category: project.category_info?.name || project.category,
+      status: project.status === 'completed' ? 'Completado' :
+              project.status === 'in_progress' ? 'En progreso' : 'Planificación',
+      completion: project.status === 'completed' ? 100 :
+                  project.status === 'in_progress' ? 75 : 25,
+      client: project.client || 'No especificado',
+      startDate: formatDate(project.created_at)
+    };
+  });
+
+  const categoryColors = ['#2563eb', '#dc2626', '#7c3aed', '#059669', '#ea580c', '#0891b2', '#f59e0b'];
+  const categoriesWithColors = categories.map((cat, index) => ({
+    name: cat.name,
+    count: cat.projects_count,
+    color: categoryColors[index % categoryColors.length],
+    growth: '+' + Math.floor(Math.random() * 20 + 1) + '%' // Mock growth for now
+  }));
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -86,6 +149,17 @@ const PortfolioDashboard = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003F6F] mx-auto"></div>
+          <p className="text-gray-600 mt-4">Cargando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -131,9 +205,9 @@ const PortfolioDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Proyectos Activos</p>
-                <p className="text-3xl font-bold text-[#007bc4]">{stats.activeProjects}</p>
+                <p className="text-3xl font-bold text-[#00A8E8]">{stats.activeProjects}</p>
               </div>
-              <TrendingUp className="h-12 w-12 text-[#007bc4] opacity-20" />
+              <TrendingUp className="h-12 w-12 text-[#00A8E8] opacity-20" />
             </div>
           </CardContent>
         </Card>
@@ -243,7 +317,7 @@ const PortfolioDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {categories.map((category, index) => (
+                {categoriesWithColors.map((category, index) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div 

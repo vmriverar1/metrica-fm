@@ -22,25 +22,15 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
   
   const handleDownloadCertificate = async () => {
     try {
-      // Simular descarga del certificado
-      if (certificatePdfUrl) {
-        // En producción, esto sería un fetch real del PDF
-        toast.success('Descarga iniciada', {
-          description: 'El certificado ISO 9001:2015 se está descargando...'
-        })
-        
-        // Simular descarga con timeout
-        setTimeout(() => {
-          const link = document.createElement('a')
-          link.href = certificatePdfUrl
-          link.download = 'certificado-iso-9001-metrica-dip.pdf'
-          link.click()
-        }, 1000)
-      } else {
-        toast.info('Certificado disponible próximamente', {
-          description: 'El certificado PDF estará disponible en breve.'
-        })
-      }
+      toast.success('Descarga iniciada', {
+        description: 'El certificado ISO 9001:2015 se está descargando...'
+      })
+
+      // Descargar el certificado desde la API
+      const link = document.createElement('a')
+      link.href = '/api/download/iso-certificate'
+      link.download = 'certificado-iso-9001-metrica-dip.pdf'
+      link.click()
     } catch (error) {
       toast.error('Error al descargar', {
         description: 'No se pudo descargar el certificado. Inténtalo más tarde.'
@@ -128,8 +118,8 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
               className={`
                 group relative overflow-hidden px-6 py-3 font-semibold transition-all duration-300
                 ${isPrimary 
-                  ? 'bg-[#007bc4] hover:bg-[#D63E0A] text-white shadow-lg hover:shadow-xl border-[#007bc4]' 
-                  : 'border-[#007bc4] text-[#007bc4] hover:bg-[#007bc4] hover:text-white'
+                  ? 'bg-[#00A8E8] hover:bg-[#D63E0A] text-white shadow-lg hover:shadow-xl border-[#00A8E8]' 
+                  : 'border-[#00A8E8] text-[#00A8E8] hover:bg-[#00A8E8] hover:text-white'
                 }
               `}
             >
@@ -143,8 +133,8 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
                 className={`
                   absolute inset-0 -z-0 transition-transform duration-300
                   ${isPrimary 
-                    ? 'bg-gradient-to-r from-[#FF6B35] to-[#007bc4]' 
-                    : 'bg-[#007bc4]'
+                    ? 'bg-gradient-to-r from-[#FF6B35] to-[#00A8E8]' 
+                    : 'bg-[#00A8E8]'
                   }
                 `}
                 initial={{ x: '-100%' }}
@@ -173,7 +163,7 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
           onClick={handleViewDetails}
           variant="ghost"
           size="lg"
-          className="px-6 py-3 text-gray-600 hover:text-[#007bc4] hover:bg-[#007bc4]/10 transition-all"
+          className="px-6 py-3 text-gray-600 hover:text-[#00A8E8] hover:bg-[#00A8E8]/10 transition-all"
         >
           <Eye className="w-5 h-5 mr-2" />
           Ver Detalles del Certificado

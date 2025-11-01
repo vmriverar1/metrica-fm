@@ -252,14 +252,14 @@ export interface BlogCategory {
   icon: string;
   articles_count: number;
   featured: boolean;
-  order: number;
+  order?: number;
 }
 
 export interface BlogArticle {
   id: string;
   title: string;
   slug: string;
-  category: string;
+  category_id: string;
   author_id: string;
   featured_image: string;
   featured_image_alt: string;

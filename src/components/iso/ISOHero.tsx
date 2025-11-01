@@ -18,11 +18,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { useISOData } from '@/hooks/useISOData';
+import { useISO } from '@/contexts/ISOContext';
 import { getCertificationStatus } from '@/types/iso';
+import VideoWithFallback from '@/components/ui/VideoWithFallback';
 
 export default function ISOHero() {
-  const { data, loading, error } = useISOData();
+  const { data, loading, error } = useISO();
   const [isHovered, setIsHovered] = useState(false);
   const [certificateRotation, setCertificateRotation] = useState({ x: 0, y: 0 });
   const certificateRef = useRef<HTMLDivElement>(null);
@@ -89,10 +90,21 @@ export default function ISOHero() {
   const isValidCertificate = status === 'valid';
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-[#003F6F] via-[#002A4D] to-[#001A33] overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
+      {/* Background Video/Image */}
+      <div className="absolute inset-0">
+        <VideoWithFallback
+          primary={data.hero.background?.video_url}
+          fallback={data.hero.background?.image_url || '/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2359.webp'}
+          alt="ISO 9001 Background"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#003F6F]/90 via-[#002A4D]/80 to-[#001A33]/90" />
+      </div>
+      
       {/* Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#007bc4]/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00A8E8]/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-500/10 rounded-full blur-3xl" />
       
       {/* Animated particles */}
@@ -146,9 +158,11 @@ export default function ISOHero() {
                 <CheckCircle className="w-4 h-4 mr-2" />
                 {isValidCertificate ? 'Certificación Vigente' : 'En Renovación'}
               </Badge>
-              <Badge variant="outline" className="text-xs text-white border-white/30">
-                Desde 2018
-              </Badge>
+              {data.hero.certification_status.since_year && (
+                <Badge variant="outline" className="text-xs text-white border-white/30">
+                  Desde {data.hero.certification_status.since_year}
+                </Badge>
+              )}
             </motion.div>
 
             {/* Main Title */}
@@ -159,12 +173,12 @@ export default function ISOHero() {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="text-5xl lg:text-7xl font-bold text-white drop-shadow-2xl leading-tight"
                 style={{
-                  textShadow: '0 0 30px rgba(0, 123, 196, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3)'
+                  textShadow: '0 0 30px rgba(0, 168, 232, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                ISO 9001
-                <span className="block text-3xl lg:text-4xl text-[#007bc4] font-medium mt-2 drop-shadow-lg">
-                  Certificación 2015
+                {data.hero.title}
+                <span className="block text-3xl lg:text-4xl text-[#00A8E8] font-medium mt-2 drop-shadow-lg">
+                  {data.hero.subtitle}
                 </span>
               </motion.h1>
 
@@ -218,10 +232,15 @@ export default function ISOHero() {
               transition={{ delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button 
-                size="lg" 
-                className="bg-[#007bc4] hover:bg-[#007bc4]/90 text-white px-8 py-3 text-base font-medium shadow-lg"
-                onClick={() => window.open(data.hero.certificate_details.pdf_url, '_blank')}
+              <Button
+                size="lg"
+                className="bg-[#00A8E8] hover:bg-[#00A8E8]/90 text-white px-8 py-3 text-base font-medium shadow-lg"
+                onClick={() => {
+                  const link = document.createElement('a')
+                  link.href = '/api/download/iso-certificate'
+                  link.download = 'certificado-iso-9001-metrica-dip.pdf'
+                  link.click()
+                }}
               >
                 <Download className="w-5 h-5 mr-2" />
                 Descargar Certificado
@@ -243,7 +262,8 @@ export default function ISOHero() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </motion.div>
-            
+
+
           </motion.div>
 
           {/* Right Column - Interactive Certificate */}
@@ -261,7 +281,7 @@ export default function ISOHero() {
             <div className="relative">
               {/* Glow Effect */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#007bc4]/20 to-yellow-500/20 rounded-2xl blur-xl"
+                className="absolute inset-0 bg-gradient-to-r from-[#00A8E8]/20 to-yellow-500/20 rounded-2xl blur-xl"
                 animate={{
                   scale: isHovered ? 1.1 : 1,
                   opacity: isHovered ? 0.6 : 0.3
@@ -288,19 +308,19 @@ export default function ISOHero() {
                   mass: 0.5
                 }}
               >
-                <Card className="w-full h-full bg-gradient-to-br from-white to-gray-50 border-2 border-[#007bc4]/20 shadow-2xl overflow-hidden">
+                <Card className="w-full h-full bg-gradient-to-br from-white to-gray-50 border-2 border-[#00A8E8]/20 shadow-2xl overflow-hidden">
                   <CardContent className="p-8 h-full flex flex-col relative">
                     {/* Certificate Header */}
                     <div className="text-center space-y-4">
                       <div>
-                        <Award className="w-16 h-16 text-[#007bc4] mx-auto" />
+                        <Award className="w-16 h-16 text-[#00A8E8] mx-auto" />
                       </div>
                       
                       <div>
                         <h3 className="text-2xl font-bold text-gray-800">
                           CERTIFICADO
                         </h3>
-                        <p className="text-lg font-semibold text-[#007bc4] mt-1">
+                        <p className="text-lg font-semibold text-[#00A8E8] mt-1">
                           ISO 9001:2015
                         </p>
                       </div>
@@ -333,9 +353,9 @@ export default function ISOHero() {
                       </div>
 
                       <div className="text-center">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#007bc4]/10 rounded-lg">
-                          <Sparkles className="w-4 h-4 text-[#007bc4]" />
-                          <span className="text-sm font-medium text-[#007bc4]">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#00A8E8]/10 rounded-lg">
+                          <Sparkles className="w-4 h-4 text-[#00A8E8]" />
+                          <span className="text-sm font-medium text-[#00A8E8]">
                             Vigente hasta 2027
                           </span>
                         </div>
@@ -349,13 +369,13 @@ export default function ISOHero() {
                         <span>{data.hero.certificate_details.certifying_body}</span>
                       </div>
                       <div className="text-center">
-                        <Globe className="w-4 h-4 text-[#007bc4] mx-auto" />
+                        <Globe className="w-4 h-4 text-[#00A8E8] mx-auto" />
                       </div>
                     </div>
 
                     {/* Holographic Effect */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-transparent via-[#007bc4]/5 to-yellow-500/5 pointer-events-none"
+                      className="absolute inset-0 bg-gradient-to-br from-transparent via-[#00A8E8]/5 to-yellow-500/5 pointer-events-none"
                       animate={{
                         opacity: isHovered ? [0.3, 0.6, 0.3] : 0
                       }}
@@ -366,10 +386,10 @@ export default function ISOHero() {
                     />
 
                     {/* Corner Decorations */}
-                    <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-[#007bc4]/30" />
-                    <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#007bc4]/30" />
-                    <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#007bc4]/30" />
-                    <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#007bc4]/30" />
+                    <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-[#00A8E8]/30" />
+                    <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#00A8E8]/30" />
+                    <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#00A8E8]/30" />
+                    <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#00A8E8]/30" />
                   </CardContent>
                 </Card>
               </motion.div>
@@ -383,7 +403,7 @@ export default function ISOHero() {
               >
                 <Button
                   size="lg"
-                  className="rounded-full w-14 h-14 shadow-lg bg-[#007bc4] hover:bg-[#007bc4]/90"
+                  className="rounded-full w-14 h-14 shadow-lg bg-[#00A8E8] hover:bg-[#00A8E8]/90"
                   onClick={() => window.open(data.hero.certificate_details.pdf_url, '_blank')}
                 >
                   <Download className="w-6 h-6" />

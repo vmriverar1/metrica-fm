@@ -206,7 +206,7 @@ const EMPLOYMENT_TYPE_CONFIG = {
   part_time: { label: 'Tiempo Parcial', color: 'bg-blue-100 text-blue-800' },
   contract: { label: 'Contrato', color: 'bg-purple-100 text-purple-800' },
   internship: { label: 'Prácticas', color: 'bg-yellow-100 text-yellow-800' },
-  freelance: { label: 'Freelance', color: 'bg-orange-100 text-orange-800' }
+  freelance: { label: 'Freelance', color: 'bg-cyan-100 text-cyan-800' }
 }
 
 const EXPERIENCE_LEVEL_CONFIG = {
@@ -214,7 +214,7 @@ const EXPERIENCE_LEVEL_CONFIG = {
   junior: { label: 'Junior (1-2 años)', color: 'bg-green-100 text-green-800' },
   mid: { label: 'Semi-Senior (3-5 años)', color: 'bg-blue-100 text-blue-800' },
   senior: { label: 'Senior (5+ años)', color: 'bg-purple-100 text-purple-800' },
-  lead: { label: 'Lead (7+ años)', color: 'bg-orange-100 text-orange-800' },
+  lead: { label: 'Lead (7+ años)', color: 'bg-cyan-100 text-cyan-800' },
   executive: { label: 'Ejecutivo (10+ años)', color: 'bg-red-100 text-red-800' }
 }
 
@@ -228,7 +228,7 @@ const STATUS_CONFIG = {
 const PRIORITY_CONFIG = {
   low: { label: 'Baja', color: 'bg-gray-100 text-gray-800' },
   medium: { label: 'Media', color: 'bg-blue-100 text-blue-800' },
-  high: { label: 'Alta', color: 'bg-orange-100 text-orange-800' },
+  high: { label: 'Alta', color: 'bg-cyan-100 text-cyan-800' },
   urgent: { label: 'Urgente', color: 'bg-red-100 text-red-800' }
 }
 
@@ -2073,9 +2073,9 @@ export default function CareersJobEditor({
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-medium text-gray-600">Tiempo Promedio</p>
-                        <p className="text-2xl font-bold text-orange-600">{Math.round(formData.analytics.avg_time_on_page / 60)}m</p>
+                        <p className="text-2xl font-bold text-cyan-600">{Math.round(formData.analytics.avg_time_on_page / 60)}m</p>
                       </div>
-                      <Clock className="h-8 w-8 text-orange-600" />
+                      <Clock className="h-8 w-8 text-cyan-600" />
                     </div>
                   </CardContent>
                 </Card>

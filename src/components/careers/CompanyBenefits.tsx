@@ -138,13 +138,13 @@ export default function CompanyBenefits({ benefitsData, className }: CompanyBene
         </div>
 
         {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {benefitsData.benefits.map((benefit) => {
             const IconComponent = (iconMap as any)[benefit.icon] || Heart;
             return (
             <div
               key={benefit.id}
-              className="benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default bg-gradient-to-br from-gray-50 to-white border-gray-200 hover:border-primary/30 hover:shadow-lg"
+              className="benefit-card relative p-6 rounded-xl border-2 transition-all duration-300 cursor-default bg-gradient-to-br from-gray-50 to-white border-gray-200 hover:border-primary/30 hover:shadow-lg w-full sm:w-80 md:w-72 lg:w-64"
             >
               {/* Highlight Badge */}
               {benefit.highlight && (
@@ -184,7 +184,7 @@ export default function CompanyBenefits({ benefitsData, className }: CompanyBene
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-8 md:p-12">
             <div className="max-w-2xl mx-auto">
               <h3 className="text-3xl font-bold text-foreground mb-4">
@@ -209,7 +209,7 @@ export default function CompanyBenefits({ benefitsData, className }: CompanyBene
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
 

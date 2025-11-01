@@ -41,7 +41,7 @@ const PillarsEditor: React.FC<PillarsEditorProps> = ({
     'Compass': { icon: Compass, label: 'Brújula (Planificación)', color: 'text-blue-600' },
     'Network': { icon: Network, label: 'Red (Coordinación)', color: 'text-green-600' },
     'ScanSearch': { icon: ScanSearch, label: 'Supervisión', color: 'text-purple-600' },
-    'ChartBar': { icon: ChartBar, label: 'Control de Calidad', color: 'text-orange-600' },
+    'ChartBar': { icon: ChartBar, label: 'Control de Calidad', color: 'text-cyan-600' },
     'AlertTriangle': { icon: AlertTriangle, label: 'Gestión de Riesgos', color: 'text-red-600' },
     'Building2': { icon: Building2, label: 'Representación', color: 'text-indigo-600' }
   };
@@ -75,7 +75,7 @@ const PillarsEditor: React.FC<PillarsEditorProps> = ({
       </div>
       
       <p className="text-xs text-gray-600 line-clamp-3 mb-3 min-h-[3rem]">
-        {pillar.description || 'Sin descripción'}
+        {pillar.description || ''}
       </p>
       
       {pillar.image && (
@@ -330,7 +330,7 @@ const PillarsEditor: React.FC<PillarsEditorProps> = ({
               <p className="text-xs text-gray-600">Total Pilares</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#007bc4]">
+              <p className="text-2xl font-bold text-[#00A8E8]">
                 {pillars.filter(p => p.title && p.description).length}
               </p>
               <p className="text-xs text-gray-600">Completos</p>

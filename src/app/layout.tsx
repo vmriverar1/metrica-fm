@@ -1,74 +1,45 @@
-import type { Metadata } from 'next';
-// import { Toaster } from "@/components/ui/toaster"
+import type { Metadata, Viewport } from 'next';
+import { Toaster } from "@/components/ui/toaster"
 import LoadingProvider from '@/components/loading/LoadingProvider';
 import AppInitializer from '@/components/loading/AppInitializer';
 import RobustNavigationProvider from '@/components/loading/RobustNavigationProvider';
-import { PageErrorBoundary } from '@/components/error-boundary';
-import { initializeAccessibility } from '@/lib/accessibility';
-import { initializeAnalytics } from '@/lib/analytics';
+import PWAInstallPrompt from '@/components/pwa/PWAInstallPrompt';
+import PWAPreloader from '@/components/pwa/PWAPreloader';
+import PWAUpdateNotification from '@/components/pwa/PWAUpdateNotification';
+import PWAUpdateManager from '@/components/pwa/PWAUpdateManager';
+import OfflineIndicator from '@/components/offline/OfflineIndicator';
+import FloatingEmail from '@/components/ui/FloatingEmail';
+import AnalyticsProvider from '@/components/analytics/AnalyticsProvider';
+import ReCaptchaProvider from '@/components/recaptcha/ReCaptchaProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://metrica-fm.com'),
-  title: {
-    default: 'Métrica FM - Dirección Integral de Proyectos',
-    template: '%s | Métrica FM'
+  title: 'Métrica FM - Ingeniería y Construcción',
+  description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Métrica FM'
   },
-  description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú. Especialistas en construcción, gestión de proyectos y consultoría técnica con certificación ISO 9001.',
-  keywords: [
-    'dirección de proyectos',
-    'construcción Perú',
-    'ingeniería civil',
-    'consultoría técnica',
-    'ISO 9001',
-    'infraestructura',
-    'gestión de proyectos',
-    'supervisión de obras'
-  ],
-  authors: [{ name: 'Métrica FM' }],
-  creator: 'Métrica FM',
-  publisher: 'Métrica FM',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'es_PE',
-    url: '/',
-    siteName: 'Métrica FM',
-    title: 'Métrica FM - Dirección Integral de Proyectos',
-    description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Métrica FM - Dirección Integral de Proyectos',
-      }
+  icons: {
+    icon: [
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' }
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Métrica FM - Dirección Integral de Proyectos',
-    description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú',
-    images: ['/og-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: process.env.GOOGLE_VERIFICATION,
-  },
+    apple: [
+      { url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }
+    ]
+  }
+};
+
+export const viewport: Viewport = {
+  themeColor: '#003F6F',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -84,31 +55,24 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <PageErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
-          <AppInitializer>
-            <RobustNavigationProvider>
-              <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
-                {children}
-              </LoadingProvider>
-              {/* <Toaster /> */}
-            </RobustNavigationProvider>
-          </AppInitializer>
-        </PageErrorBoundary>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                if (typeof window !== 'undefined') {
-                  ${initializeAccessibility.toString()}
-                  ${initializeAnalytics.toString()}
-                  
-                  initializeAccessibility();
-                  initializeAnalytics();
-                }
-              })();
-            `,
-          }}
-        />
+        <ReCaptchaProvider>
+          <AnalyticsProvider>
+            <AppInitializer>
+              <RobustNavigationProvider>
+                <LoadingProvider enableRouteLoading={false} minLoadingTime={1200}>
+                  {children}
+                </LoadingProvider>
+                <Toaster />
+                <PWAInstallPrompt />
+                <PWAPreloader />
+                <PWAUpdateNotification showOnlyInAdmin={false} position="top-right" />
+                <PWAUpdateManager position="top-right" autoUpdate={false} />
+                <OfflineIndicator showOnlyWhenOffline={true} position="bottom-left" />
+                <FloatingEmail hiddenOnPaths={['/portfolio*', '/admin*']} />
+              </RobustNavigationProvider>
+            </AppInitializer>
+          </AnalyticsProvider>
+        </ReCaptchaProvider>
       </body>
     </html>
   );

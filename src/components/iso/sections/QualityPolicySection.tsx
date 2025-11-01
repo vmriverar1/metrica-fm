@@ -88,7 +88,7 @@ function PolicyHeader({ document: doc }: { document: PolicyDocument }) {
           {doc.title}
         </CardTitle>
         <div className="flex justify-center gap-2">
-          <Badge className="bg-[#007bc4] hover:bg-[#007bc4]/90">
+          <Badge className="bg-[#00A8E8] hover:bg-[#00A8E8]/90">
             Versión {doc.version}
           </Badge>
           <Badge variant="outline" className="border-white/30 text-white">
@@ -222,7 +222,7 @@ function ObjectivesTable({ objectives }: { objectives: Objective[] }) {
                   <span className="text-gray-600">Progreso</span>
                   <div className="flex items-center gap-4">
                     <span className="font-medium text-gray-900">
-                      Actual: <span className="text-[#007bc4]">{objective.current}</span>
+                      Actual: <span className="text-[#00A8E8]">{objective.current}</span>
                     </span>
                     <span className="text-gray-600">
                       Meta: <span className="font-medium">{objective.target}</span>
@@ -266,8 +266,8 @@ export function QualityPolicySection({ data }: QualityPolicySectionProps) {
             <AccordionItem value="commitments" className="bg-gray-50/50 rounded-lg border border-gray-200">
               <AccordionTrigger className="px-6 hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-                    <Target className="w-5 h-5 text-[#007bc4]" />
+                  <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+                    <Target className="w-5 h-5 text-[#00A8E8]" />
                   </div>
                   <div className="text-left">
                     <div className="text-xl font-semibold text-gray-900">
@@ -287,8 +287,8 @@ export function QualityPolicySection({ data }: QualityPolicySectionProps) {
             <AccordionItem value="objectives" className="bg-gray-50/50 rounded-lg border border-gray-200">
               <AccordionTrigger className="px-6 hover:no-underline">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-[#007bc4]" />
+                  <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-[#00A8E8]" />
                   </div>
                   <div className="text-left">
                     <div className="text-xl font-semibold text-gray-900">

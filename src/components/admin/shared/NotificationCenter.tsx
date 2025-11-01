@@ -470,7 +470,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
       case 'announcement':
         return <Bell className="w-4 h-4 text-purple-500" />;
       case 'reminder':
-        return <Clock className="w-4 h-4 text-orange-500" />;
+        return <Clock className="w-4 h-4 text-cyan-500" />;
       case 'action_required':
         return <Flag className="w-4 h-4 text-red-600" />;
       default:
@@ -483,7 +483,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'urgent':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-cyan-100 text-cyan-800 border-cyan-200';
       case 'high':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'normal':
@@ -508,7 +508,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
       case 'cancelled':
         return 'bg-gray-100 text-gray-800';
       case 'paused':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-cyan-100 text-cyan-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -621,7 +621,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 <p className="text-2xl font-bold">{notificationStats.openRate}%</p>
                 <p className="text-sm text-gray-600">Tasa de Apertura</p>
               </div>
-              <Eye className="w-8 h-8 text-orange-500" />
+              <Eye className="w-8 h-8 text-cyan-500" />
             </div>
           </CardContent>
         </Card>

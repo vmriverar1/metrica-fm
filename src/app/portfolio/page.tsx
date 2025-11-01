@@ -8,7 +8,7 @@ import FeaturedProjects from '@/components/portfolio/FeaturedProjects';
 import ProjectGrid from '@/components/portfolio/ProjectGrid';
 import ProjectFilter from '@/components/portfolio/ProjectFilter';
 import SmartFilters from '@/components/portfolio/SmartFilters';
-// import MapSection from '@/components/portfolio/MapSection'; // Removed for server performance
+import MapSection from '@/components/portfolio/MapSection';
 import PortfolioCTA from '@/components/portfolio/PortfolioCTA';
 import DataVisualization from '@/components/portfolio/DataVisualization';
 import ProjectTimeline from '@/components/portfolio/ProjectTimeline';
@@ -40,10 +40,10 @@ export default function PortfolioPage() {
         <main className="relative">
           {/* Hero Section */}
           <PortfolioHero />
-          
+
           {/* Featured Projects Section */}
           <FeaturedProjects />
-          
+
           {/* Dynamic Content Based on View */}
           <section className="pt-4 pb-16">
             <div className="container mx-auto px-4">
@@ -76,9 +76,7 @@ export default function PortfolioPage() {
                     activeView={activeView}
                     onViewChange={setActiveView}
                   />
-                  <div className="text-center py-16 text-muted-foreground">
-                    <p>Vista de mapa temporalmente deshabilitada para optimización del servidor</p>
-                  </div>
+                  <MapSection />
                 </div>
               )}
               

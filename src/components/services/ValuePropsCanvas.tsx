@@ -93,8 +93,8 @@ const valueProps: ValueProp[] = [
     description: 'Acompañamiento integral desde la concepción hasta post-entrega',
     proofLink: '/about/compromiso',
     proofText: 'Testimonios clientes',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50 border-orange-100'
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-50 border-cyan-100'
   }
 ];
 
@@ -241,7 +241,7 @@ export default function ValuePropsCanvas() {
                   <div className="text-sm text-muted-foreground">Satisfacción del cliente</div>
                 </div>
                 <div className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">15+</div>
+                  <div className="text-3xl font-bold text-primary">10+</div>
                   <div className="text-sm text-muted-foreground">Años de experiencia</div>
                 </div>
               </div>

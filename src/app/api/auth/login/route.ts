@@ -1,81 +1,41 @@
 /**
- * FASE 6: API Route - Authentication Login
+ * API Route - Authentication Login
  * POST /api/auth/login
- * 
+ *
  * Endpoint para autenticación via API REST.
- * Permite integraciones externas y aplicaciones móviles.
+ *
+ * NOTA: El sistema actual de autenticación usa Google Sign-In únicamente.
+ * Este endpoint retorna información sobre el método de autenticación disponible.
+ *
+ * Para autenticación via email/password, se requiere:
+ * 1. Configurar Firebase Authentication con proveedores de email/password
+ * 2. Implementar validación de tokens con Firebase Admin SDK
+ * 3. Agregar sistema de roles/permisos en Firestore
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth-service';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, twoFactorCode, rememberMe } = body;
+    const { email, password } = body;
 
-    // Validar campos requeridos
-    if (!email || !password) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Email y password son requeridos',
-          code: 'MISSING_CREDENTIALS'
-        },
-        { status: 400 }
-      );
-    }
-
-    // Intentar login
-    const result = await AuthService.login({
-      email,
-      password,
-      twoFactorCode,
-      rememberMe
-    });
-
-    if (result.success && result.session) {
-      // Login exitoso
-      return NextResponse.json({
-        success: true,
-        data: {
-          user: {
-            id: result.session.user.id,
-            email: result.session.user.email,
-            firstName: result.session.user.firstName,
-            lastName: result.session.user.lastName,
-            role: result.session.user.role.name,
-            department: result.session.user.department,
-            permissions: result.session.user.permissions.map(p => ({
-              resource: p.resource,
-              action: p.action
-            }))
-          },
-          session: {
-            accessToken: result.session.accessToken,
-            expiresAt: result.session.expiresAt.toISOString()
-          }
-        },
-        message: 'Autenticación exitosa'
-      });
-    }
-
-    if (result.requiresTwoFactor) {
-      // Requiere 2FA
-      return NextResponse.json({
+    // Información sobre el sistema de autenticación actual
+    return NextResponse.json(
+      {
         success: false,
-        requiresTwoFactor: true,
-        message: 'Código de verificación 2FA requerido',
-        code: 'REQUIRES_2FA'
-      }, { status: 202 }); // 202 Accepted - requiere acción adicional
-    }
-
-    // Error de autenticación
-    return NextResponse.json({
-      success: false,
-      error: result.error || 'Credenciales inválidas',
-      code: 'INVALID_CREDENTIALS'
-    }, { status: 401 });
+        error: 'Este endpoint no está disponible con el sistema de autenticación actual',
+        code: 'AUTH_METHOD_NOT_SUPPORTED',
+        message: 'La autenticación se realiza exclusivamente mediante Google Sign-In en el panel de administración',
+        availableMethods: ['google-sign-in'],
+        documentation: {
+          adminPanel: '/admin/login',
+          method: 'Google Sign-In',
+          note: 'Solo usuarios autorizados previamente en Firestore pueden acceder'
+        }
+      },
+      { status: 501 } // 501 Not Implemented
+    );
 
   } catch (error) {
     console.error('API Login Error:', error);

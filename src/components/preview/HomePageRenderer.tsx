@@ -36,7 +36,7 @@ const HomePageRenderer: React.FC<HomePageRendererProps> = ({ data, isPreview = f
           {/* Main Title */}
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="block">{hero.title?.main || 'Métrica'}</span>
-            <span className="block text-orange-500">{hero.title?.secondary || 'DIP'}</span>
+            <span className="block text-cyan-500">{hero.title?.secondary || 'DIP'}</span>
           </h1>
           
           {/* Subtitle */}
@@ -52,7 +52,7 @@ const HomePageRenderer: React.FC<HomePageRendererProps> = ({ data, isPreview = f
               <p className="text-lg mb-4">{hero.transition_text || 'Especialistas en'}</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {hero.rotating_words.map((word: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="bg-orange-500 text-white px-3 py-1">
+                  <Badge key={index} variant="secondary" className="bg-cyan-500 text-white px-3 py-1">
                     {word}
                   </Badge>
                 ))}
@@ -62,7 +62,7 @@ const HomePageRenderer: React.FC<HomePageRendererProps> = ({ data, isPreview = f
           
           {/* CTA */}
           {hero.cta?.text && (
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105">
+            <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105">
               {hero.cta.text}
             </button>
           )}
@@ -263,8 +263,8 @@ const HomePageRenderer: React.FC<HomePageRendererProps> = ({ data, isPreview = f
             {policies.policies.map((policy: any, index: number) => (
               <div key={index} className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-orange-600">📋</span>
+                  <div className="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-cyan-600">📋</span>
                   </div>
                   <h5 className="font-semibold text-gray-800 mb-2">{policy.name}</h5>
                   {policy.description && (
@@ -301,7 +301,7 @@ const HomePageRenderer: React.FC<HomePageRendererProps> = ({ data, isPreview = f
               className="flex-1 px-4 py-3 rounded-lg"
               disabled
             />
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+            <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
               {newsletter.form?.submit_text || 'Suscribirse'}
             </button>
           </div>

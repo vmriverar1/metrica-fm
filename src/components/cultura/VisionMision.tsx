@@ -19,7 +19,7 @@ const visionMisionData = [
     icon: Target,
     title: 'Misión',
     content: 'Transformar ideas en realidades construidas, brindando servicios integrales de gestión de proyectos que superen las expectativas de nuestros clientes y contribuyan al progreso del Perú.',
-    color: 'from-orange-600 to-orange-800',
+    color: 'from-cyan-600 to-cyan-800',
     image: 'https://images.unsplash.com/photo-1541976590-713941681591?w=800&h=600&fit=crop'
   },
   {

@@ -49,7 +49,7 @@ const availableIcons = [
 ];
 
 const availableColors = [
-  { value: '#007bc4', label: 'Naranja Principal', color: '#007bc4' },
+  { value: '#00A8E8', label: 'Naranja Principal', color: '#00A8E8' },
   { value: '#003F6F', label: 'Azul Principal', color: '#003F6F' },
   { value: '#D0D0D0', label: 'Gris Claro', color: '#D0D0D0' },
   { value: '#9D9D9C', label: 'Gris Medio', color: '#9D9D9C' },
@@ -66,7 +66,7 @@ const defaultCategories = {
   historia: {
     title: 'Nuestra Historia',
     icon: 'Clock',
-    color: '#007bc4',
+    color: '#00A8E8',
     stats: []
   },
   equipo: {
@@ -99,7 +99,7 @@ export default function CultureStatsEditor({
     const newCategory: StatCategory = {
       title: 'Nueva Categoría',
       icon: 'BarChart3',
-      color: '#007bc4',
+      color: '#00A8E8',
       stats: []
     };
     
@@ -504,7 +504,7 @@ export default function CultureStatsEditor({
                                       <Input
                                         value={editingStatData.value}
                                         onChange={(e) => updateStatData('value', e.target.value)}
-                                        placeholder="15+"
+                                        placeholder="10+"
                                         className="text-xs h-6"
                                       />
                                       <Textarea
@@ -580,7 +580,7 @@ export default function CultureStatsEditor({
             <div>
               <h5 className="font-medium text-gray-900 mb-1">Formato de valores:</h5>
               <ul className="space-y-1">
-                <li>• Usar símbolos: 15+, 200+, &gt;50, etc.</li>
+                <li>• Usar símbolos: 10+, 200+, &gt;50, etc.</li>
                 <li>• Mantener consistencia en el formato</li>
                 <li>• Descripciones claras y específicas</li>
                 <li>• Máximo 4 estadísticas por categoría</li>

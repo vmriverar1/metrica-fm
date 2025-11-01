@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
-import UniversalHero from '@/components/ui/universal-hero';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import { 
-  Heart, 
-  GraduationCap, 
-  Truck, 
+import {
+  Heart,
+  GraduationCap,
+  Truck,
   Home,
   Building2,
   Building,
@@ -19,7 +18,10 @@ import {
   Clock,
   Target
 } from 'lucide-react';
-import { readPublicJSONAsync } from '@/lib/json-reader';
+import { PagesService } from '@/lib/firestore/pages-service';
+import YouTubeEmbed from '@/components/ui/YouTubeEmbed';
+import ClientStatistics from '@/components/clientes/ClientStatistics';
+import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
 
 interface ClientesData {
   page: {
@@ -35,18 +37,37 @@ interface ClientesData {
   introduction: {
     title: string;
     description: string;
-    stats: {
-      total_clients: string;
-      public_sector: string;
-      private_sector: string;
-      years_experience: string;
-    };
+    stats?: Array<{
+      number: string;
+      label: string;
+      description: string;
+      icon?: string;
+      color?: string;
+    }>;
   };
   client_sectors: any[];
+  clientes: {
+    logos: string[]; // Array simple de URLs
+    section: {
+      title: string;
+      subtitle: string;
+    };
+  };
   testimonials: {
     title: string;
     subtitle: string;
     testimonials_list: any[];
+    youtube_videos?: Array<{
+      id: string;
+      videoId: string;
+      title: string;
+      description: string;
+      author: string;
+      position: string;
+      company: string;
+      sector?: string;
+      order?: number;
+    }>;
   };
   client_benefits: {
     title: string;
@@ -84,7 +105,29 @@ export const metadata: Metadata = {
 };
 
 async function getClientesData(): Promise<ClientesData> {
-  return readPublicJSONAsync<ClientesData>('/json/pages/clientes.json');
+  try {
+    // First try to load from Firestore
+    const firestoreData = await PagesService.getClientesPage();
+    if (firestoreData) {
+      return firestoreData as ClientesData;
+    }
+
+    // Fallback to API if Firestore fails
+    const response = await fetch('/api/admin/pages/clientes', { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch clientes data: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to load clientes data');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error('Error loading clientes data:', error);
+    throw error;
+  }
 }
 
 function ClientesContent({ data }: { data: ClientesData }) {
@@ -92,10 +135,11 @@ function ClientesContent({ data }: { data: ClientesData }) {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="relative">
-        <UniversalHero
-          title={data.hero.title}
-          subtitle={data.hero.subtitle}
-          backgroundImage={data.hero.background_image}
+        {/* Hero con Cuadrícula Dinámica de Logos */}
+        <DynamicLogoGrid
+          logos={data.clientes?.logos || []}
+          title={data.clientes?.section?.title || data.hero?.title || 'Nuestros Clientes'}
+          subtitle={data.clientes?.section?.subtitle || data.hero?.subtitle || 'Empresas líderes que confían en nuestra experiencia'}
         />
         
         {/* Introducción y estadísticas */}
@@ -108,210 +152,69 @@ function ClientesContent({ data }: { data: ClientesData }) {
               </p>
               
               {/* Stats */}
-              <div className="grid md:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.total_clients}</div>
-                  <div className="text-sm text-muted-foreground">Clientes Totales</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.public_sector}</div>
-                  <div className="text-sm text-muted-foreground">Sector Público</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.private_sector}</div>
-                  <div className="text-sm text-muted-foreground">Sector Privado</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{data.introduction.stats.years_experience}</div>
-                  <div className="text-sm text-muted-foreground">Años de Experiencia</div>
-                </div>
-              </div>
+              {data.introduction.stats && data.introduction.stats.length > 0 && (
+                <ClientStatistics stats={data.introduction.stats} />
+              )}
             </div>
-
-            {/* Client Sectors */}
-            {data.client_sectors.map((sector, sectorIndex) => (
-              <div key={sector.id} className="mb-20">
-                <div className="text-center mb-12">
-                  <h3 className="text-2xl font-semibold text-primary mb-4">{sector.title}</h3>
-                  <p className="text-accent font-medium mb-4">{sector.subtitle}</p>
-                  <p className="text-muted-foreground max-w-3xl mx-auto">{sector.description}</p>
-                </div>
-
-                {/* Sector Público - Clients */}
-                {sector.clients && (
-                  <div className="grid md:grid-cols-2 gap-8 mb-12">
-                    {sector.clients.map((client: any, index: number) => {
-                      const IconComponent = iconMap[client.icon as keyof typeof iconMap];
-                      return (
-                        <div key={client.id} className="bg-card rounded-lg p-6 shadow-sm border hover:shadow-lg transition-all duration-300">
-                          <div className="flex items-center gap-3 mb-4">
-                            {IconComponent && (
-                              <div className="p-3 rounded-lg" style={{ backgroundColor: `${client.color}20` }}>
-                                <IconComponent className="w-6 h-6" style={{ color: client.color }} />
-                              </div>
-                            )}
-                            <div>
-                              <h4 className="text-xl font-semibold text-primary">{client.name}</h4>
-                              <p className="text-sm text-muted-foreground">{client.full_name}</p>
-                            </div>
-                          </div>
-                          
-                          <p className="text-sm text-muted-foreground mb-4">{client.description}</p>
-                          
-                          <div className="mb-4">
-                            <p className="text-sm font-medium text-primary mb-2">{client.projects_count} proyectos realizados</p>
-                            {client.specialties && (
-                              <div className="flex flex-wrap gap-1">
-                                {client.specialties.map((specialty: string, idx: number) => (
-                                  <span key={idx} className="text-xs bg-muted px-2 py-1 rounded">
-                                    {specialty}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                          {client.key_projects && (
-                            <div>
-                              <h5 className="text-sm font-semibold text-primary mb-2">Proyectos Clave:</h5>
-                              <div className="space-y-2">
-                                {client.key_projects.slice(0, 2).map((project: any, idx: number) => (
-                                  <div key={idx} className="text-xs text-muted-foreground">
-                                    <div className="font-medium">{project.name}</div>
-                                    <div className="flex justify-between">
-                                      <span>{project.value}</span>
-                                      <span className={project.status === 'Completado' ? 'text-green-600' : 'text-blue-600'}>
-                                        {project.status}
-                                      </span>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Sector Privado - Categories */}
-                {sector.categories && (
-                  <div className="space-y-12">
-                    {sector.categories.map((category: any, catIndex: number) => {
-                      const IconComponent = iconMap[category.icon as keyof typeof iconMap];
-                      return (
-                        <div key={category.id} className="bg-card rounded-lg p-8 shadow-sm border">
-                          <div className="flex items-center gap-3 mb-6">
-                            {IconComponent && (
-                              <div className="p-3 rounded-lg" style={{ backgroundColor: `${category.color}20` }}>
-                                <IconComponent className="w-6 h-6" style={{ color: category.color }} />
-                              </div>
-                            )}
-                            <div>
-                              <h4 className="text-xl font-semibold text-primary">{category.title}</h4>
-                              <p className="text-sm text-muted-foreground">{category.description}</p>
-                            </div>
-                          </div>
-
-                          <div className="grid md:grid-cols-2 gap-8">
-                            {/* Clients */}
-                            <div>
-                              <h5 className="text-sm font-semibold text-primary mb-4">Clientes Principales:</h5>
-                              <div className="grid grid-cols-2 gap-3">
-                                {category.clients.map((client: any, idx: number) => (
-                                  <div key={idx} className="bg-muted rounded p-3">
-                                    <div className="font-medium text-sm">{client.name}</div>
-                                    <div className="text-xs text-muted-foreground">{client.projects} proyectos</div>
-                                    <div className="text-xs text-muted-foreground mt-1">{client.specialization}</div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Services */}
-                            <div>
-                              <h5 className="text-sm font-semibold text-primary mb-4">Servicios Proporcionados:</h5>
-                              <ul className="space-y-2">
-                                {category.services.map((service: string, idx: number) => (
-                                  <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: category.color }}></div>
-                                    <span>{service}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-
-                          {/* Key Projects */}
-                          {category.key_projects && (
-                            <div className="mt-6 pt-6 border-t border-border">
-                              <h5 className="text-sm font-semibold text-primary mb-4">Proyectos Destacados:</h5>
-                              <div className="grid md:grid-cols-2 gap-4">
-                                {category.key_projects.map((project: any, idx: number) => (
-                                  <div key={idx} className="bg-muted rounded p-4">
-                                    <div className="font-medium text-sm mb-1">{project.name}</div>
-                                    <div className="text-xs text-muted-foreground">Cliente: {project.client}</div>
-                                    <div className="flex justify-between items-center mt-2">
-                                      <span className="text-xs font-medium">{project.value}</span>
-                                      <span className={`text-xs px-2 py-1 rounded ${project.status === 'Completado' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
-                                        {project.status}
-                                      </span>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Sector Stats */}
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-6 mt-8">
-                  <div className="grid md:grid-cols-3 gap-6 text-center">
-                    <div>
-                      <div className="text-2xl font-bold text-primary">{sector.total_investment}</div>
-                      <div className="text-sm text-muted-foreground">Inversión Total</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-primary">{sector.active_projects}</div>
-                      <div className="text-sm text-muted-foreground">Proyectos Activos</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-primary">{sector.completed_projects}</div>
-                      <div className="text-sm text-muted-foreground">Proyectos Completados</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* Testimonials */}
+          
+            {/* SECCIÓN DE TESTIMONIOS DE YOUTUBE */}
             <div className="mb-20">
               <div className="text-center mb-12">
-                <h3 className="text-2xl font-semibold text-primary mb-4">{data.testimonials.title}</h3>
-                <p className="text-muted-foreground">{data.testimonials.subtitle}</p>
+                <h3 className="text-3xl font-bold text-primary mb-6">
+                  Testimonios de Nuestros Clientes
+                </h3>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  Escucha de primera mano lo que nuestros clientes opinan sobre nuestro trabajo
+                  y cómo hemos contribuido al éxito de sus proyectos.
+                </p>
               </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {data.testimonials.testimonials_list.map((testimonial) => (
-                  <div key={testimonial.id} className="bg-card rounded-lg p-6 shadow-sm border">
-                    <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
-                    <div className="border-t pt-4">
-                      <div className="font-medium text-sm">{testimonial.author}</div>
-                      <div className="text-xs text-muted-foreground">{testimonial.company}</div>
-                      <div className="text-xs text-accent">{testimonial.project}</div>
-                    </div>
-                  </div>
-                ))}
+
+              {/* Grid de Videos */}
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                {data.testimonials?.youtube_videos && data.testimonials.youtube_videos.length > 0 ? (
+                  data.testimonials.youtube_videos
+                    .sort((a: any, b: any) => (a.order || 999) - (b.order || 999))
+                    .map((video: any) => (
+                      <YouTubeEmbed
+                        key={video.id}
+                        videoId={video.videoId}
+                        title={video.title}
+                        description={video.description}
+                      />
+                    ))
+                ) : (
+                  // Fallback a videos hardcodeados si no hay datos en Firestore
+                  <>
+                    <YouTubeEmbed
+                      videoId="xBpz8Ret1Io"
+                      title="Testimonio - Nora Valencia, Gerente de BCP"
+                      description="Nora Valencia, Gerente de BCP, comparte su experiencia trabajando con Métrica FM en proyectos de infraestructura bancaria."
+                    />
+                    <YouTubeEmbed
+                      videoId="DkUC15ltTYs"
+                      title="Testimonio - Mario Cruz Galarza CEO ™"
+                      description="Mario Cruz Galarza, CEO, nos cuenta cómo Métrica FM contribuyó al éxito de sus proyectos empresariales."
+                    />
+                    <YouTubeEmbed
+                      videoId="d3aYMlb5VKA"
+                      title="Álvaro Chinchayán - CEO Latam Logistic"
+                      description="Álvaro Chinchayán, CEO de Latam Logistic, destaca la calidad y profesionalismo en la dirección de proyectos logísticos."
+                    />
+                  </>
+                )}
+              </div>
+
+              {/* Call to action */}
+              <div className="text-center mt-12">
+                <p className="text-muted-foreground mb-4">
+                  ¿Quieres conocer más testimonios y casos de éxito?
+                </p>
+                <a
+                  href="/portfolio"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                >
+                  Ver Nuestro Portfolio
+                </a>
               </div>
             </div>
 
@@ -321,8 +224,13 @@ function ClientesContent({ data }: { data: ClientesData }) {
                 <h3 className="text-2xl font-semibold text-primary mb-4">{data.client_benefits.title}</h3>
                 <p className="text-muted-foreground">{data.client_benefits.subtitle}</p>
               </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+              <div className={`grid gap-8 ${
+                data.client_benefits.benefits.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+                data.client_benefits.benefits.length === 2 ? 'md:grid-cols-2 max-w-3xl mx-auto' :
+                data.client_benefits.benefits.length === 3 ? 'md:grid-cols-3 max-w-5xl mx-auto' :
+                'md:grid-cols-2 lg:grid-cols-4'
+              }`}>
                 {data.client_benefits.benefits.map((benefit) => {
                   const IconComponent = iconMap[benefit.icon as keyof typeof iconMap];
                   return (
@@ -337,7 +245,7 @@ function ClientesContent({ data }: { data: ClientesData }) {
                       <h4 className="text-lg font-semibold text-primary mb-2">{benefit.title}</h4>
                       <p className="text-sm text-muted-foreground mb-4">{benefit.description}</p>
                       <div className="space-y-1">
-                        {benefit.metrics.map((metric: string, idx: number) => (
+                        {Array.isArray(benefit.metrics) && benefit.metrics.map((metric: string, idx: number) => (
                           <div key={idx} className="text-xs text-muted-foreground">• {metric}</div>
                         ))}
                       </div>
@@ -348,14 +256,14 @@ function ClientesContent({ data }: { data: ClientesData }) {
             </div>
 
             {/* Success Metrics */}
-            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-8 text-white">
+            {/* <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-8 text-white">
               <div className="text-center mb-12">
                 <h3 className="text-2xl font-bold mb-4">{data.success_metrics.title}</h3>
                 <p className="text-white/90">{data.success_metrics.subtitle}</p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {data.success_metrics.metrics.map((metric, index) => (
+                {Array.isArray(data.success_metrics?.metrics) && data.success_metrics.metrics.map((metric, index) => (
                   <div key={index} className="text-center">
                     <div className="text-3xl font-bold text-white mb-2">{metric.value}</div>
                     <div className="text-sm font-semibold text-white/90 mb-1">{metric.category}</div>
@@ -364,7 +272,7 @@ function ClientesContent({ data }: { data: ClientesData }) {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
       </main>

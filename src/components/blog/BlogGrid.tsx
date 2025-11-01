@@ -6,6 +6,7 @@ import ArticleCard from './ArticleCard';
 import { cn } from '@/lib/utils';
 import { Grid, List, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import OptimizedLoading from '@/components/loading/OptimizedLoading';
 
 type ViewMode = 'grid' | 'masonry' | 'list';
 type GridSize = 'compact' | 'comfortable' | 'spacious';
@@ -15,7 +16,16 @@ interface BlogGridProps {
 }
 
 export default function BlogGrid({ className }: BlogGridProps) {
-  const { filteredPosts } = useBlog();
+  const { filteredPosts, allPosts, isLoading, error } = useBlog();
+
+  // Debug logging
+  console.log('BlogGrid Debug:', {
+    filteredPosts: filteredPosts?.length || 0,
+    allPosts: allPosts?.length || 0,
+    isLoading,
+    error,
+    actualFilteredPosts: filteredPosts?.slice(0, 2) // Show first 2 for debugging
+  });
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
@@ -119,6 +129,41 @@ export default function BlogGrid({ className }: BlogGridProps) {
     setCurrentPage(1);
   }, [filteredPosts]);
 
+  // Show loading spinner while loading
+  if (isLoading) {
+    return (
+      <div className={cn(className)}>
+        <OptimizedLoading
+          type="blog"
+          message="Cargando los últimos artículos del blog..."
+          showProgress={true}
+          estimatedTime={3}
+        />
+      </div>
+    );
+  }
+
+  // Show error message if there's an error
+  if (error) {
+    return (
+      <div className={cn(
+        "flex flex-col items-center justify-center py-16 text-center",
+        className
+      )}>
+        <div className="w-24 h-24 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-6">
+          <Grid className="w-12 h-12 text-red-500" />
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          Error al cargar artículos
+        </h3>
+        <p className="text-muted-foreground max-w-md">
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  // Show no articles message only when loading is complete and no articles found
   if (!filteredPosts.length) {
     return (
       <div className={cn(
@@ -132,7 +177,7 @@ export default function BlogGrid({ className }: BlogGridProps) {
           No se encontraron artículos
         </h3>
         <p className="text-muted-foreground max-w-md">
-          No hay artículos que coincidan con los filtros actuales. 
+          No hay artículos que coincidan con los filtros actuales.
           Intenta ajustar los criterios de búsqueda.
         </p>
       </div>
@@ -171,6 +216,19 @@ export default function BlogGrid({ className }: BlogGridProps) {
               <List className="w-4 h-4" />
             </Button>
           </div>
+        </div>
+      )}
+
+      {/* Debug info when no posts */}
+      {currentPosts.length === 0 && (
+        <div className="col-span-full bg-yellow-100 border border-yellow-300 rounded-lg p-6 text-yellow-800">
+          <h3 className="font-semibold mb-2">🔍 Debug Info:</h3>
+          <p>• Total filteredPosts: {filteredPosts?.length || 0}</p>
+          <p>• Total allPosts: {allPosts?.length || 0}</p>
+          <p>• Loading: {isLoading ? 'Yes' : 'No'}</p>
+          <p>• Error: {error || 'None'}</p>
+          <p>• Current page: {currentPage}</p>
+          <p>• Posts per page: {postsPerPage}</p>
         </div>
       )}
 

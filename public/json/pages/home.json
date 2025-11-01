@@ -5,243 +5,412 @@
   "description": "Contenido de la página principal del sitio",
   "path": "/public/json/pages/home.json",
   "status": "active",
-  "lastModified": "2025-01-01T10:00:00Z",
-  "size": "0.5 KB",
+  "lastModified": "2025-08-20T10:00:00Z",
+  "size": "15.2 KB",
   "type": "static",
   "metadata": {
-    "author": "Admin",
+    "category": "main",
+    "seoTitle": "Métrica DIP - Dirección Integral de Proyectos",
     "tags": [
       "homepage",
       "landing"
     ],
-    "category": "main",
-    "seoTitle": "Tu Empresa - Título Principal",
-    "seoDescription": "Descripción de tu empresa"
+    "author": "Admin",
+    "seoDescription": "Empresa líder en dirección integral de proyectos en Perú"
+  },
+  "services": {
+    "section": {
+      "subtitle": "Ofrecemos un portafolio de servicios especializados para cuidar la rentabilidad y el éxito de proyectos del sector construcción.",
+      "title": "Nuestros Servicios"
+    },
+    "services_list": [
+      {
+        "image_url_fallback": "/images/proyectos/EDUCACIÓN/Cibertec/Copia de _ARI2738.webp",
+        "title": "Gerencia de Proyectos",
+        "image_url": "/images/proyectos/EDUCACIÓN/Cibertec/Copia de _ARI2738.webp",
+        "cta": {
+          "text": "Ver Más",
+          "url": "/services"
+        },
+        "id": "gerencia-proyectos",
+        "description": "Implementamos y gestionamos oficinas de proyectos para estandarizar procesos y maximizar la eficiencia en cada etapa del desarrollo.",
+        "is_main": false,
+        "width": "1/3",
+        "icon_url": "/img/ico-service-2.png"
+      },
+      {
+        "image_url_fallback": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3935-Pano.webp",
+        "is_main": false,
+        "id": "supervision-obras",
+        "icon_url": "/img/ico-service-3.png",
+        "description": "Vigilancia técnica y administrativa especializada para que la construcción se ejecute según los planos, especificaciones y normativas vigentes.",
+        "width": "1/3",
+        "title": "Supervisión de Obras",
+        "image_url": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3935-Pano.webp",
+        "cta": {
+          "url": "/services",
+          "text": "Ver Más"
+        }
+      },
+      {
+        "title": "Desarrollo de Ingeniería",
+        "is_main": false,
+        "description": "Servicios especializados de ingeniería para el desarrollo, optimización y mejora continua de proyectos de construcción e infraestructura.",
+        "icon_url": "/img/ico-service-4.png",
+        "image_url": "/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2408.webp",
+        "width": "1/3",
+        "cta": {
+          "url": "/services",
+          "text": "Ver Más"
+        },
+        "id": "desarrollo-ingenieria",
+        "image_url_fallback": "/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2408.webp"
+      }
+    ]
+  },
+  "portfolio": {
+    "featured_projects": [
+      {
+        "name": "Hotel Hilton Balta",
+        "image_url_fallback": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/_ARI2390-Editar.webp",
+        "type": "Hotelería",
+        "image_url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/_ARI2390-Editar.webp",
+        "description": "Supervisión integral de la construcción del hotel más moderno de la zona, con estándares internacionales de calidad.",
+        "id": "hotel-hilton-balta"
+      },
+      {
+        "description": "Dirección integral del proyecto logístico más importante del puerto del Callao, optimizando la cadena de suministro nacional.",
+        "image_url_fallback": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/Imagen de WhatsApp 2025-08-28 a las 13.00.09_90cfece9.webp",
+        "id": "parque-logistico-callao",
+        "type": "Industrial",
+        "name": "Parque Logístico Callao",
+        "image_url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/Imagen de WhatsApp 2025-08-28 a las 13.00.09_90cfece9.webp"
+      },
+      {
+        "type": "Industrial",
+        "image_url_fallback": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/_ARI0180.webp",
+        "id": "parque-lima-sur",
+        "description": "Control de calidad y supervisión técnica en uno de los desarrollos industriales más importantes del sur de Lima.",
+        "image_url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/_ARI0180.webp",
+        "name": "Parque Lima Sur"
+      },
+      {
+        "image_url": "/images/proyectos/INDUSTRIA/Latam Airline/Copia de Imagen de WhatsApp 2024-07-11 a las 13.49.05_4f89fde0.webp",
+        "name": "LATAM Airline",
+        "type": "Aeroportuario",
+        "id": "latam-airline",
+        "description": "Gestión de proyecto para la modernización de instalaciones aeroportuarias, mejorando la experiencia de millones de pasajeros.",
+        "image_url_fallback": "/images/proyectos/INDUSTRIA/Latam Airline/Copia de Imagen de WhatsApp 2024-07-11 a las 13.49.05_4f89fde0.webp"
+      }
+    ],
+    "section": {
+      "cta": {
+        "url": "/portfolio",
+        "text": "Ver más detalles"
+      },
+      "title": "Proyectos Destacados",
+      "subtitle": "Conoce el impacto de nuestro trabajo a través de algunos de los proyectos que hemos dirigido."
+    }
   },
   "page": {
-    "title": "Tu Empresa - Título Principal",
-    "description": "Descripción breve de tu empresa"
+    "description": "Líderes en dirección integral de proyectos de infraestructura en Perú desde 2010",
+    "title": "Métrica DIP - Dirección Integral de Proyectos"
   },
-  "hero": {
-    "title": {
-      "main": "Título Principal",
-      "secondary": "Subtítulo"
+  "newsletter": {
+    "section": {
+      "subtitle": "Recibe las últimas noticias, análisis y casos de éxito del sector de infraestructura directamente en tu correo.",
+      "title": "Suscríbete a nuestro Newsletter"
     },
-    "subtitle": "Descripción de tu empresa",
-    "background": {
-      "video_url": "",
-      "video_url_fallback": "/video/hero-background.mp4",
-      "image_fallback": "/img/hero-background.jpg",
-      "image_fallback_internal": "/img/hero-background.jpg",
-      "overlay_opacity": 0.6
-    },
-    "rotating_words": [
-      "Palabra 1",
-      "Palabra 2"
-    ],
-    "transition_text": "Texto de transición que describe tu empresa",
-    "cta": {
-      "text": "BOTÓN PRINCIPAL",
-      "target": "#services"
+    "form": {
+      "success_description": "Pronto recibirás nuestro contenido exclusivo",
+      "cta_text": "Suscribirme",
+      "success_message": "¡Gracias por suscribirte!",
+      "loading_text": "Suscribiendo...",
+      "placeholder_text": "Tu correo electrónico"
     }
   },
   "stats": {
     "statistics": [
       {
-        "id": "stat1",
+        "icon": "Factory",
+        "suffix": "K m²",
+        "description": "Miles de m² construidos en el sector industrial",
+        "value": 676.8,
+        "id": "industrial",
+        "label": "Construidos Industrial",
+        "number": "777Km²"
+      },
+      {
         "icon": "Building",
-        "value": 0,
-        "suffix": "",
-        "label": "Estadística 1",
-        "description": "Descripción de estadística 1"
+        "value": 1.47,
+        "suffix": "M m²",
+        "description": "Millones de m² construídos totales",
+        "id": "total",
+        "label": "Construidos Totales"
       },
       {
-        "id": "stat2",
-        "icon": "Users",
-        "value": 0,
-        "suffix": "",
-        "label": "Estadística 2", 
-        "description": "Descripción de estadística 2"
+        "label": "Soles Invertidos",
+        "value": 3.1,
+        "id": "investment",
+        "description": "Billones de soles invertidos en proyectos",
+        "icon": "DollarSign",
+        "suffix": "B"
       },
       {
-        "id": "stat3",
+        "label": "Retención Clientes",
         "icon": "Award",
-        "value": 0,
-        "suffix": "",
-        "label": "Estadística 3",
-        "description": "Descripción de estadística 3"
-      },
-      {
-        "id": "stat4",
-        "icon": "TrendingUp",
-        "value": 0,
-        "suffix": "",
-        "label": "Estadística 4",
-        "description": "Descripción de estadística 4"
+        "value": 97,
+        "suffix": "%",
+        "description": "De nuestros clientes nos eligen de nuevo",
+        "id": "retention"
       }
     ]
   },
-  "services": {
-    "section": {
-      "title": "Nuestros Servicios",
-      "subtitle": "Descripción de los servicios que ofreces"
-    },
-    "services_list": [
+  "clients": {
+    "logos": [
       {
-        "id": "servicio1",
-        "title": "Servicio 1",
-        "description": "Descripción del servicio 1",
-        "image_url": "/img/services/servicio1.jpg",
-        "image_url_fallback": "/img/services/servicio1.jpg",
-        "icon_url": "/img/ico-service-1.png",
-        "is_main": false,
-        "width": "1/3",
-        "cta": {
-          "text": "Ver Más",
-          "url": "/services"
-        }
+        "id": "aleph",
+        "alt": "Aleph School logo",
+        "name": "Aleph School",
+        "image": "/images/logos/Aleph-school.png"
       },
       {
-        "id": "servicio2",
-        "title": "Servicio 2",
-        "description": "Descripción del servicio 2",
-        "image_url": "/img/services/servicio2.jpg",
-        "image_url_fallback": "/img/services/servicio2.jpg",
-        "icon_url": "/img/ico-service-2.png",
-        "is_main": false,
-        "width": "1/3",
-        "cta": {
-          "text": "Ver Más",
-          "url": "/services"
-        }
+        "name": "BCP",
+        "alt": "BCP logo",
+        "id": "bcp",
+        "image": "/images/logos/bcp-4.svg"
       },
       {
-        "id": "servicio3",
-        "title": "Servicio 3",
-        "description": "Descripción del servicio 3",
-        "image_url": "/img/services/servicio3.jpg",
-        "image_url_fallback": "/img/services/servicio3.jpg",
-        "icon_url": "/img/ico-service-3.png",
-        "is_main": false,
-        "width": "1/3",
-        "cta": {
-          "text": "Ver Más",
-          "url": "/services"
-        }
+        "alt": "Delosi logo",
+        "id": "delosi",
+        "image": "/images/logos/delosi.png",
+        "name": "Delosi"
+      },
+      {
+        "alt": "Innova Schools logo",
+        "id": "innova",
+        "image": "/images/logos/Innova_Schools.svg",
+        "name": "Innova Schools"
+      },
+      {
+        "name": "Intcomex",
+        "alt": "Intcomex logo",
+        "image": "/images/logos/intcomex-55.jpg",
+        "id": "intcomex"
+      },
+      {
+        "image": "/images/logos/LLP_Logo.jpg",
+        "alt": "LLP logo",
+        "name": "LLP",
+        "id": "llp"
+      },
+      {
+        "image": "/images/logos/logo-maquinarias.png",
+        "alt": "Maquinarias logo",
+        "id": "maquinarias",
+        "name": "Maquinarias"
+      },
+      {
+        "image": "/images/logos/logotipo-menorca.png",
+        "alt": "Menorca logo",
+        "name": "Menorca",
+        "id": "menorca"
+      },
+      {
+        "alt": "Tottus logo",
+        "id": "tottus",
+        "image": "/images/logos/Logo_Tottus.png",
+        "name": "Tottus"
+      },
+      {
+        "alt": "TYC logo",
+        "id": "tyc",
+        "image": "/images/logos/logo-tyc.png",
+        "name": "TYC"
+      },
+      {
+        "image": "/images/logos/logo-upn-nuevo.svg",
+        "alt": "UPN logo",
+        "name": "UPN",
+        "id": "upn"
+      },
+      {
+        "name": "Mall Aventura Plaza",
+        "image": "/images/logos/Mall_Aventura_Plaza_2012.svg",
+        "id": "aventura-plaza",
+        "alt": "Mall Aventura Plaza logo"
+      },
+      {
+        "alt": "INMA logo",
+        "image": "/images/logos/marca_inma.webp",
+        "name": "INMA",
+        "id": "inma"
+      },
+      {
+        "id": "oxxo",
+        "name": "OXXO",
+        "image": "/images/logos/Oxxo_Logo.svg.png",
+        "alt": "OXXO logo"
+      },
+      {
+        "alt": "Sodimac logo",
+        "id": "sodimac",
+        "image": "/images/logos/png-transparent-sodimac-homecenter-hd-logo-thumbnail.png",
+        "name": "Sodimac"
+      },
+      {
+        "alt": "Real Plaza logo",
+        "image": "/images/logos/Real_Plaza_2019.webp",
+        "name": "Real Plaza",
+        "id": "real-plaza"
+      },
+      {
+        "id": "rimac",
+        "alt": "RIMAC logo",
+        "name": "RIMAC",
+        "image": "/images/logos/RIMAC.svg"
+      },
+      {
+        "name": "Tai Loy",
+        "image": "/images/logos/tai-loy-logo-png_seeklogo-257817.png",
+        "alt": "Tai Loy logo",
+        "id": "tai-loy"
+      },
+      {
+        "name": "Mass",
+        "image": "/images/logos/tienda-mass-37713.png",
+        "id": "mass",
+        "alt": "Mass logo"
+      },
+      {
+        "name": "Unimarc",
+        "image": "/images/logos/Unimarc_logo.svg",
+        "alt": "Unimarc logo",
+        "id": "unimarc"
       }
-    ]
+    ],
+    "section": {
+      "subtitle": "Empresas líderes que confían en nuestra experiencia y profesionalismo",
+      "title": "Nuestros Clientes"
+    }
   },
-  "portfolio": {
-    "section": {
-      "title": "Proyectos Destacados",
-      "subtitle": "Conoce algunos de nuestros trabajos más importantes",
-      "cta": {
-        "text": "Ver más detalles",
-        "url": "/portfolio"
-      }
+  "hero": {
+    "transition_text": "Somos el socio estratégico que asegura la rentabilidad de tu proyecto, especializados en el sector industrial.",
+    "rotating_words": [
+      "Cuidamos",
+      "Mejoramos"
+    ],
+    "title": {
+      "main": "Supervisión de Obras",
+      "secondary": "y Gerencia de Proyectos"
     },
-    "featured_projects": [
-      {
-        "id": "proyecto1",
-        "name": "Proyecto 1",
-        "type": "Categoría",
-        "description": "Descripción del proyecto 1",
-        "image_url": "/img/portfolio/proyecto1.jpg",
-        "image_url_fallback": "/img/portfolio/proyecto1.jpg"
-      },
-      {
-        "id": "proyecto2",
-        "name": "Proyecto 2",
-        "type": "Categoría",
-        "description": "Descripción del proyecto 2",
-        "image_url": "/img/portfolio/proyecto2.jpg",
-        "image_url_fallback": "/img/portfolio/proyecto2.jpg"
-      },
-      {
-        "id": "proyecto3",
-        "name": "Proyecto 3",
-        "type": "Categoría",
-        "description": "Descripción del proyecto 3",
-        "image_url": "/img/portfolio/proyecto3.jpg",
-        "image_url_fallback": "/img/portfolio/proyecto3.jpg"
-      },
-      {
-        "id": "proyecto4",
-        "name": "Proyecto 4",
-        "type": "Categoría",
-        "description": "Descripción del proyecto 4",
-        "image_url": "/img/portfolio/proyecto4.jpg",
-        "image_url_fallback": "/img/portfolio/proyecto4.jpg"
-      }
-    ]
-  },
-  "pillars": {
-    "section": {
-      "title": "Nuestros Pilares",
-      "subtitle": "Los fundamentos de nuestro trabajo"
+    "subtitle": "Liderando el sector construcción",
+    "background": {
+      "overlay_opacity": 0.6,
+      "video_url": "",
+      "video_url_fallback": "",
+      "image_fallback_internal": "/images/proyectos/RETAIL/Saga VES/Copia de _ARI0071.webp",
+      "image_fallback": "https://metrica-dip.com/images/slider-inicio-es/01.jpg"
     },
-    "pillars": [
-      {
-        "id": 1,
-        "icon": "Target",
-        "title": "Pilar 1",
-        "description": "Descripción del pilar 1",
-        "image": "/img/pillars/pilar1.jpg",
-        "image_fallback": "/img/pillars/pilar1.jpg"
-      },
-      {
-        "id": 2,
-        "icon": "Users",
-        "title": "Pilar 2",
-        "description": "Descripción del pilar 2",
-        "image": "/img/pillars/pilar2.jpg",
-        "image_fallback": "/img/pillars/pilar2.jpg"
-      },
-      {
-        "id": 3,
-        "icon": "Shield",
-        "title": "Pilar 3",
-        "description": "Descripción del pilar 3",
-        "image": "/img/pillars/pilar3.jpg",
-        "image_fallback": "/img/pillars/pilar3.jpg"
-      }
-    ]
+    "cta": {
+      "target": "#services",
+      "text": "DESCUBRE DIP"
+    }
   },
   "policies": {
     "section": {
-      "title": "Nuestras Políticas",
-      "subtitle": "Nuestro compromiso con la excelencia"
+      "title": "Nuestras Políticas Empresariales",
+      "subtitle": "Comprometidos con la excelencia, integridad y desarrollo sostenible en cada proyecto que emprendemos."
     },
     "policies": [
       {
         "id": 1,
+        "title": "Política de Calidad",
+        "image_fallback": "/images/proyectos/EDUCACIÓN/Cibertec/Copia de _ARI2739.webp",
         "icon": "Award",
-        "title": "Política 1",
-        "description": "Descripción de la política 1",
-        "image": "/img/policies/policy1.jpg",
-        "image_fallback": "/img/policies/policy1.jpg"
+        "description": "Compromiso firme con la excelencia en cada proyecto, implementando sistemas de gestión de calidad certificados ISO 9001:2015 que superan las expectativas de nuestros clientes y garantizan resultados superiores.",
+        "image": "/images/proyectos/EDUCACIÓN/Cibertec/Copia de _ARI2739.webp"
       },
       {
+        "image": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3819.webp",
+        "title": "Política Antisoborno",
         "id": 2,
-        "icon": "Shield",
-        "title": "Política 2",
-        "description": "Descripción de la política 2",
-        "image": "/img/policies/policy2.jpg",
-        "image_fallback": "/img/policies/policy2.jpg"
+        "description": "Mantenemos los más altos estándares de integridad y transparencia, implementando controles estrictos antisoborno y anticorrupción en todas nuestras operaciones y relaciones comerciales.",
+        "icon": "ShieldCheck",
+        "image_fallback": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3819.webp"
+      },
+      {
+        "description": "La seguridad de nuestros trabajadores es prioridad absoluta. Implementamos protocolos de seguridad rigurosos, capacitación continua y supervisión constante para lograr cero accidentes en todos nuestros proyectos.",
+        "image_fallback": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/_ARI2390-Editar.webp",
+        "icon": "HardHat",
+        "title": "Seguridad en el Trabajo",
+        "id": 3,
+        "image": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/_ARI2390-Editar.webp"
+      },
+      {
+        "description": "Construimos de manera sostenible, minimizando el impacto ambiental mediante prácticas eco-eficientes, gestión responsable de residuos y promoción de certificaciones verdes en nuestros proyectos.",
+        "icon": "Leaf",
+        "id": 4,
+        "image": "/images/proyectos/OFICINA/CAR-7/_ARI3323.webp",
+        "image_fallback": "/images/proyectos/OFICINA/CAR-7/_ARI3323.webp",
+        "title": "Política de Sostenibilidad Ambiental"
+      },
+      {
+        "image": "/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2352 (1).webp",
+        "icon": "Users",
+        "title": "Política de Responsabilidad Social",
+        "id": 5,
+        "description": "Contribuimos activamente al desarrollo de las comunidades donde operamos, generando empleo local, promoviendo la capacitación profesional y creando valor compartido a largo plazo.",
+        "image_fallback": "/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2352 (1).webp"
       }
     ]
   },
-  "newsletter": {
+  "pillars": {
+    "pillars": [
+      {
+        "id": 1,
+        "title": "Curva de protocolo",
+        "icon": "Compass",
+        "image": "/images/proyectos/EDUCACIÓN/Cibertec/_ARI2623.webp",
+        "description": "Implementamos una metodología estructurada que define protocolos específicos para cada fase del proyecto, asegurando un flujo de trabajo eficiente y controlado desde la conceptualización hasta la entrega final.",
+        "image_fallback": "/images/proyectos/EDUCACIÓN/Cibertec/_ARI2623.webp"
+      },
+      {
+        "image_fallback": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3594.webp",
+        "id": 2,
+        "icon": "Network",
+        "description": "Aplicamos las mejores prácticas del Project Management Institute para integrar equipos multidisciplinarios de diseño, construcción y fiscalización, garantizando una ejecución coordinada y sin fisuras.",
+        "image": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3594.webp",
+        "title": "Sistema de Gestión basado en PMI"
+      },
+      {
+        "icon": "Calculator",
+        "description": "Utilizamos métodos cuantitativos avanzados y base de datos histórica para generar estimaciones precisas de costos, tiempos y recursos, minimizando la incertidumbre en cada proyecto.",
+        "image_fallback": "/images/proyectos/INDUSTRIA/Starbucks Garzon/2017-06-21.webp",
+        "id": 3,
+        "image": "/images/proyectos/INDUSTRIA/Starbucks Garzon/2017-06-21.webp",
+        "title": "Estimaciones Paramétricas"
+      },
+      {
+        "title": "Experiencia Específica por Sector",
+        "image": "/images/proyectos/OFICINA/CAR-7/_ARI3252.webp",
+        "image_fallback": "/images/proyectos/OFICINA/CAR-7/_ARI3252.webp",
+        "description": "Contamos con especialistas dedicados para cada sector: industrial, comercial, salud, educación y hotelería, aplicando conocimientos técnicos específicos y normativas particulares de cada ámbito.",
+        "id": 4,
+        "icon": "Target"
+      },
+      {
+        "description": "Nuestro enfoque principal es maximizar la rentabilidad del proyecto mediante optimización de recursos, control riguroso de costos y identificación proactiva de oportunidades de ahorro y mejora.",
+        "id": 5,
+        "image": "/images/proyectos/RETAIL/Saga VES/Copia de _ARI0019.webp",
+        "image_fallback": "/images/proyectos/RETAIL/Saga VES/Copia de _ARI0019.webp",
+        "icon": "TrendingUp",
+        "title": "Rentabilidad"
+      }
+    ],
     "section": {
-      "title": "Suscríbete a nuestro Newsletter",
-      "subtitle": "Recibe las últimas noticias y novedades"
-    },
-    "form": {
-      "placeholder_text": "Tu correo electrónico",
-      "cta_text": "Suscribirme",
-      "loading_text": "Suscribiendo...",
-      "success_message": "¡Gracias por suscribirte!",
-      "success_description": "Pronto recibirás nuestro contenido"
+      "subtitle": "Nuestra Dirección Integral de proyectos para el sector construcción se fundamenta en 5 pilares claves que cuidan y mejoran la rentabilidad.\n",
+      "title": "¿Qué es DIP?"
     }
   }
 }

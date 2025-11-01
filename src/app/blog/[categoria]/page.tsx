@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { use } from 'react';
 import CategoryPage from '@/components/portfolio/CategoryPage';
 import { BlogProvider } from '@/contexts/BlogContext';
-import { getBlogCategoryLabel, getBlogPostsByCategory } from '@/types/blog';
+import { getBlogCategoryLabel } from '@/types/blog';
+import { convertToCompatibleFormat } from '@/lib/blog-utils';
 
 interface BlogCategoryPageProps {
   params: Promise<{
@@ -10,10 +11,38 @@ interface BlogCategoryPageProps {
   }>;
 }
 
+// Función para obtener artículos por categoría desde Firestore
+async function getArticlesByCategory(categorySlug: string) {
+  try {
+    const services = await import('@/lib/firestore/newsletter-service');
+    const articulos = new services.ArticulosService();
+    const result = await articulos.getAll();
+
+    // Obtener artículos con relaciones
+    const articulosConRelaciones = [];
+    const articles = result?.data || [];
+
+    for (const articulo of articles) {
+      if (articulo && articulo.id) {
+        const articuloConRelacion = await articulos.getConRelaciones(articulo.id);
+        if (articuloConRelacion) {
+          articulosConRelaciones.push(articuloConRelacion);
+        }
+      }
+    }
+
+    const converted = convertToCompatibleFormat(articulosConRelaciones);
+    return converted.filter(article => article.category === categorySlug);
+  } catch (error) {
+    console.error('Error loading articles by category:', error);
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: BlogCategoryPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const categoryLabel = getBlogCategoryLabel(resolvedParams.categoria as any);
-  
+
   return {
     title: `${categoryLabel} | Blog Métrica FM`,
     description: `Artículos especializados en ${categoryLabel.toLowerCase()}: análisis, tendencias y guías técnicas del sector construcción e infraestructura en Perú.`,
@@ -26,10 +55,10 @@ export async function generateMetadata({ params }: BlogCategoryPageProps): Promi
   };
 }
 
-export default function BlogCategoryPage({ params }: BlogCategoryPageProps) {
-  const resolvedParams = use(params);
+export default async function BlogCategoryPage({ params }: BlogCategoryPageProps) {
+  const resolvedParams = await params;
   const categoryLabel = getBlogCategoryLabel(resolvedParams.categoria as any);
-  const posts = getBlogPostsByCategory(resolvedParams.categoria as any);
+  const posts = await getArticlesByCategory(resolvedParams.categoria);
 
   return (
     <BlogProvider>

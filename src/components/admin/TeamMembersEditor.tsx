@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Users, Plus, Trash2, Edit3, Save, X, User, Briefcase, FileText, Image as ImageIcon } from 'lucide-react';
-import ImageField from './ImageField';
+import ImageSelector from './ImageSelector';
 
 interface TeamMember {
   id: number;
@@ -163,11 +163,11 @@ export default function TeamMembersEditor({
                   <ImageIcon className="w-4 h-4" />
                   Foto del Miembro
                 </Label>
-                <ImageField
+                <ImageSelector
                   value={editForm.image}
                   onChange={(newValue) => updateEditForm('image', newValue)}
-                  label=""
-                  placeholder="URL de la imagen del miembro"
+                  placeholder="Seleccionar imagen del miembro..."
+                  variant="card"
                   required={false}
                   disabled={false}
                   description="Preferir formato 3:4 (600x800px)"

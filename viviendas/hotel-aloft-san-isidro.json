@@ -1,0 +1,68 @@
+{
+    "id": "hotel-aloft-san-isidro",
+    "status": "completed",
+    "client": "Aloft Hotels",
+    "tags": [],
+    "category": "hoteleria",
+    "category_id": "hoteleria",
+    "metadata": {
+        "timeline": "24 meses",
+        "source": "json_migration",
+        "original_category": "hoteleria",
+        "investment": "$8,500,000",
+        "services": [
+            "Arquitectura Hotelera",
+            "Construcción",
+            "Supervisión",
+            "Gerencia de Proyecto",
+            "Diseño de Interiores"
+        ]
+    },
+    "location": "San Isidro, Lima, Perú",
+    "title": "Hotel Aloft San Isidro",
+    "updated_at": {
+        "type": "firestore/timestamp/1.0",
+        "seconds": 1672531200,
+        "nanoseconds": 0
+    },
+    "updatedAt": "2025-09-22T11:35:25.043Z",
+    "images": [
+        {
+            "url": "/images/uploads/2025/09/hotel-aloft--1--cd99d7b1.webp",
+            "alt": "Hotel Aloft San Isidro - Fachada Principal",
+            "featured": true,
+            "title": "Hotel Aloft San Isidro - Fachada Principal"
+        }
+    ],
+    "featured_image": "/images/uploads/2025/09/hotel-aloft--1--cd99d7b1.webp",
+    "budget": "$8,500,000",
+    "featured": true,
+    "year": 2022,
+    "gallery": [
+        "/images/uploads/2025/09/hotel-aloft--1--cd99d7b1.webp"
+    ],
+    "services": [
+        "Arquitectura Hotelera",
+        "Construcción",
+        "Supervisión",
+        "Gerencia de Proyecto",
+        "Diseño de Interiores"
+    ],
+    "area": "12,000 m²",
+    "duration": "24 meses",
+    "short_description": "Hotel moderno de cadena internacional con diseño contemporáneo y servicios de alta calidad...",
+    "created_at": {
+        "type": "firestore/timestamp/1.0",
+        "seconds": 1672531200,
+        "nanoseconds": 0
+    },
+    "slug": "hotel-aloft-san-isidro",
+    "createdAt": "2025-09-22T08:51:08.369Z",
+    "description": "Hotel Aloft San Isidro, proyecto hotelero moderno de cadena internacional con diseño contemporáneo y servicios de alta calidad en el corazón financiero de Lima.",
+    "category_info": {
+        "id": "hoteleria",
+        "name": "Hotelería",
+        "slug": "hotelera",
+        "color": "#f59e0b"
+    }
+}

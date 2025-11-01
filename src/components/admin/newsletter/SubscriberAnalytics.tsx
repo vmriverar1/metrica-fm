@@ -748,7 +748,7 @@ export default function SubscriberAnalytics({
                               className={`h-full rounded ${
                                 rate >= 80 ? 'bg-green-500' :
                                 rate >= 60 ? 'bg-yellow-500' :
-                                rate >= 40 ? 'bg-orange-500' :
+                                rate >= 40 ? 'bg-cyan-500' :
                                 'bg-red-500'
                               }`}
                               style={{ width: `${rate}%` }}

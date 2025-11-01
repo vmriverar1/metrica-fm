@@ -315,8 +315,8 @@ export default function BlogCareersAnalytics({
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Users className="w-4 h-4 text-orange-600" />
+              <div className="p-2 bg-cyan-100 rounded-lg">
+                <Users className="w-4 h-4 text-cyan-600" />
               </div>
               {getTrendIcon(data.shared.mobileTraffic, 62.3)}
             </div>
@@ -523,7 +523,7 @@ export default function BlogCareersAnalytics({
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Users className="w-4 h-4 text-orange-600" />
+                  <Users className="w-4 h-4 text-cyan-600" />
                   <span className="font-medium">Unique Readers</span>
                 </div>
                 <p className="text-2xl font-bold">{formatNumber(data.blog.readerEngagement.totalReaders)}</p>
@@ -602,7 +602,7 @@ export default function BlogCareersAnalytics({
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <BarChart3 className="w-4 h-4 text-orange-600" />
+                  <BarChart3 className="w-4 h-4 text-cyan-600" />
                   <span className="font-medium">Avg Experience</span>
                 </div>
                 <p className="text-2xl font-bold">{data.careers.candidateMetrics.averageExperience}y</p>
@@ -657,7 +657,7 @@ export default function BlogCareersAnalytics({
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-gray-200 rounded-full h-1.5">
                           <div 
-                            className="bg-orange-600 h-1.5 rounded-full"
+                            className="bg-cyan-600 h-1.5 rounded-full"
                             style={{ width: `${skill.demand}%` }}
                           />
                         </div>

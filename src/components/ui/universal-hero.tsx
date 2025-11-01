@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
@@ -15,82 +14,52 @@ interface ButtonProps {
 }
 
 
-interface MetadataProps {
-  stats?: string[];
+interface MediaAsset {
+  type: 'image' | 'video';
+  primary_url?: string;
+  fallback_url?: string;
+  overlay_opacity?: number;
 }
 
-interface BackgroundMedia {
-  type?: 'image' | 'video';
-  primaryUrl?: string;
-  fallbackUrl?: string;
-  overlayOpacity?: number;
+interface MetadataProps {
+  stats?: string[];
+  centerText?: string;
 }
 
 interface UniversalHeroProps {
   title: string;
   subtitle?: string;
   description?: string;
-  background?: BackgroundMedia;
-  // Legacy support - deprecated but maintained for backwards compatibility
   backgroundImage?: string;
+  background?: MediaAsset;
   overlay?: boolean;
   className?: string;
   primaryButton?: ButtonProps;
   secondaryButton?: ButtonProps;
   metadata?: MetadataProps;
+  hideText?: boolean;
 }
 
-export default function UniversalHero({ 
-  title, 
-  subtitle, 
+export default function UniversalHero({
+  title,
+  subtitle,
   description,
+  backgroundImage = 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
   background,
-  backgroundImage, // Legacy support
   overlay = true,
   className = '',
   primaryButton,
   secondaryButton,
-  metadata
+  metadata,
+  hideText = false
 }: UniversalHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const shadeRef = useRef<HTMLDivElement>(null);
-  
   // SIMPLIFICADO: Mostrar el título completo sin animación de escritura
   // Para evitar loops infinitos en el blog
   const [typedTitle, setTypedTitle] = useState(title);
-
-  // Determine background configuration
-  const backgroundConfig = React.useMemo(() => {
-    // If new background prop is provided, use it
-    if (background) {
-      return {
-        type: background.type || 'image',
-        primaryUrl: background.primaryUrl,
-        fallbackUrl: background.fallbackUrl,
-        overlayOpacity: background.overlayOpacity || 0.4
-      };
-    }
-    
-    // Legacy support: use backgroundImage if provided
-    if (backgroundImage) {
-      return {
-        type: 'image' as const,
-        primaryUrl: backgroundImage,
-        fallbackUrl: undefined,
-        overlayOpacity: 0.4
-      };
-    }
-    
-    // Default fallback
-    return {
-      type: 'image' as const,
-      primaryUrl: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-      fallbackUrl: undefined,
-      overlayOpacity: 0.4
-    };
-  }, [background, backgroundImage]);
   
   useEffect(() => {
     setTypedTitle(title);
@@ -159,7 +128,7 @@ export default function UniversalHero({
       ref={sectionRef} 
       className={`relative h-screen overflow-hidden ${className}`}
     >
-      {/* Enhanced Background with Video Support */}
+      {/* Background fijo (como en HTML original) */}
       <div 
         ref={backgroundRef}
         className="absolute inset-0 w-full h-full"
@@ -168,22 +137,17 @@ export default function UniversalHero({
           zIndex: 1
         }}
       >
-        {backgroundConfig.type === 'video' ? (
+        {background ? (
           <VideoWithFallback
-            primaryVideoUrl={backgroundConfig.primaryUrl}
-            fallbackVideoUrl={backgroundConfig.fallbackUrl}
-            fallbackImageUrl={backgroundConfig.primaryUrl} // Use primary as image fallback if video fails
+            primary={background.type === 'video' ? background.primary_url : undefined}
+            fallback={background.fallback_url || backgroundImage}
             alt={title}
-            className="w-full h-full object-cover"
-            priority={true}
-            showLoadingState={true}
+            priority
           />
         ) : (
-          <Image
-            src={backgroundConfig.primaryUrl || 'https://metrica-dip.com/images/slider-inicio-es/01.jpg'}
+          <VideoWithFallback
+            fallback={backgroundImage}
             alt={title}
-            fill
-            className="object-cover"
             priority
           />
         )}
@@ -199,13 +163,13 @@ export default function UniversalHero({
         }}
       />
 
-      {/* Overlay base inicial con opacidad dinámica */}
+      {/* Overlay base inicial */}
       {overlay && (
         <div 
           className="absolute inset-0 w-full h-full bg-black" 
           style={{ 
-            opacity: backgroundConfig.overlayOpacity,
-            zIndex: 2 
+            zIndex: 2,
+            opacity: background?.overlay_opacity || 0.4
           }} 
         />
       )}
@@ -214,38 +178,42 @@ export default function UniversalHero({
 
       {/* Contenido principal centrado */}
       <div className="absolute inset-0 w-full h-full flex items-center justify-center" style={{ zIndex: 5 }}>
-        <div 
-          ref={textRef} 
+        <div
+          ref={textRef}
           className="relative text-center px-4 max-w-6xl mx-auto"
           style={{ marginTop: '0px' }}
         >
-          {/* Título con texto blanco */}
-          <h1 className="text-6xl md:text-8xl tracking-tight text-white mb-4 font-black">
-            {title === 'Qué Hacemos' ? (
-              <>
-                <span className="block text-white font-black" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
-                  {typedTitle}
-                </span>
-              </>
-            ) : title === 'Nuestra Historia' ? (
-              <>
-                <span className="block text-white font-black" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
-                  Nuestra
-                </span>
-                <span className="block font-black">Historia</span>
-              </>
-            ) : (
-              <span className="block font-black">
-                {typedTitle}
-                <span className="animate-pulse text-white">|</span>
-              </span>
-            )}
-          </h1>
-          
-          {subtitle && (
-            <p className="max-w-5xl mx-auto text-xl md:text-2xl text-white/90 font-bold border-t border-white/20 pt-4 mt-4">
-              {subtitle}
-            </p>
+          {/* Título con texto blanco - ocultar si hideText es true */}
+          {!hideText && (
+            <>
+              <h1 className="text-6xl md:text-7xl tracking-tight text-white mb-4 font-black">
+                {title === 'Qué Hacemos' ? (
+                  <>
+                    <span className="block text-white font-black" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
+                      {typedTitle}
+                    </span>
+                  </>
+                ) : title === 'Nuestra Historia' ? (
+                  <>
+                    <span className="block text-white font-black" style={{ textShadow: '0 0 30px rgba(255, 255, 255, 0.3)' }}>
+                      Nuestra
+                    </span>
+                    <span className="block font-black">Historia</span>
+                  </>
+                ) : (
+                  <span className="block font-black">
+                    {typedTitle}
+                    <span className="animate-pulse text-white">|</span>
+                  </span>
+                )}
+              </h1>
+
+              {subtitle && (
+                <p className="max-w-5xl mx-auto text-xl md:text-2xl text-white/90 font-bold border-t border-white/20 pt-4 mt-4">
+                  {subtitle}
+                </p>
+              )}
+            </>
           )}
 
           {/* Buttons */}
@@ -280,6 +248,17 @@ export default function UniversalHero({
             </div>
           )}
 
+          {/* Center Text */}
+          {metadata?.centerText && (
+            <div className="mt-12 pt-8 border-t border-white/20">
+              <div className="text-center">
+                <p className="text-xl md:text-2xl font-bold text-white/90 tracking-wider uppercase">
+                  {metadata.centerText}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Año de fondo sutil */}
           <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 text-8xl lg:text-9xl font-alliance-extrabold text-white/5 pointer-events-none select-none -z-10">
             2025
@@ -289,8 +268,21 @@ export default function UniversalHero({
 
       {/* Indicador de scroll */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce" style={{ zIndex: 10 }}>
-        <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-white/70 text-sm font-alliance-medium tracking-wider">DESLIZA</span>
+          <svg 
+            className="w-6 h-6 text-white/70" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+            />
+          </svg>
         </div>
       </div>
 

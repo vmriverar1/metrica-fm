@@ -139,7 +139,7 @@ export default function FavoritesShare({ project, showFavoritesPanel = false }: 
             h1 { color: #003F6F; }
             .project { margin-bottom: 30px; page-break-inside: avoid; }
             .project img { max-width: 100%; height: auto; }
-            .project h2 { color: #007bc4; }
+            .project h2 { color: #00A8E8; }
             .meta { color: #666; font-size: 14px; }
           </style>
         </head>

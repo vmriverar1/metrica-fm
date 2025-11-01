@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { 
-  BlogCategory, 
+import {
+  BlogCategory,
   getBlogCategoryLabel
 } from '@/types/blog';
+import { BlogCategory as BlogCat } from '@/hooks/useBlogWithRelations';
 import { useBlog } from '@/contexts/BlogContext';
 import { cn } from '@/lib/utils';
 
@@ -120,9 +121,9 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todas las categorías</SelectItem>
-                {uniqueCategories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {getBlogCategoryLabel(category)}
+                {uniqueCategories.filter(category => category.slug && category.slug.trim()).map((category) => (
+                  <SelectItem key={category.slug} value={category.slug}>
+                    {category.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -141,7 +142,7 @@ export default function BlogFilters({ className }: BlogFiltersProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos los autores</SelectItem>
-                {uniqueAuthors?.map((author) => (
+                {uniqueAuthors?.filter(author => author.id && author.id.trim()).map((author) => (
                   <SelectItem key={author.id} value={author.id}>
                     {author.name}
                   </SelectItem>

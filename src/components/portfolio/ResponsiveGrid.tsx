@@ -255,7 +255,7 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
                   image={project.featuredImage}
                   slug={project.slug}
                   area={project.details.area}
-                  year={project.completedAt.getFullYear()}
+                  year={project.completedAt ? project.completedAt.getFullYear() : undefined}
                   priority={index < 4}
                   index={index}
                   className="w-full"
@@ -277,7 +277,7 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
                   image={project.featuredImage}
                   slug={project.slug}
                   area={project.details.area}
-                  year={project.completedAt.getFullYear()}
+                  year={project.completedAt ? project.completedAt.getFullYear() : undefined}
                   priority={index < 4}
                   index={index}
                   className="aspect-[3/1] md:aspect-[4/1]"
@@ -299,7 +299,7 @@ export default function ResponsiveGrid({ className }: ResponsiveGridProps) {
                   image={project.featuredImage}
                   slug={project.slug}
                   area={project.details.area}
-                  year={project.completedAt.getFullYear()}
+                  year={project.completedAt ? project.completedAt.getFullYear() : undefined}
                   priority={index < 4}
                   index={index}
                   className="h-full"

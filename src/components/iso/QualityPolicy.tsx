@@ -26,7 +26,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { useISOData } from '@/hooks/useISOData';
+import { useISO } from '@/contexts/ISOContext';
 
 const policyDocument = {
   title: "Política de Calidad",
@@ -58,9 +58,9 @@ const commitments = [
     icon: Shield,
     title: "Cumplimiento Normativo",
     description: "Mantenemos el estricto cumplimiento de todas las normativas aplicables, códigos de construcción y requisitos legales vigentes.",
-    color: "text-orange-600",
-    bgColor: "bg-orange-50",
-    borderColor: "border-orange-200"
+    color: "text-cyan-600",
+    bgColor: "bg-cyan-50",
+    borderColor: "border-cyan-200"
   },
   {
     icon: TrendingUp,
@@ -163,7 +163,7 @@ const policyStructure = [
 ];
 
 export default function QualityPolicy() {
-  const { data, loading, error } = useISOData();
+  const { data, loading, error } = useISO();
   const [expandedCommitment, setExpandedCommitment] = useState<number | null>(null);
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
 
@@ -292,22 +292,22 @@ export default function QualityPolicy() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-4 text-foreground">
-                    Declaración de Política de Calidad
+                    {data.quality_policy?.statement?.title || 'Declaración de Política de Calidad'}
                   </h3>
                   <blockquote className="text-lg leading-relaxed text-muted-foreground italic border-l-4 border-primary/30 pl-6">
-                    "En Métrica FM nos comprometemos a ser líderes en la dirección integral de proyectos 
-                    de construcción e infraestructura, proporcionando servicios que superen consistentemente 
-                    las expectativas de nuestros clientes. Basamos nuestro éxito en un equipo altamente 
-                    competente, procesos eficientes, mejora continua y un inquebrantable compromiso con 
-                    la excelencia, la seguridad y la responsabilidad social."
+                    "{data.quality_policy?.statement?.content || 'En Métrica FM nos comprometemos a ser líderes en la dirección integral de proyectos de construcción e infraestructura, proporcionando servicios que superen consistentemente las expectativas de nuestros clientes. Basamos nuestro éxito en un equipo altamente competente, procesos eficientes, mejora continua y un inquebrantable compromiso con la excelencia, la seguridad y la responsabilidad social.'}"
                   </blockquote>
                   <div className="mt-6 flex items-center gap-3">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                       <Building2 className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="font-semibold text-foreground">Dirección General</p>
-                      <p className="text-sm text-muted-foreground">Métrica FM S.A.C.</p>
+                      <p className="font-semibold text-foreground">
+                        {data.quality_policy?.statement?.signed_by?.position || 'Dirección General'}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {data.quality_policy?.statement?.signed_by?.company || 'Métrica FM S.A.C.'}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -317,64 +317,6 @@ export default function QualityPolicy() {
         </motion.div>
 
 
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-center"
-        >
-          <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 inline-block">
-            <CardContent className="p-8">
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-2xl font-bold mb-4">
-                    Comprometidos con la Excelencia
-                  </h4>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Nuestra política de calidad no es solo un documento, es el corazón de todo lo que hacemos. 
-                    Cada proyecto refleja estos principios y compromisos.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    className="bg-primary hover:bg-primary/90"
-                    onClick={() => window.open('/documents/politica-calidad-metrica-dip.pdf', '_blank')}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Descargar Política Completa
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="lg"
-                    onClick={() => {
-                      const element = document.getElementById('introduccion');
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    <Shield className="w-4 h-4 mr-2" />
-                    Ver Sistema de Gestión
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-
-                <Separator className="my-6" />
-
-                <div className="text-sm text-muted-foreground">
-                  <p>
-                    <strong>Próxima revisión:</strong> {new Date(data.quality_policy.document.next_review).toLocaleDateString('es-PE')} • 
-                    <strong> Vigente desde:</strong> {new Date(data.quality_policy.document.effective_date).toLocaleDateString('es-PE')}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </section>
   );

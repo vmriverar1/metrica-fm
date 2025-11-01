@@ -16,7 +16,7 @@ import {
   Briefcase, 
   Thermometer 
 } from 'lucide-react';
-import { readPublicJSONAsync } from '@/lib/json-reader';
+import { PagesService } from '@/lib/firestore/pages-service';
 
 interface CompromisoPageProps {
   data: CompromisoPageData;
@@ -42,7 +42,29 @@ export const metadata: Metadata = {
 };
 
 async function getCompromisoData(): Promise<CompromisoPageData> {
-  return readPublicJSONAsync<CompromisoPageData>('/json/pages/compromiso.json');
+  try {
+    // First try to load from Firestore
+    const firestoreData = await PagesService.getCompromisoPage();
+    if (firestoreData) {
+      return firestoreData as CompromisoPageData;
+    }
+
+    // Fallback to API if Firestore fails
+    const response = await fetch('/api/admin/pages/compromiso', { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch compromiso data: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to load compromiso data');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error('Error loading compromiso data:', error);
+    throw error;
+  }
 }
 
 function CompromisoContent({ data }: CompromisoPageProps) {
@@ -103,12 +125,23 @@ function CompromisoContent({ data }: CompromisoPageProps) {
                             
                             <div className="pt-4 border-t border-border">
                               <div className="grid grid-cols-3 gap-4 text-center">
-                                {Object.entries(pillar.metrics).map(([key, value]) => (
-                                  <div key={key}>
-                                    <div className="text-lg font-bold text-primary">{value}</div>
-                                    <div className="text-xs text-muted-foreground capitalize">{key.replace('_', ' ')}</div>
-                                  </div>
-                                ))}
+                                {Object.entries(pillar.metrics).map(([key, value]) => {
+                                  const metricLabels: Record<string, string> = {
+                                    'local_hiring': 'Contratación Local',
+                                    'local_suppliers': 'Proveedores Locales',
+                                    'beneficiaries': 'Beneficiarios',
+                                    'safety_programs': 'Programas de Seguridad',
+                                    'community_projects': 'Proyectos Comunitarios',
+                                    'training_hours': 'Horas de Capacitación'
+                                  };
+
+                                  return (
+                                    <div key={key}>
+                                      <div className="text-lg font-bold text-primary">{value}</div>
+                                      <div className="text-xs text-muted-foreground">{metricLabels[key] || key.replace('_', ' ')}</div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           </div>

@@ -425,7 +425,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({
       case 'cancelled':
         return <Square className="w-4 h-4 text-gray-500" />;
       case 'paused':
-        return <Pause className="w-4 h-4 text-orange-500" />;
+        return <Pause className="w-4 h-4 text-cyan-500" />;
       default:
         return <Clock className="w-4 h-4 text-gray-500" />;
     }
@@ -444,7 +444,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({
       case 'cancelled':
         return 'bg-gray-100 text-gray-800';
       case 'paused':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-cyan-100 text-cyan-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -565,7 +565,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({
                 <p className="text-2xl font-bold">{formatBytes(storageStats.totalUsed)}</p>
                 <p className="text-sm text-gray-600">Usado</p>
               </div>
-              <HardDrive className="w-8 h-8 text-orange-500" />
+              <HardDrive className="w-8 h-8 text-cyan-500" />
             </div>
             <div className="mt-2">
               <Progress value={storageStats.usagePercent} className="h-2" />

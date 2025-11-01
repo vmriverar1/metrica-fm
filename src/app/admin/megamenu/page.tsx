@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Menu, 
-  Plus, 
+import {
+  Menu,
+  Plus,
   Settings,
   RefreshCw,
   Download,
@@ -11,31 +11,19 @@ import {
   Zap,
   Edit
 } from 'lucide-react';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { COLLECTIONS } from '@/lib/firebase/config';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { toast } from '@/hooks/use-toast-simple';
-import dynamic from 'next/dynamic';
+import { toast } from '@/hooks/use-toast';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { FilterState } from '@/components/admin/megamenu/MegaMenuFilters';
-
-// Lazy load heavy admin components
-const MegaMenuStats = dynamic(() => import('@/components/admin/megamenu/MegaMenuStats'), {
-  loading: () => <div className="h-32 bg-muted/50 animate-pulse rounded-lg" />
-});
-
-const MegaMenuFilters = dynamic(() => import('@/components/admin/megamenu/MegaMenuFilters'), {
-  loading: () => <div className="h-20 bg-muted/30 animate-pulse rounded-lg" />
-});
-
-const MenuTreeView = dynamic(() => import('@/components/admin/megamenu/MenuTreeView'), {
-  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>
-});
-
-const MegaMenuEditor = dynamic(() => import('@/components/admin/megamenu/MegaMenuEditor'), {
-  loading: () => <div className="h-96 bg-muted/10 animate-pulse rounded-lg flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>
-});
+import MegaMenuStats from '@/components/admin/megamenu/MegaMenuStats';
+import MegaMenuFilters, { FilterState } from '@/components/admin/megamenu/MegaMenuFilters';
+import MenuTreeView from '@/components/admin/megamenu/MenuTreeView';
+import MegaMenuActions from '@/components/admin/megamenu/MegaMenuActions';
+import MegaMenuEditor from '@/components/admin/megamenu/MegaMenuEditor';
 
 interface MegaMenuItem {
   id: string;
@@ -133,29 +121,58 @@ export default function MegaMenuAdminPage() {
 
   const fetchMegaMenuData = async (showLoading = true) => {
     try {
+      console.log('🔍 [MegaMenu Admin] Cargando datos desde Firestore...');
       if (showLoading) setLoading(true);
       else setRefreshing(true);
-      
-      const response = await fetch('/api/admin/megamenu');
-      if (response.ok) {
-        const data = await response.json();
-        setMenuData(data);
-        
+
+      // Obtener documento del mega menú desde Firestore
+      const result = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (result.success && result.data) {
+        const firestoreData = result.data as any;
+        console.log('📊 [MegaMenu Admin] Datos obtenidos:', firestoreData);
+
+        // Crear estructura compatible con el admin
+        const megaMenuData: MegaMenuData = {
+          settings: firestoreData.settings || {
+            enabled: true,
+            animation_duration: 300,
+            hover_delay: 100,
+            mobile_breakpoint: 'md',
+            max_items: 10,
+            last_updated: new Date().toISOString(),
+            version: '1.0.0'
+          },
+          items: firestoreData.items || [],
+          page_mappings: firestoreData.page_mappings || {},
+          analytics: firestoreData.analytics || {
+            total_clicks: 0,
+            most_clicked_item: null,
+            last_interaction: null,
+            popular_links: []
+          }
+        };
+
+        setMenuData(megaMenuData);
+
         if (!showLoading) {
           toast({
             title: "Datos actualizados",
             description: "La configuración del megamenu se ha actualizado"
           });
         }
+
+        console.log('✅ [MegaMenu Admin] Datos cargados exitosamente');
       } else {
+        console.error('❌ [MegaMenu Admin] Error obteniendo documento:', result.message);
         toast({
           title: "Error",
-          description: "No se pudieron cargar los datos del megamenu",
+          description: "No se pudieron cargar los datos del megamenu desde Firestore",
           variant: "destructive"
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('❌ [MegaMenu Admin] Error:', error);
       toast({
         title: "Error",
         description: "Error de conexión al cargar los datos",
@@ -255,22 +272,57 @@ export default function MegaMenuAdminPage() {
   // Funciones de manejo de acciones
   const handleReorder = async (newOrder: string[]) => {
     try {
-      const response = await fetch('/api/admin/megamenu/reorder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ itemIds: newOrder })
+      console.log('🔄 [MegaMenu Admin] Reordenando items:', newOrder);
+
+      // Obtener documento actual
+      const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (!currentResult.success || !currentResult.data) {
+        throw new Error('No se pudo obtener la configuración actual del mega menú');
+      }
+
+      const currentData = currentResult.data as any;
+      const currentItems = currentData.items || [];
+
+      // Reordenar items según newOrder
+      const reorderedItems = newOrder.map((itemId, index) => {
+        const item = currentItems.find((item: any) => item.id === itemId);
+        return item ? { ...item, order: index + 1, updated_at: new Date().toISOString() } : null;
+      }).filter(Boolean);
+
+      // Agregar items que no estén en newOrder al final
+      const remainingItems = currentItems
+        .filter((item: any) => !newOrder.includes(item.id))
+        .map((item: any, index: number) => ({
+          ...item,
+          order: reorderedItems.length + index + 1,
+          updated_at: new Date().toISOString()
+        }));
+
+      const finalItems = [...reorderedItems, ...remainingItems];
+
+      // Actualizar documento en Firestore
+      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+        ...currentData,
+        items: finalItems,
+        settings: {
+          ...currentData.settings,
+          last_updated: new Date().toISOString()
+        }
       });
-      
-      if (response.ok) {
+
+      if (updateResult.success) {
         await fetchMegaMenuData(false);
         toast({
           title: "Orden actualizado",
           description: "El orden del megamenu se ha actualizado correctamente"
         });
+        console.log('✅ [MegaMenu Admin] Orden actualizado exitosamente');
       } else {
-        throw new Error('Error al reordenar');
+        throw new Error(updateResult.message || 'Error actualizando el orden');
       }
     } catch (error) {
+      console.error('❌ [MegaMenu Admin] Error reordenando:', error);
       toast({
         title: "Error",
         description: "No se pudo actualizar el orden",
@@ -291,29 +343,58 @@ export default function MegaMenuAdminPage() {
   
   const handleEditorSave = async (item: MegaMenuItem) => {
     try {
+      console.log('💾 [MegaMenu Admin] Guardando item:', item);
       const isNew = !editingItem;
-      const url = isNew ? '/api/admin/megamenu' : `/api/admin/megamenu/${item.id}`;
-      const method = isNew ? 'POST' : 'PUT';
-      
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
+
+      // Obtener documento actual
+      const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (!currentResult.success || !currentResult.data) {
+        throw new Error('No se pudo obtener la configuración actual del mega menú');
+      }
+
+      const currentData = currentResult.data as any;
+      const currentItems = currentData.items || [];
+
+      let updatedItems;
+      if (isNew) {
+        // Agregar nuevo item
+        updatedItems = [...currentItems, item];
+        console.log('➕ [MegaMenu Admin] Agregando nuevo item');
+      } else {
+        // Actualizar item existente
+        updatedItems = currentItems.map((existingItem: any) =>
+          existingItem.id === item.id ? item : existingItem
+        );
+        console.log('✏️ [MegaMenu Admin] Actualizando item existente');
+      }
+
+      // Actualizar documento en Firestore
+      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+        ...currentData,
+        items: updatedItems,
+        settings: {
+          ...currentData.settings,
+          last_updated: new Date().toISOString()
+        }
       });
-      
-      if (response.ok) {
+
+      if (updateResult.success) {
         await fetchMegaMenuData(false);
         setShowEditor(false);
         setEditingItem(null);
-        
+
         toast({
           title: isNew ? "Menú creado" : "Menú actualizado",
           description: `El menú "${item.label}" se ha ${isNew ? 'creado' : 'actualizado'} correctamente`
         });
+
+        console.log('✅ [MegaMenu Admin] Item guardado exitosamente');
       } else {
-        throw new Error('Error en la respuesta del servidor');
+        throw new Error(updateResult.message || 'Error actualizando el documento');
       }
     } catch (error) {
+      console.error('❌ [MegaMenu Admin] Error guardando item:', error);
       throw error; // Re-lanzar para que el editor lo maneje
     }
   };
@@ -325,16 +406,43 @@ export default function MegaMenuAdminPage() {
   
   const handleDelete = async (itemId: string) => {
     try {
-      const response = await fetch(`/api/admin/megamenu/${itemId}`, {
-        method: 'DELETE'
+      console.log('🗑️ [MegaMenu Admin] Eliminando item:', itemId);
+
+      // Obtener documento actual
+      const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (!currentResult.success || !currentResult.data) {
+        throw new Error('No se pudo obtener la configuración actual del mega menú');
+      }
+
+      const currentData = currentResult.data as any;
+      const currentItems = currentData.items || [];
+
+      // Filtrar item a eliminar
+      const updatedItems = currentItems.filter((item: any) => item.id !== itemId);
+
+      // Actualizar documento en Firestore
+      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+        ...currentData,
+        items: updatedItems,
+        settings: {
+          ...currentData.settings,
+          last_updated: new Date().toISOString()
+        }
       });
-      
-      if (response.ok) {
+
+      if (updateResult.success) {
         await fetchMegaMenuData(false);
+        toast({
+          title: "Menú eliminado",
+          description: "El menú se ha eliminado correctamente"
+        });
+        console.log('✅ [MegaMenu Admin] Item eliminado exitosamente');
       } else {
-        throw new Error('Error al eliminar');
+        throw new Error(updateResult.message || 'Error eliminando el item');
       }
     } catch (error) {
+      console.error('❌ [MegaMenu Admin] Error eliminando item:', error);
       toast({
         title: "Error",
         description: "No se pudo eliminar el menú",
@@ -363,21 +471,50 @@ export default function MegaMenuAdminPage() {
   
   const handleToggleEnabled = async (itemId: string) => {
     try {
+      console.log('🔄 [MegaMenu Admin] Cambiando estado de item:', itemId);
+
       const item = menuData?.items.find(i => i.id === itemId);
       if (!item) return;
-      
-      const response = await fetch(`/api/admin/megamenu/${itemId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...item, enabled: !item.enabled })
+
+      // Obtener documento actual
+      const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (!currentResult.success || !currentResult.data) {
+        throw new Error('No se pudo obtener la configuración actual del mega menú');
+      }
+
+      const currentData = currentResult.data as any;
+      const currentItems = currentData.items || [];
+
+      // Actualizar estado del item
+      const updatedItems = currentItems.map((existingItem: any) =>
+        existingItem.id === itemId
+          ? { ...existingItem, enabled: !existingItem.enabled, updated_at: new Date().toISOString() }
+          : existingItem
+      );
+
+      // Actualizar documento en Firestore
+      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+        ...currentData,
+        items: updatedItems,
+        settings: {
+          ...currentData.settings,
+          last_updated: new Date().toISOString()
+        }
       });
-      
-      if (response.ok) {
+
+      if (updateResult.success) {
         await fetchMegaMenuData(false);
+        toast({
+          title: "Estado actualizado",
+          description: `El menú "${item.label}" se ha ${!item.enabled ? 'activado' : 'desactivado'} correctamente`
+        });
+        console.log('✅ [MegaMenu Admin] Estado cambiado exitosamente');
       } else {
-        throw new Error('Error al cambiar estado');
+        throw new Error(updateResult.message || 'Error cambiando el estado');
       }
     } catch (error) {
+      console.error('❌ [MegaMenu Admin] Error cambiando estado:', error);
       toast({
         title: "Error",
         description: "No se pudo cambiar el estado del menú",

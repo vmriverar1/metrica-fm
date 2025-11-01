@@ -64,17 +64,17 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
     : {};
   
   // Crear hitos dinámicos basados ÚNICAMENTE en el JSON
-  const hitosData = timelineEvents.length > 0 
+  const hitosData = timelineEvents.length > 0
     ? timelineEvents.map((event: any, index: number) => ({
         id: index + 1,
         year: event.year.toString(),
         title: event.title || 'Sin título',
         subtitle: event.subtitle || 'Sin subtítulo',
-        description: event.description || 'Sin descripción',
+        description: event.description || '',
         image: event.image || event.image_fallback || '',
-        highlights: Array.isArray(event.achievements) && event.achievements.length > 0 
-          ? event.achievements.slice(0, 3) 
-          : ['Evento importante']
+        highlights: Array.isArray(event.achievements) && event.achievements.length > 0
+          ? event.achievements.slice(0, 3)
+          : []
       }))
     : [];
     
@@ -275,8 +275,9 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
         ))}
         
         {/* Imagen final */}
-        <FinalImage 
+        <FinalImage
           isActive={activeIndex === hitosData.length}
+          finalImage={historiaData?.final_image}
         />
       </div>
 
@@ -294,7 +295,7 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
           key={hito.id}
           isActive={index === activeIndex && showPanel}
           hitoData={hitosExtendidos[hito.id as keyof typeof hitosExtendidos]}
-          color={index % 2 === 0 ? '#007bc4' : '#003F6F'}
+          color={index % 2 === 0 ? '#00A8E8' : '#003F6F'}
           onClose={() => setShowPanel(false)}
         />
       ))}

@@ -14,6 +14,7 @@ interface Hito {
   description: string;
   image: string;
   image_fallback?: string;
+  contentImage?: string;
   highlights: string[];
 }
 
@@ -151,7 +152,7 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
               style={{
                 width: `${20 + i * 10}px`,
                 height: `${20 + i * 10}px`,
-                backgroundColor: index % 2 === 0 ? '#007bc4' : '#003F6F',
+                backgroundColor: index % 2 === 0 ? '#00A8E8' : '#003F6F',
                 borderRadius: '50%',
                 filter: 'blur(2px)',
                 left: `${20 + i * 15}%`,
@@ -168,7 +169,7 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
         <div className="year-bg absolute inset-0 flex items-center justify-center pointer-events-none parallax-layer" data-speed="0.8">
           <span 
             className="text-[40vh] font-alliance-extrabold leading-none opacity-10"
-            style={{ color: index % 2 === 0 ? '#007bc4' : '#003F6F' }}
+            style={{ color: index % 2 === 0 ? '#00A8E8' : '#003F6F' }}
           >
             {hito.year}
           </span>
@@ -202,7 +203,7 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
           <div className="mb-4">
             <span 
               className="text-6xl font-alliance-extrabold"
-              style={{ color: index % 2 === 0 ? '#007bc4' : '#003F6F' }}
+              style={{ color: index % 2 === 0 ? '#00A8E8' : '#003F6F' }}
             >
               {hito.year}
             </span>
@@ -219,55 +220,46 @@ export default function HitoFullScreen({ hito, index, isActive, showPanel = fals
           </p>
 
           {/* Descripción */}
-          <p className="text-lg font-alliance-medium text-foreground/80 leading-relaxed mb-12">
+          <p className="text-lg font-alliance-medium text-foreground/80 leading-relaxed mb-6 text-justify">
             {hito.description}
           </p>
 
-          {/* Highlights */}
-          <div className="space-y-3">
-            {hito.highlights.map((highlight, idx) => (
-              <div 
-                key={idx}
-                className="highlight-item flex items-center gap-3"
-              >
-                <div 
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: index % 2 === 0 ? '#007bc4' : '#003F6F' }}
-                />
-                <span className="text-base font-alliance-medium text-foreground/70">
-                  {highlight}
-                </span>
-              </div>
-            ))}
-          </div>
+          {/* Viñetas/Highlights */}
+          {hito.highlights && hito.highlights.length > 0 && (
+            <div className="mb-8">
+              <ul className="space-y-3">
+                {hito.highlights.map((highlight, idx) => (
+                  <li key={idx} className="highlight-item flex items-start gap-3">
+                    <span
+                      className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: index % 2 === 0 ? '#00A8E8' : '#003F6F' }}
+                    />
+                    <span className="text-base font-alliance-medium text-foreground/80 leading-relaxed">
+                      {highlight}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          {/* Botón para mostrar más información */}
-          <button
-            onClick={onTogglePanel}
-            className="mt-8 flex items-center gap-2 px-6 py-3 rounded-full border-2 transition-all duration-300 hover:scale-105"
-            style={{ 
-              borderColor: index % 2 === 0 ? '#007bc4' : '#003F6F',
-              color: index % 2 === 0 ? '#007bc4' : '#003F6F'
-            }}
-          >
-            {showPanel ? (
-              <>
-                <X className="w-5 h-5" />
-                <span className="font-alliance-medium">Cerrar detalles</span>
-              </>
-            ) : (
-              <>
-                <Info className="w-5 h-5" />
-                <span className="font-alliance-medium">Ver más detalles</span>
-              </>
-            )}
-          </button>
+          {/* Imagen de contenido opcional */}
+          {hito.contentImage && (
+            <div className="mb-12 rounded-lg overflow-hidden shadow-lg">
+              <img
+                src={hito.contentImage}
+                alt={`Imagen de ${hito.title}`}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          )}
+
         </div>
 
         {/* Línea decorativa vertical */}
         <div 
           className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-40 opacity-20"
-          style={{ backgroundColor: index % 2 === 0 ? '#007bc4' : '#003F6F' }}
+          style={{ backgroundColor: index % 2 === 0 ? '#00A8E8' : '#003F6F' }}
         />
       </div>
 

@@ -67,8 +67,8 @@ export default function SectionLoading({
           style={{
             width: `calc(100% - 8px)`,
             height: `calc(100% - 8px)`,
-            borderBottomColor: '#007bc4',
-            borderLeftColor: 'rgba(0, 123, 196, 0.2)',
+            borderBottomColor: '#00A8E8',
+            borderLeftColor: 'rgba(0, 168, 232, 0.2)',
           }}
           animate={{ rotate: -360 }}
           transition={{

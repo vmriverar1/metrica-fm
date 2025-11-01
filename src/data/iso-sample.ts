@@ -19,7 +19,6 @@ export const currentCertification: ISOCertification = {
   certifyingBody: 'SGS Peru',
   certificateNumber: 'PE18/70291',
   scope: [
-    'Dirección integral de proyectos de construcción',
     'Gestión de proyectos de infraestructura',
     'Supervisión y control de obras',
     'Consultoría en construcción'

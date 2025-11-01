@@ -56,10 +56,15 @@ const StatCard = ({ stat, index }: StatCardProps) => {
       textContent: stat.value,
       duration: 2,
       ease: 'power2.out',
-      snap: { textContent: 1 },
+      snap: { textContent: 0.1 }, // Allow decimals with 0.1 precision
       onUpdate: function() {
         if (numberRef.current) {
-          numberRef.current.textContent = Math.floor(Number(numberRef.current.textContent)) + stat.suffix;
+          const currentValue = Number(numberRef.current.textContent);
+          // Keep one decimal place if needed
+          const formattedValue = currentValue % 1 === 0
+            ? Math.floor(currentValue).toString()
+            : currentValue.toFixed(1);
+          numberRef.current.textContent = formattedValue + stat.suffix;
         }
       }
     }, '-=0.4');

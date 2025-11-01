@@ -58,7 +58,7 @@ export function ProgressHeader({ sections, currentSection, completedSections }: 
             <span>{completedCount}/{totalSections} completadas</span>
             <div className="w-16 h-1 bg-gray-200 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-[#007bc4] transition-all duration-300"
+                className="h-full bg-[#00A8E8] transition-all duration-300"
                 style={{ width: `${(completedCount / totalSections) * 100}%` }}
               />
             </div>

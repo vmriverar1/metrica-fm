@@ -3,21 +3,29 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useAdminNavigation } from '@/hooks/useAdminNavigation';
-import { 
-  Home, 
-  FileText, 
-  Briefcase, 
-  Mail, 
-  Settings, 
+import {
+  Home,
+  FileText,
+  Briefcase,
+  Mail,
+  Settings,
   BarChart3,
   Monitor,
   Search,
   Users,
   Building,
-  Grid3X3,
-  Menu
+  Menu,
+  UserCheck
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarSeparator,
+} from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -72,11 +80,11 @@ const mainNavItems: NavItem[] = [
     description: 'Gestión del mega menú'
   },
   {
-    id: 'dynamic-content',
-    label: 'Contenido Dinámico',
-    icon: Grid3X3,
-    path: '/admin/dynamic-content',
-    description: 'Elementos dinámicos'
+    id: 'subscriptions',
+    label: 'Suscripciones',
+    icon: UserCheck,
+    path: '/admin/subscriptions/subscribers',
+    description: 'Gestión de suscriptores'
   }
 ];
 
@@ -106,17 +114,16 @@ const utilityNavItems: NavItem[] = [
 
 interface AdminNavigationProps {
   className?: string;
-  compact?: boolean;
 }
 
-export default function AdminNavigation({ className, compact = false }: AdminNavigationProps) {
+export default function AdminNavigation({ className }: AdminNavigationProps) {
   const pathname = usePathname();
   const { navigateTo } = useAdminNavigation();
 
   const handleNavigation = (item: NavItem) => {
     if (pathname !== item.path) {
-      navigateTo(item.path, { 
-        loadingMessage: `Cargando ${item.label.toLowerCase()}...` 
+      navigateTo(item.path, {
+        loadingMessage: `Cargando ${item.label.toLowerCase()}...`
       });
     }
   };
@@ -126,55 +133,51 @@ export default function AdminNavigation({ className, compact = false }: AdminNav
     return pathname === path;
   };
 
-  const NavButton = ({ item }: { item: NavItem }) => (
-    <Button
-      variant={isActive(item.path) ? 'default' : 'ghost'}
-      className={cn(
-        "w-full justify-start h-auto p-3",
-        isActive(item.path) && "bg-primary text-primary-foreground shadow-sm"
-      )}
-      onClick={() => handleNavigation(item)}
-    >
-      <item.icon className={cn("h-4 w-4", compact ? "" : "mr-3")} />
-      {!compact && (
-        <div className="text-left flex-1">
-          <div className="font-medium">{item.label}</div>
-          {item.description && (
-            <div className="text-xs opacity-70">{item.description}</div>
-          )}
-        </div>
-      )}
-    </Button>
-  );
-
   return (
-    <nav className={cn("space-y-2", className)}>
+    <div className={cn("flex flex-col gap-2", className)}>
       {/* Navegación Principal */}
-      <div className="space-y-1">
-        {!compact && (
-          <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            Principal
-          </h3>
-        )}
-        {mainNavItems.map((item) => (
-          <NavButton key={item.id} item={item} />
-        ))}
-      </div>
+      <SidebarGroup>
+        <SidebarGroupLabel>Principal</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {mainNavItems.map((item) => (
+              <SidebarMenuItem key={item.id}>
+                <SidebarMenuButton
+                  onClick={() => handleNavigation(item)}
+                  isActive={isActive(item.path)}
+                  tooltip={item.label}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
 
-      {/* Separador */}
-      <div className="border-t border-border my-4" />
+      <SidebarSeparator />
 
       {/* Navegación de Utilidades */}
-      <div className="space-y-1">
-        {!compact && (
-          <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            Herramientas
-          </h3>
-        )}
-        {utilityNavItems.map((item) => (
-          <NavButton key={item.id} item={item} />
-        ))}
-      </div>
-    </nav>
+      <SidebarGroup>
+        <SidebarGroupLabel>Herramientas</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {utilityNavItems.map((item) => (
+              <SidebarMenuItem key={item.id}>
+                <SidebarMenuButton
+                  onClick={() => handleNavigation(item)}
+                  isActive={isActive(item.path)}
+                  tooltip={item.label}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </div>
   );
 }

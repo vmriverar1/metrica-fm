@@ -442,7 +442,7 @@ export const ProgressiveControlPanel: React.FC<ProgressiveControlPanelProps> = (
     switch (level) {
       case 'core': return 'bg-blue-100 text-blue-800';
       case 'enhanced': return 'bg-purple-100 text-purple-800';
-      case 'advanced': return 'bg-orange-100 text-orange-800';
+      case 'advanced': return 'bg-cyan-100 text-cyan-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -511,8 +511,8 @@ export const ProgressiveControlPanel: React.FC<ProgressiveControlPanelProps> = (
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Gauge className="w-4 h-4 text-orange-600" />
-              <span className="font-medium text-orange-900">Advanced</span>
+              <Gauge className="w-4 h-4 text-cyan-600" />
+              <span className="font-medium text-cyan-900">Advanced</span>
             </div>
             <p className="text-2xl font-bold">
               {featuresByLevel.advanced.filter(([, f]) => f.enabled).length}/{featuresByLevel.advanced.length}

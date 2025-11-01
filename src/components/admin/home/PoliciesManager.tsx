@@ -16,6 +16,7 @@ interface Policy {
   description: string;
   image: string;
   image_fallback: string;
+  pdf?: string;
 }
 
 interface PoliciesManagerProps {
@@ -41,7 +42,7 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
     'Leaf': { icon: Leaf, label: 'Hoja (Medio Ambiente)', color: 'text-green-500' },
     'Heart': { icon: Heart, label: 'Corazón (Responsabilidad Social)', color: 'text-red-500' },
     'Scale': { icon: Scale, label: 'Balanza (Ética)', color: 'text-purple-600' },
-    'AlertCircle': { icon: AlertCircle, label: 'Alerta (Gestión de Riesgos)', color: 'text-orange-600' },
+    'AlertCircle': { icon: AlertCircle, label: 'Alerta (Gestión de Riesgos)', color: 'text-cyan-600' },
     'Lightbulb': { icon: Lightbulb, label: 'Bombilla (Innovación)', color: 'text-blue-500' },
     'Lock': { icon: Lock, label: 'Candado (Confidencialidad)', color: 'text-gray-600' }
   };
@@ -133,7 +134,7 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
         </h4>
         
         <p className="text-xs text-gray-600 line-clamp-3 min-h-[3rem]">
-          {policy.description || 'Sin descripción'}
+          {policy.description || ''}
         </p>
         
         {policy.image && (
@@ -300,6 +301,20 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Documento PDF
+                  </label>
+                  <Input
+                    value={policy.pdf || ''}
+                    onChange={(e) => handlePolicyChange(index, 'pdf', e.target.value)}
+                    placeholder="/pdf/politica-calidad.pdf"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Ruta del archivo PDF en /public/pdf/
+                  </p>
+                </div>
+
                 {/* Preview de la política individual */}
                 <div className="border rounded-lg p-3 bg-gray-50">
                   <p className="text-xs text-gray-600 mb-2">Vista previa:</p>
@@ -417,7 +432,7 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
               <p className="text-xs text-gray-600">Total Políticas</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#007bc4]">
+              <p className="text-2xl font-bold text-[#00A8E8]">
                 {policies.filter(p => p.title && p.description).length}
               </p>
               <p className="text-xs text-gray-600">Completas</p>

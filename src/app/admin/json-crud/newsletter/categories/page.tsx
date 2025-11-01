@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import apiClient from '@/lib/api-client';
+import { useCategorias } from '@/hooks/useNewsletterAdmin';
 import { useRouter } from 'next/navigation';
+import type { Categoria } from '@/types/newsletter';
 import DataTable from '@/components/admin/DataTable';
 import DynamicForm from '@/components/admin/DynamicForm';
 import { Button } from '@/components/ui/button';
@@ -11,15 +12,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Tag, FileText, Palette, TrendingUp } from 'lucide-react';
 
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  color: string;
-  icon: string;
+// Usar tipo de Firestore
+type Category = Categoria & {
   order: number;
-  article_count: number;
   status: 'active' | 'inactive';
   metadata: {
     total_views: number;
@@ -32,33 +27,48 @@ interface Category {
     meta_description: string;
     keywords: string[];
   };
-}
+};
 
 const CategoriesManagement = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Usar hook de Firestore
+  const {
+    categorias,
+    loading,
+    error: firestoreError,
+    create,
+    update,
+    remove
+  } = useCategorias();
+
+  // Mapear datos de Firestore al formato esperado por el componente
+  const categories: Category[] = categorias.map((categoria, index) => ({
+    ...categoria,
+    order: index + 1,
+    status: categoria.featured ? 'active' : 'inactive',
+    metadata: {
+      total_views: 0,
+      avg_reading_time: 0,
+      featured_articles: 0,
+      last_article_date: ''
+    },
+    seo: {
+      meta_title: '',
+      meta_description: categoria.description,
+      keywords: []
+    }
+  }));
+
+  const [error, setError] = useState<string | null>(firestoreError);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const data = await apiClient.get('/api/admin/newsletter/categories');
-      setCategories(data.categories || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Sincronizar error de Firestore con error local
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    setError(firestoreError);
+  }, [firestoreError]);
 
   const filteredCategories = categories.filter(category => {
     const matchesSearch = category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -178,10 +188,13 @@ const CategoriesManagement = () => {
       label: category => category.status === 'active' ? 'Desactivar' : 'Activar',
       onClick: async (category: Category) => {
         try {
-          const data = await apiClient.put(`/api/admin/newsletter/categories/${category.id}`, {
-              ...category,
-              status: category.status === 'active' ? 'inactive' : 'active'
-            });
+          const newStatus = category.status === 'active' ? 'inactive' : 'active';
+          const response = await update(category.id, {
+            featured: newStatus === 'active'
+          });
+          if (!response.exito) {
+            setError(response.mensaje || 'Error al actualizar');
+          }
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Error al actualizar');
         }
@@ -193,7 +206,10 @@ const CategoriesManagement = () => {
       onClick: async (category: Category) => {
         if (!confirm('¿Estás seguro de que quieres eliminar esta categoría?')) return;
         try {
-          const data = await apiClient.delete(`/api/admin/newsletter/categories/${category.id}`);
+          const response = await remove(category.id);
+          if (!response.exito) {
+            setError(response.mensaje || 'Error al eliminar');
+          }
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Error al eliminar');
         }
@@ -205,13 +221,10 @@ const CategoriesManagement = () => {
 
   const updateCategoryOrder = async (categoryId: string, newOrder: number) => {
     try {
-      const category = categories.find(c => c.id === categoryId);
-      if (!category) return;
-
-      const data = await apiClient.put(`/api/admin/newsletter/categories/${categoryId}`, {
-          ...category,
-          order: newOrder
-        });
+      const response = await update(categoryId, { order: newOrder });
+      if (!response.exito) {
+        setError(response.mensaje || 'Error al actualizar orden');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al actualizar orden');
     }
@@ -336,43 +349,23 @@ const CategoriesManagement = () => {
         description: values.description,
         color: values.color,
         icon: values.icon,
-        order: parseInt(values.order),
-        status: values.status,
-        article_count: selectedCategory?.article_count || 0,
-        metadata: selectedCategory?.metadata || {
-          total_views: 0,
-          avg_reading_time: 0,
-          featured_articles: 0,
-          last_article_date: ''
-        },
-        seo: {
-          meta_title: values['seo.meta_title'] || '',
-          meta_description: values['seo.meta_description'] || '',
-          keywords: values['seo.keywords'] || []
-        }
+        featured: values.status === 'active'
       };
 
-      const url = selectedCategory
-        ? `/api/admin/newsletter/categories/${selectedCategory.id}`
-        : '/api/admin/newsletter/categories';
-      
-      const method = selectedCategory ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(categoryData)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Error al guardar categoría');
+      let response;
+      if (selectedCategory) {
+        response = await update(selectedCategory.id, categoryData);
+      } else {
+        response = await create(categoryData);
       }
 
-      setIsModalOpen(false);
-      setSelectedCategory(null);
-      await fetchCategories();
-      setError(null);
+      if (response.exito) {
+        setIsModalOpen(false);
+        setSelectedCategory(null);
+        setError(null);
+      } else {
+        setError(response.mensaje || 'Error al guardar categoría');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar');
     }
@@ -459,12 +452,12 @@ const CategoriesManagement = () => {
             {categories.reduce((sum, cat) => sum + cat.article_count, 0)}
           </div>
         </div>
-        <div className="bg-orange-50 p-4 rounded-lg">
+        <div className="bg-cyan-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="h-5 w-5 text-orange-600" />
-            <span className="text-sm font-medium text-orange-800">Total Vistas</span>
+            <TrendingUp className="h-5 w-5 text-cyan-600" />
+            <span className="text-sm font-medium text-cyan-800">Total Vistas</span>
           </div>
-          <div className="text-2xl font-bold text-orange-900">
+          <div className="text-2xl font-bold text-cyan-900">
             {categories.reduce((sum, cat) => sum + cat.metadata.total_views, 0).toLocaleString()}
           </div>
         </div>

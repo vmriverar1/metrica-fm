@@ -52,7 +52,7 @@ export default function JobDetail({ job }: JobDetailProps) {
 
   const getCategoryBgColor = (category: string) => {
     const colorMap: { [key: string]: string } = {
-      'gestion-direccion': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+      'gestion-direccion': 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
       'ingenieria-tecnica': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
       'arquitectura-diseño': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
       'operaciones-control': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',

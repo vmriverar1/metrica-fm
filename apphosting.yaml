@@ -4,4 +4,103 @@
 runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
-  maxInstances: 1
+  maxInstances: 10
+  minInstances: 0
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+# Variables de entorno para Firebase
+env:
+  # Firebase Client SDK (Frontend) - Públicas
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: metrica-dip
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyB6KuX1pOsfyxRiGqLhrENT93SsGfiTdOM
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: metrica-dip.firebaseapp.com
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: metrica-dip.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "423005031416"
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:423005031416:web:99ea0e37451fbad1d0e40d"
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    value: G-BTFSHLQNN6
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Google reCAPTCHA v3 - Para protección de formularios
+  - variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+    value: 6Lf3hP0rAAAAAAkckvQA65w8wbIokJfIpqDeXXHk
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: RECAPTCHA_SECRET_KEY
+    value: 6Lf3hP0rAAAAAIn1p7-6tZeC8YyYQOZ2sUDz3xDq
+    availability:
+      - RUNTIME
+
+  # Firebase Admin SDK (Backend) - Para APIs server-side
+  # NOTA: Las credenciales están hardcodeadas en firebase-admin-safe.ts como fallback
+  # Si estas variables NO están configuradas, usará el fallback automáticamente
+  # Descomentar solo si quieres sobreescribir las credenciales hardcodeadas:
+
+  # - variable: FIREBASE_PROJECT_ID
+  #   value: metrica-dip
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+
+  # - variable: FIREBASE_CLIENT_EMAIL
+  #   value: firebase-adminsdk-fbsvc@metrica-dip.iam.gserviceaccount.com
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+
+  # - variable: FIREBASE_PRIVATE_KEY
+  #   secret: PRIVATE_KEY
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+
+  # Otras variables de entorno
+  - variable: NODE_ENV
+    value: production
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_TELEMETRY_DISABLED
+    value: "1"
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: PRIVATE_KEY
+    secret: PRIVATE_KEY

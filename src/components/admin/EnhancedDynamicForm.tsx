@@ -50,7 +50,8 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
             onStatsUpdate={(stats) => {
                 console.log('📊 Lazy Loading Stats:', stats);
               }}
-            />
+            
+          />
         </Suspense>
       )}
       

@@ -6,12 +6,12 @@
       "hover_delay": 100,
       "mobile_breakpoint": "md",
       "max_items": 10,
-      "last_updated": "2025-01-01T00:00:00Z",
+      "last_updated": "2025-09-22T02:52:24.793Z",
       "version": "1.0.0"
     },
     "items": [
       {
-        "id": "home",
+        "id": "hero",
         "order": 1,
         "enabled": true,
         "type": "simple",
@@ -21,9 +21,9 @@
         "description": "Página principal",
         "is_internal": true,
         "page_mapping": "home",
-        "click_count": 1,
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z"
+        "click_count": 15,
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z"
       },
       {
         "id": "about",
@@ -33,21 +33,21 @@
         "label": "Nosotros",
         "href": null,
         "icon": "Users",
-        "description": "Conoce más sobre nuestra empresa",
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z",
+        "description": "Conoce más sobre Métrica DIP",
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-22T02:52:24.793Z",
         "submenu": {
           "layout": "three_column",
           "section1": {
-            "title": "Tu Empresa",
-            "description": "Conoce los pilares que nos definen",
+            "title": "Nuestra Esencia",
+            "description": "Conoce los pilares que definen a Métrica y nuestro compromiso con el desarrollo.",
             "highlight_color": "primary"
           },
           "links": [
             {
               "id": "historia",
-              "title": "Historia",
-              "description": "Conoce nuestros inicios y evolución",
+              "title": "Nuestra Historia",
+              "description": "Desde nuestros inicios en 2015, hemos transformado el sector construcción con más de 200 proyectos exitosos.",
               "href": "/about/historia",
               "icon": "Clock",
               "enabled": true,
@@ -58,8 +58,8 @@
             },
             {
               "id": "cultura",
-              "title": "Cultura y Valores",
-              "description": "Los valores que nos guían",
+              "title": "Cultura y Personas",
+              "description": "Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo.",
               "href": "/about/cultura",
               "icon": "Heart",
               "enabled": true,
@@ -67,13 +67,49 @@
               "page_mapping": "about/cultura",
               "order": 2,
               "click_count": 0
+            },
+            {
+              "id": "careers",
+              "title": "Bolsa de Trabajo",
+              "description": "Únete a nuestro equipo y construye tu carrera en proyectos que transforman el país.",
+              "href": "/careers",
+              "icon": "Users",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "careers",
+              "order": 3,
+              "click_count": 0
+            },
+            {
+              "id": "compromiso",
+              "title": "Compromiso Social y Medioambiental",
+              "description": "Construimos un futuro sostenible con responsabilidad social y las mejores prácticas ambientales.",
+              "href": "/about/compromiso",
+              "icon": "Shield",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "about/compromiso",
+              "order": 4,
+              "click_count": 0
+            },
+            {
+              "id": "clientes",
+              "title": "Clientes",
+              "description": "Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo.",
+              "href": "/about/clientes",
+              "icon": "Building",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "about/clientes",
+              "order": 5,
+              "click_count": 0
             }
           ],
           "section3": {
             "type": "promotional",
-            "title": "Cultura",
-            "description": "Los valores que nos definen",
-            "image": "/img/placeholder.jpg",
+            "title": "Cultura Métrica",
+            "description": "Fomentamos un ambiente de innovación, integridad y excelencia.",
+            "image": "/images/proyectos/EDUCACIÓN/Cibertec/Copia de _ARI2738.webp",
             "cta": {
               "text": "Conocer Más",
               "href": "/about/cultura",
@@ -83,52 +119,199 @@
             "background_gradient": "from-primary/20 to-accent/20"
           }
         },
-        "click_count": 6
+        "click_count": 36
       },
       {
-        "id": "services",
+        "id": "que-hacemos",
         "order": 3,
         "enabled": true,
         "type": "simple",
-        "label": "Servicios",
+        "label": "Qué Hacemos",
         "href": "/services",
         "icon": "Briefcase",
-        "description": "Nuestros servicios",
+        "description": "Nuestros servicios especializados",
         "is_internal": true,
         "page_mapping": "services",
-        "click_count": 0,
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z"
+        "click_count": 3,
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z"
       },
       {
-        "id": "portfolio",
+        "id": "iso",
         "order": 4,
         "enabled": true,
         "type": "simple",
-        "label": "Proyectos",
-        "href": "/portfolio",
-        "icon": "FolderOpen",
-        "description": "Nuestros proyectos",
+        "label": "SIG",
+        "href": "/iso",
+        "icon": "Settings",
+        "description": "Sistema Integrado de Gestión",
         "is_internal": true,
-        "page_mapping": "portfolio",
-        "click_count": 0,
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z"
+        "page_mapping": "iso",
+        "click_count": 9,
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z"
       },
       {
-        "id": "contact",
+        "id": "blog",
         "order": 5,
         "enabled": true,
         "type": "simple",
-        "label": "Contacto",
+        "label": "Newsletter",
+        "href": "/blog",
+        "icon": "BookOpen",
+        "description": "Artículos y noticias del sector",
+        "is_internal": true,
+        "page_mapping": "blog",
+        "click_count": 11,
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z"
+      },
+      {
+        "id": "portfolio",
+        "order": 6,
+        "enabled": true,
+        "type": "megamenu",
+        "label": "Proyectos",
+        "href": null,
+        "icon": "FolderOpen",
+        "description": "Nuestros proyectos destacados",
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z",
+        "submenu": {
+          "layout": "three_column",
+          "section1": {
+            "title": "Proyectos que Transforman",
+            "description": "Explora la diversidad y el impacto de nuestro trabajo a nivel nacional.",
+            "highlight_color": "accent"
+          },
+          "links": [
+            {
+              "id": "portfolio-todos",
+              "title": "Todos nuestros proyectos",
+              "description": "Explora nuestros proyectos destacados en diversas áreas de infraestructura.",
+              "href": "/portfolio",
+              "icon": "Grid",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio",
+              "order": 1,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-oficina",
+              "title": "Proyectos de Oficina",
+              "description": "Espacios corporativos modernos y funcionales que potencian la productividad.",
+              "href": "/portfolio/oficina",
+              "icon": "Building",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/oficina",
+              "order": 2,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-retail",
+              "title": "Proyectos de Retail",
+              "description": "Centros comerciales y tiendas que crean experiencias de compra excepcionales.",
+              "href": "/portfolio/retail",
+              "icon": "ShoppingBag",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/retail",
+              "order": 3,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-industria",
+              "title": "Proyectos de Industria",
+              "description": "Infraestructura industrial optimizada para procesos productivos eficientes.",
+              "href": "/portfolio/industria",
+              "icon": "Factory",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/industria",
+              "order": 4,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-hoteleria",
+              "title": "Proyectos de Hotelería",
+              "description": "Hoteles y complejos turísticos que combinan confort y elegancia.",
+              "href": "/portfolio/hoteleria",
+              "icon": "Hotel",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/hoteleria",
+              "order": 5,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-educacion",
+              "title": "Proyectos de Educación",
+              "description": "Instituciones educativas que inspiran el aprendizaje y desarrollo.",
+              "href": "/portfolio/educacion",
+              "icon": "GraduationCap",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/educacion",
+              "order": 6,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-vivienda",
+              "title": "Proyectos de Vivienda",
+              "description": "Complejos residenciales que ofrecen calidad de vida y bienestar.",
+              "href": "/portfolio/vivienda",
+              "icon": "Home",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/vivienda",
+              "order": 7,
+              "click_count": 0
+            },
+            {
+              "id": "portfolio-salud",
+              "title": "Proyectos de Salud",
+              "description": "Infraestructura hospitalaria de vanguardia para el cuidado de la salud.",
+              "href": "/portfolio/salud",
+              "icon": "Heart",
+              "enabled": true,
+              "is_internal": true,
+              "page_mapping": "portfolio/salud",
+              "order": 8,
+              "click_count": 0
+            }
+          ],
+          "section3": {
+            "type": "promotional",
+            "title": "Innovación en Cada Obra",
+            "description": "Aplicamos las últimas tecnologías y metodologías para garantizar resultados superiores.",
+            "image": "/images/proyectos/RETAIL/Saga VES/Copia de _ARI0071.webp",
+            "cta": {
+              "text": "Ver Proyectos",
+              "href": "/portfolio",
+              "type": "internal",
+              "page_mapping": "portfolio"
+            },
+            "background_gradient": "from-accent/20 to-primary/20"
+          }
+        },
+        "click_count": 16
+      },
+      {
+        "id": "contact",
+        "order": 7,
+        "enabled": true,
+        "type": "simple",
+        "label": "Contáctanos",
         "href": "/contact",
         "icon": "Mail",
-        "description": "Ponte en contacto",
+        "description": "Ponte en contacto con nosotros",
         "is_internal": true,
         "page_mapping": "contact",
-        "click_count": 0,
-        "created_at": "2025-01-01T00:00:00Z",
-        "updated_at": "2025-01-01T00:00:00Z"
+        "click_count": 1,
+        "created_at": "2025-09-01T00:00:00Z",
+        "updated_at": "2025-09-01T00:00:00Z"
       }
     ],
     "page_mappings": {
@@ -136,53 +319,150 @@
         "exists": true,
         "path": "/",
         "title": "Inicio",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "last_checked": "2025-09-01T00:00:00Z"
       },
       "about/historia": {
         "exists": true,
         "path": "/about/historia",
         "title": "Nuestra Historia",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "last_checked": "2025-09-01T00:00:00Z"
       },
       "about/cultura": {
         "exists": true,
         "path": "/about/cultura",
-        "title": "Cultura y Valores",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "title": "Cultura y Personas",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "careers": {
+        "exists": true,
+        "path": "/careers",
+        "title": "Bolsa de Trabajo",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "about/compromiso": {
+        "exists": true,
+        "path": "/about/compromiso",
+        "title": "Compromiso Social",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "about/clientes": {
+        "exists": true,
+        "path": "/about/clientes",
+        "title": "Clientes",
+        "last_checked": "2025-09-01T00:00:00Z"
       },
       "services": {
         "exists": true,
         "path": "/services",
-        "title": "Servicios",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "title": "Qué Hacemos",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "iso": {
+        "exists": true,
+        "path": "/iso",
+        "title": "SIG",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "blog": {
+        "exists": true,
+        "path": "/blog",
+        "title": "Newsletter",
+        "last_checked": "2025-09-01T00:00:00Z"
       },
       "portfolio": {
         "exists": true,
         "path": "/portfolio",
         "title": "Proyectos",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/oficina": {
+        "exists": true,
+        "path": "/portfolio/oficina",
+        "title": "Proyectos de Oficina",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/retail": {
+        "exists": true,
+        "path": "/portfolio/retail",
+        "title": "Proyectos de Retail",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/industria": {
+        "exists": true,
+        "path": "/portfolio/industria",
+        "title": "Proyectos de Industria",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/hoteleria": {
+        "exists": true,
+        "path": "/portfolio/hoteleria",
+        "title": "Proyectos de Hotelería",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/educacion": {
+        "exists": true,
+        "path": "/portfolio/educacion",
+        "title": "Proyectos de Educación",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/vivienda": {
+        "exists": true,
+        "path": "/portfolio/vivienda",
+        "title": "Proyectos de Vivienda",
+        "last_checked": "2025-09-01T00:00:00Z"
+      },
+      "portfolio/salud": {
+        "exists": true,
+        "path": "/portfolio/salud",
+        "title": "Proyectos de Salud",
+        "last_checked": "2025-09-01T00:00:00Z"
       },
       "contact": {
         "exists": true,
         "path": "/contact",
-        "title": "Contacto",
-        "last_checked": "2025-01-01T00:00:00Z"
+        "title": "Contáctanos",
+        "last_checked": "2025-09-01T00:00:00Z"
       }
     },
     "analytics": {
-      "total_clicks": 7,
+      "total_clicks": 91,
       "most_clicked_item": "about",
-      "last_interaction": "2025-09-05T20:29:28.060Z",
+      "last_interaction": "2025-09-22T02:58:41.419Z",
       "popular_links": [
         {
           "id": "about",
-          "clicks": 6,
+          "clicks": 36,
           "label": "Nosotros"
         },
         {
-          "id": "home",
-          "clicks": 1,
+          "id": "portfolio",
+          "clicks": 16,
+          "label": "Proyectos"
+        },
+        {
+          "id": "hero",
+          "clicks": 15,
           "label": "Inicio"
+        },
+        {
+          "id": "blog",
+          "clicks": 11,
+          "label": "Newsletter"
+        },
+        {
+          "id": "iso",
+          "clicks": 9,
+          "label": "SIG"
+        },
+        {
+          "id": "que-hacemos",
+          "clicks": 3,
+          "label": "Qué Hacemos"
+        },
+        {
+          "id": "contact",
+          "clicks": 1,
+          "label": "Contáctanos"
         }
       ]
     }

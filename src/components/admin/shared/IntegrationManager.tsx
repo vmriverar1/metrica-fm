@@ -1547,7 +1547,7 @@ export default function IntegrationManager() {
                         "text-xs",
                         endpoint.method === 'GET' && "border-green-500 text-green-700",
                         endpoint.method === 'POST' && "border-blue-500 text-blue-700",
-                        endpoint.method === 'PUT' && "border-orange-500 text-orange-700",
+                        endpoint.method === 'PUT' && "border-cyan-500 text-cyan-700",
                         endpoint.method === 'DELETE' && "border-red-500 text-red-700"
                       )}>
                         {endpoint.method}

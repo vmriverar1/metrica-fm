@@ -2,27 +2,46 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
-import { TrendingUp, Calendar, Users, Star, ArrowRight } from 'lucide-react';
+import {
+  TrendingUp,
+  Users,
+  ArrowRight,
+  Briefcase,
+  UserCheck,
+  Award,
+  Building,
+  Target,
+  Zap,
+  Factory,
+  DollarSign
+} from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import MissionVision from './MissionVision';
 
 interface CierreTransformProps {
   historiaData?: any;
 }
 
-// Mapeo de iconos
+// Mapeo de iconos - sincronizado con EnhancedStatisticsManager
 const iconMap = {
-  'TrendingUp': TrendingUp,
-  'Calendar': Calendar, 
+  'Briefcase': Briefcase,
   'Users': Users,
-  'Star': Star,
+  'UserCheck': UserCheck,
+  'Award': Award,
+  'Building': Building,
+  'Target': Target,
+  'TrendingUp': TrendingUp,
+  'Zap': Zap,
+  'Factory': Factory,
+  'DollarSign': DollarSign
 } as const;
 
 const statsDefault = [
-  { icon: TrendingUp, end: 200, label: 'Proyectos Exitosos', suffix: '+' },
-  { icon: Calendar, end: 14, label: 'Años de Experiencia', suffix: '' },
+  { icon: Briefcase, end: 200, label: 'Proyectos Exitosos', suffix: '+' },
+  { icon: Award, end: 14, label: 'Años de Experiencia', suffix: '' },
   { icon: Users, end: 50, label: 'Profesionales Especializados', suffix: '+' },
-  { icon: Star, end: 98, label: 'Satisfacción del Cliente', suffix: '%' },
+  { icon: Target, end: 98, label: 'Satisfacción del Cliente', suffix: '%' },
 ];
 
 const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number }) => {
@@ -61,10 +80,15 @@ const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number
       textContent: stat.end,
       duration: 2,
       ease: 'power2.out',
-      snap: { textContent: 1 },
+      snap: { textContent: stat.end % 1 === 0 ? 1 : 0.1 }, // Si es entero snap a 1, si tiene decimales snap a 0.1
       onUpdate: function() {
         if (numberRef.current) {
-          numberRef.current.textContent = Math.floor(Number(numberRef.current.textContent)) + stat.suffix;
+          const currentValue = Number(numberRef.current.textContent);
+          // Si el número objetivo tiene decimales, mostrarlos. Si no, mostrar entero.
+          const displayValue = stat.end % 1 === 0
+            ? Math.floor(currentValue)
+            : currentValue.toFixed(1);
+          numberRef.current.textContent = displayValue + stat.suffix;
         }
       }
     }, '-=0.4');
@@ -105,15 +129,25 @@ export default function CierreTransform({ historiaData }: CierreTransformProps) 
   
   // Usar datos del JSON si están disponibles
   const achievementSummary = historiaData?.achievement_summary;
-  const stats = achievementSummary?.metrics 
-    ? achievementSummary.metrics.map((metric: any, index: number) => {
-        const iconKeys = Object.keys(iconMap);
-        const iconKey = iconKeys[index % iconKeys.length] as keyof typeof iconMap;
+  const stats = achievementSummary?.metrics
+    ? achievementSummary.metrics.map((metric: any) => {
+        // Leer el icono desde los datos o usar Award por defecto
+        const iconKey = (metric.icon || 'Award') as keyof typeof iconMap;
+        const IconComponent = iconMap[iconKey] || Award;
+
+        // Extraer número incluyendo decimales
+        const numMatch = metric.number.match(/[\d.]+/);
+        const num = numMatch ? parseFloat(numMatch[0]) : 0;
+
+        // Extraer sufijo (caracteres no numéricos al final)
+        const suffixMatch = metric.number.match(/[^\d.]+$/);
+        const suffix = suffixMatch ? suffixMatch[0] : '';
+
         return {
-          icon: iconMap[iconKey],
-          end: parseInt(metric.number.replace(/[^\d]/g, '')) || 0,
+          icon: IconComponent,
+          end: num,
           label: metric.label,
-          suffix: metric.number.replace(/[\d]/g, ''),
+          suffix: suffix,
           description: metric.description
         };
       })
@@ -139,6 +173,10 @@ export default function CierreTransform({ historiaData }: CierreTransformProps) 
   
   return (
     <>
+      {/* Sección de Misión y Visión */}
+      <MissionVision />
+
+      {/* Sección de Estadísticas */}
       <section ref={sectionRef} id="cierre-transform-section" className="relative py-24 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="section-title text-4xl md:text-5xl font-alliance-extrabold text-center text-primary mb-16">

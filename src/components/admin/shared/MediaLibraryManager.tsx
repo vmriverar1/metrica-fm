@@ -632,8 +632,8 @@ const MediaLibraryManager: React.FC<MediaLibraryManagerProps> = ({
                   <SelectValue placeholder="Todas las carpetas" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas las carpetas</SelectItem>
-                  {folders.map(folder => (
+                  <SelectItem value="all">Todas las carpetas</SelectItem>
+                  {folders.filter(folder => folder.id && folder.id.trim()).map(folder => (
                     <SelectItem key={folder.id} value={folder.id}>
                       {folder.name}
                     </SelectItem>

@@ -263,8 +263,8 @@ const BackupManager: React.FC<BackupManagerProps> = ({
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <HardDrive className="w-4 h-4 text-orange-600" />
+              <div className="p-2 bg-cyan-100 rounded-lg">
+                <HardDrive className="w-4 h-4 text-cyan-600" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">
@@ -288,7 +288,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({
           </div>
           <Progress value={storagePercentage} className="h-2" />
           {storagePercentage > 80 && (
-            <div className="flex items-center gap-2 mt-2 text-orange-600">
+            <div className="flex items-center gap-2 mt-2 text-cyan-600">
               <AlertTriangle className="w-4 h-4" />
               <span className="text-sm">Almacenamiento casi lleno</span>
               <Button

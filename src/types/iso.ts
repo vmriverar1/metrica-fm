@@ -1,5 +1,50 @@
 // ISO 9001 Types - Certificación y Sistema de Gestión de Calidad
 
+export interface ISOPageData {
+  page: {
+    title: string;
+    description: string;
+  };
+  hero: {
+    title: string;
+    subtitle: string;
+    description: string;
+    background_gradient: string;
+    certification_status: {
+      is_valid: boolean;
+      status_text: string;
+      since_year: string;
+    };
+    stats: {
+      certification_years: string;
+      certified_projects: string;
+      average_satisfaction: string;
+    };
+    certificate_details: {
+      certifying_body: string;
+      certificate_number: string;
+      issue_date: string;
+      expiry_date: string;
+      verification_url: string;
+      pdf_url: string;
+    };
+    action_buttons: Array<{
+      text: string;
+      type: string;
+      icon: string;
+      action: string;
+    }>;
+  };
+  introduction: any;
+  quality_policy: any;
+  client_benefits: any;
+  testimonials: any;
+  process_overview: any;
+  certifications_standards: any;
+  quality_metrics: any;
+  audit_information: any;
+}
+
 export interface ISOCertification {
   id: string;
   standard: 'ISO 9001:2015';

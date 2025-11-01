@@ -45,7 +45,7 @@ import {
   AlertTriangle,
   XCircle
 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast-simple'
+import { useToast } from '@/hooks/use-toast'
 
 interface PolicyDocument {
   title: string
@@ -628,7 +628,7 @@ export function QualityPolicyEditor({ data, onSave, onCancel }: QualityPolicyEdi
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-[#007bc4]" />
+                <FileText className="w-5 h-5 text-[#00A8E8]" />
                 Información del Documento
               </CardTitle>
             </CardHeader>

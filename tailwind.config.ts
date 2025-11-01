@@ -134,6 +134,7 @@ export default {
         'shine': 'shine 1s ease-in-out',
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
         'marquee': 'marquee 25s linear infinite',
+        'marquee-slow': 'marquee 60s linear infinite',
       },
     },
   },

@@ -18,62 +18,70 @@ interface ArticlePageProps {
   };
 }
 
-import { readPublicJSON } from '@/lib/json-reader';
-
-// Function to fetch blog content data
-async function getBlogContentData(): Promise<BlogContentData | null> {
+// Function to get article by slug from Firestore
+async function getArticleBySlug(slug: string) {
   try {
-    return readPublicJSON<BlogContentData>('/json/dynamic-content/newsletter/content.json');
+    const services = await import('@/lib/firestore/newsletter-service');
+    const articulos = new services.ArticulosService();
+    const articulo = await articulos.getBySlug(slug);
+    if (!articulo) return null;
+
+    const articuloConRelaciones = await articulos.getConRelaciones(articulo.id);
+    if (!articuloConRelaciones) return null;
+
+    // Convertir al formato compatible
+    const { convertSingleToCompatibleFormat } = await import('@/lib/blog-utils');
+    return convertSingleToCompatibleFormat(articuloConRelaciones);
   } catch (error) {
-    console.error('Error fetching blog content data:', error);
+    console.error('Error fetching article by slug:', error);
     return null;
   }
 }
 
-// Function to get article by slug
-async function getArticleBySlug(slug: string, contentData: BlogContentData | null) {
-  if (!contentData) return null;
-  
-  const article = contentData.articles.find(article => article.slug === slug);
-  if (!article) return null;
-  
-  // Find the author
-  const author = contentData.authors.find(author => author.id === article.author_id);
-  
-  return {
-    ...article,
-    author: author || {
-      id: 'unknown',
-      name: 'Autor Desconocido',
-      role: 'Colaborador',
-      bio: '',
-      avatar: '',
-      linkedin: '',
-      email: '',
-      featured: false,
-      articles_count: 0,
-      specializations: []
-    }
-  };
-}
-
 export async function generateStaticParams() {
-  const contentData = await getBlogContentData();
-  
-  if (!contentData) {
+  try {
+    // Obtener datos de Firestore
+    const services = await import('@/lib/firestore/newsletter-service');
+    const articulos = new services.ArticulosService();
+    const result = await articulos.getAll();
+    const articles = result.data;
+
+    if (!articles || articles.length === 0) {
+      console.warn('No articles found in Firestore');
+      return [];
+    }
+
+    // Necesitamos obtener la información de categoría por separado
+    const categoriasService = new services.CategoriasService();
+    const categoriasResult = await categoriasService.getAll();
+    const categorias = categoriasResult?.data || [];
+
+    console.log('Categories loaded:', categorias.length);
+
+    const params = [];
+    for (const article of articles) {
+      if (article && article.slug && article.category_id && Array.isArray(categorias)) {
+        const categoria = categorias.find(cat => cat && cat.id === article.category_id);
+        if (categoria?.slug) {
+          params.push({
+            categoria: categoria.slug,
+            slug: article.slug,
+          });
+        }
+      }
+    }
+
+    console.log(`Generated ${params.length} static params for blog articles from Firestore`);
+    return params;
+  } catch (error) {
+    console.error('Error generating static params for blog articles:', error);
     return [];
   }
-  
-  return contentData.articles.map((article) => ({
-    categoria: article.category,
-    slug: article.slug,
-  }));
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-  const contentData = await getBlogContentData();
-  const article = await getArticleBySlug(params.slug, contentData);
-  
+  const article = await getArticleBySlug(params.slug);
+
   if (!article) {
     return {
       title: 'Artículo no encontrado | Blog Métrica FM'
@@ -89,14 +97,14 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       title: article.title,
       description: article.excerpt,
       type: 'article',
-      publishedTime: article.published_date,
+      publishedTime: article.publishedAt.toISOString(),
       authors: [article.author.name],
       images: [
         {
-          url: article.featured_image,
+          url: article.featuredImage,
           width: 1200,
           height: 630,
-          alt: article.featured_image_alt || article.title
+          alt: article.title
         }
       ]
     },
@@ -104,14 +112,13 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       card: 'summary_large_image',
       title: article.title,
       description: article.excerpt,
-      images: [article.social_image || article.featured_image]
+      images: [article.featuredImage]
     }
   };
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const contentData = await getBlogContentData();
-  const article = await getArticleBySlug(params.slug, contentData);
+  const article = await getArticleBySlug(params.slug);
 
   if (!article) {
     notFound();
@@ -119,26 +126,24 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <BlogProvider>
-      {/* ArticleSEO will need to be updated to handle new article structure */}
-      {/* <ArticleSEO article={article} /> */}
-      
       <main className="min-h-screen bg-background">
-        <UniversalHero 
+        <UniversalHero
           title={article.title}
           subtitle={article.excerpt}
-          backgroundImage={article.featured_image}
+          backgroundImage={article.featuredImage}
+          hideText={article.hide_hero_text}
         />
-        
+
         <SectionTransition variant="fade" />
-        
+
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
             {/* Article metadata */}
             <div className="mb-8 pb-8 border-b border-border">
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                <span>Publicado: {new Date(article.published_date).toLocaleDateString('es-PE')}</span>
+                <span>Publicado: {article.publishedAt.toLocaleDateString('es-PE')}</span>
                 <span>•</span>
-                <span>Lectura: {article.reading_time} min</span>
+                <span>Lectura: {article.readingTime} min</span>
                 <span>•</span>
                 <span>Autor: {article.author.name}</span>
               </div>
@@ -155,30 +160,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 </div>
               )}
             </div>
-            
+
             <ArticleContent content={article.content} />
-            
+
             <div className="mt-16 pt-8 border-t border-border">
               <AuthorBio author={article.author} />
             </div>
-            
+
             <div className="mt-16 pt-8 border-t border-border">
-              <CommentSection 
+              <CommentSection
                 articleId={article.id}
                 allowGuests={true}
                 moderationEnabled={true}
               />
             </div>
-            
-            {/* Share functionality will be implemented later
-            <div className="mt-12">
-              <FavoritesShare 
-                type="article" 
-                item={article}
-                title="Compartir artículo"
-              />
-            </div>
-            */}
           </div>
         </div>
       </main>

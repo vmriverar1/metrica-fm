@@ -92,9 +92,9 @@ const auditTypeConfig = {
   },
   recertification: {
     label: 'Recertificación',
-    color: 'text-orange-600',
-    bg: 'bg-orange-100',
-    border: 'border-orange-200',
+    color: 'text-cyan-600',
+    bg: 'bg-cyan-100',
+    border: 'border-cyan-200',
     icon: Award
   }
 };
@@ -509,7 +509,7 @@ export default function AuditDashboard() {
                       <div className="text-xs text-muted-foreground">Completadas</div>
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-orange-600">{metrics.pendingAudits}</div>
+                      <div className="text-lg font-bold text-cyan-600">{metrics.pendingAudits}</div>
                       <div className="text-xs text-muted-foreground">Pendientes</div>
                     </div>
                   </div>
@@ -587,10 +587,10 @@ export default function AuditDashboard() {
                     <div className="text-xs text-muted-foreground">15 de Mayo, 2025</div>
                     <div className="text-xs text-primary">En 3 meses</div>
                   </div>
-                  <div className="border-l-2 border-orange-500 pl-4">
+                  <div className="border-l-2 border-cyan-500 pl-4">
                     <div className="font-medium text-sm">Recertificación ISO 9001</div>
                     <div className="text-xs text-muted-foreground">10 de Agosto, 2025</div>
-                    <div className="text-xs text-orange-600">En 6 meses</div>
+                    <div className="text-xs text-cyan-600">En 6 meses</div>
                   </div>
                 </div>
               </CardContent>

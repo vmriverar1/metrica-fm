@@ -19,7 +19,7 @@ const serviciosData = [
     id: 'gestion',
     titulo: 'Gestión de Proyectos',
     descripcion: 'Lideramos la ejecución con precisión y eficiencia',
-    color: '#007bc4',
+    color: '#00A8E8',
     ambiente: 'construction',
     imagen: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg'
   },

@@ -292,7 +292,7 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({
       case 'critical':
         return 'bg-red-100 text-red-800';
       case 'high':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-cyan-100 text-cyan-800';
       case 'medium':
         return 'bg-yellow-100 text-yellow-800';
       case 'low':
@@ -392,7 +392,7 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({
                     <div className="flex items-center space-x-2">
                       {metric.category === 'traffic' && <Users className="w-4 h-4 text-blue-500" />}
                       {metric.category === 'engagement' && <Eye className="w-4 h-4 text-green-500" />}
-                      {metric.category === 'conversion' && <Target className="w-4 h-4 text-orange-500" />}
+                      {metric.category === 'conversion' && <Target className="w-4 h-4 text-cyan-500" />}
                       {metric.category === 'performance' && <Zap className="w-4 h-4 text-purple-500" />}
                       <span className="text-sm font-medium text-gray-600">{metric.name}</span>
                     </div>
@@ -513,7 +513,7 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({
                           {metric.category}
                         </Badge>
                         {metric.isKPI && (
-                          <Badge className="bg-orange-100 text-orange-800">KPI</Badge>
+                          <Badge className="bg-cyan-100 text-cyan-800">KPI</Badge>
                         )}
                       </div>
                       {metric.description && (

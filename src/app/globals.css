@@ -2,23 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font Face Declarations */
-@font-face {
-  font-family: 'Marsek Demi';
-  src: url('/fonts/Marsek-Demi.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alliance No.2';
-  src: url('/fonts/Alliance No.2 Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* FASE 5C: Font Face Declarations Optimizadas */
 @font-face {
   font-family: 'Alliance No.2';
   src: url('/fonts/Alliance No.2 Medium.otf') format('opentype');
@@ -35,6 +19,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Alliance No.2';
+  src: url('/fonts/Alliance No.2 Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Marsek Demi';
+  src: url('/fonts/Marsek-Demi.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Smooth Scroll Nativo Optimizado - Fase 2 */
 html {
   scroll-behavior: smooth;
@@ -47,25 +47,55 @@ html {
   }
 }
 
-/* Global font defaults */
-* {
-  font-family: 'Alliance No.2', sans-serif;
+/* FASE 5C: Font Loading Optimization */
+:root {
+  --font-sans: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-logo: 'Marsek Demi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Font loading states */
+.fonts-loading {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-logo: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.fonts-loaded {
+  --font-sans: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Alliance No.2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-logo: 'Marsek Demi', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Global font defaults using CSS custom properties */
 body {
-  font-family: 'Alliance No.2', sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.font-logo {
+  font-family: var(--font-logo);
+  font-weight: 600;
+}
+
+/* Global body optimizations */
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-overflow-scrolling: touch; /* Momentum scrolling iOS */
   overscroll-behavior-y: contain; /* Overscroll personalizado */
 }
 
-/* All headings use Alliance No.2 ExtraBold */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Alliance No.2', sans-serif;
-  font-weight: 800;
-}
+/* Remove duplicate heading styles - using the optimized CSS custom properties */
 
 /* Hero titles specifically */
 #hero h1,
@@ -123,10 +153,10 @@ strong, b, .font-bold {
 
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 123, 196, 0.5);
+    box-shadow: 0 0 20px rgba(0, 168, 232, 0.5);
   }
   50% {
-    box-shadow: 0 0 35px rgba(0, 123, 196, 0.8);
+    box-shadow: 0 0 35px rgba(0, 168, 232, 0.8);
   }
 }
 
@@ -170,21 +200,21 @@ strong, b, .font-bold {
     --card-foreground: 0 0% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
-    --primary: 210 100% 22%; /* Deep blue #003f6f */
+    --primary: 204 100% 22%; /* Deep blue #003F6F */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 82%; /* Light gray #D0D0D0 */
     --secondary-foreground: 0 0% 11%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 39%; /* Dark gray #646363 */
-    --accent: 200 100% 39%; /* Light blue #007bc4 */
+    --accent: 196 100% 45%; /* Vibrant cyan #00A8E8 */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 82%; /* Light gray */
     --input: 0 0% 82%;
-    --ring: 210 100% 22%; /* Deep blue focus ring */
-    --chart-1: 210 100% 22%; /* Deep blue for charts */
-    --chart-2: 200 100% 39%;
+    --ring: 204 100% 22%; /* Deep blue focus ring */
+    --chart-1: 204 100% 22%; /* Deep blue for charts */
+    --chart-2: 196 100% 45%;
     --chart-3: 0 0% 62%;
     --chart-4: 0 0% 40%;
     --chart-5: 0 0% 82%;
@@ -197,21 +227,21 @@ strong, b, .font-bold {
     --card-foreground: 0 0% 98%;
     --popover: 228 9% 11%;
     --popover-foreground: 0 0% 98%;
-    --primary: 210 100% 22%;
+    --primary: 209 100% 22%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 20%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 20%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 200 100% 39%;
+    --accent: 196 100% 45%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 25%;
     --input: 0 0% 25%;
-    --ring: 200 100% 39%;
-    --chart-1: 210 100% 22%;
-    --chart-2: 200 100% 39%;
+    --ring: 196 100% 45%;
+    --chart-1: 209 100% 22%;
+    --chart-2: 196 100% 45%;
     --chart-3: 0 0% 62%;
     --chart-4: 0 0% 40%;
     --chart-5: 0 0% 82%;
@@ -315,11 +345,11 @@ strong, b, .font-bold {
                  0 0 20px hsl(var(--accent) / 0.2);
   }
   
-  .text-glow-blue {
-    text-shadow: 
-      0 0 10px #007bc4,
-      0 0 20px #007bc4,
-      0 0 30px #007bc4;
+  .text-glow-cyan {
+    text-shadow:
+      0 0 10px #00A8E8,
+      0 0 20px #00A8E8,
+      0 0 30px #00A8E8;
     filter: brightness(1.1) contrast(1.2);
     color: #fff;
   }
@@ -333,6 +363,14 @@ strong, b, .font-bold {
   }
 
   .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .marquee-slow {
+    animation: marquee 60s linear infinite;
+  }
+
+  .marquee-slow:hover {
     animation-play-state: paused;
   }
 
@@ -390,7 +428,7 @@ strong, b, .font-bold {
     background: radial-gradient(
       circle at center,
       transparent 30%,
-      rgba(0, 123, 196, 0.1) 50%,
+      rgba(0, 168, 232, 0.1) 50%,
       transparent 70%
     );
     opacity: 0;
@@ -453,13 +491,13 @@ strong, b, .font-bold {
     transform: translateY(-50%) scale(0.95);
   }
 
-  /* Portfolio Section Blue Overlay */
-  #portfolio.overlay-blue-in {
-    background-color: #007bc4 !important;
+  /* Portfolio Section Cyan Overlay */
+  #portfolio.overlay-cyan-in {
+    background-color: #00A8E8 !important;
     transition: background-color 1s ease-in-out;
   }
-  
-  #portfolio.overlay-blue-out {
+
+  #portfolio.overlay-cyan-out {
     background-color: transparent;
     transition: background-color 1s ease-in-out;
   }
@@ -634,8 +672,8 @@ strong, b, .font-bold {
 
   /* Efecto glow para años activos */
   .timeline-year-active {
-    color: #007bc4;
-    text-shadow: 0 0 20px rgba(0, 123, 196, 0.8);
+    color: #00A8E8;
+    text-shadow: 0 0 20px rgba(0, 168, 232, 0.8);
     transform: scale(1.2) !important;
     opacity: 1 !important;
   }
@@ -774,7 +812,7 @@ strong, b, .font-bold {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #007bc4;
+    background-color: #00A8E8;
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -820,13 +858,13 @@ strong, b, .font-bold {
   /* Cinematic glow effects */
   @keyframes cinematicGlow {
     0% {
-      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
+      box-shadow: 0 0 20px rgba(0, 168, 232, 0.3);
     }
     50% {
-      box-shadow: 0 0 40px rgba(0, 123, 196, 0.6), 0 0 60px rgba(0, 123, 196, 0.3);
+      box-shadow: 0 0 40px rgba(0, 168, 232, 0.6), 0 0 60px rgba(0, 168, 232, 0.3);
     }
     100% {
-      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
+      box-shadow: 0 0 20px rgba(0, 168, 232, 0.3);
     }
   }
 
@@ -925,10 +963,10 @@ strong, b, .font-bold {
 
   @keyframes pulseGlow {
     0%, 100% {
-      box-shadow: 0 0 20px rgba(0, 123, 196, 0.3);
+      box-shadow: 0 0 20px rgba(0, 168, 232, 0.3);
     }
     50% {
-      box-shadow: 0 0 40px rgba(0, 123, 196, 0.6);
+      box-shadow: 0 0 40px rgba(0, 168, 232, 0.6);
     }
   }
 
@@ -1045,4 +1083,11 @@ strong, b, .font-bold {
   
   [data-job-card] {
     height: 100%;
+  }
+
+  /* Grid pattern for clients hero background */
+  .bg-grid-pattern {
+    background-image: linear-gradient(rgba(0, 63, 111, 0.1) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 63, 111, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
   }

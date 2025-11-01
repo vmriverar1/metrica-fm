@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin, Calendar, Ruler } from 'lucide-react';
 import { ProjectCardProps, getCategoryColor, getCategoryBgColor, getCategoryLabel } from '@/types/portfolio';
-import { cn } from '@/lib/utils';
+import { cn, encodeImageUrl } from '@/lib/utils';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -87,7 +87,7 @@ export default function ProjectCard({
           ? `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0) scale(1.02)` 
           : 'translate3d(0, 0, 0) scale(1)',
         boxShadow: isHovered 
-          ? `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(0, 123, 196, 0.3)`
+          ? `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(0, 168, 232, 0.3)`
           : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
       }}
       onMouseEnter={handleMouseEnter}
@@ -99,7 +99,7 @@ export default function ProjectCard({
         <div ref={imageRef} className="relative h-full w-full overflow-hidden">
           {image && image.trim() !== '' ? (
             <Image
-              src={image}
+              src={encodeImageUrl(image)}
               alt={title}
               fill
               className={cn(

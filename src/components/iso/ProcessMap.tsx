@@ -56,7 +56,7 @@ const processMapData = {
   support: {
     id: 'support',
     title: 'Procesos de Soporte',
-    color: 'orange',
+    color: 'cyan',
     position: { x: 20, y: 85 },
     size: { width: 60, height: 20 },
     processes: qualityProcesses.filter(p => p.category === 'support')
@@ -150,7 +150,7 @@ export default function ProcessMap({ id = "process-map" }: ProcessMapProps) {
 
     const arrowStyle = {
       direct: 'text-blue-500',
-      support: 'text-orange-500', 
+      support: 'text-cyan-500', 
       feedback: 'text-purple-500',
       improvement: 'text-green-500'
     };
@@ -374,7 +374,7 @@ export default function ProcessMap({ id = "process-map" }: ProcessMapProps) {
                     <span>Flujo Directo</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <ArrowUpRight className="w-3 h-3 text-orange-500" />
+                    <ArrowUpRight className="w-3 h-3 text-cyan-500" />
                     <span>Soporte</span>
                   </div>
                   <div className="flex items-center gap-2">

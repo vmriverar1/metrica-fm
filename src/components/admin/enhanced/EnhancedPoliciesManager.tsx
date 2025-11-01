@@ -33,7 +33,7 @@ import {
   Wand2
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import ImageField from '../ImageField';
+import ImageSelector from '../ImageSelector';
 import BulkOperations from '../BulkOperations';
 
 interface PolicyItem {
@@ -41,10 +41,9 @@ interface PolicyItem {
   icon: string;
   title: string;
   description: string;
-  content?: string;
   priority?: 'high' | 'medium' | 'low';
   image?: string;
-  image_fallback?: string;
+  pdf?: string;
 }
 
 interface PolicyTemplate {
@@ -95,7 +94,7 @@ export default function EnhancedPoliciesManager({
     'Leaf': { icon: Leaf, label: 'Hoja (Medio Ambiente)', color: 'text-green-500' },
     'Heart': { icon: Heart, label: 'Corazón (Responsabilidad Social)', color: 'text-red-500' },
     'Scale': { icon: Scale, label: 'Balanza (Ética)', color: 'text-purple-600' },
-    'AlertCircle': { icon: AlertCircle, label: 'Alerta (Gestión de Riesgos)', color: 'text-orange-600' },
+    'AlertCircle': { icon: AlertCircle, label: 'Alerta (Gestión de Riesgos)', color: 'text-cyan-600' },
     'Lightbulb': { icon: Lightbulb, label: 'Bombilla (Innovación)', color: 'text-blue-500' },
     'Lock': { icon: Lock, label: 'Candado (Confidencialidad)', color: 'text-gray-600' }
   };
@@ -188,25 +187,23 @@ export default function EnhancedPoliciesManager({
       errors.push('La descripción es requerida');
     }
     
-    if (policy.description.length > 150) {
-      errors.push('La descripción no puede exceder 150 caracteres');
+    if (policy.description.length > 400) {
+      errors.push('La descripción no puede exceder 400 caracteres');
     }
     
-    if (policy.content && policy.content.length > 1000) {
-      errors.push('El contenido no puede exceder 1000 caracteres');
-    }
     
-    if (!policy.icon || !availableIcons[policy.icon as keyof typeof availableIcons]) {
-      errors.push('Icono no válido o no seleccionado');
+    if (!policy.icon) {
+      errors.push('Icono no seleccionado');
+    } else if (!availableIcons[policy.icon as keyof typeof availableIcons]) {
+      // Icono no está en la lista de disponibles, pero permitirlo si no está vacío
+      // Solo agregamos warning si es necesario, no error
+      console.warn(`Icono '${policy.icon}' no está en la lista de iconos disponibles para políticas empresariales`);
     }
     
     if (policy.image && !isValidUrl(policy.image)) {
       errors.push('URL de imagen principal no es válida');
     }
     
-    if (policy.image_fallback && !isValidUrl(policy.image_fallback)) {
-      errors.push('URL de imagen fallback no es válida');
-    }
     
     return errors;
   };
@@ -253,10 +250,8 @@ export default function EnhancedPoliciesManager({
       icon: 'Award',
       title: 'Nueva Política',
       description: 'Descripción de la política empresarial',
-      content: '',
       priority: 'medium',
-      image: '',
-      image_fallback: ''
+      image: ''
     };
     onChange([...policies, newPolicy]);
     setEditingId(newPolicy.id.toString());
@@ -271,10 +266,8 @@ export default function EnhancedPoliciesManager({
       icon: template.icon,
       title: template.template.title,
       description: template.template.description,
-      content: template.template.content,
       priority: template.priority,
-      image: '',
-      image_fallback: ''
+      image: ''
     };
     onChange([...policies, newPolicy]);
     setEditingId(newPolicy.id.toString());
@@ -342,11 +335,6 @@ export default function EnhancedPoliciesManager({
                 src={policy.image}
                 alt={policy.title}
                 className="h-full w-full object-cover"
-                onError={(e) => {
-                  if (policy.image_fallback) {
-                    (e.target as HTMLImageElement).src = policy.image_fallback;
-                  }
-                }}
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
@@ -374,11 +362,6 @@ export default function EnhancedPoliciesManager({
             <div className="text-sm text-muted-foreground line-clamp-3">
               {policy.description}
             </div>
-            {policy.content && (
-              <div className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                {policy.content}
-              </div>
-            )}
           </CardContent>
 
           {/* Indicador de errores */}
@@ -560,32 +543,19 @@ export default function EnhancedPoliciesManager({
                         onChange={(e) => updatePolicy(policy.id, 'description', e.target.value)}
                         placeholder="Descripción breve de la política"
                         rows={3}
-                        maxLength={150}
+                        maxLength={400}
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        {policy.description.length}/150 caracteres
+                        {policy.description.length}/400 caracteres
                       </p>
                     </div>
 
-                    <div>
-                      <Label>Contenido detallado</Label>
-                      <Textarea
-                        value={policy.content || ''}
-                        onChange={(e) => updatePolicy(policy.id, 'content', e.target.value)}
-                        placeholder="Contenido completo de la política (opcional)"
-                        rows={4}
-                        maxLength={1000}
-                      />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {(policy.content || '').length}/1000 caracteres
-                      </p>
-                    </div>
                   </div>
 
                   {/* Imágenes */}
                   <div className="space-y-4">
                     <div>
-                      <ImageField
+                      <ImageSelector
                         value={policy.image || ''}
                         onChange={(value) => updatePolicy(policy.id, 'image', value)}
                         label="Imagen principal"
@@ -593,13 +563,21 @@ export default function EnhancedPoliciesManager({
                       />
                     </div>
 
+                    {/* Campo PDF */}
                     <div>
-                      <ImageField
-                        value={policy.image_fallback || ''}
-                        onChange={(value) => updatePolicy(policy.id, 'image_fallback', value)}
-                        label="Imagen de respaldo"
-                        placeholder="URL o ruta de imagen alternativa"
+                      <Label htmlFor={`pdf-${policy.id}`} className="text-sm font-medium">
+                        Documento PDF
+                      </Label>
+                      <Input
+                        id={`pdf-${policy.id}`}
+                        value={policy.pdf || ''}
+                        onChange={(e) => updatePolicy(policy.id, 'pdf', e.target.value)}
+                        placeholder="/pdf/politica-calidad.pdf"
+                        className="mt-1.5"
                       />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Ruta del archivo PDF en /public/pdf/
+                      </p>
                     </div>
 
                     {/* Vista previa */}
@@ -611,11 +589,6 @@ export default function EnhancedPoliciesManager({
                             src={policy.image}
                             alt={policy.title}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              if (policy.image_fallback) {
-                                (e.target as HTMLImageElement).src = policy.image_fallback;
-                              }
-                            }}
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full">
@@ -812,18 +785,6 @@ export default function EnhancedPoliciesManager({
         />
       )}
 
-      {/* Información adicional */}
-      <div className="text-xs text-muted-foreground space-y-1 p-4 bg-muted/30 rounded-lg">
-        <p><strong>📋 Consejos para Políticas Empresariales:</strong></p>
-        <ul className="space-y-1 ml-4 list-disc">
-          <li>Las políticas de alta prioridad aparecen primero en la página</li>
-          <li>Usa iconos que representen claramente el tipo de política</li>
-          <li>Mantén las descripciones concisas pero informativas</li>
-          <li>El contenido detallado es opcional pero recomendado para políticas importantes</li>
-          <li>Usa los templates para crear políticas estándar rápidamente</li>
-          <li>Las imágenes ayudan a hacer las políticas más atractivas visualmente</li>
-        </ul>
-      </div>
     </div>
   );
 }

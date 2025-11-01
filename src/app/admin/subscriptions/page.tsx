@@ -433,8 +433,8 @@ export default function SubscriptionsAdminPage() {
                 {contactSubs.filter(c => c.status === 'qualified' || c.status === 'converted').length}
               </p>
             </div>
-            <div className="p-3 rounded-full bg-orange-100">
-              <Star className="w-6 h-6 text-orange-600" />
+            <div className="p-3 rounded-full bg-cyan-100">
+              <Star className="w-6 h-6 text-cyan-600" />
             </div>
           </div>
         </div>

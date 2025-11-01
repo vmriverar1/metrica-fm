@@ -2,11 +2,12 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
-import { Shield, Award, Leaf, Heart, Scale, AlertCircle, Lightbulb, Lock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Shield, Award, Leaf, Heart, Scale, AlertCircle, Lightbulb, Lock, ChevronLeft, ChevronRight, FileText, ArrowRight } from 'lucide-react';
 import { HomePageData } from '@/types/home';
 
 // Import Swiper styles
@@ -29,12 +30,163 @@ interface PoliciesCarouselProps {
   data: HomePageData['policies'];
 }
 
+// Componente FlipCard con estado controlado
+function FlipCard({ policy, slug }: { policy: any, slug: string }) {
+  const router = useRouter();
+  const [isFlipped, setIsFlipped] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    console.log('Mouse Enter - Current isFlipped:', isFlipped);
+    // Clear any pending timeout
+    if (timeoutRef.current) {
+      console.log('Clearing pending timeout');
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    console.log('Setting isFlipped to true');
+    setIsFlipped(true);
+  };
+
+  const handleMouseLeave = () => {
+    console.log('Mouse Leave - Current isFlipped:', isFlipped);
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      console.log('Clearing existing timeout before setting new one');
+      clearTimeout(timeoutRef.current);
+    }
+    console.log('Setting timeout to flip back');
+    timeoutRef.current = setTimeout(() => {
+      console.log('Timeout executed - Setting isFlipped to false');
+      setIsFlipped(false);
+      timeoutRef.current = null;
+    }, 200);
+  };
+
+  // Log when isFlipped changes
+  useEffect(() => {
+    console.log('isFlipped state changed to:', isFlipped);
+  }, [isFlipped]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleClick = () => {
+    // Si la política tiene PDF, abrirlo en nueva pestaña
+    if (policy.pdf) {
+      console.log('Card clicked - opening PDF:', policy.pdf);
+      window.open(policy.pdf, '_blank', 'noopener,noreferrer');
+    } else {
+      // Si no tiene PDF, navegar a la página de política
+      console.log('Card clicked - navigating to:', `/politicas/${slug}`);
+      router.push(`/politicas/${slug}`);
+    }
+  };
+
+  return (
+    <div
+      className="flip-card h-full cursor-pointer relative"
+      ref={cardRef}
+    >
+      {/* Capa invisible para capturar eventos - siempre encima */}
+      <div
+        className="absolute inset-0 z-50"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        style={{ pointerEvents: 'auto' }}
+      />
+
+      {/* Contenido visual - sin eventos */}
+      <div
+        className={`flip-card-inner relative h-full ${isFlipped ? 'flipped' : ''}`}
+        style={{ pointerEvents: 'none' }}
+      >
+        {/* Lado frontal */}
+        <div className="flip-card-front card group absolute w-full h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500">
+          {/* Imagen */}
+          <div className="media-container relative aspect-[8/5] overflow-hidden">
+            {policy.image && policy.image.trim() !== '' ? (
+              <Image
+                src={policy.image}
+                alt={policy.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30" />
+            )}
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+            />
+          </div>
+
+          {/* Contenido */}
+          <div className="card-text">
+            <div className="flex items-center gap-2 mb-2">
+              <div
+                className="p-1.5 rounded-full bg-white/20"
+              >
+                <policy.icon
+                  className="h-5 w-5 text-white"
+                />
+              </div>
+              <h3 className="text-base md:text-lg lg:text-xl font-alliance-extrabold text-white">
+                {policy.title}
+              </h3>
+            </div>
+            <p className="text-xs md:text-sm text-white/90 font-alliance-medium line-clamp-4 md:line-clamp-3 leading-tight">
+              {policy.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Lado trasero */}
+        <div className="flip-card-back card absolute w-full h-full bg-gradient-to-br from-cyan-500 to-cyan-600 overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center p-6 text-center">
+            <div className="mb-6">
+              <div className="p-4 rounded-full bg-white/20 inline-block mb-4">
+                <FileText className="h-12 w-12 text-white" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-alliance-extrabold text-white mb-3">
+                {policy.title}
+              </h3>
+              <p className="text-sm md:text-base text-white/90 mb-6">
+                {policy.pdf ? 'Haz clic para ver el documento PDF' : 'Conoce más sobre nuestra política'}
+              </p>
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white text-cyan-600 font-alliance-medium rounded-full transition-all duration-300">
+              {policy.pdf ? 'Abrir PDF' : 'Ver Documento'}
+              <ArrowRight className="h-4 w-4" />
+            </div>
+          </div>
+
+          {/* Patrón decorativo */}
+          <div className="absolute inset-0 pointer-events-none opacity-10">
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/20" />
+            <div className="absolute -bottom-10 -left-10 w-60 h-60 rounded-full bg-white/10" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
   const policiesData = data.policies.map(policy => ({
     ...policy,
     icon: iconMap[policy.icon as keyof typeof iconMap] || Award,
     image: policy.image || policy.image_fallback,
-    color: '#007bc4'
+    color: '#00A8E8'
   }));
   const sectionRef = useRef<HTMLElement>(null);
   const swiperRef = useRef<any>(null);
@@ -200,55 +352,20 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
             }}
             className="policies-swiper swiper-no-swiping"
           >
-            {policiesData.map((policy, index) => (
-              <SwiperSlide key={policy.id} className="h-auto">
-                <div className="card group relative h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-accent">
-                  {/* Imagen */}
-                  <div className="media-container relative aspect-[8/5] overflow-hidden">
-                    {policy.image && policy.image !== '/img/policies/policy1.jpg' && policy.image !== '/img/policies/policy2.jpg' ? (
-                      <Image 
-                        src={policy.image}
-                        alt={policy.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                        <div className="text-center text-white/80">
-                          <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                            <span className="text-2xl">📜</span>
-                          </div>
-                          <p className="text-sm">Imagen de política</p>
-                        </div>
-                      </div>
-                    )}
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-                    />
-                  </div>
+            {policiesData.map((policy, index) => {
+              // Generar slug a partir del título
+              const slug = policy.title.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+                .replace(/[^a-z0-9]+/g, '-')     // Reemplazar espacios y caracteres especiales con guiones
+                .replace(/^-+|-+$/g, '');        // Remover guiones al inicio y final
 
-                  {/* Contenido */}
-                  <div className="card-text">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div 
-                        className="p-2 rounded-full bg-white/20"
-                      >
-                        <policy.icon 
-                          className="h-6 w-6 text-white"
-                        />
-                      </div>
-                      <h3 className="text-xl font-alliance-extrabold text-white">
-                        {policy.title}
-                      </h3>
-                    </div>
-                    <p className="text-white/90 font-alliance-medium line-clamp-3">
-                      {policy.description}
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
+              return (
+                <SwiperSlide key={policy.id} className="h-auto">
+                  <FlipCard policy={policy} slug={slug} />
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
           
         </div>
@@ -271,12 +388,51 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
           will-change: transform;
         }
 
-
         /* Tablet y desktop */
         @media (min-width: 768px) {
           .policies-swiper .swiper-slide {
             height: 45vh !important;
           }
+        }
+
+        /* Efecto flip 3D */
+        .flip-card {
+          width: 100%;
+          height: 100%;
+          perspective: 2000px;
+        }
+
+        .flip-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          transition: transform 0.6s ease-in-out;
+          transform-origin: center center;
+        }
+
+        .flip-card-inner.flipped {
+          transform: rotateY(-180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          border-radius: 0.75rem;
+          overflow: hidden;
+        }
+
+        .flip-card-front {
+          z-index: 2;
+          transform: rotateY(0deg);
+        }
+
+        .flip-card-back {
+          transform: rotateY(180deg);
+          z-index: 1;
         }
 
         .policies-swiper .card {
@@ -288,9 +444,9 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
           height: 100%;
         }
 
-        .policies-swiper .card:hover {
-          border-color: rgba(0, 123, 196, 0.5);
-          box-shadow: 0 20px 50px rgba(0, 123, 196, 0.3);
+        .flip-card-inner.flipped .card {
+          border-color: rgba(0, 168, 232, 0.5);
+          box-shadow: 0 20px 50px rgba(0, 168, 232, 0.3);
         }
 
         .policies-swiper .media-container {
@@ -311,6 +467,13 @@ export default function PoliciesCarousel({ data }: PoliciesCarouselProps) {
         @media (max-width: 821px) {
           .policies-swiper {
             padding: 0 0.75rem;
+          }
+        }
+
+        /* Desactivar flip en móviles si es necesario */
+        @media (hover: none) and (pointer: coarse) {
+          .flip-card-inner {
+            transform: none !important;
           }
         }
       `}</style>

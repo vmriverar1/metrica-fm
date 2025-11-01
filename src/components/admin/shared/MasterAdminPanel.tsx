@@ -673,7 +673,7 @@ export default function MasterAdminPanel() {
     const colors = {
       low: 'bg-green-100 text-green-800 border-green-200',
       medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      high: 'bg-orange-100 text-orange-800 border-orange-200',
+      high: 'bg-cyan-100 text-cyan-800 border-cyan-200',
       critical: 'bg-red-100 text-red-800 border-red-200'
     }
     
@@ -941,7 +941,7 @@ export default function MasterAdminPanel() {
                   <div className="text-sm text-muted-foreground">Super Admins</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">{adminStats.permissions.admin}</div>
+                  <div className="text-2xl font-bold text-cyan-600">{adminStats.permissions.admin}</div>
                   <div className="text-sm text-muted-foreground">Admins</div>
                 </div>
               </div>
@@ -1054,7 +1054,7 @@ export default function MasterAdminPanel() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Failed Logins</span>
-                    <Badge variant="outline" className="text-orange-600">{systemMetrics.security.failedLogins}</Badge>
+                    <Badge variant="outline" className="text-cyan-600">{systemMetrics.security.failedLogins}</Badge>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Data Breaches</span>
@@ -1243,10 +1243,10 @@ export default function MasterAdminPanel() {
                   </div>
                   <div className="flex justify-between items-center p-3 border rounded-lg">
                     <div className="flex items-center space-x-2">
-                      <Lock className="h-4 w-4 text-orange-500" />
+                      <Lock className="h-4 w-4 text-cyan-500" />
                       <span className="text-sm">Failed Logins</span>
                     </div>
-                    <Badge variant="outline" className="text-orange-600">
+                    <Badge variant="outline" className="text-cyan-600">
                       {systemMetrics.security.failedLogins}
                     </Badge>
                   </div>

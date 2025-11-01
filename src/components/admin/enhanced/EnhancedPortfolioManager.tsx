@@ -25,7 +25,7 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import ImageField from '../ImageField';
+import ImageSelector from '../ImageSelector';
 import BulkOperations from '../BulkOperations';
 
 interface ProjectItem {
@@ -34,7 +34,8 @@ interface ProjectItem {
   type: string;
   description: string;
   image_url?: string;
-  image_url_fallback?: string;
+  link_url?: string;
+  featured_order?: number;
 }
 
 interface EnhancedPortfolioManagerProps {
@@ -62,6 +63,49 @@ export default function EnhancedPortfolioManager({
   const [errors, setErrors] = useState<ProjectValidationErrors>({});
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showBulkOps, setShowBulkOps] = useState(false);
+  const [dynamicCategories, setDynamicCategories] = useState<string[]>(categories);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+
+  // Initialize featured_order for projects that don't have it
+  useEffect(() => {
+    const needsOrder = projects.some(project => project.featured_order === undefined);
+    if (needsOrder) {
+      const projectsWithOrder = projects.map((project, index) => ({
+        ...project,
+        featured_order: project.featured_order ?? index
+      }));
+      onChange(projectsWithOrder);
+    }
+  }, [projects, onChange]);
+
+  // Cargar categorías dinámicamente desde Firestore
+  useEffect(() => {
+    const loadCategories = async () => {
+      setCategoriesLoading(true);
+      try {
+        console.log('🔥 [FIRESTORE] Loading portfolio categories...');
+        const response = await fetch('/api/portfolio/categories');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          // Extraer solo los nombres de las categorías
+          const categoryNames = result.data.map((category: any) => category.name);
+          setDynamicCategories(categoryNames);
+          console.log('✅ [FIRESTORE] Categories loaded:', categoryNames);
+        } else {
+          console.warn('⚠️ [FIRESTORE] Failed to load categories, using fallback:', result.error);
+          setDynamicCategories(categories);
+        }
+      } catch (error) {
+        console.error('❌ [FIRESTORE] Error loading categories:', error);
+        setDynamicCategories(categories);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    loadCategories();
+  }, [categories]);
 
   // Validar proyecto individual
   const validateProject = (project: ProjectItem): string[] => {
@@ -82,11 +126,11 @@ export default function EnhancedPortfolioManager({
     if (project.image_url && !isValidUrl(project.image_url)) {
       errors.push('URL de imagen principal no es válida');
     }
-    
-    if (project.image_url_fallback && !isValidUrl(project.image_url_fallback)) {
-      errors.push('URL de imagen fallback no es válida');
+
+    if (project.link_url && !isValidUrl(project.link_url)) {
+      errors.push('URL del enlace no es válida');
     }
-    
+
     return errors;
   };
 
@@ -119,7 +163,13 @@ export default function EnhancedPortfolioManager({
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    onChange(items);
+    // Assign featured_order based on new position
+    const reorderedItems = items.map((item, index) => ({
+      ...item,
+      featured_order: index
+    }));
+
+    onChange(reorderedItems);
   };
 
   // Agregar nuevo proyecto
@@ -127,10 +177,11 @@ export default function EnhancedPortfolioManager({
     const newProject: ProjectItem = {
       id: `project-${Date.now()}`,
       name: 'Nuevo Proyecto',
-      type: categories[0],
+      type: '',
       description: 'Descripción del proyecto',
       image_url: '',
-      image_url_fallback: ''
+      link_url: '',
+      featured_order: projects.length // Assign order as last position
     };
     onChange([...projects, newProject]);
     setEditingId(newProject.id);
@@ -138,7 +189,13 @@ export default function EnhancedPortfolioManager({
 
   // Eliminar proyecto
   const removeProject = (id: string) => {
-    onChange(projects.filter(project => project.id !== id));
+    const filteredProjects = projects.filter(project => project.id !== id);
+    // Reassign featured_order to maintain sequence
+    const reorderedProjects = filteredProjects.map((project, index) => ({
+      ...project,
+      featured_order: index
+    }));
+    onChange(reorderedProjects);
   };
 
   // Duplicar proyecto
@@ -146,7 +203,8 @@ export default function EnhancedPortfolioManager({
     const newProject: ProjectItem = {
       ...project,
       id: `project-${Date.now()}`,
-      name: `${project.name} (Copia)`
+      name: `${project.name} (Copia)`,
+      featured_order: projects.length // Assign order as last position
     };
     onChange([...projects, newProject]);
     setEditingId(newProject.id);
@@ -178,11 +236,6 @@ export default function EnhancedPortfolioManager({
                 src={project.image_url}
                 alt={project.name}
                 className="h-full w-full object-cover"
-                onError={(e) => {
-                  if (project.image_url_fallback) {
-                    (e.target as HTMLImageElement).src = project.image_url_fallback;
-                  }
-                }}
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
@@ -319,21 +372,15 @@ export default function EnhancedPortfolioManager({
 
                     <div>
                       <Label>Categoría *</Label>
-                      <Select
+                      <Input
                         value={project.type}
-                        onValueChange={(value) => updateProject(project.id, 'type', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={(e) => updateProject(project.id, 'type', e.target.value)}
+                        placeholder="Ej: Sanitaria, Educativa, Vial, etc."
+                        className={errors[project.id]?.includes('La categoría es requerida') ? 'border-red-500' : ''}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Escribe el nombre de la categoría libremente
+                      </p>
                     </div>
 
                     <div>
@@ -349,25 +396,31 @@ export default function EnhancedPortfolioManager({
                         {project.description.length}/300 caracteres
                       </p>
                     </div>
+
+                    <div>
+                      <Label>Enlace del proyecto (opcional)</Label>
+                      <Input
+                        value={project.link_url || ''}
+                        onChange={(e) => updateProject(project.id, 'link_url', e.target.value)}
+                        placeholder="https://... o /ruta-interna"
+                        type="url"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Si se deja vacío, usará el enlace por defecto del portfolio
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Imágenes */}
+                  {/* Imagen */}
                   <div className="space-y-4">
                     <div>
-                      <ImageField
+                      <ImageSelector
                         value={project.image_url || ''}
                         onChange={(value) => updateProject(project.id, 'image_url', value)}
                         label="Imagen principal"
-                        placeholder="URL o ruta de la imagen principal"
-                      />
-                    </div>
-
-                    <div>
-                      <ImageField
-                        value={project.image_url_fallback || ''}
-                        onChange={(value) => updateProject(project.id, 'image_url_fallback', value)}
-                        label="Imagen de respaldo"
-                        placeholder="URL o ruta de imagen alternativa"
+                        placeholder="Seleccionar imagen principal..."
+                        variant="card"
+                        size="md"
                       />
                     </div>
 
@@ -380,11 +433,6 @@ export default function EnhancedPortfolioManager({
                             src={project.image_url}
                             alt={project.name}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              if (project.image_url_fallback) {
-                                (e.target as HTMLImageElement).src = project.image_url_fallback;
-                              }
-                            }}
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -414,6 +462,12 @@ export default function EnhancedPortfolioManager({
           </h3>
           <p className="text-sm text-muted-foreground">
             Arrastra para reordenar, haz clic en editar para modificar
+            {categoriesLoading && (
+              <span className="inline-flex items-center gap-1 ml-2 text-primary">
+                <RefreshCw className="h-3 w-3 animate-spin" />
+                Cargando categorías...
+              </span>
+            )}
           </p>
         </div>
         
@@ -532,18 +586,6 @@ export default function EnhancedPortfolioManager({
           maxItems={12}
         />
       )}
-
-      {/* Información adicional */}
-      <div className="text-xs text-muted-foreground space-y-1 p-4 bg-muted/30 rounded-lg">
-        <p><strong>💡 Consejos para Proyectos:</strong></p>
-        <ul className="space-y-1 ml-4 list-disc">
-          <li>Usa imágenes de alta calidad y proporción 16:9</li>
-          <li>Mantén las descripciones concisas pero informativas</li>
-          <li>Siempre incluye una imagen de respaldo</li>
-          <li>Agrupa proyectos similares en la misma categoría</li>
-          <li>El orden de los proyectos afecta su prominencia en la página</li>
-        </ul>
-      </div>
     </div>
   );
 }

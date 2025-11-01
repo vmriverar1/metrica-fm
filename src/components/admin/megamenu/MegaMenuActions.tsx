@@ -35,7 +35,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { toast } from '@/hooks/use-toast-simple';
+import { toast } from '@/hooks/use-toast';
 
 interface MegaMenuItem {
   id: string;
@@ -218,7 +218,7 @@ const MegaMenuActions: React.FC<MegaMenuActionsProps> = ({
           title={item.enabled ? "Desactivar menú" : "Activar menú"}
         >
           {item.enabled ? (
-            <PowerOff className="h-4 w-4 text-orange-600" />
+            <PowerOff className="h-4 w-4 text-cyan-600" />
           ) : (
             <Power className="h-4 w-4 text-green-600" />
           )}

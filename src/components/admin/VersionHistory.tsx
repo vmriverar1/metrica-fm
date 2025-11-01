@@ -201,7 +201,7 @@ const VersionHistory: React.FC<VersionHistoryProps> = ({
     switch (action) {
       case 'create': return <Upload className="w-4 h-4 text-green-600" />;
       case 'update': return <FileText className="w-4 h-4 text-blue-600" />;
-      case 'restore': return <RotateCcw className="w-4 h-4 text-orange-600" />;
+      case 'restore': return <RotateCcw className="w-4 h-4 text-cyan-600" />;
       case 'import': return <Download className="w-4 h-4 text-purple-600" />;
       default: return <FileText className="w-4 h-4 text-gray-600" />;
     }
@@ -211,7 +211,7 @@ const VersionHistory: React.FC<VersionHistoryProps> = ({
     switch (action) {
       case 'create': return 'bg-green-100 text-green-800';
       case 'update': return 'bg-blue-100 text-blue-800';
-      case 'restore': return 'bg-orange-100 text-orange-800';
+      case 'restore': return 'bg-cyan-100 text-cyan-800';
       case 'import': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -423,7 +423,7 @@ const VersionHistory: React.FC<VersionHistoryProps> = ({
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => handleRollback(version)}
-                                className="w-8 h-8 p-0 text-orange-600"
+                                className="w-8 h-8 p-0 text-cyan-600"
                               >
                                 <RotateCcw className="w-4 h-4" />
                               </Button>
@@ -532,7 +532,7 @@ const VersionHistory: React.FC<VersionHistoryProps> = ({
                 <div className="text-xs text-gray-600">Seleccionadas</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-cyan-600">
                   {autoSave ? 'ON' : 'OFF'}
                 </div>
                 <div className="text-xs text-gray-600">Auto-guardado</div>

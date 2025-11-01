@@ -150,8 +150,8 @@ function MetricCard({ kpi, index }: { kpi: KPI, index: number }) {
         <CardHeader className="relative pb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-                <IconComponent className="w-5 h-5 text-[#007bc4]" />
+              <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+                <IconComponent className="w-5 h-5 text-[#00A8E8]" />
               </div>
               <CardTitle className="text-lg font-bold text-gray-900">
                 {kpi.category}
@@ -168,7 +168,7 @@ function MetricCard({ kpi, index }: { kpi: KPI, index: number }) {
           <div className="space-y-2">
             <div className="flex items-end justify-between">
               <div>
-                <div className="text-3xl font-bold text-[#007bc4]">
+                <div className="text-3xl font-bold text-[#00A8E8]">
                   {kpi.current_value}
                 </div>
                 <div className="text-sm text-gray-600">
@@ -264,8 +264,8 @@ export function QualityMetricsSection({ data }: QualityMetricsSectionProps) {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-[#007bc4]" />
+            <div className="w-12 h-12 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+              <BarChart3 className="w-6 h-6 text-[#00A8E8]" />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
               {data.section.title}
@@ -308,25 +308,25 @@ export function QualityMetricsSection({ data }: QualityMetricsSectionProps) {
           transition={{ delay: 0.5 }}
           className="mt-12 text-center"
         >
-          <Card className="inline-block bg-gradient-to-r from-[#007bc4]/10 to-[#FF6B35]/10 border-[#007bc4]/20">
+          <Card className="inline-block bg-gradient-to-r from-[#00A8E8]/10 to-[#FF6B35]/10 border-[#00A8E8]/20">
             <CardContent className="px-8 py-6">
               <div className="flex items-center gap-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {filteredKPIs.filter(kpi => kpi.status === 'achieved').length}
                   </div>
                   <div className="text-sm text-gray-600">Metas Logradas</div>
                 </div>
                 <div className="w-px h-12 bg-gray-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {filteredKPIs.length}
                   </div>
                   <div className="text-sm text-gray-600">Total KPIs</div>
                 </div>
                 <div className="w-px h-12 bg-gray-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {Math.round((filteredKPIs.filter(kpi => kpi.status === 'achieved').length / filteredKPIs.length) * 100)}%
                   </div>
                   <div className="text-sm text-gray-600">Tasa de Éxito</div>

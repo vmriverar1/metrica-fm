@@ -79,7 +79,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({
       'Vial': 'bg-yellow-100 text-yellow-800',
       'Saneamiento': 'bg-green-100 text-green-800',
       'Industrial': 'bg-purple-100 text-purple-800',
-      'Comercial': 'bg-orange-100 text-orange-800'
+      'Comercial': 'bg-cyan-100 text-cyan-800'
     };
     return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
@@ -115,7 +115,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({
           {project.name || 'Proyecto sin nombre'}
         </h4>
         <p className="text-xs text-gray-600 line-clamp-3 min-h-[3rem]">
-          {project.description || 'Sin descripción disponible'}
+          {project.description || ''}
         </p>
       </div>
     </div>
@@ -341,7 +341,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({
               <p className="text-xs text-gray-600">Total Proyectos</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#007bc4]">
+              <p className="text-2xl font-bold text-[#00A8E8]">
                 {projects.filter(p => p.name && p.description && p.type).length}
               </p>
               <p className="text-xs text-gray-600">Completos</p>

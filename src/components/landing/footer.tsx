@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            <h4 className="font-bold text-lg font-headline">Métrica S.A.C.</h4>
+            <h4 className="font-bold text-lg font-headline">Métrica FM SAC</h4>
             <p className="text-sm text-primary-foreground/70 mt-2">Dirección Integral de Proyectos</p>
           </div>
           <div>
@@ -18,6 +18,8 @@ export default function Footer() {
               <li><Link href="#pillars" className="text-sm text-primary-foreground/70 hover:text-white">DIP</Link></li>
               <li><Link href="#portfolio" className="text-sm text-primary-foreground/70 hover:text-white">Proyectos</Link></li>
               <li><Link href="#newsletter" className="text-sm text-primary-foreground/70 hover:text-white">Newsletter</Link></li>
+              <li><Link href="/libro-reclamaciones" className="text-sm text-primary-foreground/70 hover:text-white">Libro de Reclamaciones</Link></li>
+              <li><Link href="/canal-de-denuncias" className="text-sm text-primary-foreground/70 hover:text-white">Canal de Denuncias</Link></li>
             </ul>
           </div>
           <div>
@@ -36,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-primary-foreground/20 text-center text-sm text-primary-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Métrica S.A.C. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Métrica FM SAC. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

@@ -396,7 +396,7 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
       title: '',
       description: '',
       icon: 'heart',
-      color: '#007bc4',
+      color: '#00A8E8',
       examples: [],
       metrics: {
         adherenceScore: 85,
@@ -1316,7 +1316,7 @@ const CulturaPageEditor: React.FC<CulturaPageEditorProps> = ({
                               <Input
                                 value={value.color}
                                 onChange={(e) => updateCoreValue(value.id, { color: e.target.value })}
-                                placeholder="#007bc4"
+                                placeholder="#00A8E8"
                                 disabled={readOnly}
                               />
                             </div>

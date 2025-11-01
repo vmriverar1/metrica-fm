@@ -1,0 +1,216 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "generatedDate": "2025-09-05",
+    "description": "Configuración e instrucciones para integrar el portfolio de proyectos en la web existente"
+  },
+  "integration": {
+    "fileLocations": {
+      "portfolioData": "/public/json/pages/portfolio.json",
+      "dynamicContent": "/public/json/dynamic-content/portfolio-sections.json",
+      "components": {
+        "portfolioPage": "/src/components/landing/Portfolio.tsx",
+        "projectCard": "/src/components/ui/ProjectCard.tsx",
+        "categoryFilter": "/src/components/ui/CategoryFilter.tsx"
+      }
+    },
+    "dataStructure": {
+      "recommended": {
+        "source": "/home/freelos/metrica/sugerencias/portfolio-sugerido.json",
+        "description": "Estructura completa con todos los datos del portfolio",
+        "usage": "Copiar contenido al archivo portfolio.json principal"
+      },
+      "simplified": {
+        "source": "/home/freelos/metrica/sugerencias/categorias-proyectos.json",
+        "description": "Estructura simplificada para referencias rápidas",
+        "usage": "Para componentes que solo necesitan listas básicas"
+      }
+    },
+    "implementationSteps": [
+      {
+        "step": 1,
+        "title": "Preparar estructura de imágenes",
+        "description": "Asegurar que todas las imágenes están disponibles en /public/images/proyectos/",
+        "actions": [
+          "Verificar que existen las carpetas por categoría",
+          "Subir las imágenes correspondientes a cada proyecto",
+          "Optimizar imágenes para web (formato WebP recomendado)",
+          "Crear imágenes de respaldo en caso de faltar algunas"
+        ]
+      },
+      {
+        "step": 2,
+        "title": "Integrar datos JSON",
+        "description": "Copiar los datos del portfolio a los archivos de configuración",
+        "actions": [
+          "Copiar contenido de portfolio-sugerido.json a /public/json/pages/portfolio.json",
+          "Actualizar referencias de imágenes si es necesario",
+          "Validar que la estructura JSON sea correcta"
+        ]
+      },
+      {
+        "step": 3,
+        "title": "Actualizar componentes React",
+        "description": "Modificar componentes existentes para mostrar el portfolio",
+        "actions": [
+          "Actualizar Portfolio.tsx para cargar datos desde JSON",
+          "Crear componente ProjectCard para mostrar proyectos individuales",
+          "Implementar filtros por categoría",
+          "Añadir paginación si es necesario"
+        ]
+      },
+      {
+        "step": 4,
+        "title": "Configurar rutas y navegación",
+        "description": "Asegurar que el portfolio sea accesible desde la navegación",
+        "actions": [
+          "Verificar ruta /portfolio en el sistema de rutas",
+          "Añadir enlace en el menú principal",
+          "Configurar meta tags para SEO"
+        ]
+      },
+      {
+        "step": 5,
+        "title": "Pruebas y optimización",
+        "description": "Probar el funcionamiento y optimizar rendimiento",
+        "actions": [
+          "Probar carga de imágenes",
+          "Verificar filtros y búsqueda",
+          "Optimizar rendimiento de carga",
+          "Probar responsividad en diferentes dispositivos"
+        ]
+      }
+    ]
+  },
+  "technicalSpecs": {
+    "imageRequirements": {
+      "formats": ["jpg", "jpeg", "png", "webp"],
+      "maxSize": "2MB por imagen",
+      "recommendedDimensions": {
+        "thumbnail": "400x300px",
+        "gallery": "1200x900px",
+        "hero": "1920x1080px"
+      },
+      "naming": "Usar nombres descriptivos en kebab-case"
+    },
+    "performance": {
+      "lazyLoading": "Implementar para todas las imágenes",
+      "imageOptimization": "Usar Next.js Image component",
+      "caching": "Configurar cache apropiado para imágenes",
+      "bundleSize": "Paginar resultados para evitar cargar todos los proyectos"
+    },
+    "seo": {
+      "metaTags": "Añadir meta tags específicos por proyecto",
+      "structuredData": "Implementar schema.org para proyectos",
+      "sitemap": "Incluir páginas de portfolio en sitemap.xml",
+      "urls": "URLs amigables para SEO (/portfolio/categoria/proyecto)"
+    }
+  },
+  "componentsStructure": {
+    "PortfolioPage": {
+      "location": "/src/app/portfolio/page.tsx",
+      "purpose": "Página principal del portfolio",
+      "features": [
+        "Grid de proyectos",
+        "Filtros por categoría",
+        "Búsqueda por texto",
+        "Paginación"
+      ]
+    },
+    "ProjectCard": {
+      "location": "/src/components/ui/ProjectCard.tsx",
+      "purpose": "Card individual para cada proyecto",
+      "props": [
+        "project: Project",
+        "size: 'small' | 'medium' | 'large'",
+        "showDetails: boolean"
+      ]
+    },
+    "CategoryFilter": {
+      "location": "/src/components/ui/CategoryFilter.tsx",
+      "purpose": "Filtros por categoría",
+      "features": [
+        "Botones de categoría",
+        "Contador de proyectos",
+        "Estado activo"
+      ]
+    },
+    "ProjectGallery": {
+      "location": "/src/components/ui/ProjectGallery.tsx",
+      "purpose": "Galería de imágenes del proyecto",
+      "features": [
+        "Lightbox",
+        "Navegación por flechas",
+        "Thumbnails"
+      ]
+    },
+    "ProjectDetail": {
+      "location": "/src/app/portfolio/[category]/[project]/page.tsx",
+      "purpose": "Página de detalle de proyecto",
+      "features": [
+        "Información completa",
+        "Galería de imágenes",
+        "Proyectos relacionados",
+        "Botón de contacto"
+      ]
+    }
+  },
+  "styling": {
+    "theme": {
+      "colors": {
+        "primary": "#003F6F",
+        "secondary": "#E84E0F",
+        "neutral": "#9D9D9C",
+        "dark": "#646363",
+        "light": "#D0D0D0"
+      },
+      "fonts": {
+        "heading": "Alliance No.2 ExtraBold",
+        "body": "Alliance No.2 Medium",
+        "caption": "Alliance No.2 Light"
+      }
+    },
+    "animations": {
+      "cardHover": "Efecto hover sutil en cards",
+      "imageLoad": "Fade in para carga de imágenes",
+      "filterTransition": "Transición suave en filtros"
+    },
+    "responsive": {
+      "mobile": "Stack vertical de cards",
+      "tablet": "Grid 2 columnas",
+      "desktop": "Grid 3-4 columnas"
+    }
+  },
+  "futureEnhancements": [
+    {
+      "feature": "Búsqueda avanzada",
+      "description": "Búsqueda por área, año, cliente, tags",
+      "priority": "medium"
+    },
+    {
+      "feature": "Proyecto destacado rotativo",
+      "description": "Hero section con proyecto destacado que rota",
+      "priority": "high"
+    },
+    {
+      "feature": "Mapa de proyectos",
+      "description": "Visualización geográfica de proyectos",
+      "priority": "low"
+    },
+    {
+      "feature": "Timeline de proyectos",
+      "description": "Vista cronológica de todos los proyectos",
+      "priority": "medium"
+    },
+    {
+      "feature": "Comparador de proyectos",
+      "description": "Herramienta para comparar múltiples proyectos",
+      "priority": "low"
+    },
+    {
+      "feature": "Sistema de favoritos",
+      "description": "Permitir a usuarios guardar proyectos favoritos",
+      "priority": "low"
+    }
+  ]
+}

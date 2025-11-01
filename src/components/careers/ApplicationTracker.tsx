@@ -111,8 +111,8 @@ const APPLICATION_STATUS_CONFIG: Record<ApplicationStatus, {
   },
   interview_scheduled: {
     label: 'Entrevista Programada',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-100',
     icon: <Calendar className="w-4 h-4" />,
     progress: 70
   },
@@ -302,7 +302,7 @@ export default function ApplicationTracker({
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-orange-600" />
+                <Clock className="w-4 h-4 text-cyan-600" />
                 <div>
                   <p className="text-sm text-muted-foreground">Activas</p>
                   <p className="text-2xl font-bold">{stats.active}</p>

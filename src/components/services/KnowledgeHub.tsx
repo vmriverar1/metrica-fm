@@ -131,7 +131,7 @@ const getTypeColor = (type: string) => {
     insight: 'text-green-600 bg-green-50 border-green-200',
     case: 'text-purple-600 bg-purple-50 border-purple-200',
     video: 'text-red-600 bg-red-50 border-red-200',
-    download: 'text-orange-600 bg-orange-50 border-orange-200'
+    download: 'text-cyan-600 bg-cyan-50 border-cyan-200'
   };
   return colors[type as keyof typeof colors] || 'text-gray-600 bg-gray-50 border-gray-200';
 };

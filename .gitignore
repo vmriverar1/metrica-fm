@@ -41,10 +41,15 @@ next-env.d.ts
 
 .genkit/*
 .env*
+.git-credentials*
 
 # firebase
-firebase-debug.log
-firestore-debug.log
+# firebase-debug.log
+# firestore-debug.log
+
+# credenciales de servicio
+credencials/
+service-account.json
 
 # directus
 docker-compose.override.yml
@@ -81,3 +86,4 @@ cache-*
 
 # documentos
 *.md
+

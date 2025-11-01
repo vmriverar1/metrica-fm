@@ -5,11 +5,12 @@ import Image from 'next/image';
 import NavigationLink from '@/components/ui/NavigationLink';
 import { Calendar, Clock, User, BookOpen } from 'lucide-react';
 import { BlogPost, getBlogCategoryLabel } from '@/types/blog';
+import { BlogArticle } from '@/hooks/useBlogWithRelations';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 interface ArticleCardProps {
-  post: BlogPost;
+  post: BlogPost | BlogArticle;
   viewMode?: 'grid' | 'masonry' | 'list';
   size?: 'compact' | 'comfortable' | 'spacious';
   priority?: boolean;
@@ -75,34 +76,79 @@ export default function ArticleCard({
       'industria-tendencias': 'text-blue-600',
       'casos-estudio': 'text-green-600',
       'guias-tecnicas': 'text-purple-600',
-      'liderazgo-vision': 'text-orange-600'
+      'liderazgo-vision': 'text-cyan-600'
     };
     return colors[category] || 'text-gray-600';
   };
 
-  const getCategoryBgColor = (category: string) => {
+  const getCategoryBgColor = (post: BlogPost | BlogArticle) => {
+    // Try to use the category color from the category object
+    if ((post as any).category && typeof (post as any).category === 'object' && (post as any).category.color) {
+      const color = (post as any).category.color;
+      // Convert hex color to Tailwind classes
+      if (color === '#003F6F') return 'bg-blue-100 text-blue-800';
+      if (color === '#00A8E8') return 'bg-cyan-100 text-cyan-800';
+      if (color === '#646363') return 'bg-gray-100 text-gray-800';
+      if (color === '#D0D0D0') return 'bg-gray-100 text-gray-600';
+    }
+
+    // Fallback to slug-based colors
+    const categorySlug = getCategorySlug(post);
     const colors: Record<string, string> = {
+      'construccion': 'bg-cyan-100 text-cyan-800',
+      'ingenieria': 'bg-gray-100 text-gray-800',
+      'arquitectura': 'bg-blue-100 text-blue-800',
       'industria-tendencias': 'bg-blue-100 text-blue-800',
       'casos-estudio': 'bg-green-100 text-green-800',
       'guias-tecnicas': 'bg-purple-100 text-purple-800',
-      'liderazgo-vision': 'bg-orange-100 text-orange-800'
+      'liderazgo-vision': 'bg-cyan-100 text-cyan-800'
     };
-    return colors[category] || 'bg-gray-100 text-gray-800';
+    return colors[categorySlug] || 'bg-gray-100 text-gray-800';
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-PE', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+  const formatDate = (date: Date | string | any) => {
+    if (!date) return 'Fecha no disponible';
+
+    try {
+      const dateObj = date instanceof Date ? date : new Date(date);
+      if (isNaN(dateObj.getTime())) return 'Fecha no disponible';
+
+      return dateObj.toLocaleDateString('es-PE', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return 'Fecha no disponible';
+    }
+  };
+
+  // Helper function to get category slug
+  const getCategorySlug = (post: BlogPost | BlogArticle): string => {
+    // For new BlogArticle format with populated category object
+    if ((post as any).category && typeof (post as any).category === 'object') {
+      return (post as any).category.slug || (post as any).category.id;
+    }
+    // For old BlogPost format or direct slug
+    return (post as any).category || post.category || 'general';
+  };
+
+  // Helper function to get category name
+  const getCategoryName = (post: BlogPost | BlogArticle): string => {
+    // For new BlogArticle format with populated category object
+    if ((post as any).category && typeof (post as any).category === 'object') {
+      return (post as any).category.name || (post as any).category.slug || (post as any).category.id;
+    }
+    // Fallback to getBlogCategoryLabel for old format
+    const slug = getCategorySlug(post);
+    return getBlogCategoryLabel(slug as any) || slug;
   };
 
   // List view rendering
   if (viewMode === 'list') {
     return (
       <NavigationLink 
-        href={`/blog/${post.category}/${post.slug}`}
+        href={`/blog/${getCategorySlug(post)}/${post.slug}`}
         loadingMessage={`Cargando: ${post.title}...`}
       >
         <div
@@ -121,12 +167,12 @@ export default function ArticleCard({
           }}
         >
           {/* Image */}
-          <div className="flex-shrink-0 w-48 h-32 relative overflow-hidden rounded-lg">
+          <div className="flex-shrink-0 w-48 h-32 relative overflow-hidden rounded-lg bg-muted">
             <Image
-              src={post.featuredImage}
+              src={(post as any).featured_image || (post as any).featuredImage}
               alt={post.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className="object-contain transition-transform duration-300 group-hover:scale-105"
               priority={priority}
               sizes="192px"
             />
@@ -142,8 +188,8 @@ export default function ArticleCard({
           {/* Content */}
           <div className="flex-1 space-y-3">
             <div className="space-y-2">
-              <Badge className={getCategoryBgColor(post.category)}>
-                {getBlogCategoryLabel(post.category)}
+              <Badge className={getCategoryBgColor(post)}>
+                {getCategoryName(post)}
               </Badge>
               <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 overflow-hidden text-ellipsis leading-tight">
                 {post.title}
@@ -156,15 +202,15 @@ export default function ArticleCard({
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1 min-w-0 flex-shrink">
                 <User className="w-4 h-4 flex-shrink-0" />
-                <span className="truncate">{post.author.name}</span>
+                <span className="truncate">{(post as any).author?.name || post.author.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                {formatDate(post.publishedAt)}
+                {formatDate((post as any).published_at || (post as any).publishedAt || (post as any).created_at)}
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                {post.readingTime} min
+                {(post as any).reading_time || (post as any).readingTime || 5} min
               </div>
             </div>
           </div>
@@ -176,7 +222,7 @@ export default function ArticleCard({
   // Grid/Masonry view rendering
   return (
     <NavigationLink 
-      href={`/blog/${post.category}/${post.slug}`}
+      href={`/blog/${getCategorySlug(post)}/${post.slug}`}
       loadingMessage={`Cargando: ${post.title}...`}
     >
       <div
@@ -197,13 +243,13 @@ export default function ArticleCard({
           transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) scale(${isHovered ? 1.02 : 1})`
         }}
       >
-        {/* Image Container */}
-        <div className="relative h-44 overflow-hidden flex-shrink-0">
+        {/* Image Container - Aspect ratio 8:5 (400x250) */}
+        <div className="relative overflow-hidden flex-shrink-0 bg-muted" style={{ aspectRatio: '8 / 5' }}>
           <Image
-            src={post.featuredImage}
+            src={(post as any).featured_image || (post as any).featuredImage}
             alt={post.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-contain transition-transform duration-300 group-hover:scale-105"
             priority={priority}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
@@ -222,8 +268,8 @@ export default function ArticleCard({
 
           {/* Category Badge */}
           <div className="absolute top-3 right-3">
-            <Badge className={getCategoryBgColor(post.category)}>
-              {getBlogCategoryLabel(post.category)}
+            <Badge className={getCategoryBgColor(post)}>
+              {getCategoryName(post)}
             </Badge>
           </div>
         </div>
@@ -258,18 +304,18 @@ export default function ArticleCard({
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-1 min-w-0 flex-shrink">
                 <User className="w-4 h-4 flex-shrink-0" />
-                <span className="truncate">{post.author.name}</span>
+                <span className="truncate">{(post as any).author?.name || post.author.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                {post.readingTime} min
+                {(post as any).reading_time || (post as any).readingTime || 5} min
               </div>
             </div>
             
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
-                {formatDate(post.publishedAt)}
+                {formatDate((post as any).published_at || (post as any).publishedAt || (post as any).created_at)}
               </div>
               {post.views && (
                 <div className="flex items-center gap-1">

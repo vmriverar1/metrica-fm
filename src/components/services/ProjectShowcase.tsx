@@ -2,22 +2,24 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Building2, 
+import {
+  Building2,
   MapPin,
   Calendar,
   DollarSign,
   ArrowRight,
   ExternalLink,
-  Filter,
-  Layers
+  Layers,
+  Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import SectionTransition from '@/components/portfolio/SectionTransition';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { Project } from '@/types/portfolio';
 
-interface Project {
+interface FeaturedProject {
   id: string;
   title: string;
   service: string;
@@ -32,148 +34,155 @@ interface Project {
   achievements: string[];
   link: string;
   serviceType: 'consultoria' | 'gestion' | 'supervision' | 'desarrollo';
+  featured: boolean;
+  featured_order?: number;
 }
 
-const projects: Project[] = [
-  {
-    id: 'torre-san-isidro',
-    title: 'Torre Corporativa San Isidro',
-    service: 'Gestión Integral',
-    category: 'Oficinas',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop',
-    location: 'San Isidro, Lima',
-    area: '45,000 m²',
-    budget: 'S/ 120M',
-    year: '2023',
-    status: 'completed',
-    description: 'Torre corporativa clase A+ con certificación LEED Gold y tecnología BIM 5D.',
-    achievements: [
-      '15% bajo presupuesto',
-      '2 meses adelantado',
-      'LEED Gold certificado'
-    ],
-    link: '/portfolio/oficina/torre-san-isidro',
-    serviceType: 'gestion'
-  },
-  {
-    id: 'plaza-norte-retail',
-    title: 'Centro Comercial Plaza Norte',
-    service: 'Supervisión Técnica',
-    category: 'Retail',
-    image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&h=400&fit=crop',
-    location: 'Independencia, Lima',
-    area: '80,000 m²',
-    budget: 'S/ 200M',
-    year: '2022',
-    status: 'completed',
-    description: 'Supervisión integral de expansión del centro comercial más grande del norte de Lima.',
-    achievements: [
-      'Cero accidentes laborales',
-      '99.8% calidad técnica',
-      'ISO 9001 compliance'
-    ],
-    link: '/portfolio/retail/plaza-norte',
-    serviceType: 'supervision'
-  },
-  {
-    id: 'hotel-miraflores',
-    title: 'Hotel Boutique Miraflores',
-    service: 'Consultoría Estratégica',
-    category: 'Hotelería',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop',
-    location: 'Miraflores, Lima',
-    area: '12,000 m²',
-    budget: 'S/ 45M',
-    year: '2024',
-    status: 'ongoing',
-    description: 'Consultoría integral para desarrollo de hotel boutique de lujo frente al mar.',
-    achievements: [
-      'ROI proyectado 28%',
-      'Fast-track approvals',
-      'Design optimization'
-    ],
-    link: '/portfolio/hoteleria/hotel-miraflores',
-    serviceType: 'consultoria'
-  },
-  {
-    id: 'residential-surco',
-    title: 'Condominio Premium Surco',
-    service: 'Desarrollo Inmobiliario',
-    category: 'Vivienda',
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop',
-    location: 'Santiago de Surco, Lima',
-    area: '25,000 m²',
-    budget: 'S/ 85M',
-    year: '2023',
-    status: 'completed',
-    description: 'Desarrollo integral de condominio residencial premium con áreas verdes.',
-    achievements: [
-      '100% pre-venta',
-      '25% ROI efectivo',
-      'Certificación EDGE'
-    ],
-    link: '/portfolio/vivienda/condominio-surco',
-    serviceType: 'desarrollo'
-  },
-  {
-    id: 'industrial-callao',
-    title: 'Planta Industrial Callao',
-    service: 'Project Management',
-    category: 'Industria',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop',
-    location: 'Callao, Lima',
-    area: '35,000 m²',
-    budget: 'S/ 95M',
-    year: '2024',
-    status: 'ongoing',
-    description: 'Gestión de proyecto para nueva planta industrial con tecnología 4.0.',
-    achievements: [
-      'Smart factory design',
-      'Automated systems',
-      'Sustainability focused'
-    ],
-    link: '/portfolio/industria/planta-callao',
-    serviceType: 'gestion'
-  },
-  {
-    id: 'hospital-lima',
-    title: 'Clínica Especializada Lima',
-    service: 'Supervisión Técnica',
-    category: 'Salud',
-    image: 'https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=600&h=400&fit=crop',
-    location: 'San Borja, Lima',
-    area: '18,000 m²',
-    budget: 'S/ 65M',
-    year: '2023',
-    status: 'completed',
-    description: 'Supervisión de construcción de clínica con tecnología médica avanzada.',
-    achievements: [
-      'Medical grade compliance',
-      'Zero defects delivery',
-      'Advanced MEP systems'
-    ],
-    link: '/portfolio/salud/clinica-lima',
-    serviceType: 'supervision'
-  }
-];
+// Transform Firestore project to featured project format
+const transformToFeaturedProject = (project: Project): FeaturedProject => {
+  // Map category to service type and service name
+  const getServiceInfo = (category: string) => {
+    const mapping: Record<string, { service: string; serviceType: string }> = {
+      'oficina': { service: 'Gestión Integral', serviceType: 'gestion' },
+      'retail': { service: 'Supervisión Técnica', serviceType: 'supervision' },
+      'hoteleria': { service: 'Consultoría Estratégica', serviceType: 'consultoria' },
+      'vivienda': { service: 'Desarrollo Inmobiliario', serviceType: 'desarrollo' },
+      'industria': { service: 'Project Management', serviceType: 'gestion' },
+      'salud': { service: 'Supervisión Técnica', serviceType: 'supervision' },
+      'educacion': { service: 'Consultoría Estratégica', serviceType: 'consultoria' }
+    };
+    return mapping[category.toLowerCase()] || { service: 'Gestión Integral', serviceType: 'gestion' };
+  };
 
-const filters = [
-  { id: 'todos', label: 'Todos', serviceType: null },
-  { id: 'consultoria', label: 'Consultoría', serviceType: 'consultoria' },
-  { id: 'gestion', label: 'Gestión', serviceType: 'gestion' },
-  { id: 'supervision', label: 'Supervisión', serviceType: 'supervision' },
-  { id: 'desarrollo', label: 'Desarrollo', serviceType: 'desarrollo' }
-];
+  const serviceInfo = getServiceInfo(project.category);
+  const year = project.completedAt ? new Date(project.completedAt).getFullYear().toString() : '2024';
+  const investment = project.details?.investment || 'No especificado';
+  const area = project.details?.area || 'No especificado';
+  const locationStr = `${project.location.city}, ${project.location.region}`;
+
+  // Generate achievements from project data
+  const achievements = [];
+  if (project.details?.certifications?.length) {
+    achievements.push(project.details.certifications[0]);
+  }
+  if (project.details?.duration) {
+    achievements.push(`Plazo: ${project.details.duration}`);
+  }
+  if (project.tags?.length) {
+    achievements.push(project.tags[0]);
+  }
+  // Ensure we have at least some achievements
+  if (achievements.length === 0) {
+    achievements.push('Proyecto exitoso', 'Alta calidad', 'Satisfacción del cliente');
+  }
+
+  return {
+    id: project.id,
+    title: project.title,
+    service: serviceInfo.service,
+    category: project.category,
+    image: project.featured_image || project.featuredImage, // Use featured_image from Firebase first
+    location: locationStr,
+    area: area,
+    budget: investment,
+    year: year,
+    status: 'completed' as const,
+    description: project.shortDescription || project.description,
+    achievements: achievements.slice(0, 3), // Limit to 3 achievements
+    link: `/portfolio/${project.category}/${project.slug}`,
+    serviceType: serviceInfo.serviceType as 'consultoria' | 'gestion' | 'supervision' | 'desarrollo',
+    featured: project.featured,
+    featured_order: (project as any).featured_order
+  };
+};
+
 
 export default function ProjectShowcase() {
-  const [activeFilter, setActiveFilter] = useState('todos');
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [featuredProjects, setFeaturedProjects] = useState<FeaturedProject[]>([]);
+  const [loading, setLoading] = useState(true);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const filteredProjects = projects.filter(project => {
-    const filter = filters.find(f => f.id === activeFilter);
-    return !filter?.serviceType || project.serviceType === filter.serviceType;
-  });
+  // Load featured projects from Firestore
+  useEffect(() => {
+    const loadFeaturedProjects = async () => {
+      setLoading(true);
+      try {
+        console.log('🔍 [ProjectShowcase] Loading all projects from Firestore...');
+        console.log('🔍 [ProjectShowcase] Collection: portfolio_projects');
+
+        // Get ALL projects and filter locally since the where query is not working correctly
+        const allResult = await FirestoreCore.getDocuments<Project>('portfolio_projects');
+
+        if (allResult.success && allResult.data) {
+          console.log(`📋 [ProjectShowcase] Found ${allResult.data.length} total projects`);
+
+          // Filter for featured projects
+          const featuredProjects = allResult.data.filter(p => p.featured === true);
+          console.log(`⭐ [ProjectShowcase] Found ${featuredProjects.length} featured projects`);
+
+          if (featuredProjects.length > 0) {
+            console.log('📝 [ProjectShowcase] Featured project titles:');
+            featuredProjects.forEach((p, index) => {
+              console.log(`  ${index + 1}. ${p.title} (${p.category})`);
+            });
+
+            // Transform all featured projects to display format
+            const transformedProjects = featuredProjects.map(transformToFeaturedProject);
+
+            // Ordenar proyectos por featured_order y luego por título
+            const sortedProjects = transformedProjects.sort((a, b) => {
+              // Si ambos tienen featured_order, ordenar por ese valor
+              const orderA = a.featured_order ?? 999;
+              const orderB = b.featured_order ?? 999;
+
+              if (orderA !== orderB) {
+                return orderA - orderB; // Menor número primero
+              }
+
+              // Si tienen el mismo orden (o ambos son 999), ordenar alfabéticamente
+              return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' });
+            });
+
+            // Verificación adicional con orden
+            console.log('🔍 [ProjectShowcase] Verificando transformación y ordenamiento:');
+            console.log(`  - Proyectos destacados originales: ${featuredProjects.length}`);
+            console.log(`  - Proyectos transformados: ${transformedProjects.length}`);
+            console.log('📊 [ProjectShowcase] Orden final de proyectos:');
+            sortedProjects.forEach((p, index) => {
+              const orderInfo = p.featured_order !== undefined && p.featured_order < 999
+                ? ` (orden: ${p.featured_order})`
+                : ' (sin orden específico)';
+              console.log(`  ${index + 1}. ${p.title}${orderInfo}`);
+            });
+
+            setFeaturedProjects(sortedProjects);
+
+            console.log(`✅ [ProjectShowcase] Successfully loaded and sorted ${sortedProjects.length} featured projects`);
+          } else {
+            console.warn('⚠️ [ProjectShowcase] No projects have featured: true');
+            console.log('🔄 [ProjectShowcase] Using first 6 projects as fallback...');
+
+            // Use first 6 projects as fallback if no featured projects
+            const fallbackProjects = allResult.data.slice(0, 6);
+            const transformedFallback = fallbackProjects.map(transformToFeaturedProject);
+            setFeaturedProjects(transformedFallback);
+          }
+        } else {
+          console.error('❌ [ProjectShowcase] Failed to load projects:', allResult.error);
+          setFeaturedProjects([]);
+        }
+      } catch (error) {
+        console.error('❌ [ProjectShowcase] Error loading projects:', error);
+        setFeaturedProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeaturedProjects();
+  }, []);
+
 
   const equalizeCardHeights = () => {
     if (!gridRef.current) return;
@@ -216,7 +225,7 @@ export default function ProjectShowcase() {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [filteredProjects]);
+  }, [featuredProjects]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -249,70 +258,48 @@ export default function ProjectShowcase() {
               Casos de Éxito Comprobados
             </motion.div>
             
-            <motion.h2 
+            <motion.h2
               className="text-4xl md:text-5xl font-bold text-foreground mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              Proyectos que Transforman
+              Proyectos Destacados que Transforman
             </motion.h2>
             
-            <motion.p 
+            <motion.p
               className="text-xl text-muted-foreground leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Cada proyecto es una historia de éxito. Descubre cómo nuestros servicios especializados 
-              han creado valor excepcional para nuestros clientes.
+              Nuestros proyectos más destacados representan la excelencia en dirección integral.
+              Descubre cómo hemos transformado ideas en realidades exitosas para nuestros clientes.
             </motion.p>
           </div>
 
-          {/* Filters */}
-          <motion.div 
-            className="flex flex-wrap justify-center gap-3 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-2 mr-4 text-sm text-muted-foreground">
-              <Filter className="w-4 h-4" />
-              Filtrar por servicio:
-            </div>
-            {filters.map((filter) => (
-              <Button
-                key={filter.id}
-                variant={activeFilter === filter.id ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setActiveFilter(filter.id)}
-                className={cn(
-                  "transition-all duration-200",
-                  activeFilter === filter.id 
-                    ? "bg-primary text-primary-foreground shadow-md" 
-                    : "hover:bg-muted"
-                )}
-              >
-                {filter.label}
-              </Button>
-            ))}
-          </motion.div>
 
           {/* Projects Grid */}
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={activeFilter}
+          {loading ? (
+            <div className="flex justify-center items-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+          ) : featuredProjects.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground text-lg">No hay proyectos destacados disponibles.</p>
+            </div>
+          ) : (
+            <motion.div
               ref={gridRef}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
             >
-              {filteredProjects.map((project, index) => (
+              {featuredProjects.map((project, index) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -336,19 +323,20 @@ export default function ProjectShowcase() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       
-                      {/* Status Badge */}
-                      <div className="absolute top-4 right-4">
-                        <Badge 
-                          variant={project.status === 'completed' ? 'secondary' : 'default'}
-                          className="text-xs"
+                      {/* Featured Badge - Top Right */}
+                      <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
+                        <Badge
+                          variant="default"
+                          className="bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-medium flex items-center gap-1 shadow-lg"
                         >
-                          {project.status === 'completed' ? 'Completado' : 'En Progreso'}
+                          <Star className="w-3 h-3 fill-current" />
+                          Destacado
                         </Badge>
                       </div>
 
-                      {/* Service Badge */}
+                      {/* Service Badge - Top Left */}
                       <div className="absolute top-4 left-4">
-                        <Badge 
+                        <Badge
                           variant="outline"
                           className="bg-white/90 text-xs"
                         >
@@ -450,10 +438,11 @@ export default function ProjectShowcase() {
                 </motion.div>
               ))}
             </motion.div>
-          </AnimatePresence>
+          )}
 
           {/* Load More / See All */}
-          <motion.div 
+          {/* Call to Action */}
+          <motion.div
             className="text-center mt-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -461,23 +450,23 @@ export default function ProjectShowcase() {
             viewport={{ once: true }}
           >
             <p className="text-muted-foreground mb-6">
-              ¿Quieres ver todos nuestros proyectos?
+              Estos son solo algunos de nuestros proyectos más destacados.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 onClick={() => window.location.href = '/portfolio'}
-                className="px-8"
+                className="px-8 bg-primary hover:bg-primary/90"
               >
-                Ver Portfolio Completo
+                Ver Todos los Proyectos
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-              <Button 
+              <Button
                 variant="outline"
                 size="lg"
                 onClick={() => {
-                  document.getElementById('contact-form')?.scrollIntoView({ 
-                    behavior: 'smooth' 
+                  document.getElementById('contact-form')?.scrollIntoView({
+                    behavior: 'smooth'
                   });
                 }}
                 className="px-8"

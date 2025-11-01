@@ -1,0 +1,68 @@
+{
+    "id": "hotel-encalada",
+    "status": "completed",
+    "client": "Encalada Hoteles",
+    "tags": [],
+    "category": "hoteleria",
+    "category_id": "hoteleria",
+    "metadata": {
+        "timeline": "18 meses",
+        "source": "json_migration",
+        "original_category": "hoteleria",
+        "investment": "$6,200,000",
+        "services": [
+            "Arquitectura Hotelera",
+            "Construcción",
+            "Supervisión",
+            "Gerencia de Proyecto",
+            "Diseño de Interiores"
+        ]
+    },
+    "location": "Lima, Perú",
+    "title": "Hotel Encalada",
+    "updated_at": {
+        "type": "firestore/timestamp/1.0",
+        "seconds": 1672531200,
+        "nanoseconds": 0
+    },
+    "updatedAt": "2025-09-22T11:35:25.043Z",
+    "images": [
+        {
+            "url": "/images/uploads/2025/09/behaj2n-8566ce1a.webp",
+            "alt": "Hotel Encalada - Fachada Principal",
+            "featured": true,
+            "title": "Hotel Encalada - Fachada Principal"
+        }
+    ],
+    "featured_image": "/images/uploads/2025/09/behaj2n-8566ce1a.webp",
+    "budget": "$6,200,000",
+    "featured": false,
+    "year": 2021,
+    "gallery": [
+        "/images/uploads/2025/09/behaj2n-8566ce1a.webp"
+    ],
+    "services": [
+        "Arquitectura Hotelera",
+        "Construcción",
+        "Supervisión",
+        "Gerencia de Proyecto",
+        "Diseño de Interiores"
+    ],
+    "area": "8,500 m²",
+    "duration": "18 meses",
+    "short_description": "Hotel boutique con diseño elegante y servicios personalizados...",
+    "created_at": {
+        "type": "firestore/timestamp/1.0",
+        "seconds": 1672531200,
+        "nanoseconds": 0
+    },
+    "slug": "hotel-encalada",
+    "createdAt": "2025-09-22T08:51:08.369Z",
+    "description": "Hotel Encalada, proyecto hotelero boutique con diseño elegante y servicios personalizados que ofrece una experiencia única a sus huéspedes.",
+    "category_info": {
+        "id": "hoteleria",
+        "name": "Hotelería",
+        "slug": "hotelera",
+        "color": "#f59e0b"
+    }
+}

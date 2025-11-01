@@ -16,8 +16,6 @@ import { usePortfolio } from '@/contexts/PortfolioContext';
 import { Project, ProjectCategory, getCategoryLabel } from '@/types/portfolio';
 import { cn } from '@/lib/utils';
 
-// Note: Recharts removed for server optimization
-
 interface ChartData {
   label: string;
   value: number;
@@ -74,6 +72,7 @@ export default function DataVisualization() {
   const getYearData = (): ChartData[] => {
     const yearCount: { [key: string]: number } = {};
     allProjects.forEach(project => {
+      if (!project.completedAt) return;
       const year = project.completedAt.getFullYear();
       yearCount[year] = (yearCount[year] || 0) + 1;
     });

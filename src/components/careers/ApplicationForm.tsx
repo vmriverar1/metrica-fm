@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  FileText, 
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  FileText,
   Upload,
   CheckCircle,
   AlertCircle,
@@ -25,6 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useEnhancedFormValidation } from '@/hooks/useEnhancedFormValidation';
 
 interface ApplicationFormData {
   firstName: string;
@@ -70,51 +72,102 @@ const initialFormData: ApplicationFormData = {
 };
 
 export default function ApplicationForm({ job, onSubmit, onCancel, className }: ApplicationFormProps) {
-  const [formData, setFormData] = useState<ApplicationFormData>(initialFormData);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  // Validación con hook mejorado
+  const formValidation = useEnhancedFormValidation({
+    firstName: { type: 'name', required: true, label: 'Nombres' },
+    lastName: { type: 'name', required: true, label: 'Apellidos' },
+    email: { type: 'email', required: true, label: 'Email' },
+    phone: { type: 'phone', required: true, label: 'Teléfono' },
+    location: { type: 'company', required: true, label: 'Ubicación' },
+    linkedin: { type: 'linkedin', required: false, label: 'LinkedIn' },
+    portfolio: { type: 'portfolio', required: false, label: 'Portfolio' },
+    motivationLetter: { type: 'message', required: true, label: 'Carta de motivación', minLength: 50, maxLength: 1000 }
+  });
+
+  // Estados para campos no validados
+  const [experience, setExperience] = useState('');
+  const [education, setEducation] = useState('');
+  const [availability, setAvailability] = useState('');
+  const [salaryExpectation, setSalaryExpectation] = useState('');
+  const [resume, setResume] = useState<File | undefined>();
+  const [coverLetter, setCoverLetter] = useState<File | undefined>();
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [agreeToDataProcessing, setAgreeToDataProcessing] = useState(false);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [currentStep, setCurrentStep] = useState(1);
 
   const totalSteps = 3;
 
-  const handleInputChange = (field: keyof ApplicationFormData, value: string | boolean | File) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
-  };
-
   const validateStep = (step: number): boolean => {
     const newErrors: Record<string, string> = {};
 
     switch (step) {
       case 1:
-        if (!formData.firstName.trim()) newErrors.firstName = 'Nombre es requerido';
-        if (!formData.lastName.trim()) newErrors.lastName = 'Apellido es requerido';
-        if (!formData.email.trim()) {
-          newErrors.email = 'Email es requerido';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email = 'Email inválido';
+        // Validar campos de Step 1 con el hook
+        const firstNameValid = formValidation.validateFieldImmediate('firstName', formValidation.getFieldState('firstName').value);
+        const lastNameValid = formValidation.validateFieldImmediate('lastName', formValidation.getFieldState('lastName').value);
+        const emailValid = formValidation.validateFieldImmediate('email', formValidation.getFieldState('email').value);
+        const phoneValid = formValidation.validateFieldImmediate('phone', formValidation.getFieldState('phone').value);
+        const locationValid = formValidation.validateFieldImmediate('location', formValidation.getFieldState('location').value);
+
+        if (!firstNameValid) {
+          const error = formValidation.getFieldError('firstName');
+          if (error) newErrors.firstName = error;
         }
-        if (!formData.phone.trim()) newErrors.phone = 'Teléfono es requerido';
-        if (!formData.location.trim()) newErrors.location = 'Ubicación es requerida';
+        if (!lastNameValid) {
+          const error = formValidation.getFieldError('lastName');
+          if (error) newErrors.lastName = error;
+        }
+        if (!emailValid) {
+          const error = formValidation.getFieldError('email');
+          if (error) newErrors.email = error;
+        }
+        if (!phoneValid) {
+          const error = formValidation.getFieldError('phone');
+          if (error) newErrors.phone = error;
+        }
+        if (!locationValid) {
+          const error = formValidation.getFieldError('location');
+          if (error) newErrors.location = error;
+        }
+
+        // Validar LinkedIn y Portfolio si tienen valores
+        if (formValidation.getFieldState('linkedin').value) {
+          const linkedinValid = formValidation.validateFieldImmediate('linkedin', formValidation.getFieldState('linkedin').value);
+          if (!linkedinValid) {
+            const error = formValidation.getFieldError('linkedin');
+            if (error) newErrors.linkedin = error;
+          }
+        }
+        if (formValidation.getFieldState('portfolio').value) {
+          const portfolioValid = formValidation.validateFieldImmediate('portfolio', formValidation.getFieldState('portfolio').value);
+          if (!portfolioValid) {
+            const error = formValidation.getFieldError('portfolio');
+            if (error) newErrors.portfolio = error;
+          }
+        }
         break;
 
       case 2:
-        if (!formData.experience.trim()) newErrors.experience = 'Experiencia es requerida';
-        if (!formData.education.trim()) newErrors.education = 'Educación es requerida';
-        if (!formData.motivationLetter.trim()) newErrors.motivationLetter = 'Carta de motivación es requerida';
-        if (!formData.availability.trim()) newErrors.availability = 'Disponibilidad es requerida';
+        if (!experience.trim()) newErrors.experience = 'Experiencia es requerida';
+        if (!education.trim()) newErrors.education = 'Educación es requerida';
+
+        const motivationValid = formValidation.validateFieldImmediate('motivationLetter', formValidation.getFieldState('motivationLetter').value);
+        if (!motivationValid) {
+          const error = formValidation.getFieldError('motivationLetter');
+          if (error) newErrors.motivationLetter = error;
+        }
+
+        if (!availability.trim()) newErrors.availability = 'Disponibilidad es requerida';
         break;
 
       case 3:
-        if (!formData.agreeToTerms) newErrors.agreeToTerms = 'Debe aceptar los términos y condiciones';
-        if (!formData.agreeToDataProcessing) newErrors.agreeToDataProcessing = 'Debe autorizar el tratamiento de datos';
+        if (!agreeToTerms) newErrors.agreeToTerms = 'Debe aceptar los términos y condiciones';
+        if (!agreeToDataProcessing) newErrors.agreeToDataProcessing = 'Debe autorizar el tratamiento de datos';
         break;
     }
 
@@ -134,24 +187,95 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateStep(currentStep)) return;
 
     setIsSubmitting(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      if (onSubmit) {
-        onSubmit(formData);
+      // Obtener token de reCAPTCHA
+      if (!executeRecaptcha) {
+        throw new Error('reCAPTCHA no está disponible');
       }
-      
+
+      const recaptchaToken = await executeRecaptcha('application_form_submit');
+
+      // Obtener valores validados
+      const formValues = formValidation.getFormValues();
+
+      // Preparar datos del formulario (sin archivos por ahora)
+      const submissionData = {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        email: formValues.email,
+        phone: formValues.phone,
+        location: formValues.location,
+        linkedin: formValues.linkedin || '',
+        portfolio: formValues.portfolio || '',
+        experience: experience,
+        education: education,
+        motivationLetter: formValues.motivationLetter,
+        availability: availability,
+        salaryExpectation: salaryExpectation || '',
+        jobTitle: job.title,
+        jobId: job.id,
+        department: job.department
+      };
+
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          formData: {
+            ...submissionData,
+            // Campos ocultos de tracking
+            form_name: 'Formulario de Aplicación de Trabajo',
+            page_url: '/careers',
+            form_location: 'careers_page_application_form'
+          },
+          formType: 'application',
+          requiredFields: ['firstName', 'lastName', 'email', 'phone', 'experience', 'education', 'motivationLetter'],
+          recaptchaToken: recaptchaToken
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Error al enviar la aplicación');
+      }
+
+      console.log('Application submitted successfully:', result);
+
+      // Call onSubmit callback with the data
+      if (onSubmit) {
+        const callbackData: ApplicationFormData = {
+          ...submissionData,
+          resume: resume,
+          coverLetter: coverLetter,
+          agreeToTerms: agreeToTerms,
+          agreeToDataProcessing: agreeToDataProcessing
+        };
+        onSubmit(callbackData);
+      }
+
       // Reset form after successful submission
-      setFormData(initialFormData);
+      alert('¡Aplicación enviada exitosamente! Nos pondremos en contacto contigo pronto.');
+      formValidation.resetForm();
+      setExperience('');
+      setEducation('');
+      setAvailability('');
+      setSalaryExpectation('');
+      setResume(undefined);
+      setCoverLetter(undefined);
+      setAgreeToTerms(false);
+      setAgreeToDataProcessing(false);
       setCurrentStep(1);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting application:', error);
+      alert(error.message || 'Error al enviar la aplicación. Por favor intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +283,11 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
 
   const handleFileUpload = (field: 'resume' | 'coverLetter', file: File | null) => {
     if (file) {
-      handleInputChange(field, file);
+      if (field === 'resume') {
+        setResume(file);
+      } else {
+        setCoverLetter(file);
+      }
     }
   };
 
@@ -173,15 +301,23 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
             <Input
               id="firstName"
               placeholder="Ej: Juan Carlos"
-              value={formData.firstName}
-              onChange={(e) => handleInputChange('firstName', e.target.value)}
-              className={cn("pl-10", errors.firstName && "border-destructive")}
+              value={formValidation.getFieldState('firstName').value}
+              onChange={(e) => formValidation.handleFieldChange('firstName', e.target.value)}
+              onBlur={() => formValidation.handleFieldBlur('firstName')}
+              className={cn(
+                "pl-10",
+                formValidation.hasFieldError('firstName')
+                  ? "border-destructive"
+                  : formValidation.isFieldValid('firstName')
+                  ? "border-green-500"
+                  : ""
+              )}
             />
           </div>
-          {errors.firstName && (
+          {formValidation.hasFieldError('firstName') && (
             <p className="text-sm text-destructive flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.firstName}
+              {formValidation.getFieldError('firstName')}
             </p>
           )}
         </div>
@@ -191,14 +327,21 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Input
             id="lastName"
             placeholder="Ej: Pérez García"
-            value={formData.lastName}
-            onChange={(e) => handleInputChange('lastName', e.target.value)}
-            className={cn(errors.lastName && "border-destructive")}
+            value={formValidation.getFieldState('lastName').value}
+            onChange={(e) => formValidation.handleFieldChange('lastName', e.target.value)}
+            onBlur={() => formValidation.handleFieldBlur('lastName')}
+            className={cn(
+              formValidation.hasFieldError('lastName')
+                ? "border-destructive"
+                : formValidation.isFieldValid('lastName')
+                ? "border-green-500"
+                : ""
+            )}
           />
-          {errors.lastName && (
+          {formValidation.hasFieldError('lastName') && (
             <p className="text-sm text-destructive flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.lastName}
+              {formValidation.getFieldError('lastName')}
             </p>
           )}
         </div>
@@ -213,15 +356,23 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
               id="email"
               type="email"
               placeholder="tu.email@ejemplo.com"
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              className={cn("pl-10", errors.email && "border-destructive")}
+              value={formValidation.getFieldState('email').value}
+              onChange={(e) => formValidation.handleFieldChange('email', e.target.value)}
+              onBlur={() => formValidation.handleFieldBlur('email')}
+              className={cn(
+                "pl-10",
+                formValidation.hasFieldError('email')
+                  ? "border-destructive"
+                  : formValidation.isFieldValid('email')
+                  ? "border-green-500"
+                  : ""
+              )}
             />
           </div>
-          {errors.email && (
+          {formValidation.hasFieldError('email') && (
             <p className="text-sm text-destructive flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.email}
+              {formValidation.getFieldError('email')}
             </p>
           )}
         </div>
@@ -233,15 +384,23 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
             <Input
               id="phone"
               placeholder="+51 999 888 777"
-              value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-              className={cn("pl-10", errors.phone && "border-destructive")}
+              value={formValidation.getFieldState('phone').value}
+              onChange={(e) => formValidation.handleFieldChange('phone', e.target.value)}
+              onBlur={() => formValidation.handleFieldBlur('phone')}
+              className={cn(
+                "pl-10",
+                formValidation.hasFieldError('phone')
+                  ? "border-destructive"
+                  : formValidation.isFieldValid('phone')
+                  ? "border-green-500"
+                  : ""
+              )}
             />
           </div>
-          {errors.phone && (
+          {formValidation.hasFieldError('phone') && (
             <p className="text-sm text-destructive flex items-center gap-1">
               <AlertCircle className="w-4 h-4" />
-              {errors.phone}
+              {formValidation.getFieldError('phone')}
             </p>
           )}
         </div>
@@ -254,15 +413,23 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Input
             id="location"
             placeholder="Ej: Lima, Perú"
-            value={formData.location}
-            onChange={(e) => handleInputChange('location', e.target.value)}
-            className={cn("pl-10", errors.location && "border-destructive")}
+            value={formValidation.getFieldState('location').value}
+            onChange={(e) => formValidation.handleFieldChange('location', e.target.value)}
+            onBlur={() => formValidation.handleFieldBlur('location')}
+            className={cn(
+              "pl-10",
+              formValidation.hasFieldError('location')
+                ? "border-destructive"
+                : formValidation.isFieldValid('location')
+                ? "border-green-500"
+                : ""
+            )}
           />
         </div>
-        {errors.location && (
+        {formValidation.hasFieldError('location') && (
           <p className="text-sm text-destructive flex items-center gap-1">
             <AlertCircle className="w-4 h-4" />
-            {errors.location}
+            {formValidation.getFieldError('location')}
           </p>
         )}
       </div>
@@ -273,9 +440,22 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Input
             id="linkedin"
             placeholder="https://linkedin.com/in/tu-perfil"
-            value={formData.linkedin}
-            onChange={(e) => handleInputChange('linkedin', e.target.value)}
+            value={formValidation.getFieldState('linkedin').value}
+            onChange={(e) => formValidation.handleFieldChange('linkedin', e.target.value)}
+            onBlur={() => formValidation.handleFieldBlur('linkedin')}
+            className={cn(
+              formValidation.hasFieldError('linkedin')
+                ? "border-destructive"
+                : formValidation.isFieldValid('linkedin')
+                ? "border-green-500"
+                : ""
+            )}
           />
+          {formValidation.hasFieldError('linkedin') && (
+            <p className="text-sm text-destructive text-xs mt-1">
+              {formValidation.getFieldError('linkedin')}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -283,9 +463,22 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Input
             id="portfolio"
             placeholder="https://tu-portfolio.com"
-            value={formData.portfolio}
-            onChange={(e) => handleInputChange('portfolio', e.target.value)}
+            value={formValidation.getFieldState('portfolio').value}
+            onChange={(e) => formValidation.handleFieldChange('portfolio', e.target.value)}
+            onBlur={() => formValidation.handleFieldBlur('portfolio')}
+            className={cn(
+              formValidation.hasFieldError('portfolio')
+                ? "border-destructive"
+                : formValidation.isFieldValid('portfolio')
+                ? "border-green-500"
+                : ""
+            )}
           />
+          {formValidation.hasFieldError('portfolio') && (
+            <p className="text-sm text-destructive text-xs mt-1">
+              {formValidation.getFieldError('portfolio')}
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -300,8 +493,8 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Textarea
             id="experience"
             placeholder="Describe tu experiencia laboral relevante, incluyendo cargos, empresas y logros principales..."
-            value={formData.experience}
-            onChange={(e) => handleInputChange('experience', e.target.value)}
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
             className={cn("pl-10 min-h-24", errors.experience && "border-destructive")}
             rows={4}
           />
@@ -321,8 +514,8 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Textarea
             id="education"
             placeholder="Detalla tu formación académica, certificaciones y cursos relevantes..."
-            value={formData.education}
-            onChange={(e) => handleInputChange('education', e.target.value)}
+            value={education}
+            onChange={(e) => setEducation(e.target.value)}
             className={cn("pl-10 min-h-20", errors.education && "border-destructive")}
             rows={3}
           />
@@ -342,16 +535,24 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <Textarea
             id="motivationLetter"
             placeholder="Explica tu motivación para aplicar a esta posición y cómo puedes contribuir al equipo..."
-            value={formData.motivationLetter}
-            onChange={(e) => handleInputChange('motivationLetter', e.target.value)}
-            className={cn("pl-10 min-h-32", errors.motivationLetter && "border-destructive")}
+            value={formValidation.getFieldState('motivationLetter').value}
+            onChange={(e) => formValidation.handleFieldChange('motivationLetter', e.target.value)}
+            onBlur={() => formValidation.handleFieldBlur('motivationLetter')}
+            className={cn(
+              "pl-10 min-h-32",
+              formValidation.hasFieldError('motivationLetter')
+                ? "border-destructive"
+                : formValidation.isFieldValid('motivationLetter')
+                ? "border-green-500"
+                : ""
+            )}
             rows={5}
           />
         </div>
-        {errors.motivationLetter && (
+        {formValidation.hasFieldError('motivationLetter') && (
           <p className="text-sm text-destructive flex items-center gap-1">
             <AlertCircle className="w-4 h-4" />
-            {errors.motivationLetter}
+            {formValidation.getFieldError('motivationLetter')}
           </p>
         )}
       </div>
@@ -359,7 +560,7 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="availability">Disponibilidad de inicio *</Label>
-          <Select value={formData.availability} onValueChange={(value) => handleInputChange('availability', value)}>
+          <Select value={availability} onValueChange={(value) => setAvailability(value)}>
             <SelectTrigger className={cn(errors.availability && "border-destructive")}>
               <Calendar className="w-4 h-4 mr-2" />
               <SelectValue placeholder="Selecciona disponibilidad" />
@@ -383,7 +584,7 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
 
         <div className="space-y-2">
           <Label htmlFor="salaryExpectation">Expectativa salarial (opcional)</Label>
-          <Select value={formData.salaryExpectation || ''} onValueChange={(value) => handleInputChange('salaryExpectation', value)}>
+          <Select value={salaryExpectation} onValueChange={(value) => setSalaryExpectation(value)}>
             <SelectTrigger>
               <SelectValue placeholder="Rango salarial esperado" />
             </SelectTrigger>
@@ -427,10 +628,10 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
                   Seleccionar archivo
                 </label>
               </Button>
-              {formData.resume && (
+              {resume && (
                 <p className="text-sm text-primary mt-2 flex items-center justify-center gap-1">
                   <CheckCircle className="w-4 h-4" />
-                  {formData.resume.name}
+                  {resume.name}
                 </p>
               )}
             </div>
@@ -455,10 +656,10 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
                   Seleccionar archivo
                 </label>
               </Button>
-              {formData.coverLetter && (
+              {coverLetter && (
                 <p className="text-sm text-primary mt-2 flex items-center justify-center gap-1">
                   <CheckCircle className="w-4 h-4" />
-                  {formData.coverLetter.name}
+                  {coverLetter.name}
                 </p>
               )}
             </div>
@@ -474,8 +675,8 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <div className="flex items-start space-x-3">
             <Checkbox
               id="agreeToTerms"
-              checked={formData.agreeToTerms}
-              onCheckedChange={(checked) => handleInputChange('agreeToTerms', !!checked)}
+              checked={agreeToTerms}
+              onCheckedChange={(checked) => setAgreeToTerms(!!checked)}
               className={cn(errors.agreeToTerms && "border-destructive")}
             />
             <div className="space-y-1 leading-none">
@@ -497,8 +698,8 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <div className="flex items-start space-x-3">
             <Checkbox
               id="agreeToDataProcessing"
-              checked={formData.agreeToDataProcessing}
-              onCheckedChange={(checked) => handleInputChange('agreeToDataProcessing', !!checked)}
+              checked={agreeToDataProcessing}
+              onCheckedChange={(checked) => setAgreeToDataProcessing(!!checked)}
               className={cn(errors.agreeToDataProcessing && "border-destructive")}
             />
             <div className="space-y-1 leading-none">

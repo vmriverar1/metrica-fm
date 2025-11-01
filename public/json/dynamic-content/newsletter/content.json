@@ -1,189 +1,207 @@
 {
   "authors": [
     {
-      "id": "1",
-      "name": "Nombre Autor",
+      "id": "author-001",
+      "name": "Carlos Mendoza",
       "role": "Director General",
-      "bio": "Profesional con experiencia en dirección de proyectos. Especialista en infraestructura y consultoría.",
-      "avatar": "/img/placeholder-avatar.jpg",
-      "linkedin": "https://linkedin.com/in/autor-ejemplo",
-      "email": "autor@tuempresa.com",
-      "featured": true,
+      "bio": "Arquitecto con 10+ años de experiencia en dirección de proyectos de gran escala. Especialista en construcción sostenible y metodologías BIM.",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      "email": "carlos.mendoza@metrica-dip.com",
+      "linkedin": "https://linkedin.com/in/carlos-mendoza-metrica",
+      "specializations": ["Arquitectura", "PMO", "BIM"],
       "articles_count": 8,
-      "specializations": ["Gestión", "Sostenibilidad", "PMO"]
+      "featured": true
     },
     {
-      "id": "2",
-      "name": "Nombre Gerente",
-      "role": "Gerente de Proyectos",
-      "bio": "Ingeniero especializado en gestión de proyectos. Experto en metodologías y construcción sostenible.",
-      "avatar": "/img/placeholder-avatar.jpg",
-      "linkedin": "https://linkedin.com/in/gerente-ejemplo", 
-      "email": "gerente@tuempresa.com",
-      "featured": true,
+      "id": "author-002",
+      "name": "Ana Rodríguez",
+      "role": "Jefa de Operaciones",
+      "bio": "Ingeniera Civil especializada en gestión de proyectos y control de calidad. Experta en normativas peruanas de construcción y certificaciones LEED.",
+      "avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      "email": "ana.rodriguez@metrica-dip.com",
+      "linkedin": "https://linkedin.com/in/ana-rodriguez-metrica",
+      "specializations": ["Ingeniería Civil", "Control de Calidad", "LEED"],
       "articles_count": 6,
-      "specializations": ["Ingeniería", "PMI", "Gestión"]
+      "featured": true
     },
     {
-      "id": "3",
-      "name": "Nombre Especialista",
-      "role": "Especialista en Normativas",
-      "bio": "Profesional especializado en normativas y regulaciones. Experiencia asesorando proyectos.",
-      "avatar": "/img/placeholder-avatar.jpg",
-      "linkedin": "https://linkedin.com/in/especialista-ejemplo",
-      "email": "especialista@tuempresa.com",
-      "featured": false,
-      "articles_count": 4,
-      "specializations": ["Normativas", "Legal", "Regulaciones"]
-    },
-    {
-      "id": "4",
-      "name": "Nombre Jefa",
-      "role": "Jefa de Sostenibilidad",
-      "bio": "Profesional LEED AP con especialización en diseño bioclimático y eficiencia energética. Líder en proyectos de certificación verde.",
-      "avatar": "/img/placeholder-avatar.jpg",
-      "linkedin": "https://linkedin.com/in/jefa-ejemplo",
-      "email": "jefa@tuempresa.com",
-      "featured": true,
+      "id": "author-003",
+      "name": "Luis García",
+      "role": "Especialista en Sostenibilidad",
+      "bio": "Arquitecto especializado en construcción sostenible y eficiencia energética. Consultor certificado en estándares internacionales de construcción verde.",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      "email": "luis.garcia@metrica-dip.com",
+      "linkedin": "https://linkedin.com/in/luis-garcia-metrica",
+      "specializations": ["Sostenibilidad", "Eficiencia Energética", "Construcción Verde"],
       "articles_count": 5,
-      "specializations": ["LEED", "Sostenibilidad", "Eficiencia Energética"]
+      "featured": false
     },
     {
-      "id": "5",
-      "name": "Nombre Director",
-      "role": "Director de Innovación",
-      "bio": "Profesional con MBA, especializado en transformación digital y metodologías ágiles aplicadas a la industria.",
-      "avatar": "/img/placeholder-avatar.jpg",
-      "linkedin": "https://linkedin.com/in/director-ejemplo",
-      "email": "director@tuempresa.com",
-      "featured": false,
-      "articles_count": 3,
-      "specializations": ["Transformación Digital", "BIM", "Metodologías Ágiles"]
+      "id": "author-004",
+      "name": "María Torres",
+      "role": "Directora de Calidad",
+      "bio": "Ingeniera Industrial con especialización en sistemas de gestión de calidad y certificaciones ISO. Experta en implementación de procesos de mejora continua.",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
+      "email": "maria.torres@metrica-dip.com",
+      "linkedin": "https://linkedin.com/in/maria-torres-metrica",
+      "specializations": ["Calidad", "ISO", "Procesos"],
+      "articles_count": 4,
+      "featured": false
+    },
+    {
+      "id": "author-005",
+      "name": "Roberto Silva",
+      "role": "Gerente de Proyectos Senior",
+      "bio": "Project Manager certificado PMP con experiencia en proyectos de infraestructura y desarrollo inmobiliario. Especialista en metodologías ágiles aplicadas a construcción.",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
+      "email": "roberto.silva@metrica-dip.com",
+      "linkedin": "https://linkedin.com/in/roberto-silva-metrica",
+      "specializations": ["Project Management", "PMP", "Metodologías Ágiles"],
+      "articles_count": 7,
+      "featured": true
     }
   ],
   "categories": [
     {
-      "id": "industria-tendencias",
+      "id": "cat-001",
       "name": "Industria & Tendencias",
       "slug": "industria-tendencias",
-      "description": "Análisis de mercado inmobiliario, tendencias en construcción sostenible e innovaciones tecnológicas del sector.",
-      "color": "#E84E0F",
+      "description": "Análisis y perspectivas sobre las últimas tendencias en construcción e infraestructura",
+      "color": "#003F6F",
       "icon": "TrendingUp",
       "articles_count": 8,
-      "featured": true,
-      "order": 1
+      "featured": true
     },
     {
-      "id": "casos-estudio",
+      "id": "cat-002", 
       "name": "Casos de Estudio",
       "slug": "casos-estudio",
-      "description": "Deep dives de proyectos emblemáticos con lecciones aprendidas, métricas reales y testimonios de clientes.",
-      "color": "#003F6F",
+      "description": "Análisis detallados de proyectos exitosos y lecciones aprendidas",
+      "color": "#E84E0F",
       "icon": "FileText",
       "articles_count": 6,
-      "featured": true,
-      "order": 2
+      "featured": true
     },
     {
-      "id": "guias-tecnicas",
+      "id": "cat-003",
       "name": "Guías Técnicas",
-      "slug": "guias-tecnicas",
-      "description": "Metodologías de gestión de proyectos, guías de cumplimiento normativo y herramientas especializadas.",
-      "color": "#34D399",
-      "icon": "BookOpen",
-      "articles_count": 7,
-      "featured": true,
-      "order": 3
+      "slug": "guias-tecnicas", 
+      "description": "Guías prácticas y recursos técnicos para profesionales del sector",
+      "color": "#16a34a",
+      "icon": "Settings",
+      "articles_count": 5,
+      "featured": false
     },
     {
-      "id": "liderazgo-vision",
+      "id": "cat-004",
       "name": "Liderazgo & Visión",
       "slug": "liderazgo-vision",
-      "description": "Insights de líderes, filosofía empresarial, predicciones de mercado y participación en eventos del sector.",
-      "color": "#8B5CF6",
-      "icon": "Users",
-      "articles_count": 5,
-      "featured": false,
-      "order": 4
+      "description": "Reflexiones sobre liderazgo y visión estratégica en el sector construcción",
+      "color": "#9333ea",
+      "icon": "Crown",
+      "articles_count": 3,
+      "featured": false
     }
   ],
   "articles": [
     {
-      "id": "1",
-      "title": "Tendencias de la Industria",
-      "slug": "tendencias-industria",
-      "category": "industria-tendencias",
-      "author_id": "4",
-      "featured_image": "/img/articles/placeholder-article.jpg",
-      "featured_image_alt": "Edificio sostenible con tecnología verde",
-      "excerpt": "Análisis profundo de las tendencias que están transformando el sector hacia un futuro más eficiente.",
-      "content": "# El Futuro de la Construcción Sostenible en el Perú\n\nEl sector construcción en Perú está experimentando una transformación hacia la sostenibilidad impulsada por nuevas normativas, consciencia ambiental y beneficios económicos comprobados.\n\n## Tendencias Principales\n\n### 1. Certificaciones Verdes\nLas certificaciones LEED, BREEAM y EDGE están ganando tracción en proyectos comerciales y residenciales, con más de 50 proyectos certificados en Lima en los últimos 3 años.\n\n### 2. Materiales Innovadores\n- Concreto con agregados reciclados\n- Sistemas de aislamiento térmico de alta eficiencia\n- Paneles solares integrados en fachadas\n\n### 3. Tecnologías Inteligentes\nLa implementación de IoT en edificios permite optimizar el consumo energético hasta en un 30%, según datos de nuestros proyectos.\n\n## Impacto Económico\n\nLos edificios sostenibles generan:\n- 15-25% de ahorro en costos operativos\n- Mayor valor de reventa (hasta 10% más)\n- Menor tiempo de comercialización\n\n## Retos y Oportunidades\n\nEl principal reto sigue siendo la educación del mercado sobre los beneficios a largo plazo versus la inversión inicial. Sin embargo, el ROI típico se alcanza en 5-7 años.\n\n*Este artículo fue desarrollado basado en datos de 25 proyectos sostenibles gestionados por Métrica DIP entre 2020-2023.*",
-      "published_date": "2024-01-15T10:00:00Z",
-      "reading_time": 8,
+      "id": "art-001",
+      "title": "El Futuro de la Construcción Sostenible en Perú: Tendencias 2025",
+      "slug": "futuro-construccion-sostenible-peru-2025",
+      "excerpt": "Análisis profundo de las tendencias emergentes en construcción sostenible que están transformando el mercado peruano. Desde tecnologías BIM hasta certificaciones LEED.",
+      "content": "# El Futuro de la Construcción Sostenible en Perú\n\nLa industria de la construcción peruana está experimentando una transformación sin precedentes hacia la sostenibilidad. En los últimos dos años, hemos observado un incremento del 150% en proyectos que buscan certificaciones ambientales.\n\n## Tendencias Clave\n\n### 1. Adopción Masiva de BIM\nLa metodología Building Information Modeling (BIM) ha dejado de ser una opción para convertirse en un estándar. El 78% de los proyectos de gran escala ya implementan BIM desde la fase de diseño.\n\n### 2. Materiales Innovadores\n- Concreto con aditivos reciclados\n- Sistemas de aislamiento térmico avanzados\n- Paneles solares integrados en fachadas\n\n### 3. Certificaciones LEED\nEl mercado peruano ha visto un crecimiento del 200% en solicitudes de certificación LEED, posicionando a Lima como la segunda ciudad con más edificios certificados en Sudamérica.\n\n## Impacto Económico\n\nLos proyectos sostenibles no solo benefician al medio ambiente, sino que también generan:\n- 15-20% de ahorro en costos operativos\n- 12% de incremento en valor de reventa\n- 25% de reducción en tiempos de construcción\n\n## Conclusión\n\nLa construcción sostenible no es el futuro; es el presente. Las empresas que no se adapten a estas tendencias se quedarán atrás en un mercado cada vez más competitivo y consciente del medio ambiente.",
+      "featured_image": "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&h=400&fit=crop",
+      "featured_image_alt": "Edificio moderno con paneles solares y diseño sostenible",
+      "author_id": "author-003",
+      "category_id": "cat-001",
+      "tags": ["Sostenibilidad", "BIM", "LEED", "Tendencias", "Peru"],
       "featured": true,
-      "tags": ["sostenibilidad", "LEED", "innovación", "mercado"],
-      "seo_description": "Descubre las tendencias de construcción sostenible que están transformando el sector inmobiliario peruano hacia un futuro más verde y eficiente.",
-      "social_image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=630",
-      "url": "/blog/futuro-construccion-sostenible-peru",
-      "related_articles": ["2", "8", "12"],
+      "reading_time": 7,
+      "published_date": "2024-12-15T10:00:00Z",
+      "seo": {
+        "meta_title": "Construcción Sostenible Perú 2025: Tendencias y Tecnologías",
+        "meta_description": "Descubre las principales tendencias en construcción sostenible que transformarán el mercado peruano en 2025. BIM, LEED y materiales innovadores.",
+        "keywords": ["construcción sostenible", "Peru", "BIM", "LEED", "tendencias 2025"],
+        "og_title": "El Futuro Verde de la Construcción Peruana",
+        "og_description": "Análisis exclusivo: cómo la sostenibilidad está revolucionando la construcción en Perú",
+        "og_image": "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=1200&h=630&fit=crop"
+      },
+      "url": "/blog/industria-tendencias/futuro-construccion-sostenible-peru-2025",
+      "related_articles": ["art-002", "art-003"],
       "gallery": [
         {
-          "url": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200",
-          "caption": "Ejemplo de fachada verde en proyecto comercial"
-        },
-        {
-          "url": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200",
-          "caption": "Paneles solares integrados en diseño arquitectónico"
+          "url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=400&fit=crop",
+          "caption": "Ejemplo de arquitectura sostenible moderna"
         }
       ]
     },
     {
-      "id": "2",
-      "title": "Metodologías de Gestión de Proyectos",
-      "slug": "metodologias-gestion-proyectos",
-      "category": "guias-tecnicas",
-      "author_id": "2",
-      "featured_image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800",
-      "featured_image_alt": "Equipo de proyecto planificando con metodología PMI",
-      "excerpt": "Guía práctica para implementar las mejores prácticas del PMI en proyectos de construcción e infraestructura de gran escala en el contexto peruano.",
-      "content": "# Metodologías PMI aplicadas a Proyectos de Gran Escala\n\nLa implementación correcta de metodologías PMI puede significar la diferencia entre el éxito y el fracaso en proyectos de gran escala.\n\n## Fases Críticas del Proyecto\n\n### 1. Iniciación\n- Definición clara del charter del proyecto\n- Identificación de stakeholders clave\n- Análisis de riesgos preliminar\n\n### 2. Planificación\n- **WBS detallado**: Descomposición hasta nivel de paquetes de trabajo\n- **Cronograma crítico**: Identificación de ruta crítica y holguras\n- **Gestión de recursos**: Planificación de equipos especializados\n\n### 3. Ejecución y Control\n- Reuniones de seguimiento semanales\n- Dashboards de KPIs en tiempo real\n- Gestión proactiva de cambios\n\n## Herramientas Especializadas\n\n### Software de Gestión\n- **Primavera P6**: Para cronogramas complejos\n- **MS Project**: Para equipos medianos\n- **Dashboards personalizados**: Reportes ejecutivos\n\n### Metodologías Ágiles\nIntegración de Scrum para equipos de diseño:\n- Sprints de 2-3 semanas\n- Daily standups virtuales\n- Retrospectivas por fase\n\n## Casos de Éxito\n\nEn el proyecto Torre Empresarial San Isidro:\n- **Plazo**: Entregado 2 semanas antes\n- **Presupuesto**: 3% bajo el presupuesto aprobado\n- **Calidad**: Cero punch list items críticos\n\n## Lecciones Aprendidas\n\n1. **Comunicación**: El 70% de los problemas provienen de fallas comunicacionales\n2. **Riesgos**: Identificación temprana reduce impactos en 60%\n3. **Stakeholders**: Engagement constante es crítico para aprobaciones\n\n*Basado en la experiencia de 15 proyectos gestionados con metodología PMI en Métrica DIP.*",
-      "published_date": "2024-01-10T14:30:00Z",
-      "reading_time": 12,
-      "featured": false,
-      "tags": ["PMI", "gestión", "metodología", "planificación"],
-      "seo_description": "Guía práctica para implementar las mejores prácticas del PMI en proyectos de construcción e infraestructura de gran escala.",
-      "url": "/blog/metodologias-pmi-proyectos-gran-escala",
-      "related_articles": ["6", "11", "18"]
+      "id": "art-002", 
+      "title": "Torre San Isidro: Caso de Estudio de Gestión de Proyectos Exitosa",
+      "slug": "torre-san-isidro-caso-estudio-gestion-proyectos",
+      "excerpt": "Análisis detallado de cómo Métrica DIP logró entregar el proyecto Torre San Isidro 2 meses antes de lo programado y 8% bajo presupuesto usando metodologías ágiles.",
+      "content": "# Torre San Isidro: Un Caso de Éxito en Gestión\n\n## El Desafío\n\nTorre San Isidro representaba uno de los proyectos más ambiciosos del distrito financiero: 35 pisos, uso mixto (oficinas y retail), y un presupuesto de $45 millones USD.\n\n### Complejidades Iniciales\n- Terreno irregular con desnivel de 8 metros\n- Restricciones municipales estrictas\n- Timeline agresivo de 24 meses\n- Coordinación con 15 subcontratistas\n\n## Metodología Aplicada\n\n### 1. Implementación de Agile Construction\nAdaptamos metodologías ágiles del desarrollo de software:\n- **Sprints de 2 semanas** para cada fase\n- **Daily standups** con todos los contratistas\n- **Retrospectivas mensuales** para mejora continua\n\n### 2. Tecnología BIM Integrada\n- Modelado 4D con programación temporal\n- Detección temprana de conflictos (clash detection)\n- Realidad virtual para aprobaciones de cliente\n\n### 3. Dashboard en Tiempo Real\nDesarrollamos un sistema de monitoreo que incluía:\n- Avance físico por piso\n- Consumo de materiales vs. presupuesto\n- Indicadores de calidad y seguridad\n\n## Resultados Excepcionales\n\n### Métricas de Éxito\n- ✅ **Entrega anticipada**: 2 meses antes\n- ✅ **Ahorro presupuestal**: 8% ($3.6M)\n- ✅ **Zero accidentes** graves\n- ✅ **98% satisfacción** del cliente\n- ✅ **Certificación LEED Gold**\n\n### Lecciones Aprendidas\n\n1. **Comunicación temprana** es clave\n2. **Tecnología como habilitador**, no como fin\n3. **Equipos multidisciplinarios** toman mejores decisiones\n4. **Métricas en tiempo real** permiten correcciones rápidas\n\n## Impacto en Siguientes Proyectos\n\nEsta experiencia nos permitió:\n- Refinar nuestro modelo de gestión ágil\n- Desarrollar templates reutilizables\n- Entrenar a todo el equipo en nuevas metodologías\n- Establecer nuevos estándares de calidad\n\n*Torre San Isidro no solo fue un proyecto exitoso; fue el laboratorio donde desarrollamos las capacidades que ahora aplicamos en todos nuestros proyectos.*",
+      "featured_image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=400&fit=crop",
+      "featured_image_alt": "Torre moderna en el distrito financiero de San Isidro",
+      "author_id": "author-001",
+      "category_id": "cat-002", 
+      "tags": ["Caso de Estudio", "Gestión de Proyectos", "BIM", "Metodologías Ágiles", "San Isidro"],
+      "featured": true,
+      "reading_time": 8,
+      "published_date": "2024-12-10T14:30:00Z",
+      "seo": {
+        "meta_title": "Torre San Isidro: Caso de Éxito en Gestión de Proyectos",
+        "meta_description": "Descubre cómo Métrica DIP logró entregar Torre San Isidro 2 meses antes y 8% bajo presupuesto usando metodologías ágiles y BIM.",
+        "keywords": ["caso de estudio", "gestión proyectos", "torre san isidro", "construcción", "BIM"],
+        "og_title": "Caso de Éxito: Torre San Isidro", 
+        "og_description": "2 meses antes, 8% bajo presupuesto: la historia detrás del éxito",
+        "og_image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630&fit=crop"
+      },
+      "url": "/blog/casos-estudio/torre-san-isidro-caso-estudio-gestion-proyectos",
+      "related_articles": ["art-001", "art-005"],
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=400&fit=crop",
+          "caption": "Vista aérea del progreso de construcción"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=400&fit=crop", 
+          "caption": "Equipo de trabajo en reunión de coordinación"
+        }
+      ]
     },
     {
-      "id": "3",
-      "title": "Caso de Estudio: Proyecto Ejemplo",
-      "slug": "caso-estudio-proyecto-ejemplo",
-      "category": "casos-estudio",
-      "author_id": "1",
-      "featured_image": "https://metrica-dip.com/images/slider-inicio-es/02.jpg",
-      "featured_image_alt": "Centro Comercial Plaza Norte completado",
-      "excerpt": "Análisis detallado del proyecto Centro Comercial Plaza Norte: desde la planificación inicial hasta la entrega final, incluyendo retos superados y métricas de éxito.",
-      "content": "# Caso de Estudio: Centro Comercial Plaza Norte\n\n**Duración:** 18 meses | **Inversión:** $45M USD | **Área:** 85,000 m²\n\nEl Centro Comercial Plaza Norte representa uno de los proyectos retail más desafiantes ejecutados por Métrica DIP, con múltiples stakeholders y requisitos técnicos complejos.\n\n## Desafíos Principales\n\n### 1. Coordinación Multi-Stakeholder\n- **Mall Plaza (cliente principal)**\n- **20+ tiendas ancla** con requerimientos específicos\n- **Municipalidad** con normativas estrictas\n- **Comunidad local** con preocupaciones de tráfico\n\n### 2. Complejidad Técnica\n- Sistema de climatización para 85,000 m²\n- Instalaciones eléctricas de alta potencia\n- Sistema contra incendios especializado\n- Estructura para cines con requisitos acústicos\n\n## Estrategias Implementadas\n\n### Gestión de Stakeholders\n- **Reuniones semanales** con comité directivo\n- **Portal colaborativo** para seguimiento en tiempo real\n- **Comunicación proactiva** con autoridades municipales\n\n### Innovaciones Técnicas\n- **Modelado BIM 5D** para optimización de costos\n- **Instalación modular** para reducir tiempos\n- **Sistemas prefabricados** en áreas críticas\n\n## Métricas de Éxito\n\n### Cronograma\n- **Planificado:** 20 meses\n- **Ejecutado:** 18 meses\n- **Adelanto:** 10% (2 meses)\n\n### Presupuesto\n- **Aprobado:** $45M USD\n- **Final:** $44.1M USD\n- **Ahorro:** 2% ($900K USD)\n\n### Calidad\n- **Punch list items:** 23 (industry average: 50+)\n- **Reinspecciones:** 3% (industry average: 8%)\n- **Client satisfaction:** 9.2/10\n\n## Lecciones Aprendidas\n\n### 1. Comunicación Temprana\nLa identificación temprana de todos los stakeholders y sus expectativas fue crucial. Establecimos un protocolo de comunicación desde la fase de diseño.\n\n### 2. Flexibilidad en Ejecución\nMantener flexibilidad para cambios de último minuto de tiendas ancla sin impactar el cronograma crítico.\n\n### 3. Tecnología como Diferenciador\nEl uso de BIM 5D nos permitió identificar conflictos 3 meses antes de la construcción, evitando retrabajos costosos.\n\n## Impacto Post-Entrega\n\n- **Ocupancy rate:** 98% al año de apertura\n- **Foot traffic:** 2.5M visitantes/mes\n- **Tenant satisfaction:** 9.0/10\n- **Community impact:** 2,500 empleos directos creados\n\n## Testimonios\n\n> \"El equipo de Métrica DIP demostró un nivel de profesionalismo y coordinación excepcional. La entrega adelantada nos permitió acelerar nuestra estrategia de apertura.\" \n> — **Patricia Morales, Project Manager, Mall Plaza**\n\n*Este caso de estudio fue desarrollado con datos reales del proyecto ejecutado entre 2022-2023.*",
-      "published_date": "2024-01-05T09:15:00Z",
-      "reading_time": 15,
-      "featured": true,
-      "tags": ["caso estudio", "retail", "gestión", "éxito"],
-      "seo_description": "Análisis detallado del proyecto Centro Comercial Plaza Norte: retos superados, métricas de éxito y lecciones aprendidas.",
-      "url": "/blog/caso-estudio-centro-comercial-plaza-norte",
-      "related_articles": ["1", "5", "9"]
+      "id": "art-003",
+      "title": "Guía Completa: Certificación LEED paso a paso en Perú",
+      "slug": "guia-completa-certificacion-leed-peru",
+      "excerpt": "Todo lo que necesitas saber para obtener la certificación LEED en Perú: requisitos, procesos, costos y timeline realista basado en nuestra experiencia con 12+ proyectos certificados.",
+      "content": "# Certificación LEED en Perú: Guía Práctica 2024\n\n## ¿Qué es LEED?\n\nLEED (Leadership in Energy and Environmental Design) es el sistema de certificación de edificios verdes más reconocido mundialmente. En Perú, la demanda ha crecido 200% en los últimos 3 años.\n\n## Niveles de Certificación\n\n| Nivel | Puntos Requeridos | % de Proyectos en Perú |\n|-------|------------------|------------------------|\n| Certified | 40-49 puntos | 45% |\n| Silver | 50-59 puntos | 35% |\n| Gold | 60-79 puntos | 18% |\n| Platinum | 80+ puntos | 2% |\n\n## Proceso Paso a Paso\n\n### Fase 1: Planificación (Meses 1-2)\n\n#### 1.1 Evaluación de Viabilidad\n- **Análisis costo-beneficio**\n- **Definición de nivel objetivo**\n- **Selección del equipo LEED**\n\n#### 1.2 Registro del Proyecto\n- Costo: $1,200 - $6,000 USD según tamaño\n- Documentación requerida:\n  - Planos arquitectónicos\n  - Especificaciones técnicas\n  - Cronograma de construcción\n\n### Fase 2: Diseño (Meses 3-8)\n\n#### 2.1 Estrategias de Sitio Sostenible (SS)\n- Selección del sitio\n- Conectividad y transporte\n- Manejo de aguas pluviales\n- Efecto isla de calor\n\n#### 2.2 Eficiencia en Agua (WE)\n- Reducción del 20% en consumo\n- Paisajismo eficiente\n- Tecnologías innovadoras\n\n#### 2.3 Energía y Atmósfera (EA)\n- Modelado energético\n- Sistemas HVAC eficientes\n- Energías renovables\n- Monitoreo y comisionado\n\n#### 2.4 Materiales y Recursos (MR)\n- 75% de residuos desviados del relleno sanitario\n- Contenido reciclado mínimo 20%\n- Materiales regionales (radio 800 km)\n\n#### 2.5 Calidad Ambiental Interior (IEQ)\n- Control de contaminantes\n- Confort térmico\n- Calidad del aire\n- Luz natural y vistas\n\n### Fase 3: Construcción (Durante Obra)\n\n#### Documentación Crítica\n- **Fotos de progreso** semanales\n- **Facturas de materiales** con especificaciones\n- **Reportes de residuos** con certificados de reciclaje\n- **Pruebas de calidad de aire**\n\n### Fase 4: Comisionado (Últimos 3 meses)\n\n#### Pruebas Requeridas\n- Sistemas HVAC\n- Iluminación y controles\n- Sistemas de agua\n- Envolvente del edificio\n\n## Costos Típicos en Perú\n\n### Costos de Certificación\n| Concepto | Rango USD |\n|----------|----------|\n| Registro USGBC | $1,200 - $6,000 |\n| Consultor LEED | $8,000 - $25,000 |\n| Comisionado | $5,000 - $15,000 |\n| Pruebas y ensayos | $3,000 - $8,000 |\n| **Total** | **$17,200 - $54,000** |\n\n### Sobrecostos de Construcción\n- **Certified/Silver**: 0-3% del costo total\n- **Gold**: 3-5% del costo total\n- **Platinum**: 5-8% del costo total\n\n## Timeline Realista\n\n```\nMes 1-2:   Planificación y registro\nMes 3-8:   Diseño integrado\nMes 9-18:  Construcción con documentación\nMes 19-21: Comisionado y pruebas\nMes 22-24: Envío y revisión USGBC\n```\n\n## Errores Comunes a Evitar\n\n### ❌ No Hacer\n1. **Decidir LEED después del diseño**\n2. **Subestimar la documentación**\n3. **No involucrar a subcontratistas**\n4. **Cambios de último minuto**\n\n### ✅ Mejores Prácticas\n1. **Integrar LEED desde el conceptual**\n2. **Asignar responsable LEED tiempo completo**\n3. **Capacitar a todo el equipo**\n4. **Documentar desde el día 1**\n\n## Proveedores Locales Recomendados\n\n### Materiales Sustentables\n- **Cemento**: Cementos Lima (contenido reciclado)\n- **Acero**: Aceros Arequipa (certificación reciclado)\n- **Vidrio**: Guardian Glass (doble vidriado hermético)\n\n### Consultores Especializados\n- Consultor LEED AP certificado\n- Comisionado independiente\n- Modelador energético\n\n## ROI de la Certificación LEED\n\n### Beneficios Económicos\n- **15-25% ahorro** en costos operativos\n- **5-10% premium** en valor de renta\n- **3-7% premium** en valor de venta\n- **Incentivos fiscales** municipales\n\n### Beneficios Intangibles\n- **Reconocimiento de marca**\n- **Atracción de talento**\n- **Responsabilidad social corporativa**\n- **Diferenciación competitiva**\n\n## Contacto para Asesoría\n\n¿Estás considerando LEED para tu próximo proyecto? En Métrica DIP hemos certificado 12+ proyectos LEED en Perú. \n\n**[Solicita una consulta gratuita](/contact)** y te ayudamos a evaluar la viabilidad de tu proyecto.",
+      "featured_image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop",
+      "featured_image_alt": "Edificio certificado LEED con características sostenibles",
+      "author_id": "author-002",
+      "category_id": "cat-003",
+      "tags": ["LEED", "Certificación", "Sostenibilidad", "Guía", "Perú"],
+      "featured": false,
+      "reading_time": 12,
+      "published_date": "2024-12-05T09:15:00Z",
+      "seo": {
+        "meta_title": "Guía LEED Perú 2024: Certificación paso a paso",
+        "meta_description": "Guía completa para certificación LEED en Perú: procesos, costos, timeline y mejores prácticas basadas en 12+ proyectos exitosos.",
+        "keywords": ["LEED Peru", "certificación LEED", "construcción sostenible", "guía LEED"],
+        "og_title": "Guía Definitiva: Certificación LEED en Perú",
+        "og_description": "Todo lo que necesitas saber para certificar tu proyecto LEED en Perú",
+        "og_image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=630&fit=crop"
+      },
+      "url": "/blog/guias-tecnicas/guia-completa-certificacion-leed-peru",
+      "related_articles": ["art-001", "art-004"],
+      "gallery": []
     }
   ],
   "metadata": {
     "total_authors": 5,
-    "total_categories": 4,
-    "total_articles": 26,
-    "featured_authors": 3,
-    "featured_categories": 3,
-    "last_updated": "2025-01-01T00:00:00Z",
-    "total_reading_time": 198,
-    "average_reading_time": 8,
-    "featured_articles": 8,
-    "total_words": 24750
+    "total_categories": 4, 
+    "total_articles": 3,
+    "last_updated": "2024-12-15T10:00:00Z",
+    "average_reading_time": 9
   }
 }

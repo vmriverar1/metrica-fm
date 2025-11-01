@@ -1,0 +1,106 @@
+{
+  "name": "Métrica DIP - Ingeniería y Construcción",
+  "short_name": "Métrica DIP",
+  "description": "Gerencia de proyectos, supervisión de obras y desarrollo de ingeniería en Perú",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#003F6F",
+  "theme_color": "#E84E0F",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "utilities"],
+  "scope": "/",
+  "lang": "es-PE",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Portfolio",
+      "short_name": "Portfolio",
+      "description": "Ver proyectos de construcción",
+      "url": "/portfolio",
+      "icons": [
+        {
+          "src": "/icons/portfolio-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "short_name": "Admin",
+      "description": "Panel administrativo",
+      "url": "/admin",
+      "icons": [
+        {
+          "src": "/icons/admin-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-mobile.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Página principal en móvil"
+    },
+    {
+      "src": "/screenshots/portfolio-desktop.svg",
+      "sizes": "1920x1080",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Portfolio en escritorio"
+    }
+  ]
+}

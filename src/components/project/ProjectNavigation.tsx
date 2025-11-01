@@ -111,11 +111,21 @@ export default function ProjectNavigation({ currentProject }: ProjectNavigationP
             
             {/* Metadata */}
             <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-              <span>{project.location.city}</span>
-              <span>•</span>
-              <span>{project.completedAt.getFullYear()}</span>
-              <span>•</span>
-              <span>{project.details.area}</span>
+              {project.location.city && (
+                <>
+                  <span>{project.location.city}</span>
+                  <span>•</span>
+                </>
+              )}
+              {project.completedAt && (
+                <>
+                  <span>{project.completedAt.getFullYear()}</span>
+                  <span>•</span>
+                </>
+              )}
+              {project.details.area && (
+                <span>{project.details.area}</span>
+              )}
             </div>
           </div>
         </div>

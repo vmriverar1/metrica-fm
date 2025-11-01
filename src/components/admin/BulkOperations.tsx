@@ -586,7 +586,7 @@ const BulkOperations: React.FC<BulkOperationsProps> = ({
                     <SelectValue placeholder="Seleccionar operación..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {operations.map(operation => (
+                    {operations.filter(operation => operation.id && operation.id.trim()).map(operation => (
                       <SelectItem key={operation.id} value={operation.id}>
                         <div className="flex items-center gap-2">
                           <operation.icon className="h-4 w-4" />

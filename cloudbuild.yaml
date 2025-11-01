@@ -1,0 +1,26 @@
+steps:
+  # Instalar dependencias
+  - name: 'node:20-alpine'
+    entrypoint: npm
+    args: ['ci', '--production=false']
+    
+  # Build con nuestro script personalizado
+  - name: 'node:20-alpine' 
+    entrypoint: bash
+    args: ['./gcp-build.sh']
+    
+  # Comprimir archivos de build
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo "Build completed successfully"
+        ls -la .next/
+        ls -la public/sw.js || echo "Warning: PWA service worker not found"
+
+# Configuración de timeout y opciones
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_STANDARD_2'
+timeout: '1200s'

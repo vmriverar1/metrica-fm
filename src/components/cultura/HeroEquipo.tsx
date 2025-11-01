@@ -3,15 +3,17 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
+import VideoWithFallback from '@/components/ui/VideoWithFallback';
 
 interface HeroEquipoProps {
   title: string;
   subtitle: string;
   backgroundImage?: string;
+  backgroundVideo?: string;
   teamImages?: string[][];
 }
 
-export default function HeroEquipo({ title, subtitle, backgroundImage, teamImages }: HeroEquipoProps) {
+export default function HeroEquipo({ title, subtitle, backgroundImage, backgroundVideo, teamImages }: HeroEquipoProps) {
   // Fallback a imágenes por defecto si no se proporcionan desde JSON
   const defaultTeamImages = [
     // Columna 1
@@ -34,7 +36,23 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
     ],
   ];
   
-  const finalTeamImages = teamImages || defaultTeamImages;
+  // Ensure teamImages is properly formatted as array of arrays
+  const finalTeamImages = React.useMemo(() => {
+    if (!teamImages || !Array.isArray(teamImages)) {
+      return defaultTeamImages;
+    }
+
+    // Validate that each item in teamImages is an array
+    const validatedColumns = teamImages.map((column, index) => {
+      if (!Array.isArray(column)) {
+        console.warn(`Team images column ${index} is not an array, using default column`);
+        return defaultTeamImages[index] || defaultTeamImages[0] || [];
+      }
+      return column;
+    });
+
+    return validatedColumns.length > 0 ? validatedColumns : defaultTeamImages;
+  }, [teamImages]);
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -135,9 +153,11 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
 
   return (
     <div ref={containerRef} className="hero-equipo-container">
+      {/* Fondo azul sólido - sin imagen de fondo para cultura */}
+      <div className="hero-cultura-background" />
 
-      {/* Overlay con gradiente */}
-      <div className="hero-overlay" />
+      {/* Overlay con gradiente específico para cultura */}
+      <div className="hero-cultura-overlay" />
 
       {/* Galería de imágenes */}
       <div ref={galleryRef} className="gallery">
@@ -188,6 +208,31 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
         }
 
 
+        .hero-cultura-background {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            135deg,
+            #003f6f 0%,
+            #004d8a 30%,
+            #0056a0 70%,
+            #005ca8 100%
+          );
+          z-index: 1;
+        }
+
+        .hero-cultura-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(0, 63, 111, 0.05) 0%,
+            rgba(0, 77, 138, 0.1) 50%,
+            rgba(0, 92, 168, 0.05) 100%
+          );
+          z-index: 2;
+        }
+
         .hero-overlay {
           position: absolute;
           inset: 0;
@@ -195,7 +240,7 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
             135deg,
             rgba(0, 63, 111, 0.1) 0%,
             rgba(0, 63, 111, 0.3) 50%,
-            rgba(0, 123, 196, 0.2) 100%
+            rgba(0, 168, 232, 0.2) 100%
           );
           z-index: 2;
         }
@@ -208,13 +253,13 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
           justify-content: space-between;
           z-index: 3;
           overflow: hidden;
-          opacity: 0.3;
+          opacity: 0.6;
           padding: 0;
         }
 
         @media (max-width: 768px) {
           .gallery {
-            opacity: 0.2;
+            opacity: 0.4;
           }
         }
 
@@ -265,8 +310,8 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, teamImage
 
         .image:hover img {
           box-shadow: 
-            0 8px 16px rgba(0, 123, 196, 0.3),
-            0 16px 32px rgba(0, 123, 196, 0.2);
+            0 8px 16px rgba(0, 168, 232, 0.3),
+            0 16px 32px rgba(0, 168, 232, 0.2);
         }
 
         .hero-content {

@@ -1,0 +1,1472 @@
+{
+  "categories": [
+    {
+      "id": "industria",
+      "name": "INDUSTRIA",
+      "slug": "industria",
+      "description": "Proyectos industriales, logísticos y de manufactura que optimizan procesos productivos",
+      "icon": "Factory",
+      "color": "#E84E0F",
+      "featured_image": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/vista-aerea-01.jpg",
+      "projects_count": 12,
+      "total_investment": "$180M USD",
+      "total_area": "108,300 m²",
+      "featured": true,
+      "order": 1,
+      "projects": [
+        {
+          "id": "b500-b400-b600",
+          "name": "B500 - B400 - B600",
+          "category": "industria",
+          "description": "Complejo industrial de múltiples naves para operaciones logísticas y manufactureras.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Grupo Industrial Lima",
+          "services": ["Diseño Industrial", "Construcción", "Supervisión"],
+          "area": "8,500 m²",
+          "budget": "$12,800,000",
+          "duration": "18 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/B500 - B400 - B600/nave-b500-01.jpg",
+              "alt": "Vista exterior de la nave B500",
+              "title": "Nave B500 - Exterior",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/B500 - B400 - B600/nave-b400-01.jpg",
+              "alt": "Interior de la nave B400",
+              "title": "Nave B400 - Interior",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/B500 - B400 - B600/nave-b600-01.jpg",
+              "alt": "Vista de la nave B600",
+              "title": "Nave B600",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/B500 - B400 - B600/area-carga-01.jpg",
+              "alt": "Área de carga y descarga",
+              "title": "Zona de carga",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/B500 - B400 - B600/oficinas-admin-01.jpg",
+              "alt": "Oficinas administrativas",
+              "title": "Oficinas administrativas",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "epc-centro-distribucion-lurin",
+          "name": "EPC - Centro de Distribución Lurín INCOMEX",
+          "category": "industria",
+          "description": "Centro de distribución de última generación para optimizar la cadena de suministro.",
+          "location": "Lurín, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "INCOMEX",
+          "services": ["EPC", "Logística", "Automatización"],
+          "area": "12,000 m²",
+          "budget": "$18,500,000",
+          "duration": "22 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/exterior-centro-01.jpg",
+              "alt": "Exterior del centro de distribución",
+              "title": "Centro de Distribución INCOMEX",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/almacen-principal-01.jpg",
+              "alt": "Almacén principal",
+              "title": "Almacén Principal",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/muelles-carga-01.jpg",
+              "alt": "Muelles de carga",
+              "title": "Muelles de Carga",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/oficinas-operativas-01.jpg",
+              "alt": "Oficinas operativas",
+              "title": "Oficinas Operativas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/sistema-automatizado-01.jpg",
+              "alt": "Sistema automatizado",
+              "title": "Sistema Automatizado",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/EPC - Centro de Distribución Lurin INCOMEX/area-picking-01.jpg",
+              "alt": "Área de picking",
+              "title": "Área de Picking",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "latam-airl",
+          "name": "Latam Airlines",
+          "category": "industria",
+          "description": "Instalaciones especializadas para operaciones aeroportuarias de LATAM Airlines.",
+          "location": "Callao, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "LATAM Airlines",
+          "services": ["Construcción Aeroportuaria", "Instalaciones Especiales"],
+          "area": "5,800 m²",
+          "budget": "$8,900,000",
+          "duration": "16 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam Airl/hangar-principal-01.jpg",
+              "alt": "Hangar principal de LATAM",
+              "title": "Hangar Principal",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam Airl/oficinas-operaciones-01.jpg",
+              "alt": "Oficinas de operaciones",
+              "title": "Oficinas de Operaciones",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam Airl/area-mantenimiento-01.jpg",
+              "alt": "Área de mantenimiento",
+              "title": "Área de Mantenimiento",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam Airl/sala-control-01.jpg",
+              "alt": "Sala de control",
+              "title": "Sala de Control",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam Airl/almacen-repuestos-01.jpg",
+              "alt": "Almacén de repuestos",
+              "title": "Almacén de Repuestos",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "latam-b600-b400",
+          "name": "Latam B600 - B400",
+          "category": "industria",
+          "description": "Expansión de instalaciones industriales para LATAM con naves B600 y B400.",
+          "location": "Callao, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "LATAM Airlines",
+          "services": ["Expansión Industrial", "Ingeniería"],
+          "area": "7,200 m²",
+          "budget": "$11,200,000",
+          "duration": "20 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam B600 - B400_/nave-b600-exterior-01.jpg",
+              "alt": "Exterior de la nave B600",
+              "title": "Nave B600 - Exterior",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam B600 - B400_/nave-b400-interior-01.jpg",
+              "alt": "Interior de la nave B400",
+              "title": "Nave B400 - Interior",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam B600 - B400_/conexion-naves-01.jpg",
+              "alt": "Conexión entre naves",
+              "title": "Conexión de Naves",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam B600 - B400_/area-operaciones-01.jpg",
+              "alt": "Área de operaciones",
+              "title": "Área de Operaciones",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Latam B600 - B400_/sistema-ventilacion-01.jpg",
+              "alt": "Sistema de ventilación",
+              "title": "Sistema de Ventilación",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "madam-tussauds",
+          "name": "Madame Tussauds",
+          "category": "industria",
+          "description": "Instalaciones especiales para el museo de cera Madame Tussauds.",
+          "location": "Lima, Perú",
+          "year": "2022",
+          "status": "completado",
+          "client": "Madame Tussauds",
+          "services": ["Construcción Especializada", "Climatización", "Museografía"],
+          "area": "2,800 m²",
+          "budget": "$4,200,000",
+          "duration": "14 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/entrada-principal-01.jpg",
+              "alt": "Entrada principal del museo",
+              "title": "Entrada Principal",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/sala-exposicion-01.jpg",
+              "alt": "Sala de exposición",
+              "title": "Sala de Exposición",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/sistema-clima-01.jpg",
+              "alt": "Sistema de climatización",
+              "title": "Sistema de Clima",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/iluminacion-especial-01.jpg",
+              "alt": "Iluminación especializada",
+              "title": "Iluminación Especial",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/area-talleres-01.jpg",
+              "alt": "Área de talleres",
+              "title": "Área de Talleres",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Madam tussan/recorrido-turistico-01.jpg",
+              "alt": "Recorrido turístico",
+              "title": "Recorrido Turístico",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "nave-b300",
+          "name": "Nave B300",
+          "category": "industria",
+          "description": "Nave industrial B300 para operaciones manufactureras de gran escala.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Industrial B300 SAC",
+          "services": ["Construcción Industrial", "Manufactura"],
+          "area": "4,200 m²",
+          "budget": "$6,300,000",
+          "duration": "12 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Nave B300/exterior-nave-01.jpg",
+              "alt": "Exterior de la nave B300",
+              "title": "Nave B300 - Exterior",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Nave B300/interior-manufactura-01.jpg",
+              "alt": "Interior para manufactura",
+              "title": "Interior de Manufactura",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Nave B300/linea-produccion-01.jpg",
+              "alt": "Línea de producción",
+              "title": "Línea de Producción",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Nave B300/oficinas-supervision-01.jpg",
+              "alt": "Oficinas de supervisión",
+              "title": "Oficinas de Supervisión",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Nave B300/area-almacenaje-01.jpg",
+              "alt": "Área de almacenaje",
+              "title": "Área de Almacenaje",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "parque-lima-sur-lpa",
+          "name": "Parque Lima Sur (Cliente LPA)",
+          "category": "industria",
+          "description": "Desarrollo del parque industrial Lima Sur en colaboración con LPA.",
+          "location": "Lima Sur, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "LPA",
+          "services": ["Desarrollo Industrial", "Masterplan", "Infraestructura"],
+          "area": "15,000 m²",
+          "budget": "$22,500,000",
+          "duration": "30 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/masterplan-01.jpg",
+              "alt": "Masterplan del parque industrial",
+              "title": "Masterplan",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/acceso-principal-01.jpg",
+              "alt": "Acceso principal del parque",
+              "title": "Acceso Principal",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/naves-industriales-01.jpg",
+              "alt": "Naves industriales",
+              "title": "Naves Industriales",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/areas-verdes-01.jpg",
+              "alt": "Áreas verdes del complejo",
+              "title": "Áreas Verdes",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/servicios-generales-01.jpg",
+              "alt": "Servicios generales",
+              "title": "Servicios Generales",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "parque-logistico-callao",
+          "name": "Parque Logístico Callao",
+          "category": "industria",
+          "description": "Gran complejo logístico estratégicamente ubicado en el puerto del Callao.",
+          "location": "Callao, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "Callao Port Authority",
+          "services": ["Logística Portuaria", "Infraestructura", "Automatización"],
+          "area": "20,000 m²",
+          "budget": "$35,000,000",
+          "duration": "36 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/vista-aerea-01.jpg",
+              "alt": "Vista aérea del parque logístico",
+              "title": "Vista Aérea del Complejo",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/terminal-carga-01.jpg",
+              "alt": "Terminal de carga",
+              "title": "Terminal de Carga",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/almacenes-frio-01.jpg",
+              "alt": "Almacenes frigoríficos",
+              "title": "Almacenes Frigoríficos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/oficinas-administrativas-01.jpg",
+              "alt": "Oficinas administrativas",
+              "title": "Oficinas Administrativas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/area-contenedores-01.jpg",
+              "alt": "Área de contenedores",
+              "title": "Área de Contenedores",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/PARQUE LOGISTICO CALLAO/conexion-puerto-01.jpg",
+              "alt": "Conexión con el puerto",
+              "title": "Conexión Portuaria",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "planta-bimbo",
+          "name": "Planta Bimbo",
+          "category": "industria",
+          "description": "Instalaciones de producción y distribución para la empresa Bimbo.",
+          "location": "Lima, Perú",
+          "year": "2022",
+          "status": "completado",
+          "client": "Bimbo",
+          "services": ["Industria Alimentaria", "Producción", "Distribución"],
+          "area": "6,500 m²",
+          "budget": "$9,750,000",
+          "duration": "16 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Planta Bimbo/fachada-corporativa-01.jpg",
+              "alt": "Fachada corporativa de Bimbo",
+              "title": "Fachada Corporativa",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Planta Bimbo/linea-produccion-01.jpg",
+              "alt": "Línea de producción",
+              "title": "Línea de Producción",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Planta Bimbo/area-hornos-01.jpg",
+              "alt": "Área de hornos industriales",
+              "title": "Área de Hornos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Planta Bimbo/almacen-productos-01.jpg",
+              "alt": "Almacén de productos terminados",
+              "title": "Almacén de Productos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Planta Bimbo/laboratorio-calidad-01.jpg",
+              "alt": "Laboratorio de control de calidad",
+              "title": "Laboratorio de Calidad",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "simetrica",
+          "name": "SIMETRICA",
+          "category": "industria",
+          "description": "Proyecto especializado de ingeniería estructural y arquitectónica.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "SIMETRICA",
+          "services": ["Ingeniería Estructural", "Arquitectura Especializada"],
+          "area": "3,500 m²",
+          "budget": "$5,250,000",
+          "duration": "14 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/SIMETRICA/estructura-metalica-01.jpg",
+              "alt": "Estructura metálica principal",
+              "title": "Estructura Metálica",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/SIMETRICA/detalle-conexiones-01.jpg",
+              "alt": "Detalle de conexiones estructurales",
+              "title": "Detalle de Conexiones",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/SIMETRICA/montaje-estructural-01.jpg",
+              "alt": "Montaje de estructura",
+              "title": "Montaje Estructural",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/SIMETRICA/acabados-finales-01.jpg",
+              "alt": "Acabados finales",
+              "title": "Acabados Finales",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/SIMETRICA/control-calidad-01.jpg",
+              "alt": "Control de calidad",
+              "title": "Control de Calidad",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "starbucks-garzon",
+          "name": "Starbucks Garzón",
+          "category": "industria",
+          "description": "Instalaciones comerciales para Starbucks con diseño corporativo especializado.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Starbucks",
+          "services": ["Construcción Comercial", "Diseño Corporativo"],
+          "area": "350 m²",
+          "budget": "$525,000",
+          "duration": "6 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/INDUSTRIA/Starbucks Garzon/fachada-starbucks-01.jpg",
+              "alt": "Fachada de Starbucks",
+              "title": "Fachada Starbucks",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Starbucks Garzon/interior-cafe-01.jpg",
+              "alt": "Interior del café",
+              "title": "Interior del Café",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Starbucks Garzon/barra-servicio-01.jpg",
+              "alt": "Barra de servicio",
+              "title": "Barra de Servicio",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Starbucks Garzon/area-clientes-01.jpg",
+              "alt": "Área de clientes",
+              "title": "Área de Clientes",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/INDUSTRIA/Starbucks Garzon/cocina-comercial-01.jpg",
+              "alt": "Cocina comercial",
+              "title": "Cocina Comercial",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "educacion",
+      "name": "EDUCACIÓN",
+      "slug": "educacion",
+      "description": "Proyectos educativos, colegios, universidades e instituciones de formación",
+      "icon": "GraduationCap",
+      "color": "#003F6F",
+      "featured_image": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/exterior-01.jpg",
+      "projects_count": 4,
+      "total_investment": "$28M USD",
+      "total_area": "8,300 m²",
+      "featured": true,
+      "order": 2,
+      "projects": [
+        {
+          "id": "ampliacion-colegio-aleph",
+          "name": "Ampliación Colegio Aleph (Grupo Delosi)",
+          "category": "educacion",
+          "description": "Proyecto de ampliación de instalaciones educativas para el Colegio Aleph, desarrollado en colaboración con el Grupo Delosi.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Grupo Delosi",
+          "services": ["Arquitectura Educativa", "Construcción", "Supervisión"],
+          "area": "2,500 m²",
+          "budget": "$3,750,000",
+          "duration": "14 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/exterior-01.jpg",
+              "alt": "Vista exterior del colegio ampliado",
+              "title": "Exterior del Colegio",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/aulas-01.jpg",
+              "alt": "Nuevas aulas equipadas",
+              "title": "Aulas Modernas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/laboratorio-01.jpg",
+              "alt": "Laboratorio de ciencias",
+              "title": "Laboratorio de Ciencias",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/biblioteca-01.jpg",
+              "alt": "Biblioteca moderna",
+              "title": "Biblioteca",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Ampliación Colegio Aleph (grupo Delosi)/patio-01.jpg",
+              "alt": "Patio de recreo",
+              "title": "Patio de Recreo",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "cibertec",
+          "name": "Cibertec",
+          "category": "educacion",
+          "description": "Instalaciones modernas para el instituto de educación superior tecnológica Cibertec.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Cibertec",
+          "services": ["Educación Superior", "Tecnología", "Laboratorios"],
+          "area": "3,200 m²",
+          "budget": "$9,600,000",
+          "duration": "18 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/fachada-principal-01.jpg",
+              "alt": "Fachada principal de Cibertec",
+              "title": "Fachada Principal",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/laboratorio-computo-01.jpg",
+              "alt": "Laboratorio de cómputo",
+              "title": "Laboratorio de Cómputo",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/aula-magna-01.jpg",
+              "alt": "Aula magna para eventos",
+              "title": "Aula Magna",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/biblioteca-digital-01.jpg",
+              "alt": "Biblioteca digital",
+              "title": "Biblioteca Digital",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/cafeteria-01.jpg",
+              "alt": "Cafetería estudiantil",
+              "title": "Cafetería",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Cibertec/acceso-principal-01.jpg",
+              "alt": "Acceso principal",
+              "title": "Acceso Principal",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "innova",
+          "name": "Innova",
+          "category": "educacion",
+          "description": "Centro de innovación y desarrollo educativo con tecnología de vanguardia.",
+          "location": "Lima, Perú",
+          "year": "2022",
+          "status": "completado",
+          "client": "Innova",
+          "services": ["Centro de Innovación", "Educación", "Tecnología"],
+          "area": "1,800 m²",
+          "budget": "$5,400,000",
+          "duration": "12 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Innova/exterior-innovacion-01.jpg",
+              "alt": "Exterior del centro de innovación",
+              "title": "Centro de Innovación",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Innova/sala-conferencias-01.jpg",
+              "alt": "Sala de conferencias",
+              "title": "Sala de Conferencias",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Innova/laboratorio-digital-01.jpg",
+              "alt": "Laboratorio digital",
+              "title": "Laboratorio Digital",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Innova/coworking-01.jpg",
+              "alt": "Espacio de coworking",
+              "title": "Espacio Coworking",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Innova/recepcion-01.jpg",
+              "alt": "Área de recepción",
+              "title": "Recepción",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "nido-casa-amarilla-aleph",
+          "name": "Nido Casa Amarilla ALEPH",
+          "category": "educacion",
+          "description": "Centro de educación inicial con diseño especializado para el desarrollo infantil.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "ALEPH",
+          "services": ["Educación Inicial", "Diseño Infantil", "Seguridad"],
+          "area": "800 m²",
+          "budget": "$1,200,000",
+          "duration": "8 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/fachada-colorida-01.jpg",
+              "alt": "Fachada colorida del nido",
+              "title": "Fachada Colorida",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/salon-juegos-01.jpg",
+              "alt": "Salón de juegos",
+              "title": "Salón de Juegos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/patio-recreo-01.jpg",
+              "alt": "Patio de recreo",
+              "title": "Patio de Recreo",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/aula-inicial-01.jpg",
+              "alt": "Aula para educación inicial",
+              "title": "Aula Inicial",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/area-descanso-01.jpg",
+              "alt": "Área de descanso",
+              "title": "Área de Descanso",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/EDUCACIÓN/Nido casa amarilla ALEPH/cocina-01.jpg",
+              "alt": "Cocina institucional",
+              "title": "Cocina",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retail",
+      "name": "RETAIL",
+      "slug": "retail",
+      "description": "Centros comerciales, tiendas y espacios de venta que crean experiencias excepcionales",
+      "icon": "ShoppingBag",
+      "color": "#9D9D9C",
+      "featured_image": "/images/proyectos/RETAIL/Boulevard Asia/fachada-boulevard-01.jpg",
+      "projects_count": 8,
+      "total_investment": "$72M USD",
+      "total_area": "17,680 m²",
+      "featured": true,
+      "order": 3,
+      "projects": [
+        {
+          "id": "ampliacion-td6-jockey",
+          "name": "Ampliación TD6 (Jockey Plaza)",
+          "category": "retail",
+          "description": "Ampliación del centro comercial Jockey Plaza, tienda TD6.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Jockey Plaza",
+          "services": ["Ampliación Comercial", "Retail", "Construcción"],
+          "area": "2,800 m²",
+          "budget": "$4,200,000",
+          "duration": "10 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Ampliación TD6 (Jockey Plaza)/nueva-fachada-01.jpg",
+              "alt": "Nueva fachada de TD6",
+              "title": "Nueva Fachada",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Ampliación TD6 (Jockey Plaza)/interior-tienda-01.jpg",
+              "alt": "Interior de la tienda",
+              "title": "Interior de Tienda",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Ampliación TD6 (Jockey Plaza)/escaleras-mecanicas-01.jpg",
+              "alt": "Escaleras mecánicas",
+              "title": "Escaleras Mecánicas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Ampliación TD6 (Jockey Plaza)/plaza-comidas-01.jpg",
+              "alt": "Plaza de comidas",
+              "title": "Plaza de Comidas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Ampliación TD6 (Jockey Plaza)/area-entretenimiento-01.jpg",
+              "alt": "Área de entretenimiento",
+              "title": "Área de Entretenimiento",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "boulevard-asia",
+          "name": "Boulevard Asia",
+          "category": "retail",
+          "description": "Centro comercial y de entretenimiento Boulevard Asia.",
+          "location": "Asia, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "Boulevard Asia Development",
+          "services": ["Centro Comercial", "Entretenimiento", "Turismo"],
+          "area": "4,500 m²",
+          "budget": "$13,500,000",
+          "duration": "20 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/fachada-boulevard-01.jpg",
+              "alt": "Fachada del Boulevard Asia",
+              "title": "Fachada Boulevard",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/paseo-central-01.jpg",
+              "alt": "Paseo central del boulevard",
+              "title": "Paseo Central",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/locales-comerciales-01.jpg",
+              "alt": "Locales comerciales",
+              "title": "Locales Comerciales",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/area-eventos-01.jpg",
+              "alt": "Área para eventos",
+              "title": "Área de Eventos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/estacionamiento-01.jpg",
+              "alt": "Estacionamiento",
+              "title": "Estacionamiento",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Boulevard Asia/zona-gastronomica-01.jpg",
+              "alt": "Zona gastronómica",
+              "title": "Zona Gastronómica",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "chillis-open-plaza-angamos",
+          "name": "Chili's Open Plaza Angamos",
+          "category": "retail",
+          "description": "Restaurante Chili's en el centro comercial Open Plaza Angamos.",
+          "location": "Lima, Perú",
+          "year": "2022",
+          "status": "completado",
+          "client": "Chili's",
+          "services": ["Restaurante", "Gastronomía", "Diseño Comercial"],
+          "area": "420 m²",
+          "budget": "$630,000",
+          "duration": "5 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Chillis opne plaza angamos/fachada-chillis-01.jpg",
+              "alt": "Fachada de Chili's",
+              "title": "Fachada Chili's",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Chillis opne plaza angamos/interior-restaurante-01.jpg",
+              "alt": "Interior del restaurante",
+              "title": "Interior del Restaurante",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Chillis opne plaza angamos/cocina-abierta-01.jpg",
+              "alt": "Cocina abierta",
+              "title": "Cocina Abierta",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Chillis opne plaza angamos/area-bar-01.jpg",
+              "alt": "Área del bar",
+              "title": "Área del Bar",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Chillis opne plaza angamos/mesas-familiares-01.jpg",
+              "alt": "Mesas familiares",
+              "title": "Mesas Familiares",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "jockey-plaza",
+          "name": "Jockey Plaza",
+          "category": "retail",
+          "description": "Remodelaciones y mejoras en el icónico centro comercial Jockey Plaza.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Jockey Plaza",
+          "services": ["Remodelación", "Modernización", "Retail"],
+          "area": "3,200 m²",
+          "budget": "$9,600,000",
+          "duration": "14 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/entrada-principal-renovada-01.jpg",
+              "alt": "Entrada principal renovada",
+              "title": "Entrada Renovada",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/atrio-central-01.jpg",
+              "alt": "Atrio central",
+              "title": "Atrio Central",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/nuevos-locales-01.jpg",
+              "alt": "Nuevos locales comerciales",
+              "title": "Nuevos Locales",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/area-descanso-01.jpg",
+              "alt": "Área de descanso",
+              "title": "Área de Descanso",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/iluminacion-led-01.jpg",
+              "alt": "Nueva iluminación LED",
+              "title": "Iluminación LED",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Jockey Plaza/señaletica-nueva-01.jpg",
+              "alt": "Nueva señalética",
+              "title": "Señalética",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "kfc-bayovar",
+          "name": "KFC Bayóvar",
+          "category": "retail",
+          "description": "Restaurante KFC en el distrito de Bayóvar con diseño corporativo moderno.",
+          "location": "Bayóvar, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "KFC",
+          "services": ["Fast Food", "Diseño Corporativo", "Construcción"],
+          "area": "380 m²",
+          "budget": "$570,000",
+          "duration": "4 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/KFC BAYOVAR/exterior-kfc-01.jpg",
+              "alt": "Exterior de KFC Bayóvar",
+              "title": "Exterior KFC",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/KFC BAYOVAR/interior-moderno-01.jpg",
+              "alt": "Interior moderno",
+              "title": "Interior Moderno",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/KFC BAYOVAR/counter-pedidos-01.jpg",
+              "alt": "Counter de pedidos",
+              "title": "Counter de Pedidos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/KFC BAYOVAR/cocina-equipada-01.jpg",
+              "alt": "Cocina equipada",
+              "title": "Cocina Equipada",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/KFC BAYOVAR/area-infantil-01.jpg",
+              "alt": "Área infantil",
+              "title": "Área Infantil",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "remodelacion-td6",
+          "name": "Remodelación TD6",
+          "category": "retail",
+          "description": "Proyecto de remodelación integral de la tienda TD6.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "TD6",
+          "services": ["Remodelación", "Tienda", "Modernización"],
+          "area": "1,800 m²",
+          "budget": "$2,700,000",
+          "duration": "8 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/REMODELACION TD6/antes-despues-01.jpg",
+              "alt": "Comparación antes y después",
+              "title": "Antes y Después",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/REMODELACION TD6/nueva-fachada-01.jpg",
+              "alt": "Nueva fachada",
+              "title": "Nueva Fachada",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/REMODELACION TD6/interior-renovado-01.jpg",
+              "alt": "Interior renovado",
+              "title": "Interior Renovado",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/REMODELACION TD6/nueva-iluminacion-01.jpg",
+              "alt": "Nueva iluminación",
+              "title": "Nueva Iluminación",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/REMODELACION TD6/areas-exhibicion-01.jpg",
+              "alt": "Áreas de exhibición",
+              "title": "Áreas de Exhibición",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "saga-ves",
+          "name": "Saga VES",
+          "category": "retail",
+          "description": "Tienda departamental Saga en Villa El Salvador.",
+          "location": "Villa El Salvador, Lima",
+          "year": "2022",
+          "status": "completado",
+          "client": "Saga",
+          "services": ["Tienda Departamental", "Retail", "Construcción"],
+          "area": "2,200 m²",
+          "budget": "$3,300,000",
+          "duration": "12 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Saga VES/fachada-saga-01.jpg",
+              "alt": "Fachada de Saga VES",
+              "title": "Fachada Saga",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Saga VES/interior-departamental-01.jpg",
+              "alt": "Interior de la tienda departamental",
+              "title": "Interior Departamental",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Saga VES/area-moda-01.jpg",
+              "alt": "Área de moda",
+              "title": "Área de Moda",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Saga VES/escaleras-centrales-01.jpg",
+              "alt": "Escaleras centrales",
+              "title": "Escaleras Centrales",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Saga VES/cajas-pago-01.jpg",
+              "alt": "Área de cajas de pago",
+              "title": "Cajas de Pago",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "tiyapuy",
+          "name": "Tiyapuy",
+          "category": "retail",
+          "description": "Centro comercial comunitario Tiyapuy con enfoque social.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Tiyapuy Community",
+          "services": ["Centro Comunitario", "Comercio Social", "Desarrollo"],
+          "area": "1,500 m²",
+          "budget": "$2,250,000",
+          "duration": "10 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/fachada-comunitaria-01.jpg",
+              "alt": "Fachada comunitaria",
+              "title": "Fachada Comunitaria",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/plaza-central-01.jpg",
+              "alt": "Plaza central",
+              "title": "Plaza Central",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/locales-pequenos-01.jpg",
+              "alt": "Locales pequeños",
+              "title": "Locales Pequeños",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/area-cultural-01.jpg",
+              "alt": "Área cultural",
+              "title": "Área Cultural",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/espacios-verdes-01.jpg",
+              "alt": "Espacios verdes",
+              "title": "Espacios Verdes",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/RETAIL/Tiyapuy/mercado-local-01.jpg",
+              "alt": "Mercado local",
+              "title": "Mercado Local",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hoteleria",
+      "name": "HOTELERÍA",
+      "slug": "hoteleria",
+      "description": "Hoteles, resorts y establecimientos de hospedaje que combinan confort y elegancia",
+      "icon": "Building",
+      "color": "#D0D0D0",
+      "featured_image": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/fachada-hotel-01.jpg",
+      "projects_count": 2,
+      "total_investment": "$42M USD",
+      "total_area": "11,700 m²",
+      "featured": false,
+      "order": 4,
+      "projects": [
+        {
+          "id": "hotel-armando-paredes",
+          "name": "Hotel Armando Paredes",
+          "category": "hoteleria",
+          "description": "Hotel boutique con diseño contemporáneo y servicios de primera clase.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "Armando Paredes",
+          "services": ["Hotelería", "Diseño Boutique", "Hospitalidad"],
+          "area": "3,500 m²",
+          "budget": "$10,500,000",
+          "duration": "24 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/fachada-hotel-01.jpg",
+              "alt": "Fachada del hotel",
+              "title": "Fachada del Hotel",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/lobby-principal-01.jpg",
+              "alt": "Lobby principal",
+              "title": "Lobby Principal",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/habitacion-suite-01.jpg",
+              "alt": "Suite del hotel",
+              "title": "Suite",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/restaurante-hotel-01.jpg",
+              "alt": "Restaurante del hotel",
+              "title": "Restaurante",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/spa-wellness-01.jpg",
+              "alt": "Spa y wellness",
+              "title": "Spa & Wellness",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Armando Paredes/terraza-eventos-01.jpg",
+              "alt": "Terraza para eventos",
+              "title": "Terraza de Eventos",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "hotel-hilton-bajada-balta",
+          "name": "Hotel Hilton Bajada Balta",
+          "category": "hoteleria",
+          "description": "Hotel Hilton de lujo ubicado en Bajada Balta, Miraflores.",
+          "location": "Miraflores, Lima",
+          "year": "2023",
+          "status": "completado",
+          "client": "Hilton Hotels",
+          "services": ["Hotel de Lujo", "Cadena Internacional", "Hospitalidad Premium"],
+          "area": "8,200 m²",
+          "budget": "$32,800,000",
+          "duration": "36 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/exterior-hilton-01.jpg",
+              "alt": "Exterior del Hotel Hilton",
+              "title": "Exterior Hilton",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/lobby-lujo-01.jpg",
+              "alt": "Lobby de lujo",
+              "title": "Lobby de Lujo",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/habitacion-ejecutiva-01.jpg",
+              "alt": "Habitación ejecutiva",
+              "title": "Habitación Ejecutiva",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/salon-eventos-01.jpg",
+              "alt": "Salón de eventos",
+              "title": "Salón de Eventos",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/piscina-rooftop-01.jpg",
+              "alt": "Piscina en rooftop",
+              "title": "Piscina Rooftop",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/gimnasio-spa-01.jpg",
+              "alt": "Gimnasio y spa",
+              "title": "Gimnasio & Spa",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/restaurante-gourmet-01.jpg",
+              "alt": "Restaurante gourmet",
+              "title": "Restaurante Gourmet",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oficinas",
+      "name": "OFICINAS",
+      "slug": "oficinas",
+      "description": "Espacios de trabajo, oficinas corporativas y administrativas que potencian la productividad",
+      "icon": "Building2",
+      "color": "#646363",
+      "featured_image": "/images/proyectos/OFICINA/CAR-7/fachada-corporativa-01.jpg",
+      "projects_count": 3,
+      "total_investment": "$18M USD",
+      "total_area": "5,500 m²",
+      "featured": false,
+      "order": 5,
+      "projects": [
+        {
+          "id": "car-7",
+          "name": "CAR-7",
+          "category": "oficinas",
+          "description": "Edificio de oficinas moderno CAR-7 con tecnología de vanguardia.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "CAR-7 Development",
+          "services": ["Oficinas Corporativas", "Tecnología", "Sostenibilidad"],
+          "area": "2,800 m²",
+          "budget": "$8,400,000",
+          "duration": "16 meses",
+          "featured": true,
+          "images": [
+            {
+              "url": "/images/proyectos/OFICINA/CAR-7/fachada-corporativa-01.jpg",
+              "alt": "Fachada corporativa CAR-7",
+              "title": "Fachada Corporativa",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/OFICINA/CAR-7/oficinas-abiertas-01.jpg",
+              "alt": "Oficinas abiertas",
+              "title": "Oficinas Abiertas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/CAR-7/sala-juntas-01.jpg",
+              "alt": "Sala de juntas",
+              "title": "Sala de Juntas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/CAR-7/area-coworking-01.jpg",
+              "alt": "Área de coworking",
+              "title": "Área Coworking",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/CAR-7/cafeteria-corporativa-01.jpg",
+              "alt": "Cafetería corporativa",
+              "title": "Cafetería Corporativa",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "oficina-villaran-unacem",
+          "name": "Oficina Villarán - UNACEM",
+          "category": "oficinas",
+          "description": "Oficinas corporativas para UNACEM en edificio Villarán.",
+          "location": "Lima, Perú",
+          "year": "2022",
+          "status": "completado",
+          "client": "UNACEM",
+          "services": ["Oficinas Corporativas", "Construcción", "Interiorismo"],
+          "area": "1,500 m²",
+          "budget": "$4,500,000",
+          "duration": "10 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/OFICINA/Ofic.Villaran-UNACEM/recepcion-unacem-01.jpg",
+              "alt": "Recepción UNACEM",
+              "title": "Recepción",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Ofic.Villaran-UNACEM/oficinas-ejecutivas-01.jpg",
+              "alt": "Oficinas ejecutivas",
+              "title": "Oficinas Ejecutivas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Ofic.Villaran-UNACEM/sala-conferencias-01.jpg",
+              "alt": "Sala de conferencias",
+              "title": "Sala de Conferencias",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Ofic.Villaran-UNACEM/area-trabajo-01.jpg",
+              "alt": "Área de trabajo",
+              "title": "Área de Trabajo",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Ofic.Villaran-UNACEM/vista-exterior-01.jpg",
+              "alt": "Vista exterior",
+              "title": "Vista Exterior",
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "oficinas-inma",
+          "name": "Oficinas INMA",
+          "category": "oficinas",
+          "description": "Oficinas administrativas para la empresa INMA con diseño funcional.",
+          "location": "Lima, Perú",
+          "year": "2023",
+          "status": "completado",
+          "client": "INMA",
+          "services": ["Oficinas Administrativas", "Diseño Funcional", "Construcción"],
+          "area": "1,200 m²",
+          "budget": "$3,600,000",
+          "duration": "8 meses",
+          "featured": false,
+          "images": [
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/entrada-principal-01.jpg",
+              "alt": "Entrada principal INMA",
+              "title": "Entrada Principal",
+              "featured": true
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/open-space-01.jpg",
+              "alt": "Espacio abierto",
+              "title": "Open Space",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/oficinas-privadas-01.jpg",
+              "alt": "Oficinas privadas",
+              "title": "Oficinas Privadas",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/sala-reuniones-01.jpg",
+              "alt": "Sala de reuniones",
+              "title": "Sala de Reuniones",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/area-descanso-01.jpg",
+              "alt": "Área de descanso",
+              "title": "Área de Descanso",
+              "featured": false
+            },
+            {
+              "url": "/images/proyectos/OFICINA/Oficinas INMA_/archivo-documentos-01.jpg",
+              "alt": "Archivo de documentos",
+              "title": "Archivo",
+              "featured": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

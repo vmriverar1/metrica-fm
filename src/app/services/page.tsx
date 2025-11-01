@@ -2,18 +2,20 @@ import React from 'react';
 import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import UniversalHero from '@/components/ui/universal-hero';
-import ServiceMatrix from '@/components/services/ServiceMatrix';
+import Services from '@/components/landing/services';
 import ProjectShowcase from '@/components/services/ProjectShowcase';
 import SmartContactForm from '@/components/services/SmartContactForm';
 import ServiceAnalytics from '@/components/services/ServiceAnalytics';
 import ServiceSchema from '@/components/services/ServiceSchema';
 import MobileOptimizer from '@/components/services/MobileOptimizer';
 import Footer from '@/components/landing/footer';
-import { readPublicJSONAsync } from '@/lib/json-reader';
+import { ServicesProvider } from '@/contexts/ServicesContext';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { HomePageData } from '@/types/home';
 
 export const metadata: Metadata = {
   title: 'Servicios de Dirección Integral de Proyectos | Métrica FM',
-  description: 'Transformamos ideas en impacto con nuestros servicios especializados: Gestión Integral, Consultoría Estratégica, Supervisión Técnica y más. 15+ años de experiencia.',
+  description: 'Transformamos ideas en impacto con nuestros servicios especializados: Gestión Integral, Consultoría Estratégica, Supervisión Técnica y más. 10+ años de experiencia.',
   keywords: 'servicios construcción, gestión proyectos, consultoría construcción, supervisión técnica, project management, dirección integral proyectos',
   openGraph: {
     title: 'Servicios de Dirección Integral de Proyectos | Métrica FM',
@@ -40,127 +42,89 @@ export const metadata: Metadata = {
   }
 };
 
-// Define interface for services data
-interface ServicesPageData {
-  page: {
-    title: string;
-    subtitle: string;
-    hero_image: string;
-    hero_image_fallback: string;
-    description: string;
-    url: string;
-  };
-  introduction: {
-    text: string;
-    value_proposition: string;
-  };
-  service_philosophy: {
-    title: string;
-    principles: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-  main_service: {
-    dip: {
-      title: string;
-      subtitle: string;
-      icon: string;
-      color: string;
-      featured: boolean;
-      overview: {
-        description: string;
-        key_value: string;
-        differentiator: string;
-      };
-      pillars: Array<{
-        id: number;
-        name: string;
-        description: string;
-        tools: string[];
-        outcomes: string[];
-      }>;
-      benefits: {
-        quantitative: Array<{
-          metric: string;
-          value: string;
-          description: string;
-        }>;
-        qualitative: string[];
-      };
-    };
-  };
-  additional_services: Record<string, {
-    title: string;
-    description: string;
-    scope: string[];
-  }>;
-  methodology: {
-    title: string;
-    description: string;
-    phases: Array<{
-      phase: string;
-      description: string;
-      duration: string;
-    }>;
-  };
-  quality_assurance: {
-    title: string;
-    certifications: Array<{
-      name: string;
-      description: string;
-      year_obtained: number;
-    }>;
-    processes: string[];
-  };
+async function getServicesData(): Promise<any | null> {
+  try {
+    const result = await FirestoreCore.getDocumentById('pages', 'services');
+
+    if (!result.success || !result.data) {
+      console.warn('⚠️ [FIRESTORE] No services data found, using fallback');
+      return null;
+    }
+
+    console.log('🔥 [FIRESTORE] Services data loaded successfully:', result.data);
+    return result.data;
+  } catch (error) {
+    console.error('❌ [FIRESTORE] Failed to load services data:', error);
+    return null;
+  }
 }
 
-// Function to load services data
-async function getServicesData(): Promise<ServicesPageData> {
-  return readPublicJSONAsync<ServicesPageData>('/json/pages/services.json');
+function ServicesPageContent({ servicesData }: { servicesData: any | null }) {
+  // Fallback data si no hay datos de servicios
+  const defaultServicesData: HomePageData['services'] = {
+    section: {
+      title: 'Nuestros Servicios',
+      subtitle: 'Ofrecemos servicios especializados para el sector construcción'
+    },
+    services_list: []
+  };
+
+  // Fallback stats
+  const defaultStats = [
+    'S/ 3B+ Gestionados',
+    '300+ Proyectos Exitosos',
+    '99% Satisfacción Cliente'
+  ];
+
+  // Get stats from Firestore or use fallback
+  const heroStats = servicesData?.hero?.stats?.length > 0
+    ? servicesData.hero.stats.map((stat: any) => stat.text || stat)
+    : defaultStats;
+
+  return (
+    <ServicesProvider>
+      <MobileOptimizer>
+        <div className="min-h-screen bg-background overflow-x-hidden">
+          {/* SEO Schema Markup */}
+          <ServiceSchema />
+
+          <Header />
+          <main className="relative">
+            <UniversalHero
+              title={servicesData?.hero?.title || "Supervisamos y gerenciamos proyectos"}
+              subtitle={servicesData?.hero?.subtitle || "10+ años liderando proyectos de infraestructura que transforman el Perú"}
+              backgroundImage={servicesData?.hero?.background_image || "https://metricadip.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp"}
+              metadata={{
+                stats: heroStats
+              }}
+              primaryButton={{
+                text: servicesData?.hero?.buttons?.primary?.text || "Ver Proyectos Emblemáticos",
+                href: servicesData?.hero?.buttons?.primary?.href || "/portfolio"
+              }}
+            />
+
+            <Services data={servicesData?.services || defaultServicesData} hideCTA={true} />
+            {/* <ProjectShowcase /> */}
+            <SmartContactForm />
+
+            {/* Analytics and Performance Monitoring */}
+            <ServiceAnalytics />
+          </main>
+          <Footer />
+        </div>
+      </MobileOptimizer>
+    </ServicesProvider>
+  );
 }
 
 export default async function ServicesPage() {
-  const data = await getServicesData();
+  try {
+    const servicesData = await getServicesData();
+    console.log('🔍 Services data:', servicesData);
 
-  return (
-    <MobileOptimizer>
-      <div className="min-h-screen bg-background overflow-x-hidden">
-        {/* SEO Schema Markup */}
-        <ServiceSchema />
-        
-        <Header />
-        <main className="relative">
-          <UniversalHero 
-            title={data.page.title}
-            subtitle={data.page.subtitle}
-            backgroundImage={data.page.hero_image}
-            metadata={{
-              stats: [
-                'S/ 2.5B+ Gestionados',
-                '300+ Proyectos Exitosos', 
-                '99% Satisfacción Cliente'
-              ]
-            }}
-            primaryButton={{
-              text: "Ver Proyectos Emblemáticos",
-              href: "/portfolio"
-            }}
-            secondaryButton={{
-              text: "Consulta Gratuita",
-              href: "#contact-form"
-            }}
-          />
-          
-          <ServiceMatrix data={data} />
-          <ProjectShowcase data={data} />
-          <SmartContactForm data={data} />
-          
-          {/* Analytics and Performance Monitoring */}
-          <ServiceAnalytics />
-        </main>
-        <Footer />
-      </div>
-    </MobileOptimizer>
-  );
+    return <ServicesPageContent servicesData={servicesData} />;
+  } catch (error) {
+    console.error('❌ Error in ServicesPage:', error);
+    return <ServicesPageContent servicesData={null} />;
+  }
 }

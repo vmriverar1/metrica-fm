@@ -1355,7 +1355,7 @@ export const sampleProjects: Project[] = [
 export const getCategoryColor = (category: ProjectCategory): string => {
   const colors = {
     [ProjectCategory.OFICINA]: 'text-blue-500',
-    [ProjectCategory.RETAIL]: 'text-sky-500',
+    [ProjectCategory.RETAIL]: 'text-cyan-500',
     [ProjectCategory.INDUSTRIA]: 'text-gray-500',
     [ProjectCategory.HOTELERIA]: 'text-purple-500',
     [ProjectCategory.EDUCACION]: 'text-green-500',
@@ -1368,7 +1368,7 @@ export const getCategoryColor = (category: ProjectCategory): string => {
 export const getCategoryBgColor = (category: ProjectCategory): string => {
   const colors = {
     [ProjectCategory.OFICINA]: 'bg-blue-500/10',
-    [ProjectCategory.RETAIL]: 'bg-sky-500/10',
+    [ProjectCategory.RETAIL]: 'bg-cyan-500/10',
     [ProjectCategory.INDUSTRIA]: 'bg-gray-500/10',
     [ProjectCategory.HOTELERIA]: 'bg-purple-500/10',
     [ProjectCategory.EDUCACION]: 'bg-green-500/10',
@@ -1402,7 +1402,9 @@ export const getUniqueLocations = (projects: Project[]): string[] => {
 export const getUniqueYears = (projects: Project[]): number[] => {
   const years = new Set<number>();
   projects.forEach(project => {
-    years.add(project.completedAt.getFullYear());
+    if (project.completedAt) {
+      years.add(project.completedAt.getFullYear());
+    }
   });
   return Array.from(years).sort((a, b) => b - a);
 };

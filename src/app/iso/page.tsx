@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ISOContentWrapper from '@/components/iso/ISOContentWrapper';
+import { ISOProvider } from '@/contexts/ISOContext';
 
 export const metadata: Metadata = {
   title: 'ISO 9001:2015 Certificación | Métrica FM - Calidad Garantizada',
@@ -90,7 +91,9 @@ export default function ISOPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <div className="bg-background text-foreground min-h-screen overflow-x-hidden">
-        <ISOContentWrapper />
+        <ISOProvider>
+          <ISOContentWrapper />
+        </ISOProvider>
       </div>
     </>
   );

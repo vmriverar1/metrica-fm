@@ -72,7 +72,7 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
   };
 
   const getStatisticColor = (index: number) => {
-    const colors = ['text-blue-600', 'text-green-600', 'text-purple-600', 'text-orange-600'];
+    const colors = ['text-blue-600', 'text-green-600', 'text-purple-600', 'text-cyan-600'];
     return colors[index] || 'text-gray-600';
   };
 
@@ -296,7 +296,7 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
               <p className="text-xs text-gray-600">Suma Total</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#007bc4]">
+              <p className="text-2xl font-bold text-[#00A8E8]">
                 {statistics.length > 0 ? 
                   formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0) / statistics.length) : 
                   '0'

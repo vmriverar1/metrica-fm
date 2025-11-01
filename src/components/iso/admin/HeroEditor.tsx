@@ -30,7 +30,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast-simple'
+import { useToast } from '@/hooks/use-toast'
 
 interface HeroData {
   title: string
@@ -84,7 +84,7 @@ function FormSection({
     <Card className={`mb-6 ${className}`}>
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Icon className="w-5 h-5 text-[#007bc4]" />
+          <Icon className="w-5 h-5 text-[#00A8E8]" />
           {title}
         </CardTitle>
       </CardHeader>

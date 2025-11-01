@@ -27,11 +27,11 @@ function StatCard({ label, value, icon, delay = 0 }: StatCardProps) {
       transition={{ duration: 0.6, delay }}
       className="group"
     >
-      <Card className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm border-gray-200/60 hover:border-[#007bc4]/30">
+      <Card className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm border-gray-200/60 hover:border-[#00A8E8]/30">
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-[#007bc4] to-[#FF6B35] rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow"
+          className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-[#00A8E8] to-[#FF6B35] rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow"
         >
           <IconComponent className="w-6 h-6 text-white" />
         </motion.div>
@@ -54,7 +54,7 @@ function StatCard({ label, value, icon, delay = 0 }: StatCardProps) {
           initial={{ width: 0 }}
           animate={{ width: '100%' }}
           transition={{ delay: delay + 0.5, duration: 0.8 }}
-          className="h-0.5 bg-gradient-to-r from-[#007bc4] to-[#FF6B35] mt-3 rounded-full"
+          className="h-0.5 bg-gradient-to-r from-[#00A8E8] to-[#FF6B35] mt-3 rounded-full"
         />
       </Card>
     </motion.div>

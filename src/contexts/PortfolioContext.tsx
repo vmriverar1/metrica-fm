@@ -59,10 +59,160 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
         setIsLoading(true);
         setError(null);
 
-        // Fetch both page content and project data in parallel
+        // Try to fetch from Firestore first, then fallback to JSON
+        try {
+          console.log('🔥 Fetching portfolio data from Firestore...');
+
+          // Fetch from Firestore using our unified API
+          const [pageResponse, projectsResponse] = await Promise.all([
+            fetch('/api/admin/pages/portfolio', { cache: 'no-store' }), // Load page data from Firestore
+            fetch('/api/portfolio/projects', { cache: 'no-store' }) // Use Firestore API
+          ]);
+
+          let pageJson;
+          let firestoreProjects: any[] = [];
+
+          // Handle page data (from Firestore)
+          if (pageResponse.ok) {
+            const pageApiResponse = await pageResponse.json();
+            if (pageApiResponse.success && pageApiResponse.data) {
+              pageJson = pageApiResponse.data;
+              // Transform Firestore structure to match expected format
+              const transformedPageData = {
+                ...pageJson.content,
+                seo: pageJson.content.seo,
+                source: pageJson.source
+              };
+              setPageData(transformedPageData);
+            }
+          }
+
+          // Handle projects data (from Firestore)
+          if (projectsResponse.ok) {
+            const firestoreData = await projectsResponse.json();
+            if (firestoreData.success && firestoreData.data) {
+              firestoreProjects = firestoreData.data;
+              console.log('✅ Found', firestoreProjects.length, 'projects in Firestore');
+            }
+          }
+
+          // If we have Firestore data, transform it to match our Project type
+          if (firestoreProjects.length > 0) {
+            // Mapeo de categorías de Firestore a enum ProjectCategory
+            const categoryMapping: Record<string, ProjectCategory> = {
+              'EDUCACIÓN': ProjectCategory.EDUCACION,
+              'HOTELERÍA': ProjectCategory.HOTELERIA,
+              'INDUSTRIA': ProjectCategory.INDUSTRIA,
+              'OFICINAS': ProjectCategory.OFICINA,
+              'RETAIL': ProjectCategory.RETAIL,
+              'VIVIENDA': ProjectCategory.VIVIENDA,
+              'SALUD': ProjectCategory.SALUD,
+              // También mapear las versiones en minúscula por si acaso
+              'educacion': ProjectCategory.EDUCACION,
+              'hoteleria': ProjectCategory.HOTELERIA,
+              'industria': ProjectCategory.INDUSTRIA,
+              'oficina': ProjectCategory.OFICINA,
+              'retail': ProjectCategory.RETAIL,
+              'vivienda': ProjectCategory.VIVIENDA,
+              'salud': ProjectCategory.SALUD
+            };
+
+            const transformedProjects = firestoreProjects.map((project: any) => {
+              // Debug logging para fechas (solo usamos start_date ahora)
+              console.log('📅 [PortfolioContext] Transformando proyecto:', project.id);
+              console.log('📅 [PortfolioContext] hide_dates:', project.hide_dates);
+              console.log('📅 [PortfolioContext] start_date (ÚNICA USADA):', project.start_date);
+              console.log('📅 [PortfolioContext] year (fallback):', project.year);
+
+              return {
+              id: project.id,
+              title: project.title,
+              category: categoryMapping[project.category] || categoryMapping[project.category_id] || project.category as ProjectCategory,
+              description: project.description || project.short_description,
+              location: {
+                city: project.location?.city || project.location || '',
+                region: project.location?.state || project.location?.country || '',
+                coordinates: [0, 0] as [number, number]
+              },
+              // Si hide_dates está activo, no asignar fecha aunque exista year legacy
+              // Usar solo start_date (fecha de inicio)
+              completedAt: project.hide_dates
+                ? null
+                : project.start_date
+                  ? new Date(project.start_date)
+                  : project.year
+                    ? new Date(project.year + '-01-01')
+                    : null,
+              status: project.status || 'completed',
+              featuredImage: project.image || project.featured_image || '',
+              thumbnailImage: project.image || project.featured_image || '',
+              shortDescription: project.short_description || project.description,
+              gallery: (project.gallery || []).map((imgUrl: string, index: number) => {
+                const totalImages = project.gallery?.length || 1;
+                let stage: 'inicio' | 'proceso' | 'final';
+
+                // Distribución más equitativa de imágenes en las 3 etapas
+                if (totalImages <= 3) {
+                  // Si hay 3 o menos imágenes, una por etapa
+                  stage = index === 0 ? 'inicio' : index === 1 ? 'proceso' : 'final';
+                } else {
+                  // Para más de 3 imágenes, distribuir más equitativamente
+                  const tercio = Math.ceil(totalImages / 3);
+                  if (index < tercio) {
+                    stage = 'inicio';
+                  } else if (index < tercio * 2) {
+                    stage = 'proceso';
+                  } else {
+                    stage = 'final';
+                  }
+                }
+
+                return {
+                  id: `${project.id}-img-${index}`,
+                  url: imgUrl,
+                  thumbnail: imgUrl,
+                  caption: '',
+                  stage: stage,
+                  order: index
+                };
+              }),
+              details: {
+                client: project.client || '',
+                duration: project.duration || '',
+                investment: project.budget?.amount || project.investment || '',
+                team: project.team || [],
+                area: project.area || ''
+              },
+              tags: project.tags || [],
+              featured: project.featured || false,
+              slug: project.slug || project.id
+            };
+            });
+
+            setAllProjects(transformedProjects);
+            console.log('✅ Transformed', transformedProjects.length, 'projects from Firestore');
+
+            // Debug: Log the hotel project specifically
+            const hotelProject = transformedProjects.find(p => p.id === 'hotel-hilton-bajada-balta');
+            console.log('🏨 Hotel Hilton project:', hotelProject ? {
+              id: hotelProject.id,
+              slug: hotelProject.slug,
+              category: hotelProject.category,
+              title: hotelProject.title
+            } : 'NOT FOUND');
+
+            return; // Exit early if Firestore data was successful
+          }
+
+        } catch (firestoreError) {
+          console.warn('⚠️ Firestore fetch failed, falling back to JSON:', firestoreError);
+        }
+
+        // Fallback to API endpoints if direct Firestore fails
+        console.log('📄 Falling back to API endpoints...');
         const [pageResponse, projectsResponse] = await Promise.all([
-          fetch('/json/pages/portfolio.json', { cache: 'no-store' }),
-          fetch('/json/dynamic-content/portfolio/content.json', { cache: 'no-store' })
+          fetch('/api/admin/pages/portfolio', { cache: 'no-store' }),
+          fetch('/api/portfolio/projects', { cache: 'no-store' })
         ]);
 
         if (!pageResponse.ok) {
@@ -73,32 +223,85 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
           throw new Error(`Failed to fetch projects data: ${projectsResponse.status}`);
         }
 
-        const [pageJson, projectsJson] = await Promise.all([
+        const [pageApiResponse, projectsApiResponse] = await Promise.all([
           pageResponse.json(),
           projectsResponse.json()
         ]);
 
-        setPageData(pageJson);
-        
-        // Extract and transform projects from the dynamic content JSON
-        if (projectsJson.projects && Array.isArray(projectsJson.projects)) {
-          console.log('Raw projects from JSON:', projectsJson.projects.length);
-          const transformedProjects = projectsJson.projects.map((project: any) => ({
-            ...project,
-            // Transform completed_at string to completedAt Date object
-            completedAt: project.completed_at ? new Date(project.completed_at) : new Date(),
-            // Map snake_case to camelCase for image fields
-            featuredImage: project.featured_image || '',
-            thumbnailImage: project.thumbnail_image || '',
-            shortDescription: project.short_description || project.description || '',
-            // Map any other field names if needed
-            category: project.category as ProjectCategory
+        // Handle page data from API
+        if (pageApiResponse.success && pageApiResponse.data) {
+          // Transform Firestore structure to match expected format
+          const transformedPageData = {
+            ...pageApiResponse.data.content,
+            seo: pageApiResponse.data.content.seo,
+            source: pageApiResponse.data.source
+          };
+          setPageData(transformedPageData);
+        }
+
+        // Handle projects data from API
+        let projectsJson = [];
+        if (projectsApiResponse.success && projectsApiResponse.data) {
+          projectsJson = projectsApiResponse.data;
+        }
+
+        // Extract and transform projects from the categories structure
+        if (projectsJson.categories && Array.isArray(projectsJson.categories)) {
+          const allProjects: any[] = [];
+
+          // Flatten projects from all categories
+          projectsJson.categories.forEach((category: any) => {
+            if (category.projects && Array.isArray(category.projects)) {
+              allProjects.push(...category.projects);
+            }
+          });
+
+          console.log('Raw projects from JSON categories:', allProjects.length);
+          const transformedProjects = allProjects.map((project: any) => ({
+            id: project.id,
+            title: project.name,
+            category: project.category as ProjectCategory,
+            description: project.description,
+            location: {
+              city: project.location || '',
+              region: project.region || '',
+              coordinates: [0, 0] as [number, number]
+            },
+            // Si hide_dates está activo, no asignar fecha aunque exista year legacy
+            // Usar solo start_date (fecha de inicio)
+            completedAt: project.hide_dates
+              ? null
+              : project.start_date
+                ? new Date(project.start_date)
+                : project.year
+                  ? new Date(project.year + '-01-01')
+                  : null,
+            status: project.status,
+            featuredImage: project.images?.[0]?.url || '',
+            thumbnailImage: project.images?.[0]?.url || '',
+            shortDescription: project.description,
+            gallery: (project.gallery || []).map((imgUrl: string, index: number) => ({
+              id: `${project.id}-img-${index}`,
+              url: imgUrl,
+              thumbnail: imgUrl,
+              caption: '',
+              stage: index === 0 ? 'inicio' : index < (project.gallery?.length || 1) / 2 ? 'proceso' : 'final' as 'inicio' | 'proceso' | 'final',
+              order: index
+            })),
+            details: {
+              client: project.client || '',
+              duration: project.duration || '',
+              investment: project.budget || '',
+              team: project.services || [],
+              area: project.area || ''
+            },
+            tags: project.services || [],
+            featured: project.featured || false,
+            slug: project.id
           }));
-          console.log('Transformed projects:', transformedProjects.length);
-          console.log('First few projects:', transformedProjects.slice(0, 3).map(p => ({ id: p.id, title: p.title, featuredImage: p.featuredImage })));
           setAllProjects(transformedProjects);
         }
-        
+
       } catch (err) {
         console.error('Error fetching portfolio data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load portfolio data');
@@ -113,19 +316,15 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
   // Memoized filtered projects
   const filteredProjects = useMemo(() => {
     let filtered = [...allProjects];
-    console.log('Starting filter with', allProjects.length, 'projects');
-    console.log('Current filters:', filters);
 
     // Filter by category
     if (filters.category !== 'all') {
       filtered = filtered.filter(project => project.category === filters.category);
-      console.log('After category filter:', filtered.length);
     }
 
     // Filter by location
     if (filters.location !== 'all') {
       filtered = filtered.filter(project => project.location.city === filters.location);
-      console.log('After location filter:', filtered.length);
     }
 
     // Filter by year
@@ -133,7 +332,6 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
       filtered = filtered.filter(project => 
         project.completedAt && project.completedAt.getFullYear() === filters.year
       );
-      console.log('After year filter:', filtered.length);
     }
 
     // Filter by search term
@@ -146,10 +344,8 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
         project.details.client.toLowerCase().includes(searchLower) ||
         project.tags.some(tag => tag.toLowerCase().includes(searchLower))
       );
-      console.log('After search filter:', filtered.length);
     }
 
-    console.log('Final filtered projects:', filtered.length);
     return filtered;
   }, [allProjects, filters]);
 
@@ -240,6 +436,12 @@ export function usePortfolio() {
 export function useProject(slug: string): Project | null {
   const { allProjects } = usePortfolio();
   return useMemo(() => {
+    console.log('🔍 useProject Debug:', {
+      searchingForSlug: slug,
+      totalProjects: allProjects.length,
+      projectSlugs: allProjects.map(p => p.slug).slice(0, 5), // First 5 slugs
+      foundProject: allProjects.find(project => project.slug === slug)?.title || null
+    });
     return allProjects.find(project => project.slug === slug) || null;
   }, [allProjects, slug]);
 }

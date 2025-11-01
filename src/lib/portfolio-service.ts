@@ -153,8 +153,8 @@ export class PortfolioService {
     }
 
     if (filters.year) {
-      projects = projects.filter(project => 
-        project.completedAt.getFullYear() === filters.year
+      projects = projects.filter(project =>
+        project.completedAt && project.completedAt.getFullYear() === filters.year
       );
     }
 

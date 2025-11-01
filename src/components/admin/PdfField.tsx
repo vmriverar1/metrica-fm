@@ -17,6 +17,7 @@ interface PdfFieldProps {
   disabled?: boolean;
   description?: string;
   className?: string;
+  uploadEndpoint?: string; // Endpoint personalizado para upload (default: /api/upload)
 }
 
 // Función para obtener URL con proxy para PDFs (si es necesario)
@@ -63,7 +64,8 @@ export default function PdfField({
   required = false,
   disabled = false,
   description,
-  className = ''
+  className = '',
+  uploadEndpoint = '/api/upload'
 }: PdfFieldProps) {
   const [isExternal, setIsExternal] = useState(() => {
     // Auto-detect if current value is external URL
@@ -134,7 +136,7 @@ export default function PdfField({
       formData.append('file', file);
       formData.append('type', 'pdf');
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(uploadEndpoint, {
         method: 'POST',
         body: formData,
       });
@@ -144,11 +146,12 @@ export default function PdfField({
         onChange(data.url);
         setIsExternal(false);
       } else {
-        throw new Error('Error al subir el archivo');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Error al subir el archivo');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      setUploadError('Error al subir el archivo PDF');
+      setUploadError(error instanceof Error ? error.message : 'Error al subir el archivo PDF');
     } finally {
       setUploading(false);
     }

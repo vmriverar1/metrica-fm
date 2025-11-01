@@ -30,7 +30,7 @@ import {
   Building2
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import ImageField from '../ImageField';
+import ImageSelector from '../ImageSelector';
 import BulkOperations from '../BulkOperations';
 
 interface PillarItem {
@@ -39,7 +39,6 @@ interface PillarItem {
   title: string;
   description: string;
   image: string;
-  image_fallback: string;
 }
 
 interface EnhancedPillarsManagerProps {
@@ -73,7 +72,7 @@ export default function EnhancedPillarsManager({
     'Compass': { icon: Compass, label: 'Brújula (Planificación)', color: 'text-blue-600' },
     'Network': { icon: Network, label: 'Red (Coordinación)', color: 'text-green-600' },
     'ScanSearch': { icon: ScanSearch, label: 'Supervisión', color: 'text-purple-600' },
-    'ChartBar': { icon: ChartBar, label: 'Control de Calidad', color: 'text-orange-600' },
+    'ChartBar': { icon: ChartBar, label: 'Control de Calidad', color: 'text-cyan-600' },
     'AlertTriangle': { icon: AlertTriangle, label: 'Gestión de Riesgos', color: 'text-red-600' },
     'Building2': { icon: Building2, label: 'Representación', color: 'text-indigo-600' }
   };
@@ -94,20 +93,20 @@ export default function EnhancedPillarsManager({
       errors.push('La descripción es requerida');
     }
     
-    if (pillar.description.length > 200) {
-      errors.push('La descripción no puede exceder 200 caracteres');
+    if (pillar.description.length > 400) {
+      errors.push('La descripción no puede exceder 400 caracteres');
     }
     
-    if (!pillar.icon || !availableIcons[pillar.icon as keyof typeof availableIcons]) {
-      errors.push('Icono no válido o no seleccionado');
+    if (!pillar.icon) {
+      errors.push('Icono no seleccionado');
+    } else if (!availableIcons[pillar.icon as keyof typeof availableIcons]) {
+      // Icono no está en la lista de disponibles, pero permitirlo si no está vacío
+      // Solo agregamos warning si es necesario, no error
+      console.warn(`Icono '${pillar.icon}' no está en la lista de iconos disponibles para pilares DIP`);
     }
     
     if (pillar.image && !isValidUrl(pillar.image)) {
       errors.push('URL de imagen principal no es válida');
-    }
-    
-    if (pillar.image_fallback && !isValidUrl(pillar.image_fallback)) {
-      errors.push('URL de imagen fallback no es válida');
     }
     
     return errors;
@@ -155,8 +154,7 @@ export default function EnhancedPillarsManager({
       icon: 'Compass',
       title: 'Nuevo Pilar DIP',
       description: 'Descripción del pilar metodológico',
-      image: '',
-      image_fallback: ''
+      image: ''
     };
     onChange([...pillars, newPillar]);
     setEditingId(newPillar.id.toString());
@@ -213,11 +211,6 @@ export default function EnhancedPillarsManager({
                 src={pillar.image}
                 alt={pillar.title}
                 className="h-full w-full object-cover"
-                onError={(e) => {
-                  if (pillar.image_fallback) {
-                    (e.target as HTMLImageElement).src = pillar.image_fallback;
-                  }
-                }}
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
@@ -397,10 +390,10 @@ export default function EnhancedPillarsManager({
                         onChange={(e) => updatePillar(pillar.id, 'description', e.target.value)}
                         placeholder="Descripción detallada del pilar metodológico"
                         rows={4}
-                        maxLength={200}
+                        maxLength={400}
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        {pillar.description.length}/200 caracteres
+                        {pillar.description.length}/400 caracteres
                       </p>
                     </div>
                   </div>
@@ -408,7 +401,7 @@ export default function EnhancedPillarsManager({
                   {/* Imágenes */}
                   <div className="space-y-4">
                     <div>
-                      <ImageField
+                      <ImageSelector
                         value={pillar.image || ''}
                         onChange={(value) => updatePillar(pillar.id, 'image', value)}
                         label="Imagen principal"
@@ -416,14 +409,6 @@ export default function EnhancedPillarsManager({
                       />
                     </div>
 
-                    <div>
-                      <ImageField
-                        value={pillar.image_fallback || ''}
-                        onChange={(value) => updatePillar(pillar.id, 'image_fallback', value)}
-                        label="Imagen de respaldo"
-                        placeholder="URL o ruta de imagen alternativa"
-                      />
-                    </div>
 
                     {/* Vista previa */}
                     <div className="border rounded-lg p-4 bg-muted/30">
@@ -434,11 +419,6 @@ export default function EnhancedPillarsManager({
                             src={pillar.image}
                             alt={pillar.title}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              if (pillar.image_fallback) {
-                                (e.target as HTMLImageElement).src = pillar.image_fallback;
-                              }
-                            }}
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full">
@@ -590,18 +570,6 @@ export default function EnhancedPillarsManager({
           maxItems={maxPillars}
         />
       )}
-
-      {/* Información adicional */}
-      <div className="text-xs text-muted-foreground space-y-1 p-4 bg-muted/30 rounded-lg">
-        <p><strong>🏛️ Consejos para Pilares DIP:</strong></p>
-        <ul className="space-y-1 ml-4 list-disc">
-          <li>Los pilares representan la metodología DIP (Dirección Integral de Proyectos)</li>
-          <li>Cada pilar debe tener un icono específico que represente su función</li>
-          <li>Usa imágenes que refuercen el concepto de cada pilar</li>
-          <li>Mantén las descripciones claras y técnicas</li>
-          <li>El orden de los pilares refleja la secuencia metodológica</li>
-        </ul>
-      </div>
     </div>
   );
 }

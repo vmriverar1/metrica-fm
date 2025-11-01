@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/components/auth';
 import { Shield, LogIn, Settings } from 'lucide-react';
 
 export default function AdminRedirectPage() {
   const router = useRouter();
-  const { isAuthenticated, loading, user } = useAuth();
+  const { user, loading } = useAuth();
+  const isAuthenticated = !!user;
   const [message, setMessage] = useState('Verificando acceso...');
 
   useEffect(() => {
     if (!loading) {
       if (isAuthenticated) {
-        setMessage(`Bienvenido ${user?.name || 'Admin'}, redirigiendo al panel...`);
+        setMessage(`Bienvenido ${user?.displayName || 'Admin'}, redirigiendo al panel...`);
         setTimeout(() => {
           router.push('/admin/dashboard');
         }, 1000);

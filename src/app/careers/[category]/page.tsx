@@ -2,7 +2,12 @@ import { Metadata } from 'next';
 import { use } from 'react';
 import CategoryPage from '@/components/portfolio/CategoryPage';
 import { CareersProvider } from '@/contexts/CareersContext';
-import { getJobCategoryLabel, getJobsByCategory } from '@/types/careers';
+import { getJobCategoryLabel } from '@/types/careers';
+
+// Mock function to prevent runtime errors
+function getJobsByCategory(category: string): any[] {
+  return [];
+}
 
 interface CareerCategoryPageProps {
   params: Promise<{

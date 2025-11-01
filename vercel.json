@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "metrica-dip",
+  "name": "project-name",
   "alias": ["metrica-dip.com", "www.metrica-dip.com"],
   "regions": ["iad1", "sfo1"],
   "build": {

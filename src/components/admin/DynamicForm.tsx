@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RotatingWordsEditor from './home/RotatingWordsEditor';
 import EnhancedStatisticsManager from './enhanced/EnhancedStatisticsManager';
@@ -22,18 +22,20 @@ import TechnologiesEditor from './TechnologiesEditor';
 import PreviewModal from './PreviewModal';
 import ValidationPanel from './ValidationPanel';
 import MediaPickerField from './MediaPickerField';
-import ImageField from './ImageField';
+import UnifiedMediaLibrary from './UnifiedMediaLibrary';
 import GalleryField from './GalleryField';
 import VideoField from './VideoField';
 import PdfField from './PdfField';
-import { 
-  BenefitsEditor, 
-  CommitmentsEditor, 
+import ImageSelector from './ImageSelector';
+import GradientSelector from './GradientSelector';
+import {
+  BenefitsEditor,
+  CommitmentsEditor,
   ActionButtonsEditor,
-  ClientBenefitsEditor,
   TestimonialsEditor,
   QualityObjectivesEditor,
-  ScopeItemsEditor
+  ScopeItemsEditor,
+  ImportanceReasonsEditor
 } from './iso';
 import BackupManager from './BackupManager';
 import { useSmartValidation } from '@/hooks/useSmartValidation';
@@ -53,6 +55,8 @@ import {
   Upload,
   Link as LinkIcon,
   Calendar,
+  ChevronUp,
+  ChevronDown,
   Hash,
   Type,
   ToggleLeft,
@@ -104,7 +108,7 @@ export interface FormField {
   disabled?: boolean;
   width?: 'full' | 'half' | 'third';
   // Para componentes custom
-  component?: 'rotating-words' | 'statistics-grid' | 'service-builder' | 'portfolio-manager' | 'pillars-editor' | 'policies-manager' | 'image-field' | 'video-field' | 'pdf-field' | 'timeline-builder' | 'statistics-builder' | 'phases-builder' | 'hero-team-gallery-editor' | 'team-members-editor' | 'team-moments-editor' | 'values-editor' | 'culture-stats-editor' | 'technologies-editor' | 'benefits-editor' | 'commitments-editor' | 'action-buttons-editor' | 'client-benefits-editor' | 'testimonials-editor' | 'quality-objectives-editor' | 'scope-items-editor';
+  component?: 'rotating-words' | 'statistics-grid' | 'service-builder' | 'portfolio-manager' | 'pillars-editor' | 'policies-manager' | 'image-field' | 'video-field' | 'pdf-field' | 'timeline-builder' | 'statistics-builder' | 'phases-builder' | 'hero-team-gallery-editor' | 'team-members-editor' | 'team-moments-editor' | 'values-editor' | 'culture-stats-editor' | 'technologies-editor' | 'benefits-editor' | 'commitments-editor' | 'action-buttons-editor' | 'testimonials-editor' | 'quality-objectives-editor' | 'scope-items-editor' | 'gradient-selector' | 'importance-reasons-editor';
   customProps?: Record<string, any>;
   config?: Record<string, any>;
 }
@@ -175,6 +179,9 @@ export default function DynamicForm({
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('');
   const [isMobile, setIsMobile] = useState(false);
+  const [showMediaLibrary, setShowMediaLibrary] = useState(false);
+  const [mediaLibraryField, setMediaLibraryField] = useState<any>(null);
+  const initialValuesRef = useRef<Record<string, any>>({});
   
   // Smart Validation
   const smartValidation = useSmartValidation(values, {
@@ -237,21 +244,45 @@ export default function DynamicForm({
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
+  // Memoize initial values to prevent unnecessary re-renders
+  const memoizedInitialValues = useMemo(() => {
+    const hasChanged = JSON.stringify(initialValuesRef.current) !== JSON.stringify(initialValues);
+    if (hasChanged) {
+      initialValuesRef.current = { ...initialValues };
+      console.log('📝 [DYNAMIC FORM] Valores iniciales han cambiado:', {
+        hasInitialValues: !!initialValues,
+        initialValuesKeys: Object.keys(initialValues || {}),
+        fieldsCount: fields?.length || 0
+      });
+    }
+    return initialValuesRef.current;
+  }, [initialValues, fields?.length]);
+
   useEffect(() => {
-    console.log('📝 [DYNAMIC FORM] Recibiendo valores iniciales:', {
-      hasInitialValues: !!initialValues,
-      initialValuesKeys: initialValues ? Object.keys(initialValues) : [],
-      sampleValues: initialValues ? {
-        page: initialValues.page,
-        introduction: initialValues.introduction,
-        hasTimelineEvents: !!initialValues.timeline_events,
-        hasAchievementSummary: !!initialValues.achievement_summary
-      } : null,
-      fieldsCount: fields?.length || 0
+    setValues(memoizedInitialValues);
+  }, [memoizedInitialValues]);
+
+  // Apply default values for fields that don't have values
+  useEffect(() => {
+    if (!fields || fields.length === 0) return;
+
+    const valuesWithDefaults = { ...values };
+    let hasChanges = false;
+
+    fields.forEach(field => {
+      if (field.defaultValue !== undefined) {
+        const currentValue = getNestedValue(valuesWithDefaults, field.key);
+        if (currentValue === undefined || currentValue === '' || currentValue === null) {
+          setNestedValue(valuesWithDefaults, field.key, field.defaultValue);
+          hasChanges = true;
+        }
+      }
     });
-    
-    setValues(initialValues);
-  }, [initialValues]);
+
+    if (hasChanges) {
+      setValues(valuesWithDefaults);
+    }
+  }, [fields, values]);
 
   // Helper function to get nested values using dot notation
   const getNestedValue = (obj: any, path: string): any => {
@@ -305,8 +336,24 @@ export default function DynamicForm({
 
   const validateField = (field: FormField, value: any): string | null => {
     // Required validation
-    if (field.required && (!value || (Array.isArray(value) && value.length === 0))) {
-      return `${field.label} es requerido`;
+    if (field.required) {
+      const isEmpty = !value || value === '' || (Array.isArray(value) && value.length === 0);
+
+      if (isEmpty) {
+        // For select fields, be more lenient - only show error if we're sure it's empty
+        if (field.type === 'select') {
+          // Don't show error if field hasn't been touched yet
+          if (!touched[field.key]) {
+            return null;
+          }
+          // Also check if we have a valid selection
+          const hasValidOption = field.options?.some(option => option.value === value);
+          if (hasValidOption) {
+            return null;
+          }
+        }
+        return `${field.label} es requerido`;
+      }
     }
 
     if (!value) return null;
@@ -409,12 +456,17 @@ export default function DynamicForm({
 
   const handleChange = (field: FormField, value: any) => {
     setValues(prev => setNestedValue(prev, field.key, value));
-    
+
+    // Mark field as touched for select fields
+    if (field.type === 'select') {
+      setTouched(prev => ({ ...prev, [field.key]: true }));
+    }
+
     // Clear error when user starts typing
     if (errors[field.key]) {
       setErrors(prev => ({ ...prev, [field.key]: '' }));
     }
-    
+
     // Field-level smart validation
     if (enableSmartValidation) {
       smartValidation.validateField(field.key, value);
@@ -429,10 +481,17 @@ export default function DynamicForm({
 
   const handleBlur = (field: FormField) => {
     setTouched(prev => ({ ...prev, [field.key]: true }));
-    
-    const error = validateField(field, values[field.key]);
+
+    // Get current value using the same method as the form field
+    const currentValue = getNestedValue(values, field.key);
+
+
+    const error = validateField(field, currentValue);
     if (error) {
       setErrors(prev => ({ ...prev, [field.key]: error }));
+    } else {
+      // Clear error if validation passes
+      setErrors(prev => ({ ...prev, [field.key]: '' }));
     }
   };
 
@@ -751,32 +810,51 @@ export default function DynamicForm({
           />
         )}
 
-        {/* Image Field - Enhanced image input with upload/external toggle */}
+        {/* Image Field - WordPress-style Media Library integration */}
         {field.type === 'image' && (
           <div>
-            <ImageField
-              value={value || ''}
+            <ImageSelector
+              value={value || (field.multiple ? [] : '')}
               onChange={(newValue) => handleChange(field, newValue)}
-              label="" // No mostrar label en el componente ya que DynamicForm ya lo muestra
-              placeholder={field.placeholder}
-              required={false} // No mostrar asterisco ya que DynamicForm ya lo muestra
-              disabled={field.disabled || loading}
-              description="" // No mostrar description ya que DynamicForm ya la muestra
+              placeholder={field.placeholder || 'Seleccionar imagen...'}
+              multiSelect={field.multiple || false}
+              maxImages={field.maxImages || 10}
             />
           </div>
         )}
 
-        {/* Gallery Field - Enhanced gallery management with multiple images */}
+        {/* Gallery Field - Media Library integration for multiple images */}
         {field.type === 'gallery' && (
           <div>
-            <GalleryField
+            <ImageSelector
               value={value || []}
               onChange={(newValue) => handleChange(field, newValue)}
-              label="" // No mostrar label en el componente ya que DynamicForm ya lo muestra
-              placeholder={field.placeholder}
-              required={false} // No mostrar asterisco ya que DynamicForm ya lo muestra
-              disabled={field.disabled || loading}
-              description="" // No mostrar description ya que DynamicForm ya la muestra
+              placeholder={field.placeholder || 'Seleccionar imágenes...'}
+              multiSelect={true}
+              maxImages={field.maxImages || 20}
+              variant="gallery"
+              size="md"
+              acceptedTypes={field.acceptedTypes || ['jpg', 'jpeg', 'png', 'gif', 'webp']}
+              required={field.required}
+              error={error}
+            />
+          </div>
+        )}
+
+        {/* Media Selector - WordPress-style media library */}
+        {field.type === 'media-selector' && (
+          <div>
+            <ImageSelector
+              value={field.multiSelect ? (value || []) : (value || '')}
+              onChange={(newValue) => handleChange(field, newValue)}
+              placeholder={field.placeholder || (field.multiSelect ? 'Seleccionar imágenes...' : 'Seleccionar imagen...')}
+              multiSelect={field.multiSelect || false}
+              maxImages={field.maxImages || 10}
+              variant={field.variant || 'card'}
+              size={field.size || 'md'}
+              acceptedTypes={field.acceptedTypes || ['jpg', 'jpeg', 'png', 'gif', 'webp']}
+              required={field.required}
+              error={error}
             />
           </div>
         )}
@@ -818,8 +896,10 @@ export default function DynamicForm({
         {field.type === 'custom' && field.component === 'service-builder' && (
           <ServiceBuilder
             mainService={value?.main_service || {}}
-            secondaryServices={Array.isArray(value?.secondary_services) ? value.secondary_services : []}
+            secondaryServices={Array.isArray(value?.secondary_services) ? value.secondary_services : (Array.isArray(value?.services_list) ? value.services_list : [])}
             onChange={(services) => handleChange(field, services)}
+            sectionTitle={value?.section?.title || ''}
+            sectionSubtitle={value?.section?.subtitle || ''}
             {...field.customProps}
           />
         )}
@@ -850,11 +930,13 @@ export default function DynamicForm({
         
         {/* Nuevos componentes para historia.json */}
         {field.type === 'custom' && field.component === 'image-field' && (
-          <ImageField
+          <ImageSelector
             value={value || ''}
             onChange={(newValue) => handleChange(field, newValue)}
             label={field.label}
             description={field.description}
+            variant="card"
+            placeholder="Seleccionar imagen..."
             required={field.required || false}
             disabled={field.disabled || false}
           />
@@ -878,6 +960,11 @@ export default function DynamicForm({
             label={field.label}
             description={field.description}
             required={field.required || false}
+            uploadEndpoint={
+              field.key === 'hero.certificate_details.pdf_url'
+                ? '/api/upload/iso-certificate'
+                : '/api/upload'
+            }
             disabled={field.disabled || false}
           />
         )}
@@ -891,27 +978,135 @@ export default function DynamicForm({
         )}
         
         {field.type === 'custom' && field.component === 'statistics-builder' && (
-          <EnhancedStatisticsManager
-            statistics={Array.isArray(value) ? value : []}
-            onChange={(statistics) => handleChange(field, statistics)}
-            title={field.label}
-            description={field.description}
-            config={field.config}
-            {...field.customProps}
-          />
+          <>
+            {(() => {
+              console.log('🔍 [DYNAMIC FORM] statistics-builder value:', value);
+              console.log('🔍 [DYNAMIC FORM] field.key:', field.key);
+              console.log('🔍 [DYNAMIC FORM] value type:', typeof value, Array.isArray(value));
+
+              if (Array.isArray(value)) {
+                console.log('🔍 [DYNAMIC FORM] Array contents:', value);
+                value.forEach((item, index) => {
+                  console.log(`🔍 [DYNAMIC FORM] Item ${index}:`, item);
+                });
+              }
+
+              return null;
+            })()}
+            <EnhancedStatisticsManager
+              statistics={(() => {
+                const rawValue = Array.isArray(value) ? value : [];
+                console.log('🔄 [TRANSFORM] Raw value:', rawValue);
+
+                // Transformar del formato Firestore al formato EnhancedStatisticsManager
+                const transformedStats = rawValue.map((metric: any, index: number) => {
+                  // Si ya está en formato transformado (tiene 'id'), devolverlo tal como está
+                  if (metric && metric.id) {
+                    console.log('🔄 [TRANSFORM] Ya transformado:', metric);
+                    return metric;
+                  }
+
+                  // Si está en formato Firestore (tiene 'number'), transformarlo
+                  if (metric && metric.number !== undefined) {
+                    console.log('🔄 [TRANSFORM] Formato Firestore:', metric);
+
+                    // Extraer número y sufijo del campo "number"
+                    const numberStr = metric.number || '0';
+                    const matches = numberStr.match(/^(\$|€)?([0-9.,]+)([+%KMB]*)$/);
+
+                    let prefix = '';
+                    let numValue = 0;
+                    let suffix = '';
+
+                    if (matches) {
+                      prefix = matches[1] || '';
+                      numValue = parseFloat(matches[2].replace(/,/g, '')) || 0;
+                      suffix = matches[3] || '';
+                    } else {
+                      // Fallback: intentar extraer solo el número
+                      const numMatch = numberStr.match(/([0-9.,]+)/);
+                      numValue = numMatch ? parseFloat(numMatch[1].replace(/,/g, '')) : 0;
+                      // Todo lo que no sea número lo ponemos como sufijo
+                      suffix = numberStr.replace(/[0-9.,]/g, '').trim();
+                    }
+
+                    const transformed = {
+                      id: `metric-${metric.index || index}`,
+                      icon: metric.icon || 'Award', // Leer del Firestore o usar Award por defecto
+                      value: numValue,
+                      suffix: suffix,
+                      prefix: prefix,
+                      label: metric.label || 'Sin etiqueta',
+                      description: metric.description || ''
+                    };
+
+                    console.log('🔄 [TRANSFORM] Transformado a:', transformed);
+                    return transformed;
+                  }
+
+                  // Fallback para datos incompletos
+                  console.log('🔄 [TRANSFORM] Datos incompletos, creando vacío:', metric);
+                  return {
+                    id: `metric-fallback-${index}`,
+                    icon: 'Award',
+                    value: 0,
+                    suffix: '',
+                    prefix: '',
+                    label: 'Sin etiqueta',
+                    description: ''
+                  };
+                });
+
+                console.log('🔄 [TRANSFORM] Resultado final:', transformedStats);
+                return transformedStats;
+              })()}
+              onChange={(statistics) => {
+                console.log('🔄 [SAVE TRANSFORM] Recibiendo para guardar:', statistics);
+
+                // Transformar de vuelta al formato Firestore para guardar
+                const backTransformed = statistics.map((stat: any, index: number) => {
+                  // Reconstruir el campo "number" combinando prefix + value + suffix
+                  let numberStr = '';
+                  if (stat.prefix) numberStr += stat.prefix;
+                  if (stat.value !== undefined && stat.value !== null) {
+                    numberStr += stat.value.toString();
+                  }
+                  if (stat.suffix) numberStr += stat.suffix;
+
+                  const result = {
+                    index: index,
+                    label: stat.label || 'Sin etiqueta',
+                    description: stat.description || '',
+                    number: numberStr || '0',
+                    icon: stat.icon || 'Award'
+                  };
+
+                  console.log('🔄 [SAVE TRANSFORM] Item transformado:', result);
+                  return result;
+                });
+
+                console.log('🔄 [SAVE TRANSFORM] Resultado final para guardar:', backTransformed);
+                handleChange(field, backTransformed);
+              }}
+              title={field.label}
+              description={field.description}
+              config={field.config}
+              {...field.customProps}
+            />
+          </>
         )}
         
         {field.type === 'custom' && field.component === 'phases-builder' && (
-          <div className="border rounded-lg p-4 bg-gradient-to-r from-orange-50 to-red-50">
+          <div className="border rounded-lg p-4 bg-gradient-to-r from-cyan-50 to-red-50">
             <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="h-5 w-5 text-orange-600" />
-              <h3 className="font-semibold text-orange-900">Editor de Fases</h3>
-              <span className="text-xs bg-orange-200 text-orange-800 px-2 py-1 rounded">Evolutivo</span>
+              <TrendingUp className="h-5 w-5 text-cyan-600" />
+              <h3 className="font-semibold text-cyan-900">Editor de Fases</h3>
+              <span className="text-xs bg-cyan-200 text-cyan-800 px-2 py-1 rounded">Evolutivo</span>
             </div>
-            <p className="text-sm text-orange-700 mb-4">
+            <p className="text-sm text-cyan-700 mb-4">
               {field.description || 'Editor de fases cronológicas de desarrollo empresarial.'}
             </p>
-            <div className="space-y-3 text-sm text-orange-600">
+            <div className="space-y-3 text-sm text-cyan-600">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
                 <span>Fases: {Array.isArray(value) ? value.length : 0} de {field.config?.maxPhases || 8}</span>
@@ -951,6 +1146,19 @@ export default function DynamicForm({
             value={Array.isArray(value) ? value : []}
             onChange={(newValue) => handleChange(field, newValue)}
             disabled={field.disabled || loading}
+          />
+        )}
+
+        {field.type === 'custom' && field.component === 'gallery-field' && (
+          <GalleryField
+            value={value || []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            label={field.label}
+            placeholder={field.customProps?.placeholder || 'Agregar imágenes...'}
+            required={field.required}
+            disabled={field.disabled || loading}
+            description={field.description}
+            galleryType={field.customProps?.galleryType || 'simple'}
           />
         )}
         {field.type === 'custom' && field.component === 'values-editor' && (
@@ -1003,14 +1211,6 @@ export default function DynamicForm({
           />
         )}
 
-        {field.type === 'custom' && field.component === 'client-benefits-editor' && (
-          <ClientBenefitsEditor
-            value={Array.isArray(value) ? value : []}
-            onChange={(newValue) => handleChange(field, newValue)}
-            disabled={field.disabled || loading}
-            maxBenefits={field.customProps?.maxBenefits || 8}
-          />
-        )}
 
         {field.type === 'custom' && field.component === 'testimonials-editor' && (
           <TestimonialsEditor
@@ -1041,6 +1241,432 @@ export default function DynamicForm({
             placeholder={field.customProps?.placeholder}
           />
         )}
+        {field.type === 'custom' && field.component === 'gradient-selector' && (
+          <GradientSelector
+            value={value || ''}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            defaultColors={field.customProps?.defaultColors}
+          />
+        )}
+        {field.type === 'custom' && field.component === 'importance-reasons-editor' && (
+          <ImportanceReasonsEditor
+            value={Array.isArray(value) ? value : []}
+            onChange={(newValue) => handleChange(field, newValue)}
+            disabled={field.disabled || loading}
+            maxReasons={field.customProps?.maxReasons || 6}
+            title={field.customProps?.title}
+            description={field.customProps?.description}
+          />
+        )}
+
+        {/* Array Fields */}
+        {field.type === 'array' && field.arrayFields && (() => {
+          const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
+
+          const toggleExpanded = (index: number) => {
+            const newExpanded = new Set(expandedItems);
+            if (newExpanded.has(index)) {
+              newExpanded.delete(index);
+            } else {
+              newExpanded.add(index);
+            }
+            setExpandedItems(newExpanded);
+          };
+
+          const moveItem = (fromIndex: number, toIndex: number) => {
+            if (toIndex < 0 || toIndex >= value.length) return;
+            const newArray = [...value];
+            const [movedItem] = newArray.splice(fromIndex, 1);
+            newArray.splice(toIndex, 0, movedItem);
+            handleChange(field, newArray);
+          };
+
+          const getItemDisplayName = (item: any, index: number) => {
+            // Verificar que el item existe
+            if (!item) {
+              return `Elemento ${index + 1}`;
+            }
+
+            // Intentar obtener un nombre descriptivo del item
+            const titleField = field.arrayFields?.find(f => f.key === 'title' || f.key === 'name');
+            const authorField = field.arrayFields?.find(f => f.key === 'author');
+
+            if (titleField && item[titleField.key]) {
+              return item[titleField.key];
+            } else if (authorField && item[authorField.key]) {
+              return item[authorField.key];
+            }
+            return `Elemento ${index + 1}`;
+          };
+
+          return (
+            <div className="space-y-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-sm font-medium text-gray-700">
+                    {field.label} ({Array.isArray(value) ? value.length : 0} elementos)
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const currentArray = Array.isArray(value) ? value : [];
+                      const newItem = {};
+                      field.arrayFields?.forEach(arrayField => {
+                        newItem[arrayField.key] = arrayField.defaultValue || '';
+                      });
+                      handleChange(field, [...currentArray, newItem]);
+                      // Auto-expandir el nuevo elemento
+                      setTimeout(() => {
+                        setExpandedItems(prev => new Set(prev).add(currentArray.length));
+                      }, 100);
+                    }}
+                    className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                    disabled={field.disabled || loading}
+                  >
+                    + Agregar elemento
+                  </button>
+                </div>
+
+                {Array.isArray(value) && value.length > 0 ? (
+                  <div className="space-y-3">
+                    {value.map((item, index) => {
+                      const isExpanded = expandedItems.has(index);
+                      const displayName = getItemDisplayName(item, index);
+
+                      return (
+                        <div key={`${index}-${item.id || index}`} className="border border-gray-200 rounded-lg bg-white shadow-sm">
+                          {/* Header del acordeón */}
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-t-lg">
+                            <div className="flex items-center space-x-3">
+                              {/* Controles de orden */}
+                              <div className="flex flex-col space-y-1">
+                                <button
+                                  type="button"
+                                  onClick={() => moveItem(index, index - 1)}
+                                  disabled={index === 0 || field.disabled || loading}
+                                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                  title="Mover arriba"
+                                >
+                                  <ChevronUp className="h-3 w-3" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => moveItem(index, index + 1)}
+                                  disabled={index === value.length - 1 || field.disabled || loading}
+                                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                  title="Mover abajo"
+                                >
+                                  <ChevronDown className="h-3 w-3" />
+                                </button>
+                              </div>
+
+                              {/* Título del elemento */}
+                              <div className="flex items-center space-x-2">
+                                <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                                  {index + 1}
+                                </span>
+                                <h5 className="text-sm font-medium text-gray-700 truncate max-w-xs">
+                                  {displayName}
+                                </h5>
+                              </div>
+                            </div>
+
+                            {/* Controles */}
+                            <div className="flex items-center space-x-2">
+                              <button
+                                type="button"
+                                onClick={() => toggleExpanded(index)}
+                                className="px-3 py-1 text-xs bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
+                                disabled={field.disabled || loading}
+                              >
+                                {isExpanded ? 'Contraer' : 'Editar'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newArray = [...value];
+                                  newArray.splice(index, 1);
+                                  handleChange(field, newArray);
+                                  // Remover de expandidos
+                                  setExpandedItems(prev => {
+                                    const newSet = new Set(prev);
+                                    newSet.delete(index);
+                                    return newSet;
+                                  });
+                                }}
+                                className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                                disabled={field.disabled || loading}
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Contenido expandible */}
+                          {isExpanded && (
+                            <div className="p-4 border-t border-gray-200">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {field.arrayFields?.map(arrayField => {
+                                  const arrayFieldValue = item[arrayField.key] || arrayField.defaultValue || '';
+                                  const arrayFieldError = errors[`${field.key}.${index}.${arrayField.key}`];
+
+                                  return (
+                                    <div key={arrayField.key} className={arrayField.width === 'full' ? 'md:col-span-2' : ''}>
+                                      <label className="block text-xs font-medium text-gray-700 mb-1">
+                                        {arrayField.label}
+                                        {arrayField.required && <span className="text-red-500 ml-1">*</span>}
+                                      </label>
+
+                                      {arrayField.type === 'text' && (
+                                        <input
+                                          type="text"
+                                          value={arrayFieldValue}
+                                          placeholder={arrayField.placeholder}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        />
+                                      )}
+
+                                      {arrayField.type === 'textarea' && (
+                                        <textarea
+                                          value={arrayFieldValue}
+                                          placeholder={arrayField.placeholder}
+                                          rows={arrayField.rows || 3}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        />
+                                      )}
+
+                                      {arrayField.type === 'number' && (
+                                        <input
+                                          type="number"
+                                          value={arrayFieldValue}
+                                          placeholder={arrayField.placeholder}
+                                          min={arrayField.min}
+                                          max={arrayField.max}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: parseFloat(e.target.value) || 0 };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        />
+                                      )}
+
+                                      {arrayField.type === 'icon' && (
+                                        <select
+                                          value={arrayFieldValue}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        >
+                                          <option value="">Seleccionar ícono...</option>
+                                          <option value="Award">🏆 Premio (Award)</option>
+                                          <option value="Building">🏢 Edificio (Building)</option>
+                                          <option value="Building2">🏛️ Edificio 2 (Building2)</option>
+                                          <option value="Users">👥 Usuarios (Users)</option>
+                                          <option value="Clock">⏰ Reloj (Clock)</option>
+                                          <option value="Star">⭐ Estrella (Star)</option>
+                                          <option value="Target">🎯 Objetivo (Target)</option>
+                                          <option value="TrendingUp">📈 Tendencia (TrendingUp)</option>
+                                          <option value="Shield">🛡️ Escudo (Shield)</option>
+                                          <option value="Heart">❤️ Corazón (Heart)</option>
+                                          <option value="GraduationCap">🎓 Graduación (GraduationCap)</option>
+                                          <option value="Truck">🚚 Camión (Truck)</option>
+                                          <option value="Home">🏠 Casa (Home)</option>
+                                          <option value="Settings">⚙️ Configuración (Settings)</option>
+                                          <option value="Cpu">💻 CPU (Cpu)</option>
+                                          <option value="Factory">🏭 Fábrica (Factory)</option>
+                                          <option value="DollarSign">💵 Dólar (DollarSign)</option>
+                                        </select>
+                                      )}
+
+                                      {arrayField.type === 'color' && (
+                                        <div className="flex gap-2">
+                                          <input
+                                            type="color"
+                                            value={arrayFieldValue || '#00A8E8'}
+                                            onChange={(e) => {
+                                              const newArray = [...value];
+                                              newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                              handleChange(field, newArray);
+                                            }}
+                                            className="h-10 w-16 border border-gray-300 rounded cursor-pointer"
+                                            disabled={field.disabled || loading}
+                                          />
+                                          <input
+                                            type="text"
+                                            value={arrayFieldValue || '#00A8E8'}
+                                            onChange={(e) => {
+                                              const newArray = [...value];
+                                              newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                              handleChange(field, newArray);
+                                            }}
+                                            placeholder="#00A8E8"
+                                            className={`flex-1 px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                              arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                            }`}
+                                            disabled={field.disabled || loading}
+                                          />
+                                        </div>
+                                      )}
+
+                                      {arrayField.type === 'multitext' && (
+                                        <textarea
+                                          value={Array.isArray(arrayFieldValue) ? arrayFieldValue.join('\n') : arrayFieldValue}
+                                          placeholder={arrayField.placeholder || 'Una métrica por línea'}
+                                          rows={arrayField.rows || 4}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            const lines = e.target.value.split('\n').filter(line => line.trim());
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: lines };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        />
+                                      )}
+
+                                      {arrayField.type === 'boolean' && (
+                                        <div className="flex items-center gap-2 py-2">
+                                          <input
+                                            type="checkbox"
+                                            checked={arrayFieldValue === true}
+                                            onChange={(e) => {
+                                              const newArray = [...value];
+                                              newArray[index] = { ...newArray[index], [arrayField.key]: e.target.checked };
+                                              handleChange(field, newArray);
+                                            }}
+                                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                            disabled={field.disabled || loading}
+                                          />
+                                          <span className="text-xs text-gray-600">
+                                            {arrayFieldValue ? 'Activado' : 'Desactivado'}
+                                          </span>
+                                        </div>
+                                      )}
+
+                                      {arrayField.type === 'select' && arrayField.options && (
+                                        <select
+                                          value={arrayFieldValue}
+                                          onChange={(e) => {
+                                            const newArray = [...value];
+                                            newArray[index] = { ...newArray[index], [arrayField.key]: e.target.value };
+                                            handleChange(field, newArray);
+                                          }}
+                                          className={`block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${
+                                            arrayFieldError ? 'border-red-300' : 'border-gray-300'
+                                          }`}
+                                          disabled={field.disabled || loading}
+                                        >
+                                          <option value="">Seleccionar...</option>
+                                          {arrayField.options.map((opt: any) => (
+                                            <option key={opt.value} value={opt.value}>
+                                              {opt.label}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      )}
+
+                                      {arrayField.type === 'image' && (
+                                        <div className="space-y-2">
+                                          {arrayFieldValue && arrayFieldValue.trim() !== '' && (
+                                            <div className="relative group">
+                                              <div className="w-20 h-20 bg-gray-100 rounded border overflow-hidden">
+                                                <img
+                                                  src={arrayFieldValue}
+                                                  alt="Preview"
+                                                  className="w-full h-full object-cover"
+                                                  onError={(e) => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23ddd" width="100" height="100"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3ENo disponible%3C/text%3E%3C/svg%3E';
+                                                  }}
+                                                />
+                                              </div>
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  const newArray = [...value];
+                                                  newArray[index] = { ...newArray[index], [arrayField.key]: '' };
+                                                  handleChange(field, newArray);
+                                                }}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                              >
+                                                <X className="w-3 h-3" />
+                                              </button>
+                                            </div>
+                                          )}
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setMediaLibraryField({
+                                                ...arrayField,
+                                                arrayIndex: index,
+                                                parentArrayField: field
+                                              });
+                                              setShowMediaLibrary(true);
+                                            }}
+                                            className="w-full px-3 py-2 text-sm border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 text-gray-700"
+                                          >
+                                            <Upload className="w-4 h-4" />
+                                            {arrayFieldValue ? 'Cambiar imagen' : (arrayField.placeholder || 'Seleccionar imagen')}
+                                          </button>
+                                        </div>
+                                      )}
+
+                                      {arrayField.description && (
+                                        <p className="text-xs text-gray-500 mt-1">{arrayField.description}</p>
+                                      )}
+
+                                      {arrayFieldError && (
+                                        <p className="text-xs text-red-500 mt-1">{arrayFieldError}</p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p className="text-sm">No hay elementos agregados</p>
+                    <p className="text-xs">Haz clic en "Agregar elemento" para comenzar</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Smart Validation Feedback */}
         {enableSmartValidation && (() => {
@@ -1378,24 +2004,6 @@ export default function DynamicForm({
         </div>
       )}
 
-      {/* Keyboard Shortcuts Help Panel */}
-      {enableKeyboardShortcuts && shortcuts.shortcuts.length > 0 && (
-        <div className="mt-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center space-x-2 mb-3">
-              <Keyboard className="w-4 h-4 text-gray-600" />
-              <h3 className="text-sm font-semibold text-gray-800">Atajos de Teclado Disponibles</h3>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-              {shortcuts.getShortcutsList().map((shortcut, index) => (
-                <div key={index} className="text-xs text-gray-600 bg-white px-2 py-1 rounded border">
-                  {shortcut}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Backup Manager */}
       {showBackupManager && (
@@ -1423,6 +2031,59 @@ export default function DynamicForm({
           onClose={() => setShowPreviewModal(false)}
           component={previewComponent}
           title={`Preview: ${title || previewComponent}`}
+        />
+      )}
+
+      {/* Unified Media Library Modal */}
+      {mediaLibraryField && (
+        <UnifiedMediaLibrary
+          isOpen={showMediaLibrary}
+          onClose={() => {
+            setShowMediaLibrary(false);
+            setMediaLibraryField(null);
+          }}
+          onSelect={(selectedImages) => {
+            const imageUrls = selectedImages.map(img => img.url);
+
+            // Check si es un campo dentro de un array
+            if (mediaLibraryField.arrayIndex !== undefined && mediaLibraryField.parentArrayField) {
+              const parentField = mediaLibraryField.parentArrayField;
+              const arrayIndex = mediaLibraryField.arrayIndex;
+              const currentArray = Array.isArray(values[parentField.key]) ? values[parentField.key] : [];
+              const newArray = [...currentArray];
+              newArray[arrayIndex] = {
+                ...newArray[arrayIndex],
+                [mediaLibraryField.key]: imageUrls[0] || ''
+              };
+              handleChange(parentField, newArray);
+            } else if (mediaLibraryField.multiple) {
+              // Modo múltiple: agregar a las imágenes existentes
+              const currentImages = (values[mediaLibraryField.key] || []) as string[];
+              handleChange(mediaLibraryField, [...currentImages, ...imageUrls]);
+            } else {
+              // Modo único: reemplazar con la primera imagen
+              handleChange(mediaLibraryField, imageUrls[0] || '');
+            }
+            setShowMediaLibrary(false);
+            setMediaLibraryField(null);
+          }}
+          multiSelect={mediaLibraryField.multiple || false}
+          selectedImages={(() => {
+            // Si es un campo de array
+            if (mediaLibraryField.arrayIndex !== undefined && mediaLibraryField.parentArrayField) {
+              const parentField = mediaLibraryField.parentArrayField;
+              const arrayIndex = mediaLibraryField.arrayIndex;
+              const currentArray = Array.isArray(values[parentField.key]) ? values[parentField.key] : [];
+              const currentValue = currentArray[arrayIndex]?.[mediaLibraryField.key];
+              return currentValue ? [currentValue] : [];
+            }
+            // Campo normal
+            if (mediaLibraryField.multiple) {
+              return (values[mediaLibraryField.key] || []) as string[];
+            }
+            return values[mediaLibraryField.key] ? [values[mediaLibraryField.key] as string] : [];
+          })()}
+          title={mediaLibraryField.label || 'Seleccionar Imagen'}
         />
       )}
     </div>

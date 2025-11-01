@@ -4,20 +4,84 @@
  * Servicio simplificado para gestión de aplicaciones laborales usando únicamente datos locales.
  */
 
-import { 
-  JobApplication, 
-  ApplicationStatus, 
-  ApplicationFilters,
-  RecruitmentStats,
-  RecruiterProfile,
-  ApplicationActivity,
-  ApplicationScore,
-  sampleApplications,
-  sampleRecruiters,
-  getSampleApplications,
-  getSampleApplicationsByJob,
-  getSampleApplicationsByStatus
-} from '@/types/careers';
+// Note: This service is currently disabled as the types are not available
+// import {
+//   JobApplication,
+//   ApplicationStatus,
+//   ApplicationFilters,
+//   RecruitmentStats,
+//   RecruiterProfile,
+//   ApplicationActivity,
+//   ApplicationScore,
+//   sampleApplications,
+//   sampleRecruiters,
+//   getSampleApplications,
+//   getSampleApplicationsByJob,
+//   getSampleApplicationsByStatus
+// } from '@/types/careers';
+
+// Temporary minimal types to prevent compilation errors
+type ApplicationStatus = 'pending' | 'reviewing' | 'interviewed' | 'hired' | 'rejected';
+type ApplicationFilters = {
+  status?: ApplicationStatus[];
+  jobId?: string;
+  assignedTo?: string;
+  searchQuery?: string;
+  priority?: string;
+  source?: string;
+};
+
+interface JobApplication {
+  id: string;
+  jobId: string;
+  applicantName: string;
+  applicantEmail: string;
+  status: ApplicationStatus;
+  submittedAt: Date;
+  lastActivity: Date;
+  assignedRecruiter?: string;
+  coverletter?: string;
+  priority?: string;
+  source: string;
+  activities?: ApplicationActivity[];
+}
+
+interface ApplicationActivity {
+  id: string;
+  type: string;
+  description: string;
+  performedBy: string;
+  performedAt: Date;
+  metadata?: any;
+}
+
+interface RecruitmentStats {
+  totalApplications: number;
+  pendingReview: number;
+  inReview: number;
+  interviewed: number;
+  hired: number;
+  rejected: number;
+  avgTimeToHire: number;
+  conversionRate: number;
+  topSources: { source: string; count: number }[];
+  monthlyApplications: number;
+  trending: {
+    applicationsChange: number;
+    conversionChange: number;
+    timeToHireChange: number;
+  };
+}
+
+interface RecruiterProfile {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// Empty sample data
+const sampleApplications: JobApplication[] = [];
+const sampleRecruiters: RecruiterProfile[] = [];
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes

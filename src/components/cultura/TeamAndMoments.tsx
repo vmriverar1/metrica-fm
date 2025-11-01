@@ -15,14 +15,7 @@ interface TeamAndMomentsProps {
     title: string;
     subtitle: string;
   };
-  members?: Array<{
-    id: number;
-    name: string;
-    role: string;
-    description: string;
-    image: string;
-    image_fallback: string;
-  }>;
+  members?: any[]; // Mantener por compatibilidad pero sin usar
   moments?: {
     title: string;
     subtitle: string;
@@ -40,7 +33,7 @@ interface TeamAndMomentsProps {
 const filters = [
   { id: 'all', name: 'Todos', color: '#6B7280', icon: '⭐' },
   { id: 'corporate', name: 'Corporativo', color: '#003F6F', icon: '🔵' },
-  { id: 'celebrations', name: 'Celebraciones', color: '#007bc4', icon: '🟠' },
+  { id: 'celebrations', name: 'Celebraciones', color: '#00A8E8', icon: '🟠' },
   { id: 'sustainability', name: 'Sostenibilidad', color: '#059669', icon: '🟢' },
   { id: 'legacy', name: 'Historia', color: '#374151', icon: '⚪' }
 ];
@@ -119,10 +112,8 @@ function Lightbox({ moment, onClose }: LightboxProps) {
   );
 }
 
-export default function TeamAndMoments({ teamSection, members, moments }: TeamAndMomentsProps) {
+export default function TeamAndMoments({ moments }: TeamAndMomentsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const [hoveredMember, setHoveredMember] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedMoment, setSelectedMoment] = useState<any>(null);
 
@@ -159,51 +150,17 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
   };
 
   useGSAP(() => {
-    if (!containerRef.current || !timelineRef.current) return;
-
-    // Animación horizontal controlada y suave
-    const timeline = timelineRef.current;
-    const totalWidth = timeline.scrollWidth;
-    
-    // Scroll horizontal suave
-    gsap.to(timeline, {
-      x: -(totalWidth - window.innerWidth),
-      duration: 20,
-      ease: "none",
-      repeat: -1,
-      yoyo: true
-    });
-
-    // Animación de entrada de las imágenes del equipo
-    gsap.fromTo('.team-portrait', 
-      { 
-        opacity: 0, 
-        scale: 0.8,
-        filter: 'grayscale(100%) brightness(0.7)'
-      },
-      { 
-        opacity: 1, 
-        scale: 1,
-        filter: 'grayscale(60%) brightness(0.9)',
-        duration: 0.8,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+    if (!containerRef.current) return;
 
     // Animación de entrada del mosaico
-    gsap.fromTo('.moment-card', 
-      { 
-        opacity: 0, 
+    gsap.fromTo('.moment-card',
+      {
+        opacity: 0,
         scale: 0.8,
         y: 30
       },
-      { 
-        opacity: 1, 
+      {
+        opacity: 1,
         scale: 1,
         y: 0,
         duration: 0.6,
@@ -237,103 +194,26 @@ export default function TeamAndMoments({ teamSection, members, moments }: TeamAn
       `}</style>
       <div className="container mx-auto max-w-7xl px-4">
         
-        {/* Título principal de la sección unificada */}
+        {/* Título principal de la sección */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="text-white drop-shadow-2xl" style={{
-              textShadow: '0 0 30px rgba(0, 123, 196, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3)'
-            }}>
-              {teamSection?.title || 'Nuestro Equipo'}
-            </span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {teamSection?.subtitle || 'Los rostros detrás de cada proyecto exitoso'}
-          </p>
-        </motion.div>
-
-        {/* Timeline horizontal del equipo */}
-        <div className="relative h-96 overflow-hidden rounded-2xl mb-20">
-          <div ref={timelineRef} className="flex items-center h-full space-x-8">
-            {(members || []).map((member, index) => (
-              <motion.div
-                key={member.id}
-                className="team-portrait flex-shrink-0 w-64 h-80 relative group cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                onMouseEnter={() => setHoveredMember(member.id)}
-                onMouseLeave={() => setHoveredMember(null)}
-              >
-                <div className="w-full h-full rounded-xl overflow-hidden shadow-2xl relative">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover filter grayscale-60 brightness-90 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-500"
-                    loading="lazy"
-                  />
-                  
-                  {/* Overlay gradiente sutil */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
-                  
-                  {/* Información solo visible en hover */}
-                  <div className={`absolute bottom-0 left-0 right-0 p-4 text-white transition-all duration-300 ${
-                    hoveredMember === member.id ? 'opacity-100 visible' : 'opacity-0 invisible'
-                  }`}>
-                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                    <p className="text-sm text-gray-200">{member.role}</p>
-                  </div>
-                  
-                  {/* Efecto de brillo en hover */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      background: `linear-gradient(45deg, transparent 20%, #007bc440 35%, #003F6F40 65%, transparent 80%)`
-                    }}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Efectos de desvanecimiento en los bordes con colores de marca */}
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-[#003F6F] via-[#002A4D]/10 to-transparent pointer-events-none z-10" />
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-[#003F6F] via-[#007bc4]/10 to-transparent pointer-events-none z-10" />
-        </div>
-
-        {/* Subtítulo para transición a momentos */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <h3 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-white drop-shadow-2xl" style={{
-              textShadow: '0 0 25px rgba(0, 123, 196, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4)'
+              textShadow: '0 0 25px rgba(0, 168, 232, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4)'
             }}>
               {moments?.title || 'Momentos que Nos Definen'}
             </span>
-          </h3>
+          </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             {moments?.subtitle || 'Una galería visual que captura la esencia de nuestra cultura empresarial'}
           </p>
-          
+
           {/* Separador visual */}
-          <div className="w-24 h-1 bg-gradient-to-r from-[#007bc4] to-[#003F6F] mx-auto rounded-full mb-8"></div>
-
-          {/* Indicador visual con colores de marca */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="text-center"
-          >
-
-          </motion.div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#00A8E8] to-[#003F6F] mx-auto rounded-full mb-8"></div>
         </motion.div>
 
         {/* Sección de momentos */}

@@ -126,17 +126,17 @@ export const ContactInfoManager: React.FC<ContactInfoManagerProps> = ({
   const templatesByType = {
     address: {
       title: 'Oficina Principal',
-      content: 'Av. El Derby 055, Piso 9\nSantiago de Surco, Lima - Perú',
+      content: 'Andrés Reyes 388, San Isidro',
       metadata: { clickable: true }
     },
     phone: {
       title: 'Teléfonos',
-      content: '+51 1 719-5990\n+51 999 999 999 (WhatsApp)',
+      content: '+51 1 719-5990\n+51 989 742 678 (WhatsApp)',
       metadata: { country_code: '+51', clickable: true }
     },
     email: {
       title: 'Email',
-      content: 'info@metrica-dip.com\nproyectos@metrica-dip.com',
+      content: 'info@metrica-dip.com\ninfo@metricadip.com',
       metadata: { clickable: true }
     },
     hours: {

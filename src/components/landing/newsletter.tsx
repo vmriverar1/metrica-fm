@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast-simple';
+import { useToast } from '@/hooks/use-toast';
 import { MoveRight, CheckCircle } from 'lucide-react';
 import { HomePageData } from '@/types/home';
 
@@ -19,7 +19,7 @@ export default function Newsletter({ data }: NewsletterProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast({
         title: "Error",
@@ -30,22 +30,54 @@ export default function Newsletter({ data }: NewsletterProps) {
     }
 
     setIsSubmitting(true);
-    
-    // Simular suscripción
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          formData: {
+            email: email,
+            name: 'Suscriptor Newsletter',
+            // Campos ocultos de tracking
+            form_name: 'Formulario de Newsletter',
+            page_url: typeof window !== 'undefined' ? window.location.pathname : 'unknown',
+            form_location: 'newsletter_footer'
+          },
+          formType: 'newsletter',
+          requiredFields: ['email']
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Error al suscribirse');
+      }
+
       setIsSubscribed(true);
       toast({
-        title: data.form.success_message,
-        description: data.form.success_description,
+        title: data.form.success_message || '¡Suscripción exitosa!',
+        description: data.form.success_description || 'Gracias por suscribirte a nuestro newsletter',
       });
-      
+
       // Reset después de 3 segundos
       setTimeout(() => {
         setIsSubscribed(false);
         setEmail('');
       }, 3000);
-    }, 1500);
+    } catch (error: any) {
+      console.error('Error submitting newsletter:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Error al procesar la suscripción. Por favor intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

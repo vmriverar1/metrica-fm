@@ -13,7 +13,6 @@ import {
   Building2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useResourceOptimization } from '@/hooks/useResourceOptimization';
 
 interface OptimizedLoadingProps {
   type: 'blog' | 'careers' | 'article' | 'job' | 'search';
@@ -79,7 +78,7 @@ const LOADING_VARIANTS: Record<string, LoadingVariant> = {
   },
   job: {
     icon: <Building2 className="w-8 h-8" />,
-    primaryColor: 'text-orange-600',
+    primaryColor: 'text-cyan-600',
     messages: [
       'Cargando detalles de la posición...',
       'Preparando formulario de aplicación...',
@@ -118,7 +117,8 @@ export default function OptimizedLoading({
   const [progress, setProgress] = useState(0);
   const [currentMessage, setCurrentMessage] = useState(0);
   const [currentTip, setCurrentTip] = useState(0);
-  const { connectionType, saveData } = useResourceOptimization();
+  const connectionType = 'high-speed'; // Simplified - assume high-speed connection
+  const saveData = false; // Simplified - assume no data saving needed
   
   const variant = LOADING_VARIANTS[type] || LOADING_VARIANTS.blog;
   
@@ -164,8 +164,7 @@ export default function OptimizedLoading({
         <motion.div
           className={cn("p-4 rounded-full bg-muted/50", variant.primaryColor)}
           animate={shouldShowAnimations ? {
-            scale: [1, 1.1, 1],
-            rotate: [0, 180, 360]
+            scale: [1, 1.1, 1]
           } : {}}
           transition={{
             duration: 2,

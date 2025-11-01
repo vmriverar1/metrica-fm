@@ -22,16 +22,17 @@ export default function ProjectTimeline() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Get unique years from projects
+  // Get unique years from projects (only from projects with completedAt)
   const years = Array.from(new Set(
-    allProjects.map(p => p.completedAt.getFullYear())
+    allProjects.filter(p => p.completedAt).map(p => p.completedAt!.getFullYear())
   )).sort((a, b) => b - a);
 
   // Filter projects by selected year or view mode
   const getFilteredProjects = () => {
-    if (viewMode === 'all') return allProjects;
-    
+    if (viewMode === 'all') return allProjects.filter(p => p.completedAt);
+
     return allProjects.filter(p => {
+      if (!p.completedAt) return false;
       const year = p.completedAt.getFullYear();
       if (viewMode === 'year') return year === selectedYear;
       if (viewMode === 'month') {
@@ -45,13 +46,14 @@ export default function ProjectTimeline() {
   };
 
   const filteredProjects = getFilteredProjects()
-    .sort((a, b) => a.completedAt.getTime() - b.completedAt.getTime());
+    .sort((a, b) => (a.completedAt?.getTime() || 0) - (b.completedAt?.getTime() || 0));
 
   // Group projects by month
   const groupProjectsByMonth = () => {
     const groups: { [key: string]: Project[] } = {};
-    
+
     filteredProjects.forEach(project => {
+      if (!project.completedAt) return;
       const monthKey = `${project.completedAt.getFullYear()}-${project.completedAt.getMonth()}`;
       if (!groups[monthKey]) groups[monthKey] = [];
       groups[monthKey].push(project);

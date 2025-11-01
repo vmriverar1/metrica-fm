@@ -6,15 +6,16 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from 'next/image';
-import { 
-  Target, 
-  Users, 
-  Lightbulb, 
-  Shield, 
+import {
+  Target,
+  Users,
+  Lightbulb,
+  Shield,
   TrendingUp,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Image as ImageIcon
 } from 'lucide-react';
 
 // Componente de skeleton loading para imágenes
@@ -111,26 +112,35 @@ function ValueModal({ value, onClose }: ValueModalProps) {
 
           {/* Imagen principal */}
           <div className="relative w-full h-[60vh] bg-gray-100">
-            <Image
-              src={value.images[currentImageIndex]}
-              alt="Value representation"
-              fill
-              className="object-cover object-center"
-              sizes="90vw"
-              priority
-              onError={(e) => {
-                const target = e.currentTarget as HTMLImageElement;
-                console.error('Modal image failed to load:', value.images[currentImageIndex]);
-                
-                // Sistema de fallback para el modal
-                if (!target.dataset.modalFallbackTried) {
-                  target.dataset.modalFallbackTried = "1";
-                  target.src = `https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center`;
-                } else {
-                  target.src = `https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop&crop=center`;
-                }
-              }}
-            />
+            {value.images[currentImageIndex] && value.images[currentImageIndex].trim() !== '' ? (
+              <Image
+                src={value.images[currentImageIndex]}
+                alt="Value representation"
+                fill
+                className="object-cover object-center"
+                sizes="90vw"
+                priority
+                onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  console.error('Modal image failed to load:', value.images[currentImageIndex]);
+
+                  // Sistema de fallback para el modal
+                  if (!target.dataset.modalFallbackTried) {
+                    target.dataset.modalFallbackTried = "1";
+                    target.src = `https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center`;
+                  } else {
+                    target.src = `https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop&crop=center`;
+                  }
+                }}
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                <div className="text-center">
+                  <ImageIcon className="w-16 h-16 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">No hay imagen disponible</p>
+                </div>
+              </div>
+            )}
             
             {/* Controles de navegación */}
             {value.images.length > 1 && (
@@ -169,14 +179,14 @@ function ValueModal({ value, onClose }: ValueModalProps) {
           {/* Galería de miniaturas */}
           <div className="p-6 bg-gray-50">
             <div className="flex gap-4 justify-center overflow-x-auto">
-              {value.images.map((image, index) => (
+              {value.images.filter(img => img && img.trim() !== '').map((image, index) => (
                 <motion.button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
                   className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 ${
                     index === currentImageIndex ? 'ring-4' : 'opacity-60 hover:opacity-100'
                   }`}
-                  style={{ 
+                  style={{
                     ringColor: index === currentImageIndex ? value.color : 'transparent'
                   }}
                   whileHover={{ scale: 1.05 }}
@@ -250,28 +260,13 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
 
   }, { scope: containerRef });
 
+  // Todas las imágenes son del mismo tamaño en cuadrícula uniforme
   const getGridSize = (size: string) => {
-    switch (size) {
-      case 'large':
-        return 'md:col-span-2 md:row-span-2';
-      case 'medium':
-        return 'md:col-span-2 md:row-span-1';
-      case 'small':
-      default:
-        return 'md:col-span-1 md:row-span-1';
-    }
+    return 'md:col-span-1 md:row-span-1';
   };
 
   const getImageHeight = (size: string) => {
-    switch (size) {
-      case 'large':
-        return 'min-h-[320px] md:min-h-[384px] h-full';
-      case 'medium':
-        return 'min-h-[240px] md:min-h-[320px] h-full';
-      case 'small':
-      default:
-        return 'min-h-[192px] md:min-h-[240px] h-full';
-    }
+    return 'h-[280px] md:h-[320px]';
   };
 
   return (
@@ -321,69 +316,89 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
           </motion.p>
         </div>
         
-        {/* Grid Masonry de Valores */}
-        <div className="values-grid grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-auto">
+        {/* Cuadrícula Uniforme de Valores */}
+        <div className="values-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {(values || []).map((value, index) => {
             const IconComponent = (iconMap as any)[value.icon] || Target;
+
+            // Debug: verificar qué imágenes están llegando
+            console.log(`Value ${index}:`, {
+              title: value.title,
+              hasImages: !!value.images,
+              imagesLength: value.images?.length,
+              firstImage: value.images?.[0],
+              allImages: value.images
+            });
             
             return (
               <motion.div
                 key={value.id}
-                className={`value-card group cursor-pointer flex flex-col ${getGridSize(value.size)}`}
+                className={`value-card group cursor-pointer ${getGridSize(value.size)}`}
                 onClick={() => setSelectedValue(value)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className={`relative ${getImageHeight(value.size)} rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-200 flex-1`}>
+                <div className={`relative ${getImageHeight(value.size)} rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-200`}>
                   {/* Skeleton loading */}
                   <ImageSkeleton />
                   
                   {/* Imagen principal con background-image para garantizar cobertura completa */}
-                  <div 
+                  <div
                     className="value-image absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
                     style={{
-                      backgroundImage: `url(${value.images[0]})`,
+                      backgroundImage: Array.isArray(value.images) && value.images.length > 0 && value.images[0] && value.images[0].trim() !== ''
+                        ? `url('${encodeURI(value.images[0])}')`
+                        : 'none',
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
+                      backgroundColor: value.color + '20',
                       width: '100%',
                       height: '100%'
                     }}
-                    onError={(e) => {
-                      const target = e.currentTarget as HTMLDivElement;
-                      console.error('Background image failed to load:', value.images[0]);
-                      
-                      // Sistema de fallback progresivo para background-image
-                      if (!target.dataset.fallbackTried) {
-                        target.dataset.fallbackTried = "1";
-                        target.style.backgroundImage = `url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop&crop=center)`;
-                      } else if (target.dataset.fallbackTried === "1") {
-                        target.dataset.fallbackTried = "2";
-                        target.style.backgroundImage = `url(https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop&crop=center)`;
-                      } else {
-                        // Crear un placeholder colored como último recurso
-                        target.style.backgroundImage = 'none';
-                        target.style.backgroundColor = value.color + '20';
-                        target.innerHTML = `<div class="absolute inset-0 flex items-center justify-center"><div style="color: ${value.color}; font-size: 48px;">📷</div></div>`;
-                      }
-                    }}
                   >
-                    {/* Imagen oculta para trigger de onLoad event */}
-                    <img
-                      src={value.images[0]}
-                      alt={`Value ${index + 1}`}
-                      className="opacity-0 absolute inset-0 w-full h-full"
-                      onLoad={(e) => {
-                        // Ocultar skeleton cuando la imagen carga
-                        const skeleton = e.currentTarget.parentElement?.parentElement?.querySelector('.absolute.inset-0.bg-gradient-to-r');
-                        if (skeleton) {
-                          skeleton.classList.add('opacity-0');
-                        }
-                      }}
-                      onError={(e) => {
-                        // El manejo de errores se hace en el div padre con background-image
-                        console.log('Hidden image failed, background will handle fallback');
-                      }}
-                    />
+                    {/* Imagen oculta para detectar errores de carga */}
+                    {Array.isArray(value.images) && value.images.length > 0 && value.images[0] && value.images[0].trim() !== '' && (
+                      <img
+                        src={value.images[0]}
+                        alt={`Value ${index + 1}`}
+                        className="opacity-0 absolute inset-0 w-full h-full pointer-events-none"
+                        onLoad={(e) => {
+                          // Ocultar skeleton cuando la imagen carga
+                          const skeleton = e.currentTarget.parentElement?.parentElement?.querySelector('.absolute.inset-0.bg-gradient-to-r');
+                          if (skeleton) {
+                            skeleton.classList.add('opacity-0');
+                          }
+                        }}
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          const parent = target.parentElement as HTMLDivElement;
+                          console.error('Image failed to load:', value.images[0]);
+
+                          // Aplicar fallback al div padre
+                          if (!parent.dataset.fallbackTried) {
+                            parent.dataset.fallbackTried = "1";
+                            parent.style.backgroundImage = `url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop&crop=center)`;
+                            target.src = `https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop&crop=center`;
+                          } else if (parent.dataset.fallbackTried === "1") {
+                            parent.dataset.fallbackTried = "2";
+                            parent.style.backgroundImage = `url(https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop&crop=center)`;
+                            target.src = `https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop&crop=center`;
+                          } else {
+                            // Mostrar placeholder con ícono
+                            parent.style.backgroundImage = 'none';
+                            parent.style.backgroundColor = value.color + '20';
+                            parent.innerHTML = `<div class="absolute inset-0 flex items-center justify-center"><div class="text-6xl opacity-50">📷</div></div>`;
+                          }
+                        }}
+                      />
+                    )}
+
+                    {/* Si no hay imagen, mostrar placeholder */}
+                    {(!Array.isArray(value.images) || value.images.length === 0 || !value.images[0] || value.images[0].trim() === '') && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-6xl opacity-50">📷</div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Overlay con gradiente */}

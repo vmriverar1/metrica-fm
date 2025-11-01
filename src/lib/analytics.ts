@@ -1,339 +1,209 @@
 /**
- * Analytics and Performance Monitoring for Métrica FM
- * Provides performance metrics, error tracking, and user analytics
+ * Analytics Helper Functions
+ *
+ * Utility functions to track events throughout the application
  */
 
-import React from 'react';
+import { initializeApp, getApps } from 'firebase/app';
+import {
+  getAnalytics as getFirebaseAnalytics,
+  logEvent as firebaseLogEvent,
+  setUserProperties,
+  setUserId,
+  isSupported
+} from 'firebase/analytics';
 
-// Performance monitoring
-class PerformanceMonitor {
-  private metrics: Map<string, number[]> = new Map();
-  private observers: PerformanceObserver[] = [];
+// Firebase config
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAkpwp6CJRuhVnscV2HbNR-nQ-DpvglH_U",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "metrica-fm.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "metrica-fm",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "metrica-fm.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "806061146235",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:806061146235:web:54b354f94f5872ef56a2de",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-BTFSHLQNN6"
+};
 
-  constructor() {
+// Initialize Analytics
+let analyticsInstance: any = null;
+
+async function getAnalytics() {
+  if (typeof window === 'undefined') return null;
+
+  if (analyticsInstance) return analyticsInstance;
+
+  try {
+    const supported = await isSupported();
+    if (!supported) return null;
+
+    let app;
+    if (getApps().length === 0) {
+      app = initializeApp(firebaseConfig);
+    } else {
+      app = getApps()[0];
+    }
+
+    analyticsInstance = getFirebaseAnalytics(app);
+    return analyticsInstance;
+  } catch (error) {
+    console.error('[Analytics] Init error:', error);
+    return null;
+  }
+}
+
+/**
+ * Custom event parameters type
+ */
+type EventParams = {
+  [key: string]: string | number | boolean | string[] | undefined;
+};
+
+/**
+ * Log a custom event to Analytics
+ */
+export async function logEvent(eventName: string, params?: EventParams): Promise<void> {
+  try {
+    // Import debugger dynamically to avoid circular dependencies
     if (typeof window !== 'undefined') {
-      this.initializeObservers();
-    }
-  }
-
-  private initializeObservers(): void {
-    // Core Web Vitals observer
-    if ('PerformanceObserver' in window) {
-      try {
-        // Largest Contentful Paint
-        const lcpObserver = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) {
-            this.recordMetric('LCP', entry.startTime);
-          }
-        });
-        lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-        this.observers.push(lcpObserver);
-
-        // First Input Delay
-        const fidObserver = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) {
-            this.recordMetric('FID', entry.processingStart - entry.startTime);
-          }
-        });
-        fidObserver.observe({ entryTypes: ['first-input'] });
-        this.observers.push(fidObserver);
-
-        // Cumulative Layout Shift
-        const clsObserver = new PerformanceObserver((list) => {
-          let clsValue = 0;
-          for (const entry of list.getEntries()) {
-            if (!entry.hadRecentInput) {
-              clsValue += entry.value;
-            }
-          }
-          this.recordMetric('CLS', clsValue);
-        });
-        clsObserver.observe({ entryTypes: ['layout-shift'] });
-        this.observers.push(clsObserver);
-
-      } catch (error) {
-        console.warn('Performance monitoring initialization failed:', error);
-      }
-    }
-  }
-
-  recordMetric(name: string, value: number): void {
-    if (!this.metrics.has(name)) {
-      this.metrics.set(name, []);
-    }
-    this.metrics.get(name)!.push(value);
-
-    // Send to analytics if enabled
-    this.sendToAnalytics(name, value);
-  }
-
-  getMetric(name: string): number[] | undefined {
-    return this.metrics.get(name);
-  }
-
-  getAverageMetric(name: string): number | undefined {
-    const values = this.metrics.get(name);
-    if (!values || values.length === 0) return undefined;
-    return values.reduce((sum, val) => sum + val, 0) / values.length;
-  }
-
-  private sendToAnalytics(name: string, value: number): void {
-    // Send to Google Analytics 4 if available
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'web_vital', {
-        name: name,
-        value: value,
-        custom_map: { metric_name: name }
+      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
+        analyticsDebugger.log(eventName, params, 'pending');
       });
     }
 
-    // Log for development
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Performance metric ${name}:`, value);
-    }
-  }
+    const analytics = await getAnalytics();
 
-  cleanup(): void {
-    this.observers.forEach(observer => observer.disconnect());
-    this.observers = [];
-    this.metrics.clear();
-  }
-}
-
-// Error tracking
-interface ErrorEvent {
-  message: string;
-  filename?: string;
-  lineno?: number;
-  colno?: number;
-  error?: Error;
-  timestamp: number;
-  url: string;
-  userAgent: string;
-  userId?: string;
-}
-
-class ErrorTracker {
-  private errors: ErrorEvent[] = [];
-  private maxErrors = 50;
-
-  constructor() {
-    if (typeof window !== 'undefined') {
-      this.initializeErrorHandlers();
-    }
-  }
-
-  private initializeErrorHandlers(): void {
-    // Global error handler
-    window.addEventListener('error', (event) => {
-      this.trackError({
-        message: event.message,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno,
-        error: event.error,
-        timestamp: Date.now(),
-        url: window.location.href,
-        userAgent: navigator.userAgent
-      });
-    });
-
-    // Unhandled promise rejection handler
-    window.addEventListener('unhandledrejection', (event) => {
-      this.trackError({
-        message: `Unhandled Promise Rejection: ${event.reason}`,
-        timestamp: Date.now(),
-        url: window.location.href,
-        userAgent: navigator.userAgent
-      });
-    });
-  }
-
-  trackError(errorEvent: Omit<ErrorEvent, 'timestamp' | 'url' | 'userAgent'> & Partial<Pick<ErrorEvent, 'timestamp' | 'url' | 'userAgent'>>): void {
-    const fullErrorEvent: ErrorEvent = {
-      timestamp: Date.now(),
-      url: typeof window !== 'undefined' ? window.location.href : 'unknown',
-      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
-      ...errorEvent
-    };
-
-    this.errors.push(fullErrorEvent);
-
-    // Keep only recent errors
-    if (this.errors.length > this.maxErrors) {
-      this.errors = this.errors.slice(-this.maxErrors);
-    }
-
-    // Send to error tracking service
-    this.sendErrorToService(fullErrorEvent);
-  }
-
-  private sendErrorToService(errorEvent: ErrorEvent): void {
-    // Send to error tracking service (e.g., Sentry, LogRocket)
-    if (process.env.NODE_ENV === 'production') {
-      // Example implementation
-      console.error('Error tracked:', errorEvent);
-    }
-  }
-
-  getErrors(): ErrorEvent[] {
-    return [...this.errors];
-  }
-
-  clearErrors(): void {
-    this.errors = [];
-  }
-}
-
-// User analytics
-class UserAnalytics {
-  private sessionId: string;
-  private userId?: string;
-
-  constructor() {
-    this.sessionId = this.generateSessionId();
-    this.initializeTracking();
-  }
-
-  private generateSessionId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  private initializeTracking(): void {
-    if (typeof window === 'undefined') return;
-
-    // Track page views
-    this.trackPageView();
-
-    // Track user interactions
-    this.initializeInteractionTracking();
-  }
-
-  trackPageView(page?: string): void {
-    const pageUrl = page || (typeof window !== 'undefined' ? window.location.pathname : '');
-    
-    this.sendEvent('page_view', {
-      page: pageUrl,
-      timestamp: Date.now(),
-      session_id: this.sessionId,
-      user_id: this.userId
-    });
-  }
-
-  trackEvent(eventName: string, properties?: Record<string, any>): void {
-    this.sendEvent(eventName, {
-      ...properties,
-      timestamp: Date.now(),
-      session_id: this.sessionId,
-      user_id: this.userId
-    });
-  }
-
-  setUserId(userId: string): void {
-    this.userId = userId;
-  }
-
-  private initializeInteractionTracking(): void {
-    // Track clicks on important elements
-    document.addEventListener('click', (event) => {
-      const target = event.target as HTMLElement;
-      
-      if (target.matches('button, a[href], [role="button"]')) {
-        this.trackEvent('click', {
-          element: target.tagName.toLowerCase(),
-          text: target.textContent?.trim().substring(0, 100),
-          href: target.getAttribute('href'),
-          className: target.className
+    if (!analytics) {
+      console.log('[Analytics] Not available, skipping event:', eventName);
+      if (typeof window !== 'undefined') {
+        import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
+          analyticsDebugger.log(eventName, params, 'error', 'Analytics not available');
         });
       }
-    });
+      return;
+    }
 
-    // Track form submissions
-    document.addEventListener('submit', (event) => {
-      const form = event.target as HTMLFormElement;
-      this.trackEvent('form_submit', {
-        form_name: form.name || form.id || 'unnamed',
-        action: form.action
+    firebaseLogEvent(analytics, eventName, params);
+    console.log('[Analytics] Event logged:', eventName, params);
+
+    if (typeof window !== 'undefined') {
+      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
+        analyticsDebugger.log(eventName, params, 'success');
       });
-    });
-  }
-
-  private sendEvent(eventName: string, properties: Record<string, any>): void {
-    // Send to Google Analytics 4 if available
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', eventName, properties);
     }
-
-    // Log for development
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Analytics event ${eventName}:`, properties);
+  } catch (error) {
+    console.error('[Analytics] Error logging event:', error);
+    if (typeof window !== 'undefined') {
+      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
+        analyticsDebugger.log(eventName, params, 'error', String(error));
+      });
     }
   }
 }
 
-// Singleton instances
-export const performanceMonitor = new PerformanceMonitor();
-export const errorTracker = new ErrorTracker();
-export const userAnalytics = new UserAnalytics();
-
-// Utility functions
-export function initializeAnalytics(): void {
-  if (typeof window === 'undefined') return;
-
-  // Initialize Google Analytics if GA_MEASUREMENT_ID is provided
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-  if (gaId) {
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag(...args: any[]) {
-      (window as any).dataLayer.push(args);
-    }
-    (window as any).gtag = gtag;
-
-    gtag('js', new Date());
-    gtag('config', gaId, {
-      page_title: document.title,
-      page_location: window.location.href,
-    });
-  }
-}
-
-// React hooks
-export function usePageTracking(): void {
-  React.useEffect(() => {
-    userAnalytics.trackPageView();
-  }, []);
-}
-
-export function useErrorTracking(): {
-  trackError: (error: Error, context?: string) => void;
-  errors: ErrorEvent[];
-} {
-  const [errors, setErrors] = React.useState<ErrorEvent[]>([]);
-
-  const trackError = React.useCallback((error: Error, context?: string) => {
-    errorTracker.trackError({
-      message: error.message,
-      error,
-      filename: context
-    });
-    setErrors(errorTracker.getErrors());
-  }, []);
-
-  React.useEffect(() => {
-    setErrors(errorTracker.getErrors());
-  }, []);
-
-  return { trackError, errors };
-}
-
-// Cleanup on app unmount
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
-    performanceMonitor.cleanup();
+/**
+ * Track button click events
+ */
+export function trackButtonClick(buttonName: string, location?: string): void {
+  logEvent('button_click', {
+    button_name: buttonName,
+    location: location || 'unknown',
   });
 }
+
+/**
+ * Track form submission events
+ */
+export function trackFormSubmit(formName: string, success: boolean = true): void {
+  logEvent('form_submit', {
+    form_name: formName,
+    success: success,
+  });
+}
+
+/**
+ * Track file downloads
+ */
+export function trackFileDownload(fileName: string, fileType?: string): void {
+  logEvent('file_download', {
+    file_name: fileName,
+    file_type: fileType || 'unknown',
+  });
+}
+
+/**
+ * Track project views
+ */
+export function trackProjectView(projectName: string, category?: string, projectId?: string): void {
+  logEvent('project_view', {
+    project_name: projectName,
+    project_category: category || 'uncategorized',
+    project_id: projectId,
+  });
+}
+
+/**
+ * Track contact interactions
+ */
+export function trackContactInteraction(method: string, location?: string): void {
+  logEvent('contact_interaction', {
+    contact_method: method,
+    location: location || 'unknown',
+  });
+}
+
+/**
+ * Set user properties
+ */
+export async function setUserProps(properties: EventParams): Promise<void> {
+  try {
+    const analytics = await getAnalytics();
+
+    if (!analytics) {
+      console.log('[Analytics] Not available, skipping user properties');
+      return;
+    }
+
+    setUserProperties(analytics, properties);
+    console.log('[Analytics] User properties set:', properties);
+  } catch (error) {
+    console.error('[Analytics] Error setting user properties:', error);
+  }
+}
+
+/**
+ * Set user ID for tracking
+ */
+export async function setAnalyticsUserId(userId: string): Promise<void> {
+  try {
+    const analytics = await getAnalytics();
+
+    if (!analytics) {
+      console.log('[Analytics] Not available, skipping user ID');
+      return;
+    }
+
+    setUserId(analytics, userId);
+    console.log('[Analytics] User ID set:', userId);
+  } catch (error) {
+    console.error('[Analytics] Error setting user ID:', error);
+  }
+}
+
+// Pre-configured common events for convenience
+export const analytics = {
+  // User interactions
+  buttonClick: trackButtonClick,
+  formSubmit: trackFormSubmit,
+  fileDownload: trackFileDownload,
+  projectView: trackProjectView,
+  contactInteraction: trackContactInteraction,
+
+  // User management
+  setUserId: setAnalyticsUserId,
+  setUserProperties: setUserProps,
+
+  // Custom events
+  logEvent: logEvent,
+};
+
+export default analytics;

@@ -8,8 +8,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Heart, Plus, Trash2, Edit3, Save, X, Target, Users, Lightbulb, Shield, TrendingUp, Palette, Image as ImageIcon } from 'lucide-react';
-import GalleryField from './GalleryField';
+import { Heart, Plus, Trash2, Edit3, Save, X, Target, Users, Lightbulb, Shield, TrendingUp, Palette, Image as ImageIcon, GripVertical, Folder } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import UnifiedMediaLibrary from './UnifiedMediaLibrary';
 
 interface Value {
   id: string;
@@ -38,7 +39,7 @@ const availableIcons = [
 ];
 
 const availableColors = [
-  { value: '#007bc4', label: 'Naranja Principal', color: '#007bc4' },
+  { value: '#00A8E8', label: 'Naranja Principal', color: '#00A8E8' },
   { value: '#003F6F', label: 'Azul Principal', color: '#003F6F' },
   { value: '#D0D0D0', label: 'Gris Claro', color: '#D0D0D0' },
   { value: '#9D9D9C', label: 'Gris Medio', color: '#9D9D9C' },
@@ -50,19 +51,20 @@ const defaultValue: Omit<Value, 'id'> = {
   title: '',
   description: '',
   icon: 'Target',
-  color: '#007bc4',
+  color: '#00A8E8',
   size: 'medium',
   images: [],
   image_descriptions: []
 };
 
-export default function ValuesEditor({ 
-  value = [], 
-  onChange, 
-  disabled = false 
+export default function ValuesEditor({
+  value = [],
+  onChange,
+  disabled = false
 }: ValuesEditorProps) {
   const [editingValue, setEditingValue] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Value | null>(null);
+  const [showMediaLibrary, setShowMediaLibrary] = useState(false);
 
   const addValue = () => {
     const newId = `value-${Date.now()}`;
@@ -105,6 +107,16 @@ export default function ValuesEditor({
   const cancelEdit = () => {
     setEditingValue(null);
     setEditForm(null);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(value);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    onChange(items);
   };
 
   const updateEditForm = (field: keyof Value, newValue: any) => {
@@ -277,15 +289,51 @@ export default function ValuesEditor({
                     <ImageIcon className="w-4 h-4" />
                     Galería de Imágenes
                   </Label>
-                  <GalleryField
-                    value={editForm.images}
-                    onChange={(images) => updateImageDescriptions(images)}
-                    label=""
-                    placeholder="URLs de imágenes que representen el valor"
-                    required={false}
-                    disabled={false}
-                    description="Agregar imágenes que ilustren este valor"
-                  />
+
+                  {/* Preview de imágenes seleccionadas */}
+                  {editForm.images.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {editForm.images.map((img, idx) => (
+                        <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border">
+                          <img
+                            src={img}
+                            alt={`Imagen ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            className="absolute top-1 right-1 h-6 w-6 p-0"
+                            onClick={() => {
+                              const newImages = editForm.images.filter((_, i) => i !== idx);
+                              const newDescriptions = editForm.image_descriptions.filter((_, i) => i !== idx);
+                              setEditForm({
+                                ...editForm,
+                                images: newImages,
+                                image_descriptions: newDescriptions
+                              });
+                            }}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowMediaLibrary(true)}
+                    className="w-full"
+                  >
+                    <Folder className="w-4 h-4 mr-2" />
+                    {editForm.images.length > 0 ? 'Gestionar Imágenes' : 'Seleccionar Imágenes desde Biblioteca'}
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Abre la biblioteca de medios estilo WordPress para seleccionar imágenes
+                  </p>
                 </div>
 
                 {/* Descripciones de imágenes */}
@@ -316,8 +364,15 @@ export default function ValuesEditor({
       <Card className="hover:shadow-md transition-shadow">
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
+            {/* Drag Handle */}
+            {!disabled && (
+              <div className="flex-shrink-0 cursor-grab active:cursor-grabbing pt-1">
+                <GripVertical className="w-5 h-5 text-gray-400" />
+              </div>
+            )}
+
             {/* Ícono */}
-            <div 
+            <div
               className="flex-shrink-0 p-3 rounded-lg"
               style={{ backgroundColor: `${val.color}20`, color: val.color }}
             >
@@ -422,11 +477,38 @@ export default function ValuesEditor({
             )}
           </div>
         ) : (
-          <div className="space-y-4">
-            {value.map((val) => (
-              <ValueCard key={val.id} val={val} />
-            ))}
-          </div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="values-list">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-4"
+                >
+                  {value.map((val, index) => (
+                    <Draggable
+                      key={val.id}
+                      draggableId={val.id}
+                      index={index}
+                      isDragDisabled={disabled || editingValue === val.id}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={snapshot.isDragging ? 'opacity-50' : ''}
+                        >
+                          <ValueCard val={val} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         )}
 
         {/* Información adicional */}
@@ -454,6 +536,22 @@ export default function ValuesEditor({
           </div>
         </div>
       </CardContent>
+
+      {/* Unified Media Library Modal */}
+      {editForm && (
+        <UnifiedMediaLibrary
+          isOpen={showMediaLibrary}
+          onClose={() => setShowMediaLibrary(false)}
+          onSelect={(selectedImages) => {
+            const imageUrls = selectedImages.map(img => img.url);
+            updateImageDescriptions(imageUrls);
+            setShowMediaLibrary(false);
+          }}
+          multiSelect={true}
+          selectedImages={editForm.images}
+          title="Seleccionar Imágenes para el Valor"
+        />
+      )}
     </Card>
   );
 }

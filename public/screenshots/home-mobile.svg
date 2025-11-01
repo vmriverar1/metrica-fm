@@ -1,0 +1,8 @@
+<svg width="390" height="844" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg">
+    <rect width="390" height="844" fill="#f8fafc"/>
+    <rect x="0" y="0" width="390" height="80" fill="#003F6F"/>
+    <text x="195" y="45" text-anchor="middle" fill="white" font-family="sans-serif" font-size="24" font-weight="bold">Métrica DIP</text>
+    <rect x="39" y="120" width="312" height="40" fill="#e5e7eb" rx="4"/>
+    <rect x="39" y="180" width="234" height="20" fill="#d1d5db" rx="4"/>
+    <rect x="39" y="220" width="156" height="20" fill="#d1d5db" rx="4"/>
+  </svg>

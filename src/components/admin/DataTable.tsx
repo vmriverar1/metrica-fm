@@ -16,7 +16,6 @@ import {
   Edit,
   Trash2,
   Eye,
-  MoreHorizontal,
   SortAsc,
   SortDesc
 } from 'lucide-react';
@@ -299,7 +298,7 @@ export default function DataTable({
               ))}
               
               {actions.length > 0 && (
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
                   Acciones
                 </th>
               )}
@@ -358,29 +357,26 @@ export default function DataTable({
                   {actions.length > 0 && (
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div className="flex items-center space-x-2">
-                        {actions.slice(0, 2).map((action, actionIndex) => {
+                        {actions.map((action, actionIndex) => {
                           if (action.show && !action.show(row)) return null;
-                          
+
                           return (
                             <button
                               key={actionIndex}
                               type="button"
-                              onClick={() => action.onClick(row)}
-                              className={`${getActionVariantClass(action.variant)} hover:bg-gray-100 p-1 rounded`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log('Action clicked:', action.label, 'Row:', row);
+                                action.onClick(row);
+                              }}
+                              className={`${getActionVariantClass(action.variant)} hover:bg-gray-100 p-1.5 rounded transition-colors`}
                               title={action.label}
                             >
                               <action.icon className="w-4 h-4" />
                             </button>
                           );
                         })}
-                        
-                        {actions.length > 2 && (
-                          <div className="relative">
-                            <button type="button" className="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-100">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </button>
-                          </div>
-                        )}
                       </div>
                     </td>
                   )}

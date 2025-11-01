@@ -1,273 +1,254 @@
+import React from 'react';
 import UniversalHero from '@/components/ui/universal-hero';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import ContactSection from '@/components/contact/ContactSection';
+import { ContactPageData } from '@/types/contact';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { Metadata } from 'next';
 
-export default function ContactPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const data = await getContactData();
+
+    // Usar datos SEO del editor con fallbacks estáticos
+    const title = data.seo?.meta_title || 'Contáctanos | Métrica FM';
+    const description = data.seo?.meta_description || 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.';
+    const keywords = Array.isArray(data.seo?.keywords) ? data.seo.keywords.join(', ') : 'contacto, métrica dip, dirección integral proyectos, consultoría construcción';
+
+    return {
+      title,
+      description,
+      keywords,
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+        locale: 'es_PE',
+        url: 'https://metricadip.com/contact',
+        siteName: 'Métrica FM',
+        images: [
+          {
+            url: data.hero?.background_image || '/images/proyectos/hero-background.jpg',
+            width: 1200,
+            height: 630,
+            alt: title
+          }
+        ]
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [data.hero?.background_image || '/images/proyectos/hero-background.jpg']
+      },
+      robots: {
+        index: true,
+        follow: true
+      },
+      alternates: {
+        canonical: 'https://metricadip.com/contact'
+      }
+    };
+  } catch (error) {
+    console.error('Error generating metadata for contact page:', error);
+    return {
+      title: 'Contáctanos | Métrica FM',
+      description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.',
+      keywords: 'contacto, métrica dip, dirección integral proyectos, consultoría construcción',
+      openGraph: {
+        title: 'Contáctanos | Métrica FM',
+        description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos.',
+        type: 'website',
+        locale: 'es_PE',
+        url: 'https://metricadip.com/contact',
+        siteName: 'Métrica FM'
+      },
+      robots: {
+        index: true,
+        follow: true
+      }
+    };
+  }
+}
+
+// Helper function to serialize Firestore data for Client Components
+function serializeFirestoreData(data: any): any {
+  if (!data) return data;
+
+  // Handle arrays
+  if (Array.isArray(data)) {
+    return data.map(item => serializeFirestoreData(item));
+  }
+
+  // Handle objects
+  if (typeof data === 'object' && data !== null) {
+    // Check if it's a Firestore timestamp
+    if (data.toDate && typeof data.toDate === 'function') {
+      return data.toDate().toISOString();
+    }
+
+    // Recursively process object properties
+    const serialized: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      serialized[key] = serializeFirestoreData(value);
+    }
+    return serialized;
+  }
+
+  return data;
+}
+
+async function getContactData(): Promise<ContactPageData> {
+  try {
+    // Get contact data directly from Firestore using FirestoreCore
+    console.log('📄 [ContactPage] Loading contact data from Firestore...');
+
+    const result = await FirestoreCore.getDocumentById('pages', 'contact');
+
+    if (result.success && result.data) {
+      console.log('✅ [ContactPage] Contact data loaded from Firestore');
+      // Serialize Firestore data before returning
+      const serializedData = serializeFirestoreData(result.data);
+      return serializedData as ContactPageData;
+    }
+
+    console.warn('⚠️ [FALLBACK] Contact Page: Sin datos en Firestore, usando fallback');
+  } catch (error) {
+    console.error('❌ [FIRESTORE] Contact Page error:', error);
+    console.warn('⚠️ [FALLBACK] Contact Page: Error detectado, usando fallback');
+  }
+
+  // Fallback data with clean structure
+  const fallbackData: ContactPageData = {
+      hero: {
+        title: "Contáctanos",
+        background_image: "/images/proyectos/EDUCACIÓN/Cibertec/_ARI2623.webp",
+        subtitle: "Estamos aquí para ayudarte a transformar tus proyectos en realidad, cuidando cada detalle para garantizar su rentabilidad."
+      },
+      seo: {
+        meta_description: "Contáctanos para iniciar tu proyecto de infraestructura. Equipo experto en dirección integral de proyectos con más de 15 años de experiencia en Perú.",
+        meta_title: "Contacto - Métrica FM | Dirección Integral de Proyectos",
+        keywords: [
+          "contacto métrica dip",
+          "dirección integral proyectos perú",
+          "consultoría construcción lima",
+          "gestión proyectos infraestructura",
+          "contacto empresa construcción"
+        ]
+      },
+      settings: {
+        form_method: "POST",
+        form_action: "/api/contact",
+        urgent_response_time: "48 horas",
+        response_time: "24 horas",
+        show_map_placeholder: true
+      },
+      sections: {
+        contact_info: {
+          title: "Información de Contacto",
+          items: [
+            {
+              icon: "MapPin",
+              content: "Andrés Reyes 388, San Isidro",
+              title: "Oficina Principal"
+            },
+            {
+              title: "Teléfonos",
+              content: "+51 1 719-5990\n+51 989 742 678 (WhatsApp)",
+              icon: "Phone"
+            },
+            {
+              content: "info@metrica-dip.com\ninfo@metricadip.com",
+              title: "Email",
+              icon: "Mail"
+            },
+            {
+              content: "Lunes a Viernes: 8:00 AM - 6:00 PM\nSábados: 9:00 AM - 1:00 PM",
+              icon: "Clock",
+              title: "Horarios de Atención"
+            }
+          ]
+        },
+        map: {
+          show_placeholder: true,
+          title: "Mapa Interactivo",
+          subtitle: "Santiago de Surco, Lima",
+          address: "Andrés Reyes 388, San Isidro, Lima",
+          embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.747374654482!2d-77.05284708570265!3d-12.09724084509915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c834244b1e1b%3A0x7e8bbf4c5a4b1f2c!2sAndres%20Reyes%20388%2C%20San%20Isidro%2015036%2C%20Peru!5e0!3m2!1sen!2sus!4v1632920000000!5m2!1sen!2sus"
+        },
+        intro: {
+          title: "Hablemos de Tu Proyecto",
+          description: "Nuestro equipo de expertos está listo para asesorarte en cada etapa de tu proyecto de CONSTRUCCIÓN. Desde la conceptualización hasta la entrega final, estamos comprometidos con tu éxito."
+        },
+        process: {
+          title: "Proceso de Contacto",
+          steps: [
+            {
+              description: "Conversamos sobre tu proyecto y necesidades específicas",
+              title: "Consulta Inicial",
+              number: "1"
+            },
+            {
+              title: "Propuesta Técnica",
+              number: "2",
+              description: "Desarrollamos una propuesta detallada y personalizada"
+            },
+            {
+              title: "Inicio del Proyecto",
+              number: "3",
+              description: "Comenzamos a trabajar juntos en la ejecución de tu visión"
+            }
+          ]
+        }
+      }
+    };
+
+  return fallbackData;
+}
+
+function ContactContent({ data }: { data: ContactPageData }) {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="relative">
         <UniversalHero
-          title="Contáctanos"
-          subtitle="Estamos aquí para ayudarte a transformar tus proyectos en realidad"
-          backgroundImage="https://metrica-dip.com/images/slider-inicio-es/05.jpg"
+          title={data.hero.title}
+          subtitle={data.hero.subtitle}
+          backgroundImage={data.hero.background_image}
         />
-        
+
         {/* Contenido de contacto */}
         <section className="py-16 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-primary mb-6">Hablemos de Tu Proyecto</h2>
+              <h2 className="text-3xl font-bold text-primary mb-6">{data.sections.intro.title}</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Nuestro equipo de expertos está listo para asesorarte en cada etapa de tu proyecto de infraestructura. 
-                Desde la conceptualización hasta la entrega final, estamos comprometidos con tu éxito.
+                {data.sections.intro.description}
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* Formulario de contacto */}
-              <div className="bg-card rounded-2xl p-8 shadow-sm border">
-                <h3 className="text-2xl font-semibold text-primary mb-6">Envíanos un Mensaje</h3>
-                
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="nombre" className="block text-sm font-medium text-foreground mb-2">
-                        Nombres *
-                      </label>
-                      <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        required
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                        placeholder="Tu nombre completo"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="apellido" className="block text-sm font-medium text-foreground mb-2">
-                        Apellidos *
-                      </label>
-                      <input
-                        type="text"
-                        id="apellido"
-                        name="apellido"
-                        required
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                        placeholder="Tus apellidos"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                        placeholder="tu@email.com"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="telefono" className="block text-sm font-medium text-foreground mb-2">
-                        Teléfono
-                      </label>
-                      <input
-                        type="tel"
-                        id="telefono"
-                        name="telefono"
-                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                        placeholder="+51 999 999 999"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="empresa" className="block text-sm font-medium text-foreground mb-2">
-                      Empresa/Organización
-                    </label>
-                    <input
-                      type="text"
-                      id="empresa"
-                      name="empresa"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                      placeholder="Nombre de tu empresa"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="tipo_proyecto" className="block text-sm font-medium text-foreground mb-2">
-                      Tipo de Proyecto
-                    </label>
-                    <select
-                      id="tipo_proyecto"
-                      name="tipo_proyecto"
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background"
-                    >
-                      <option value="">Selecciona un tipo de proyecto</option>
-                      <option value="salud">Proyectos de Salud</option>
-                      <option value="educacion">Proyectos de Educación</option>
-                      <option value="vivienda">Proyectos de Vivienda</option>
-                      <option value="oficina">Proyectos de Oficina</option>
-                      <option value="retail">Proyectos de Retail</option>
-                      <option value="industria">Proyectos de Industria</option>
-                      <option value="hoteleria">Proyectos de Hotelería</option>
-                      <option value="otro">Otro</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="mensaje" className="block text-sm font-medium text-foreground mb-2">
-                      Mensaje *
-                    </label>
-                    <textarea
-                      id="mensaje"
-                      name="mensaje"
-                      rows={5}
-                      required
-                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background resize-none"
-                      placeholder="Cuéntanos sobre tu proyecto, presupuesto estimado, cronograma y cualquier detalle relevante..."
-                    ></textarea>
-                  </div>
-
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">
-                    <Send className="w-4 h-4 mr-2" />
-                    Enviar Mensaje
-                  </Button>
-
-                  <p className="text-sm text-muted-foreground text-center">
-                    * Campos obligatorios. Nos comprometemos a responder en menos de 24 horas.
-                  </p>
-                </form>
-              </div>
-
-              {/* Información de contacto */}
-              <div className="space-y-8">
-                <div className="bg-primary/5 rounded-2xl p-8">
-                  <h3 className="text-2xl font-semibold text-primary mb-6">Información de Contacto</h3>
-                  
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <MapPin className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">Oficina Principal</h4>
-                        <p className="text-muted-foreground">
-                          Av. El Derby 055, Piso 9<br />
-                          Santiago de Surco, Lima - Perú
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">Teléfonos</h4>
-                        <p className="text-muted-foreground">
-                          +51 1 719-5990<br />
-                          +51 999 999 999 (WhatsApp)
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">Email</h4>
-                        <p className="text-muted-foreground">
-                          info@metrica-dip.com<br />
-                          proyectos@metrica-dip.com
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Clock className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">Horarios de Atención</h4>
-                        <p className="text-muted-foreground">
-                          Lunes a Viernes: 8:00 AM - 6:00 PM<br />
-                          Sábados: 9:00 AM - 1:00 PM
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Mapa */}
-                <div className="bg-card rounded-2xl overflow-hidden shadow-sm border">
-                  <div className="h-64 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                      <p className="text-foreground font-medium">Mapa Interactivo</p>
-                      <p className="text-sm text-muted-foreground">Santiago de Surco, Lima</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Información adicional */}
-                <div className="bg-accent/5 rounded-2xl p-6">
-                  <h4 className="font-semibold text-primary mb-3">¿Necesitas una Cotización Urgente?</h4>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    Para proyectos con fechas límite ajustadas, contamos con un equipo especializado 
-                    en respuesta rápida que puede brindarte una cotización preliminar en 48 horas.
-                  </p>
-                  <Button variant="outline" className="w-full">
-                    <Phone className="w-4 h-4 mr-2" />
-                    Llamar Ahora: +51 1 719-5990
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <ContactSection
+              contactInfo={data.sections.contact_info}
+              map={data.sections.map}
+            />
 
             {/* Sección adicional */}
             <div className="mt-16 text-center">
               <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8">
-                <h3 className="text-2xl font-semibold text-primary mb-4">Proceso de Contacto</h3>
+                <h3 className="text-2xl font-semibold text-primary mb-4">{data.sections.process.title}</h3>
                 <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="text-primary font-bold">1</span>
+                  {data.sections.process.steps.map((step, index) => (
+                    <div key={index} className="text-center">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span className="text-primary font-bold">{step.number}</span>
+                      </div>
+                      <h4 className="font-semibold text-primary mb-2">{step.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {step.description}
+                      </p>
                     </div>
-                    <h4 className="font-semibold text-primary mb-2">Consulta Inicial</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Conversamos sobre tu proyecto y necesidades específicas
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="text-primary font-bold">2</span>
-                    </div>
-                    <h4 className="font-semibold text-primary mb-2">Propuesta Técnica</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Desarrollamos una propuesta detallada y personalizada
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="text-primary font-bold">3</span>
-                    </div>
-                    <h4 className="font-semibold text-primary mb-2">Inicio del Proyecto</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Comenzamos a trabajar juntos en la ejecución de tu visión
-                    </p>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -277,4 +258,9 @@ export default function ContactPage() {
       <Footer />
     </div>
   );
+}
+
+export default async function ContactPage() {
+  const data = await getContactData();
+  return <ContactContent data={data} />;
 }

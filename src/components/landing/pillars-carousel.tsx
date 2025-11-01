@@ -32,7 +32,7 @@ export default function PillarsCarousel({ data }: PillarsCarouselProps) {
     ...pillar,
     icon: iconMap[pillar.icon as keyof typeof iconMap] || Compass,
     image: pillar.image || pillar.image_fallback,
-    color: '#007bc4'
+    color: '#00A8E8'
   }));
   const sectionRef = useRef<HTMLElement>(null);
   const swiperRef = useRef<any>(null);
@@ -209,8 +209,8 @@ export default function PillarsCarousel({ data }: PillarsCarouselProps) {
                 <div className="card group relative h-full bg-accent/90 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:bg-accent">
                   {/* Imagen */}
                   <div className="media-container relative aspect-[8/5] overflow-hidden">
-                    {pillar.image && pillar.image !== '/img/pillars/pilar1.jpg' && pillar.image !== '/img/pillars/pilar2.jpg' && pillar.image !== '/img/pillars/pilar3.jpg' ? (
-                      <Image 
+                    {pillar.image && pillar.image.trim() !== '' ? (
+                      <Image
                         src={pillar.image}
                         alt={pillar.title}
                         fill
@@ -218,35 +218,28 @@ export default function PillarsCarousel({ data }: PillarsCarouselProps) {
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                        <div className="text-center text-white/80">
-                          <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                            <span className="text-2xl">📋</span>
-                          </div>
-                          <p className="text-sm">Imagen del pilar</p>
-                        </div>
-                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30" />
                     )}
-                    <div 
+                    <div
                       className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
                     />
                   </div>
 
                   {/* Contenido */}
                   <div className="card-text">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div 
-                        className="p-2 rounded-full bg-white/20"
+                    <div className="flex items-center gap-2 mb-2">
+                      <div
+                        className="p-1.5 rounded-full bg-white/20"
                       >
-                        <pillar.icon 
-                          className="h-6 w-6 text-white"
+                        <pillar.icon
+                          className="h-5 w-5 text-white"
                         />
                       </div>
-                      <h3 className="text-xl font-alliance-extrabold text-white">
+                      <h3 className="text-base md:text-lg lg:text-xl font-alliance-extrabold text-white">
                         {pillar.title}
                       </h3>
                     </div>
-                    <p className="text-white/90 font-alliance-medium line-clamp-3">
+                    <p className="text-xs md:text-sm text-white/90 font-alliance-medium line-clamp-4 md:line-clamp-3 leading-tight">
                       {pillar.description}
                     </p>
                   </div>
@@ -307,7 +300,7 @@ export default function PillarsCarousel({ data }: PillarsCarouselProps) {
           left: -2px;
           right: -2px;
           bottom: -2px;
-          background: linear-gradient(45deg, #007bc4, #FF6B35, #003F6F, #007bc4);
+          background: linear-gradient(45deg, #00A8E8, #0066CC, #003F6F, #00A8E8);
           background-size: 400% 400%;
           border-radius: 0.75rem;
           opacity: 0;
@@ -329,9 +322,9 @@ export default function PillarsCarousel({ data }: PillarsCarouselProps) {
         .card:hover {
           border-color: transparent;
           box-shadow: 
-            0 20px 50px rgba(0, 123, 196, 0.3),
-            0 0 30px rgba(0, 123, 196, 0.2),
-            inset 0 0 20px rgba(0, 123, 196, 0.1);
+            0 20px 50px rgba(0, 168, 232, 0.3),
+            0 0 30px rgba(0, 168, 232, 0.2),
+            inset 0 0 20px rgba(0, 168, 232, 0.1);
           transform: translateY(-4px) scale(1.02);
         }
 

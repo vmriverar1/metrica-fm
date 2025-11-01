@@ -365,10 +365,10 @@ export const HelpSystem: React.FC<HelpSystemProps> = ({ isOpen, onClose }) => {
                     </p>
                   </div>
 
-                  <div className="p-4 border rounded-lg hover:border-orange-300 cursor-pointer">
+                  <div className="p-4 border rounded-lg hover:border-cyan-300 cursor-pointer">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 bg-orange-100 rounded-lg">
-                        <ExternalLink className="h-5 w-5 text-orange-600" />
+                      <div className="p-2 bg-cyan-100 rounded-lg">
+                        <ExternalLink className="h-5 w-5 text-cyan-600" />
                       </div>
                       <h3 className="font-medium">Recursos externos</h3>
                     </div>

@@ -116,7 +116,7 @@ export function FloatingNavigation({
                     w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all
                     hover:bg-gray-50 group relative
                     ${isActive 
-                      ? 'bg-[#007bc4]/10 text-[#007bc4] font-medium' 
+                      ? 'bg-[#00A8E8]/10 text-[#00A8E8] font-medium' 
                       : 'text-gray-700 hover:text-gray-900'
                     }
                     ${isCompleted && !isActive
@@ -137,7 +137,7 @@ export function FloatingNavigation({
                   </span>
                   
                   {isActive && (
-                    <div className="w-1 h-4 bg-[#007bc4] rounded-full" />
+                    <div className="w-1 h-4 bg-[#00A8E8] rounded-full" />
                   )}
                 </button>
               )
@@ -165,7 +165,7 @@ export function FloatingNavigation({
                 className={`
                   w-2 h-2 rounded-full transition-all
                   ${isActive 
-                    ? 'bg-[#007bc4] scale-125' 
+                    ? 'bg-[#00A8E8] scale-125' 
                     : isCompleted 
                       ? 'bg-green-500' 
                       : 'bg-gray-300'

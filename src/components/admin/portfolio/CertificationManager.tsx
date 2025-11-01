@@ -163,7 +163,7 @@ const CERTIFICATION_TYPES = {
   leed: { label: 'LEED', color: 'bg-green-100 text-green-800' },
   government: { label: 'Gubernamental', color: 'bg-gray-100 text-gray-800' },
   industry: { label: 'Industrial', color: 'bg-purple-100 text-purple-800' },
-  client: { label: 'Cliente', color: 'bg-orange-100 text-orange-800' }
+  client: { label: 'Cliente', color: 'bg-cyan-100 text-cyan-800' }
 }
 
 const STATUS_CONFIG = {
@@ -177,21 +177,21 @@ const STATUS_CONFIG = {
 const PRIORITY_CONFIG = {
   low: { label: 'Baja', color: 'bg-gray-100 text-gray-800' },
   medium: { label: 'Media', color: 'bg-yellow-100 text-yellow-800' },
-  high: { label: 'Alta', color: 'bg-orange-100 text-orange-800' },
+  high: { label: 'Alta', color: 'bg-cyan-100 text-cyan-800' },
   critical: { label: 'Crítica', color: 'bg-red-100 text-red-800' }
 }
 
 const DIFFICULTY_LEVELS = {
   basic: { label: 'Básico', color: 'bg-green-100 text-green-800' },
   intermediate: { label: 'Intermedio', color: 'bg-blue-100 text-blue-800' },
-  advanced: { label: 'Avanzado', color: 'bg-orange-100 text-orange-800' },
+  advanced: { label: 'Avanzado', color: 'bg-cyan-100 text-cyan-800' },
   expert: { label: 'Experto', color: 'bg-red-100 text-red-800' }
 }
 
 const MARKET_VALUE = {
   low: { label: 'Bajo', color: 'bg-gray-100 text-gray-800' },
   medium: { label: 'Medio', color: 'bg-blue-100 text-blue-800' },
-  high: { label: 'Alto', color: 'bg-orange-100 text-orange-800' },
+  high: { label: 'Alto', color: 'bg-cyan-100 text-cyan-800' },
   critical: { label: 'Crítico', color: 'bg-red-100 text-red-800' }
 }
 
@@ -458,12 +458,12 @@ export default function CertificationManager({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Por Expirar</p>
-                    <p className="text-2xl font-bold text-orange-600">{certificationStats.expiringSoon}</p>
+                    <p className="text-2xl font-bold text-cyan-600">{certificationStats.expiringSoon}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       Próximos 30 días
                     </p>
                   </div>
-                  <Clock className="h-8 w-8 text-orange-600" />
+                  <Clock className="h-8 w-8 text-cyan-600" />
                 </div>
               </CardContent>
             </Card>
@@ -577,10 +577,10 @@ export default function CertificationManager({
                         <div key={projectCert.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              daysUntilExpiry <= 30 ? 'bg-red-100' : 'bg-orange-100'
+                              daysUntilExpiry <= 30 ? 'bg-red-100' : 'bg-cyan-100'
                             }`}>
                               <Clock className={`h-4 w-4 ${
-                                daysUntilExpiry <= 30 ? 'text-red-600' : 'text-orange-600'
+                                daysUntilExpiry <= 30 ? 'text-red-600' : 'text-cyan-600'
                               }`} />
                             </div>
                             <div>
@@ -590,7 +590,7 @@ export default function CertificationManager({
                           </div>
                           <div className="text-right">
                             <p className={`text-xs font-medium ${
-                              daysUntilExpiry <= 30 ? 'text-red-600' : 'text-orange-600'
+                              daysUntilExpiry <= 30 ? 'text-red-600' : 'text-cyan-600'
                             }`}>
                               {daysUntilExpiry} días
                             </p>
@@ -865,8 +865,8 @@ export default function CertificationManager({
 
                           {projectCert.findings.length > 0 && (
                             <div className="flex items-center gap-2">
-                              <AlertTriangle className="h-4 w-4 text-orange-600" />
-                              <span className="text-sm text-orange-600">
+                              <AlertTriangle className="h-4 w-4 text-cyan-600" />
+                              <span className="text-sm text-cyan-600">
                                 {projectCert.findings.filter(f => f.status === 'open').length} hallazgos pendientes
                               </span>
                             </div>
@@ -1018,7 +1018,7 @@ export default function CertificationManager({
             {alerts.map((alert) => (
               <Card key={alert.id} className={`border-l-4 ${
                 alert.severity === 'critical' ? 'border-l-red-500' :
-                alert.severity === 'high' ? 'border-l-orange-500' :
+                alert.severity === 'high' ? 'border-l-cyan-500' :
                 alert.severity === 'medium' ? 'border-l-yellow-500' : 'border-l-blue-500'
               }`}>
                 <CardContent className="p-4">
@@ -1027,12 +1027,12 @@ export default function CertificationManager({
                       <div className="flex items-center gap-2 mb-2">
                         <AlertTriangle className={`h-4 w-4 ${
                           alert.severity === 'critical' ? 'text-red-600' :
-                          alert.severity === 'high' ? 'text-orange-600' :
+                          alert.severity === 'high' ? 'text-cyan-600' :
                           alert.severity === 'medium' ? 'text-yellow-600' : 'text-blue-600'
                         }`} />
                         <Badge className={
                           alert.severity === 'critical' ? 'bg-red-100 text-red-800' :
-                          alert.severity === 'high' ? 'bg-orange-100 text-orange-800' :
+                          alert.severity === 'high' ? 'bg-cyan-100 text-cyan-800' :
                           alert.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'
                         }>
                           {alert.severity === 'critical' ? 'Crítico' : 

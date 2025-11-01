@@ -95,16 +95,47 @@ export async function apiPost(url: string, data: any): Promise<any> {
       method: 'POST',
       body: JSON.stringify(data)
     });
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`API Error (${response.status}): ${errorText}`);
     }
-    
+
     return await processJsonResponse(response, url);
   } catch (error) {
     if (error instanceof TypeError && error.message.includes('fetch')) {
       throw new Error(`Network error: Failed to post to ${url}. Check your internet connection.`);
+    }
+    throw error;
+  }
+}
+
+// Helper para upload de archivos (FormData)
+export async function apiUpload(url: string, formData: FormData): Promise<any> {
+  try {
+    const token = getAuthToken();
+    const headers: HeadersInit = {};
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    // No establecer Content-Type para FormData, el browser lo hará automáticamente
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API Error (${response.status}): ${errorText}`);
+    }
+
+    return await processJsonResponse(response, url);
+  } catch (error) {
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error(`Network error: Failed to upload to ${url}. Check your internet connection.`);
     }
     throw error;
   }
@@ -161,6 +192,7 @@ export async function apiDelete(url: string): Promise<any> {
 export default {
   get: apiGet,
   post: apiPost,
+  upload: apiUpload,
   put: apiPut,
   delete: apiDelete,
   fetch: authenticatedFetch

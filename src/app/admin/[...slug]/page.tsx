@@ -2,14 +2,15 @@
 
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/components/auth';
 import { Shield, ArrowLeft, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function AdminNotFoundPage() {
   const router = useRouter();
   const params = useParams();
-  const { isAuthenticated, loading } = useAuth();
+  const { user, loading } = useAuth();
+  const isAuthenticated = !!user;
   
   const attemptedPath = `/admin/${Array.isArray(params.slug) ? params.slug.join('/') : params.slug}`;
 
@@ -28,7 +29,7 @@ export default function AdminNotFoundPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-cyan-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center max-w-lg w-full">
         <div className="mb-6">
           <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">

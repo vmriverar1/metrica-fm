@@ -46,7 +46,7 @@ const phaseStatusColors = {
   completed: 'bg-green-100 text-green-800 border-green-200',
   'in-progress': 'bg-blue-100 text-blue-800 border-blue-200',
   pending: 'bg-gray-100 text-gray-800 border-gray-200',
-  review: 'bg-orange-100 text-orange-800 border-orange-200'
+  review: 'bg-cyan-100 text-cyan-800 border-cyan-200'
 }
 
 const phaseStatusText = {
@@ -148,8 +148,8 @@ function ProcessPhaseCard({
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-                        <StatusIcon className="w-5 h-5 text-[#007bc4]" />
+                      <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+                        <StatusIcon className="w-5 h-5 text-[#00A8E8]" />
                       </div>
                       <div>
                         <CardTitle className="text-lg font-bold text-gray-900 text-left">
@@ -189,7 +189,7 @@ function ProcessPhaseCard({
                   {/* Deliverables */}
                   <div className="space-y-4">
                     <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-[#007bc4]" />
+                      <FileText className="w-4 h-4 text-[#00A8E8]" />
                       Entregables
                     </h4>
                     
@@ -267,38 +267,38 @@ function ProcessOverviewStats({ phases }: { phases: ProcessPhase[] }) {
       transition={{ delay: 0.5 }}
       className="mt-12"
     >
-      <Card className="bg-gradient-to-r from-[#007bc4]/10 to-[#FF6B35]/10 border-[#007bc4]/20">
+      <Card className="bg-gradient-to-r from-[#00A8E8]/10 to-[#FF6B35]/10 border-[#00A8E8]/20">
         <CardHeader>
           <CardTitle className="text-center text-xl text-gray-900 flex items-center justify-center gap-2">
-            <Award className="w-5 h-5 text-[#007bc4]" />
+            <Award className="w-5 h-5 text-[#00A8E8]" />
             Estado del Proceso Certificado
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#007bc4] mb-1">
+              <div className="text-3xl font-bold text-[#00A8E8] mb-1">
                 {completedPhases}
               </div>
               <div className="text-sm text-gray-600">Fases Completadas</div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#007bc4] mb-1">
+              <div className="text-3xl font-bold text-[#00A8E8] mb-1">
                 {inProgressPhases}
               </div>
               <div className="text-sm text-gray-600">En Progreso</div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#007bc4] mb-1">
+              <div className="text-3xl font-bold text-[#00A8E8] mb-1">
                 {totalPhases}
               </div>
               <div className="text-sm text-gray-600">Total de Fases</div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#007bc4] mb-1">
+              <div className="text-3xl font-bold text-[#00A8E8] mb-1">
                 {completionRate}%
               </div>
               <div className="text-sm text-gray-600">Progreso Total</div>
@@ -321,8 +321,8 @@ export function ProcessOverview({ data }: ProcessOverviewProps) {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-              <Workflow className="w-6 h-6 text-[#007bc4]" />
+            <div className="w-12 h-12 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+              <Workflow className="w-6 h-6 text-[#00A8E8]" />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
               {data.section.title}
@@ -335,7 +335,7 @@ export function ProcessOverview({ data }: ProcessOverviewProps) {
           {/* Process Overview */}
           {data.overview && (
             <div className="max-w-4xl mx-auto">
-              <Card className="bg-white shadow-sm border-l-4 border-l-[#007bc4]">
+              <Card className="bg-white shadow-sm border-l-4 border-l-[#00A8E8]">
                 <CardContent className="p-6">
                   <p className="text-gray-700 leading-relaxed text-left">
                     {data.overview}

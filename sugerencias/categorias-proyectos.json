@@ -1,0 +1,290 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "generatedDate": "2025-09-05",
+    "description": "Lista simplificada de categorías y proyectos disponibles para referencia rápida"
+  },
+  "categories": [
+    {
+      "id": "educacion",
+      "name": "EDUCACIÓN",
+      "description": "Proyectos educativos, colegios, universidades e instituciones de formación",
+      "icon": "GraduationCap",
+      "color": "#003F6F",
+      "projectCount": 4,
+      "projects": [
+        {
+          "id": "ampliacion-colegio-aleph",
+          "name": "Ampliación Colegio Aleph (Grupo Delosi)",
+          "year": "2023",
+          "status": "completado",
+          "client": "Grupo Delosi",
+          "area": "2,500 m²"
+        },
+        {
+          "id": "cibertec",
+          "name": "Cibertec",
+          "year": "2023",
+          "status": "completado",
+          "client": "Cibertec",
+          "area": "3,200 m²"
+        },
+        {
+          "id": "innova",
+          "name": "Innova",
+          "year": "2022",
+          "status": "completado",
+          "client": "Innova",
+          "area": "1,800 m²"
+        },
+        {
+          "id": "nido-casa-amarilla-aleph",
+          "name": "Nido Casa Amarilla ALEPH",
+          "year": "2023",
+          "status": "completado",
+          "client": "ALEPH",
+          "area": "800 m²"
+        }
+      ]
+    },
+    {
+      "id": "industria",
+      "name": "INDUSTRIA",
+      "description": "Proyectos industriales, logísticos y de manufactura",
+      "icon": "Factory",
+      "color": "#E84E0F",
+      "projectCount": 12,
+      "projects": [
+        {
+          "id": "b500-b400-b600",
+          "name": "B500 - B400 - B600",
+          "year": "2023",
+          "status": "completado",
+          "area": "8,500 m²"
+        },
+        {
+          "id": "epc-centro-distribucion-lurin",
+          "name": "EPC - Centro de Distribución Lurín INCOMEX",
+          "year": "2023",
+          "status": "completado",
+          "client": "INCOMEX",
+          "area": "12,000 m²"
+        },
+        {
+          "id": "latam-airl",
+          "name": "Latam Airlines",
+          "year": "2023",
+          "status": "completado",
+          "client": "LATAM Airlines",
+          "area": "5,800 m²"
+        },
+        {
+          "id": "latam-b600-b400",
+          "name": "Latam B600 - B400",
+          "year": "2023",
+          "status": "completado",
+          "client": "LATAM Airlines",
+          "area": "7,200 m²"
+        },
+        {
+          "id": "madam-tussauds",
+          "name": "Madame Tussauds",
+          "year": "2022",
+          "status": "completado",
+          "client": "Madame Tussauds",
+          "area": "2,800 m²"
+        },
+        {
+          "id": "nave-b300",
+          "name": "Nave B300",
+          "year": "2023",
+          "status": "completado",
+          "area": "4,200 m²"
+        },
+        {
+          "id": "parque-lima-sur-lpa",
+          "name": "Parque Lima Sur (Cliente LPA)",
+          "year": "2023",
+          "status": "completado",
+          "client": "LPA",
+          "area": "15,000 m²"
+        },
+        {
+          "id": "parque-logistico-callao",
+          "name": "Parque Logístico Callao",
+          "year": "2023",
+          "status": "completado",
+          "area": "20,000 m²"
+        },
+        {
+          "id": "planta-bimbo",
+          "name": "Planta Bimbo",
+          "year": "2022",
+          "status": "completado",
+          "client": "Bimbo",
+          "area": "6,500 m²"
+        },
+        {
+          "id": "simetrica",
+          "name": "SIMETRICA",
+          "year": "2023",
+          "status": "completado",
+          "client": "SIMETRICA",
+          "area": "3,500 m²"
+        },
+        {
+          "id": "starbucks-garzon",
+          "name": "Starbucks Garzón",
+          "year": "2023",
+          "status": "completado",
+          "client": "Starbucks",
+          "area": "350 m²"
+        }
+      ]
+    },
+    {
+      "id": "retail",
+      "name": "RETAIL",
+      "description": "Centros comerciales, tiendas y espacios de venta",
+      "icon": "ShoppingBag",
+      "color": "#9D9D9C",
+      "projectCount": 8,
+      "projects": [
+        {
+          "id": "ampliacion-td6-jockey",
+          "name": "Ampliación TD6 (Jockey Plaza)",
+          "year": "2023",
+          "status": "completado",
+          "client": "Jockey Plaza",
+          "area": "2,800 m²"
+        },
+        {
+          "id": "boulevard-asia",
+          "name": "Boulevard Asia",
+          "year": "2023",
+          "status": "completado",
+          "area": "4,500 m²"
+        },
+        {
+          "id": "chillis-open-plaza-angamos",
+          "name": "Chili's Open Plaza Angamos",
+          "year": "2022",
+          "status": "completado",
+          "client": "Chili's",
+          "area": "420 m²"
+        },
+        {
+          "id": "jockey-plaza",
+          "name": "Jockey Plaza",
+          "year": "2023",
+          "status": "completado",
+          "client": "Jockey Plaza",
+          "area": "3,200 m²"
+        },
+        {
+          "id": "kfc-bayovar",
+          "name": "KFC Bayóvar",
+          "year": "2023",
+          "status": "completado",
+          "client": "KFC",
+          "area": "380 m²"
+        },
+        {
+          "id": "remodelacion-td6",
+          "name": "Remodelación TD6",
+          "year": "2023",
+          "status": "completado",
+          "area": "1,800 m²"
+        },
+        {
+          "id": "saga-ves",
+          "name": "Saga VES",
+          "year": "2022",
+          "status": "completado",
+          "client": "Saga",
+          "area": "2,200 m²"
+        },
+        {
+          "id": "tiyapuy",
+          "name": "Tiyapuy",
+          "year": "2023",
+          "status": "completado",
+          "area": "1,500 m²"
+        }
+      ]
+    },
+    {
+      "id": "hoteleria",
+      "name": "HOTELERÍA",
+      "description": "Hoteles, resorts y establecimientos de hospedaje",
+      "icon": "Building",
+      "color": "#D0D0D0",
+      "projectCount": 2,
+      "projects": [
+        {
+          "id": "hotel-armando-paredes",
+          "name": "Hotel Armando Paredes",
+          "year": "2023",
+          "status": "completado",
+          "client": "Armando Paredes",
+          "area": "3,500 m²"
+        },
+        {
+          "id": "hotel-hilton-bajada-balta",
+          "name": "Hotel Hilton Bajada Balta",
+          "year": "2023",
+          "status": "completado",
+          "client": "Hilton Hotels",
+          "area": "8,200 m²"
+        }
+      ]
+    },
+    {
+      "id": "oficinas",
+      "name": "OFICINAS",
+      "description": "Espacios de trabajo, oficinas corporativas y administrativas",
+      "icon": "Building2",
+      "color": "#646363",
+      "projectCount": 3,
+      "projects": [
+        {
+          "id": "car-7",
+          "name": "CAR-7",
+          "year": "2023",
+          "status": "completado",
+          "area": "2,800 m²"
+        },
+        {
+          "id": "oficina-villaran-unacem",
+          "name": "Oficina Villarán - UNACEM",
+          "year": "2022",
+          "status": "completado",
+          "client": "UNACEM",
+          "area": "1,500 m²"
+        },
+        {
+          "id": "oficinas-inma",
+          "name": "Oficinas INMA",
+          "year": "2023",
+          "status": "completado",
+          "client": "INMA",
+          "area": "1,200 m²"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalProjects": 28,
+    "totalCategories": 5,
+    "distributionByCategory": {
+      "industria": 12,
+      "retail": 8,
+      "educacion": 4,
+      "oficinas": 3,
+      "hoteleria": 2
+    },
+    "totalArea": "125,000+ m²",
+    "yearRange": "2022-2023",
+    "status": "Todos los proyectos completados"
+  }
+}

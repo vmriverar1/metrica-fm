@@ -10,10 +10,12 @@ export interface HomePageData {
     };
     subtitle: string;
     background: {
-      video_url: string;
-      video_url_fallback: string;
-      image_fallback: string;
-      image_fallback_internal: string;
+      type: 'video' | 'image';
+      video_url?: string;
+      video_url_fallback?: string;
+      image_fallback?: string;
+      image_fallback_internal?: string;
+      image_main?: string;
       overlay_opacity: number;
     };
     rotating_words: string[];
@@ -29,8 +31,8 @@ export interface HomePageData {
       icon: string;
       value: number;
       suffix: string;
+      prefix?: string;
       label: string;
-      description: string;
     }>;
   };
   services: {
@@ -43,7 +45,6 @@ export interface HomePageData {
       title: string;
       description: string;
       image_url?: string;
-      image_url_fallback?: string;
       icon_url?: string;
       is_main?: boolean;
       width?: '1/3' | '2/3' | '3/3';
@@ -87,7 +88,6 @@ export interface HomePageData {
       subtitle: string;
       cta: {
         text: string;
-        url: string;
       };
     };
     featured_projects: Array<{
@@ -96,7 +96,8 @@ export interface HomePageData {
       type: string;
       description: string;
       image_url: string;
-      image_url_fallback: string;
+      link_url?: string;
+      featured_order?: number;
     }>;
   };
   pillars: {
@@ -110,7 +111,6 @@ export interface HomePageData {
       title: string;
       description: string;
       image: string;
-      image_fallback: string;
     }>;
   };
   policies: {
@@ -124,7 +124,19 @@ export interface HomePageData {
       title: string;
       description: string;
       image: string;
-      image_fallback: string;
+      pdf?: string;
+    }>;
+  };
+  clients: {
+    section: {
+      title: string;
+      subtitle: string;
+    };
+    logos: Array<{
+      id: string;
+      name: string;
+      alt: string;
+      image: string;
     }>;
   };
   newsletter: {

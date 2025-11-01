@@ -88,7 +88,7 @@ export default function FloatingElements({ velocity, activeIndex }: FloatingElem
       <div 
         className="absolute w-96 h-96 rounded-full blur-3xl"
         style={{
-          background: activeIndex % 2 === 0 ? 'radial-gradient(circle, rgba(0,123,196,0.1) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(0,63,111,0.1) 0%, transparent 70%)',
+          background: activeIndex % 2 === 0 ? 'radial-gradient(circle, rgba(232,78,15,0.1) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(0,63,111,0.1) 0%, transparent 70%)',
           top: '50%',
           left: `${20 + activeIndex * 10}%`,
           transform: 'translate(-50%, -50%)',

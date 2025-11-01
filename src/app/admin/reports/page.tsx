@@ -254,7 +254,7 @@ export default function ReportsAdminPage() {
       case 'blue': return 'bg-blue-100 text-blue-800';
       case 'green': return 'bg-green-100 text-green-800';
       case 'purple': return 'bg-purple-100 text-purple-800';
-      case 'orange': return 'bg-orange-100 text-orange-800';
+      case 'orange': return 'bg-cyan-100 text-cyan-800';
       case 'gray': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -568,8 +568,8 @@ export default function ReportsAdminPage() {
                 {templates.length}
               </p>
             </div>
-            <div className="p-3 rounded-full bg-orange-100">
-              <FileText className="w-6 h-6 text-orange-600" />
+            <div className="p-3 rounded-full bg-cyan-100">
+              <FileText className="w-6 h-6 text-cyan-600" />
             </div>
           </div>
         </div>

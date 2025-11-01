@@ -11,6 +11,17 @@ import crypto from 'crypto';
 
 const NEWSLETTER_FILE = 'dynamic-content/newsletter/content.json';
 
+// Función helper para detectar si usar Firestore o JSON
+async function shouldUseFirestore(): Promise<boolean> {
+  try {
+    const { isDemoMode } = await import('@/lib/firebase/config');
+    return !isDemoMode; // Usar Firestore si no estamos en modo demo
+  } catch (error) {
+    console.warn('Error verificando modo Firebase:', error);
+    return false; // Fallback a JSON
+  }
+}
+
 // Interface para query parameters
 interface ArticleQuery {
   page?: number;
@@ -44,11 +55,159 @@ export const GET = withAuth(
         tags: searchParams.get('tags') || undefined
       };
 
-      // Leer datos del newsletter
-      const newsletterData = await jsonCrudSystem.readJSON(NEWSLETTER_FILE, true);
-      let articles = newsletterData.articles || [];
-      const authors = newsletterData.authors || [];
-      const categories = newsletterData.categories || [];
+      const useFirestore = await shouldUseFirestore();
+      
+      if (useFirestore) {
+        return await getArticlesFromFirestore(query, context);
+      } else {
+        return await getArticlesFromJSON(query, context);
+      }
+
+    } catch (error) {
+      await logger.error('newsletter-api', 'Failed to list articles', error, {
+        userId: context.user.id
+      });
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'INTERNAL_ERROR',
+          message: 'Failed to retrieve articles.'
+        },
+        { status: 500 }
+      );
+    }
+  },
+  requirePermission('newsletter', 'read')()
+);
+
+// GET desde Firestore
+async function getArticlesFromFirestore(query: ArticleQuery, context: any) {
+  const { ArticulosService, AutoresService, CategoriasService } = await import('@/lib/firestore/newsletter-service');
+
+  // Obtener datos desde Firestore
+  const [articulos, autores, categorias] = await Promise.all([
+    ArticulosService.listarTodos({
+      busqueda: query.search,
+      categoria_slug: query.category,
+      autor_id: query.author_id,
+      destacado: query.featured === 'true' ? true : query.featured === 'false' ? false : undefined,
+      estado: query.published === 'true' ? 'published' : query.published === 'false' ? 'draft' : undefined,
+      limite: query.limit,
+      offset: (query.page! - 1) * query.limit!
+    }),
+    AutoresService.listarTodos(),
+    CategoriasService.listarTodas()
+  ]);
+
+  // Convertir a formato esperado por el frontend
+  const enrichedArticles = articulos.map((articulo: any) => ({
+    id: articulo.id,
+    title: articulo.title,
+    slug: articulo.slug,
+    category: articulo.categoria?.id || '',
+    author_id: articulo.autor?.id || '',
+    featured_image: articulo.featured_image,
+    featured_image_alt: articulo.featured_image_alt || '',
+    excerpt: articulo.excerpt,
+    content: articulo.content,
+    published_date: articulo.published_date?.toISOString() || null,
+    reading_time: articulo.reading_time,
+    featured: articulo.featured,
+    tags: articulo.tags || [],
+    seo_description: articulo.seo?.meta_description || articulo.excerpt,
+    social_image: articulo.seo?.social_image || articulo.featured_image || '',
+    url: `/blog/${articulo.slug}`,
+    related_articles: [], // Por implementar
+    gallery: [], // Por implementar
+    created_at: articulo.created_at?.toISOString(),
+    updated_at: articulo.updated_at?.toISOString(),
+    author_info: articulo.autor ? {
+      id: articulo.autor.id,
+      name: articulo.autor.name,
+      role: articulo.autor.role,
+      avatar: articulo.autor.avatar,
+      bio: articulo.autor.bio
+    } : null,
+    category_info: articulo.categoria ? {
+      id: articulo.categoria.id,
+      name: articulo.categoria.name,
+      slug: articulo.categoria.slug,
+      color: articulo.categoria.color,
+      icon: articulo.categoria.icon
+    } : null,
+    days_since_published: articulo.published_date ? 
+      Math.floor((new Date().getTime() - articulo.published_date.toDate().getTime()) / (1000 * 60 * 60 * 24)) : null,
+    status: articulo.status === 'published' ? 'published' : 'draft'
+  }));
+
+  // Contar total (para simplificar, usar el length actual - en producción sería una query separada)
+  const total = enrichedArticles.length;
+  const totalPages = Math.ceil(total / query.limit!);
+
+  return NextResponse.json({
+    success: true,
+    data: {
+      articles: enrichedArticles,
+      pagination: {
+        page: query.page,
+        limit: query.limit,
+        total,
+        totalPages,
+        hasNextPage: query.page! < totalPages,
+        hasPrevPage: query.page! > 1
+      },
+      filters: {
+        search: query.search,
+        category: query.category,
+        author_id: query.author_id,
+        featured: query.featured,
+        published: query.published,
+        tags: query.tags,
+        sort: query.sort,
+        order: query.order
+      },
+      authors: autores.map((autor: any) => ({
+        id: autor.id,
+        name: autor.name,
+        role: autor.role,
+        articles_count: articulos.filter((a: any) => a.autor?.id === autor.id).length
+      })),
+      categories: categorias.map((cat: any) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        articles_count: articulos.filter((a: any) => a.categoria?.id === cat.id).length
+      })),
+      stats: {
+        total_articles: total,
+        published_articles: articulos.filter((a: any) => a.status === 'published').length,
+        draft_articles: articulos.filter((a: any) => a.status !== 'published').length,
+        featured_articles: articulos.filter((a: any) => a.featured).length,
+        by_category: categorias.map((cat: any) => ({
+          category: cat.name,
+          count: articulos.filter((a: any) => a.categoria?.id === cat.id).length
+        })),
+        by_author: autores.map((autor: any) => ({
+          author: autor.name,
+          count: articulos.filter((a: any) => a.autor?.id === autor.id).length
+        })),
+        total_reading_time: articulos.reduce((sum: number, a: any) => sum + (a.reading_time || 0), 0),
+        average_reading_time: Math.round(
+          articulos.reduce((sum: number, a: any) => sum + (a.reading_time || 0), 0) / (articulos.length || 1)
+        )
+      }
+    }
+  });
+}
+
+// GET desde JSON (función original refactorizada)
+async function getArticlesFromJSON(query: ArticleQuery, context: any) {
+  // Leer datos del newsletter
+  const newsletterData = await jsonCrudSystem.readJSON(NEWSLETTER_FILE, true);
+  let articles = newsletterData.articles || [];
+  const authors = newsletterData.authors || [];
+  const categories = newsletterData.categories || [];
 
       // Filtrar por búsqueda
       if (query.search) {
@@ -209,23 +368,44 @@ export const GET = withAuth(
         }
       });
 
-    } catch (error) {
-      await logger.error('newsletter-api', 'Failed to list articles', error, {
-        userId: context.user.id
-      });
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'INTERNAL_ERROR',
-          message: 'Failed to retrieve articles.'
-        },
-        { status: 500 }
-      );
+  return NextResponse.json({
+    success: true,
+    data: {
+      articles: enrichedArticles,
+      pagination: {
+        page: query.page,
+        limit: query.limit,
+        total,
+        totalPages,
+        hasNextPage: query.page! < totalPages,
+        hasPrevPage: query.page! > 1
+      },
+      filters: {
+        search: query.search,
+        category: query.category,
+        author_id: query.author_id,
+        featured: query.featured,
+        published: query.published,
+        tags: query.tags,
+        sort: query.sort,
+        order: query.order
+      },
+      authors: authors.map((author: any) => ({
+        id: author.id,
+        name: author.name,
+        role: author.role,
+        articles_count: articles.filter((a: any) => a.author_id === author.id).length
+      })),
+      categories: categories.map((cat: any) => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        articles_count: articles.filter((a: any) => a.category === cat.id).length
+      })),
+      stats
     }
-  },
-  requirePermission('newsletter', 'read')()
-);
+  });
+}
 
 // POST /api/admin/newsletter/articles - Crear artículo
 export const POST = withAuth(
@@ -262,6 +442,136 @@ export const POST = withAuth(
           { status: 400 }
         );
       }
+
+      const useFirestore = await shouldUseFirestore();
+      
+      if (useFirestore) {
+        return await createArticleInFirestore(body, context);
+      } else {
+        return await createArticleInJSON(body, context);
+      }
+
+    } catch (error) {
+      await logger.error('newsletter-api', 'Failed to create article', error, {
+        userId: context.user.id
+      });
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'INTERNAL_ERROR',
+          message: 'Failed to create article.'
+        },
+        { status: 500 }
+      );
+    }
+  },
+  requirePermission('newsletter', 'write')()
+);
+
+// POST desde Firestore
+async function createArticleInFirestore(body: any, context: any) {
+  const {
+    title,
+    slug,
+    category,
+    author_id,
+    featured_image,
+    featured_image_alt,
+    excerpt,
+    content,
+    published_date,
+    reading_time,
+    featured = false,
+    tags = [],
+    seo_description,
+    social_image,
+  } = body;
+
+  const { ArticulosService } = await import('@/lib/firestore/newsletter-service');
+
+  // Generar slug si no se proporciona
+  const articleSlug = slug || title.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+  // Calcular tiempo de lectura si no se proporciona  
+  const calculatedReadingTime = reading_time || Math.ceil((content.length / 1000) * 4);
+
+  const articleData = {
+    title,
+    slug: articleSlug,
+    excerpt,
+    content,
+    featured_image: featured_image || '',
+    featured_image_alt: featured_image_alt || '',
+    reading_time: calculatedReadingTime,
+    featured: !!featured,
+    tags: Array.isArray(tags) ? tags : [],
+    status: published_date ? 'published' as const : 'draft' as const,
+    published_date: published_date ? new Date(published_date) : null,
+    author_id,
+    category_id: category,
+    seo: {
+      meta_title: title,
+      meta_description: seo_description || excerpt,
+      keywords: Array.isArray(tags) ? tags : [],
+      social_image: social_image || featured_image || ''
+    }
+  };
+
+  try {
+    const articleId = await ArticulosService.crear(articleData);
+    
+    // Log de auditoría
+    await logger.audit({
+      action: 'create',
+      resource: 'newsletter-article',
+      resourceId: articleId,
+      message: `Newsletter article '${title}' created via Firestore`,
+      user: context.user.id,
+      ip_address: 'unknown', // En servidor
+      metadata: { title, slug: articleSlug, category, author_id, featured }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Article created successfully in Firestore.',
+      data: { article: { id: articleId, ...articleData } }
+    }, { status: 201 });
+
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('already exists')) {
+      return NextResponse.json({
+        success: false,
+        error: 'SLUG_EXISTS',
+        message: 'An article with this slug already exists.'
+      }, { status: 409 });
+    }
+    throw error;
+  }
+}
+
+// POST desde JSON (función original refactorizada)
+async function createArticleInJSON(body: any, context: any) {
+  const {
+    title,
+    slug,
+    category,
+    author_id,
+    featured_image,
+    featured_image_alt,
+    excerpt,
+    content,
+    published_date,
+    reading_time,
+    featured = false,
+    tags = [],
+    seo_description,
+    social_image,
+    related_articles = [],
+    gallery = []
+  } = body;
 
       // Leer datos actuales
       const newsletterData = await jsonCrudSystem.readJSON(NEWSLETTER_FILE, true);
@@ -395,24 +705,7 @@ export const POST = withAuth(
         message: 'Article created successfully.',
         data: { article: newArticle }
       }, { status: 201 });
-
-    } catch (error) {
-      await logger.error('newsletter-api', 'Failed to create article', error, {
-        userId: context.user.id
-      });
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'INTERNAL_ERROR',
-          message: 'Failed to create article.'
-        },
-        { status: 500 }
-      );
-    }
-  },
-  requirePermission('newsletter', 'write')()
-);
+}
 
 // Método OPTIONS para CORS
 export async function OPTIONS() {

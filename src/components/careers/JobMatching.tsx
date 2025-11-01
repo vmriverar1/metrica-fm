@@ -345,7 +345,7 @@ export default function JobMatching({
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-orange-600" />
+              <Clock className="w-4 h-4 text-cyan-600" />
               <div>
                 <p className="text-sm text-muted-foreground">Experiencia</p>
                 <p className="text-xl font-bold">{userProfile.experience} años</p>
@@ -456,13 +456,13 @@ export default function JobMatching({
                         {/* Gaps */}
                         {match.gaps.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-medium text-orange-600 mb-2 flex items-center gap-1">
+                            <h4 className="text-sm font-medium text-cyan-600 mb-2 flex items-center gap-1">
                               <XCircle className="w-3 h-3" />
                               Áreas a mejorar
                             </h4>
                             <ul className="text-xs space-y-1">
                               {match.gaps.slice(0, 2).map((gap, i) => (
-                                <li key={i} className="text-orange-600">• {gap}</li>
+                                <li key={i} className="text-cyan-600">• {gap}</li>
                               ))}
                             </ul>
                           </div>

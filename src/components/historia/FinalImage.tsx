@@ -7,9 +7,10 @@ import { useGSAP } from '@gsap/react';
 
 interface FinalImageProps {
   isActive: boolean;
+  finalImage?: string;
 }
 
-export default function FinalImage({ isActive }: FinalImageProps) {
+export default function FinalImage({ isActive, finalImage }: FinalImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -35,15 +36,20 @@ export default function FinalImage({ isActive }: FinalImageProps) {
     return () => ctx.revert();
   }, { dependencies: [isActive], scope: containerRef });
 
+  // No renderizar si no hay imagen
+  if (!finalImage) {
+    return null;
+  }
+
   return (
-    <div 
+    <div
       ref={containerRef}
       className="relative w-screen h-screen flex overflow-hidden flex-shrink-0"
     >
       {/* Imagen de cierre - 60% como las demás */}
       <div className="relative w-[60%] h-full">
         <Image
-          src="https://metrica-dip.com/images/slider-inicio-es/01.jpg"
+          src={finalImage}
           alt="Métrica FM"
           fill
           className="object-cover"
@@ -59,7 +65,7 @@ export default function FinalImage({ isActive }: FinalImageProps) {
               style={{
                 width: `${12 + i * 4}px`,
                 height: `${12 + i * 4}px`,
-                backgroundColor: i % 2 === 0 ? '#007bc4' : '#003F6F',
+                backgroundColor: i % 2 === 0 ? '#00A8E8' : '#003F6F',
                 opacity: 0.2,
                 left: `${15 + i * 10}%`,
                 top: `${25 + (i * 8) % 50}%`,

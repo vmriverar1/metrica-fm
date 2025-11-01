@@ -28,10 +28,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
-import ImageField from '@/components/admin/ImageField';
+import ImageSelector from '@/components/admin/ImageSelector';
 import MegaMenuPreview from './MegaMenuPreview';
 import PageAutocomplete from './PageAutocomplete';
-import { toast } from '@/hooks/use-toast-simple';
+import { toast } from '@/hooks/use-toast';
 
 interface MegaMenuSubLink {
   id: string;
@@ -798,7 +798,7 @@ const MegaMenuEditor: React.FC<MegaMenuEditorProps> = ({
                       {/* Imagen promocional */}
                       <div>
                         <Label>Imagen de Fondo</Label>
-                        <ImageField
+                        <ImageSelector
                           value={editingItem.submenu?.section3.image || ''}
                           onChange={(value) => updateSubmenuField('section3', 'image', value)}
                           accept="image/*"

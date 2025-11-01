@@ -36,7 +36,7 @@ import {
   Target,
   Award
 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast-simple'
+import { useToast } from '@/hooks/use-toast'
 
 interface QualityKPI {
   category: string
@@ -311,8 +311,8 @@ function MetricEditCard({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-                <IconComponent className="w-5 h-5 text-[#007bc4]" />
+              <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+                <IconComponent className="w-5 h-5 text-[#00A8E8]" />
               </div>
               <div>
                 <CardTitle className="text-lg">
@@ -449,7 +449,7 @@ function MetricEditCard({
                 {/* Metric Values */}
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="text-3xl font-bold text-[#007bc4]">
+                    <div className="text-3xl font-bold text-[#00A8E8]">
                       {kpi.current_value}
                     </div>
                     <div className="text-sm text-gray-600">
@@ -601,7 +601,7 @@ export function MetricsEditor({ data, onSave, onCancel }: MetricsEditorProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-[#007bc4]" />
+            <BarChart3 className="w-5 h-5 text-[#00A8E8]" />
             Información de la Sección
           </CardTitle>
         </CardHeader>

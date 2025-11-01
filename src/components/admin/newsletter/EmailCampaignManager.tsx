@@ -194,7 +194,7 @@ export default function EmailCampaignManager({
     scheduled: { label: 'Programada', color: 'bg-blue-100 text-blue-800', icon: <Clock className="h-4 w-4" /> },
     sending: { label: 'Enviando', color: 'bg-yellow-100 text-yellow-800', icon: <RefreshCw className="h-4 w-4" /> },
     sent: { label: 'Enviada', color: 'bg-green-100 text-green-800', icon: <CheckCircle className="h-4 w-4" /> },
-    paused: { label: 'Pausada', color: 'bg-orange-100 text-orange-800', icon: <Pause className="h-4 w-4" /> },
+    paused: { label: 'Pausada', color: 'bg-cyan-100 text-cyan-800', icon: <Pause className="h-4 w-4" /> },
     cancelled: { label: 'Cancelada', color: 'bg-red-100 text-red-800', icon: <X className="h-4 w-4" /> }
   }
 

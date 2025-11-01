@@ -389,7 +389,7 @@ export default function HRAnalytics() {
     if (rating >= 4.5) return 'text-green-600 bg-green-100'
     if (rating >= 4.0) return 'text-blue-600 bg-blue-100'
     if (rating >= 3.5) return 'text-yellow-600 bg-yellow-100'
-    if (rating >= 3.0) return 'text-orange-600 bg-orange-100'
+    if (rating >= 3.0) return 'text-cyan-600 bg-cyan-100'
     return 'text-red-600 bg-red-100'
   }, [])
 
@@ -494,12 +494,12 @@ export default function HRAnalytics() {
                     </div>
                     <Clock className="w-6 h-6 text-blue-500" />
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-cyan-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-orange-800">Área de Atención</p>
-                      <p className="text-sm text-orange-600">Performance promedio por debajo de meta</p>
+                      <p className="font-medium text-cyan-800">Área de Atención</p>
+                      <p className="text-sm text-cyan-600">Performance promedio por debajo de meta</p>
                     </div>
-                    <AlertCircle className="w-6 h-6 text-orange-500" />
+                    <AlertCircle className="w-6 h-6 text-cyan-500" />
                   </div>
                 </div>
               </CardContent>
@@ -577,8 +577,8 @@ export default function HRAnalytics() {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-100 rounded-lg">
-                    <Clock className="w-6 h-6 text-orange-600" />
+                  <div className="p-2 bg-cyan-100 rounded-lg">
+                    <Clock className="w-6 h-6 text-cyan-600" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Tiempo Promedio</p>
@@ -759,8 +759,8 @@ export default function HRAnalytics() {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-100 rounded-lg">
-                    <UserX className="w-6 h-6 text-orange-600" />
+                  <div className="p-2 bg-cyan-100 rounded-lg">
+                    <UserX className="w-6 h-6 text-cyan-600" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Rotación Voluntaria</p>
@@ -886,7 +886,7 @@ export default function HRAnalytics() {
                     </div>
                     <div className="text-center p-3 bg-gray-50 rounded-lg">
                       <p className="text-sm text-gray-600">Brecha de Género</p>
-                      <p className="text-xl font-bold text-orange-600">
+                      <p className="text-xl font-bold text-cyan-600">
                         {formatPercentage(comp.gender_pay_gap)}
                       </p>
                     </div>
@@ -913,12 +913,12 @@ export default function HRAnalytics() {
                     <li>• Estructura salarial transparente</li>
                   </ul>
                 </div>
-                <div className="p-4 border border-orange-200 rounded-lg bg-orange-50">
+                <div className="p-4 border border-cyan-200 rounded-lg bg-cyan-50">
                   <div className="flex items-center gap-2 mb-2">
-                    <AlertCircle className="w-5 h-5 text-orange-600" />
-                    <span className="font-medium text-orange-800">Áreas de Mejora</span>
+                    <AlertCircle className="w-5 h-5 text-cyan-600" />
+                    <span className="font-medium text-cyan-800">Áreas de Mejora</span>
                   </div>
-                  <ul className="space-y-1 text-sm text-orange-700">
+                  <ul className="space-y-1 text-sm text-cyan-700">
                     <li>• Revisar brecha salarial de género en Ventas (3.2%)</li>
                     <li>• Mejorar correlación performance-compensación en algunos departamentos</li>
                   </ul>

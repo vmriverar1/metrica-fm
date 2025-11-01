@@ -222,7 +222,7 @@ const DEFAULT_STAGES: PipelineStage[] = [
     name: 'Entrevista Final',
     description: 'Entrevista con el equipo directivo',
     order: 5,
-    color: 'bg-orange-100 text-orange-800',
+    color: 'bg-cyan-100 text-cyan-800',
     icon: 'Users',
     required_actions: ['Entrevista con gerencia', 'Referencias'],
     auto_advance: false,
@@ -265,7 +265,7 @@ const STATUS_CONFIG = {
 const PRIORITY_CONFIG = {
   low: { label: 'Baja', color: 'bg-gray-100 text-gray-800' },
   medium: { label: 'Media', color: 'bg-blue-100 text-blue-800' },
-  high: { label: 'Alta', color: 'bg-orange-100 text-orange-800' },
+  high: { label: 'Alta', color: 'bg-cyan-100 text-cyan-800' },
   urgent: { label: 'Urgente', color: 'bg-red-100 text-red-800' }
 }
 
@@ -504,10 +504,10 @@ export default function RecruitmentPipeline({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Tiempo Respuesta</p>
-                <p className="text-2xl font-bold text-orange-600">{Math.round(pipelineAnalytics.averageResponseTime)}h</p>
+                <p className="text-2xl font-bold text-cyan-600">{Math.round(pipelineAnalytics.averageResponseTime)}h</p>
                 <p className="text-xs text-gray-500 mt-1">promedio</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-600" />
+              <TrendingUp className="h-8 w-8 text-cyan-600" />
             </div>
           </CardContent>
         </Card>
@@ -792,7 +792,7 @@ export default function RecruitmentPipeline({
                             className={`h-6 rounded-full flex items-center justify-center text-xs font-medium text-white ${
                               stage.conversion_rate >= 80 ? 'bg-green-500' :
                               stage.conversion_rate >= 60 ? 'bg-yellow-500' :
-                              stage.conversion_rate >= 40 ? 'bg-orange-500' : 'bg-red-500'
+                              stage.conversion_rate >= 40 ? 'bg-cyan-500' : 'bg-red-500'
                             }`}
                             style={{ width: `${Math.max(stage.conversion_rate, 10)}%` }}
                           >
@@ -820,26 +820,26 @@ export default function RecruitmentPipeline({
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-orange-600" />
+                  <AlertCircle className="h-5 w-5 text-cyan-600" />
                   Cuellos de Botella Identificados
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {pipelineAnalytics.bottlenecks.map((bottleneck) => (
-                    <div key={bottleneck.stage} className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <div key={bottleneck.stage} className="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h4 className="font-semibold text-orange-800">{bottleneck.stage}</h4>
-                          <p className="text-orange-700 text-sm">
+                          <h4 className="font-semibold text-cyan-800">{bottleneck.stage}</h4>
+                          <p className="text-cyan-700 text-sm">
                             {bottleneck.candidates_stuck} candidatos estancados
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-orange-800 font-medium">
+                          <p className="text-cyan-800 font-medium">
                             {bottleneck.average_time_stuck.toFixed(1)} días
                           </p>
-                          <p className="text-orange-600 text-xs">tiempo promedio</p>
+                          <p className="text-cyan-600 text-xs">tiempo promedio</p>
                         </div>
                       </div>
                     </div>
@@ -1199,7 +1199,7 @@ export default function RecruitmentPipeline({
                                 {communication.type}
                               </Badge>
                               {communication.response_required && !communication.responded && (
-                                <Badge className="bg-orange-100 text-orange-800" size="sm">
+                                <Badge className="bg-cyan-100 text-cyan-800" size="sm">
                                   Respuesta Pendiente
                                 </Badge>
                               )}

@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { COLLECTIONS } from '@/lib/firebase/config';
+import { MEGAMENU_FALLBACK } from '@/lib/firestore/fallbacks';
 
 interface MegaMenuSubItem {
   section1: { title: string; description: string };
@@ -97,52 +100,58 @@ export function useMegaMenuData() {
 
   const loadMegaMenuData = useCallback(async () => {
     try {
+      console.log('🔍 [MegaMenu] Cargando datos desde Firestore...');
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch('/api/admin/megamenu', {
-        cache: 'no-store',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error loading menu data: ${response.status} - ${response.statusText}`);
-      }
+      // Obtener documento del mega menú desde Firestore
+      const result = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
 
-      const megaMenuConfig = await response.json();
+      let megaMenuConfig: MegaMenuData;
 
-      if (!megaMenuConfig) {
-        throw new Error('Invalid menu data structure');
+      if (!result.success || !result.data) {
+        console.warn('⚠️ [FALLBACK] MegaMenu: Sin datos en Firestore, usando fallback descriptivo');
+        // Usar fallback en lugar de lanzar error
+        megaMenuConfig = MEGAMENU_FALLBACK as MegaMenuData;
+      } else {
+        const firestoreData = result.data as any;
+        console.log('📊 [MegaMenu] Datos obtenidos desde Firestore:', firestoreData);
+
+        // Crear estructura compatible con el formato esperado
+        megaMenuConfig = {
+          settings: firestoreData.settings || {
+            enabled: true,
+            animation_duration: 300,
+            hover_delay: 100,
+            mobile_breakpoint: 'md',
+            max_items: 10,
+            last_updated: new Date().toISOString(),
+            version: '1.0.0'
+          },
+          items: firestoreData.items || [],
+          page_mappings: firestoreData.page_mappings || {},
+          analytics: firestoreData.analytics || {}
+        };
       }
 
       // Verificar que esté habilitado
       if (!megaMenuConfig.settings?.enabled) {
+        console.log('🚫 [MegaMenu] Mega menú deshabilitado en configuración');
         setMenuData([]);
         return;
       }
 
       const transformedItems = transformJsonToMenuItems(megaMenuConfig);
+      console.log('✅ [MegaMenu] Datos transformados exitosamente:', transformedItems.length, 'items');
       setMenuData(transformedItems);
 
     } catch (err) {
-      console.error('Error loading mega menu data:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      
-      // Provide fallback menu data on error
-      const fallbackData = [
-        { id: 'inicio', label: 'Inicio', href: '/' },
-        { id: 'servicios', label: 'Qué Hacemos', href: '/services' },
-        { id: 'nosotros', label: 'Nosotros', href: '/about' },
-        { id: 'portfolio', label: 'Proyectos', href: '/portfolio' },
-        { id: 'iso', label: 'SIG', href: '/iso' },
-        { id: 'blog', label: 'Newsletter', href: '/blog' },
-        { id: 'contacto', label: 'Contáctanos', href: '/contact' }
-      ];
-      
-      setError(`Failed to fetch: ${errorMessage}`);
-      setMenuData(fallbackData);
+      console.error('❌ [FIRESTORE] MegaMenu error:', err);
+      console.warn('⚠️ [FALLBACK] MegaMenu: Error detectado, usando fallback descriptivo');
+      // Usar fallback en caso de error
+      const transformedItems = transformJsonToMenuItems(MEGAMENU_FALLBACK as MegaMenuData);
+      setMenuData(transformedItems);
+      setError(null); // No mostrar error, solo usar fallback
     } finally {
       setIsLoading(false);
     }
@@ -150,22 +159,45 @@ export function useMegaMenuData() {
 
   const trackItemClick = useCallback(async (itemId: string) => {
     try {
-      await fetch('/api/admin/megamenu', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'track_click',
-          item_id: itemId
-        }),
-        cache: 'no-store'
-      });
-    } catch (error) {
-      // Silently fail for tracking - don't break user experience
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Error tracking click:', error);
+      console.log('📊 [MegaMenu] Registrando click en:', itemId);
+
+      // Obtener documento actual
+      const result = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
+
+      if (!result.success || !result.data) {
+        console.warn('⚠️ [MegaMenu] No se pudo obtener documento para tracking');
+        return;
       }
+
+      const currentData = result.data as any;
+      const currentAnalytics = currentData.analytics || {};
+      const currentItems = currentData.items || [];
+
+      // Actualizar contador del item específico
+      const updatedItems = currentItems.map((item: any) =>
+        item.id === itemId
+          ? { ...item, click_count: (item.click_count || 0) + 1 }
+          : item
+      );
+
+      // Actualizar analytics globales
+      const updatedAnalytics = {
+        ...currentAnalytics,
+        total_clicks: (currentAnalytics.total_clicks || 0) + 1,
+        last_interaction: new Date().toISOString(),
+        most_clicked_item: itemId, // Simplificado por ahora
+        popular_links: currentAnalytics.popular_links || []
+      };
+
+      // Actualizar documento en Firestore
+      await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+        items: updatedItems,
+        analytics: updatedAnalytics
+      });
+
+      console.log('✅ [MegaMenu] Click registrado exitosamente');
+    } catch (error) {
+      console.error('❌ [MegaMenu] Error registrando click:', error);
     }
   }, []);
 

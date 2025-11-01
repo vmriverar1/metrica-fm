@@ -125,7 +125,7 @@ export default function TeamTimeline() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007bc4] to-[#003F6F]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A8E8] to-[#003F6F]">
               Nuestro Equipo
             </span>
           </h2>
@@ -168,7 +168,7 @@ export default function TeamTimeline() {
                     hoveredMember === member.id ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}>
                     <div className="text-center text-white">
-                      <h3 className="text-xl font-bold mb-2 text-[#007bc4]">{member.name}</h3>
+                      <h3 className="text-xl font-bold mb-2 text-[#00A8E8]">{member.name}</h3>
                       <p className="text-sm font-medium mb-3 text-[#003F6F]">{member.role}</p>
                       <p className="text-xs leading-relaxed text-gray-200">{member.description}</p>
                     </div>
@@ -178,7 +178,7 @@ export default function TeamTimeline() {
                   <div 
                     className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
                     style={{
-                      background: `linear-gradient(45deg, transparent 20%, #007bc440 35%, #003F6F40 65%, transparent 80%)`
+                      background: `linear-gradient(45deg, transparent 20%, #00A8E840 35%, #003F6F40 65%, transparent 80%)`
                     }}
                   />
                 </div>
@@ -188,7 +188,7 @@ export default function TeamTimeline() {
 
           {/* Efectos de desvanecimiento en los bordes con colores de marca */}
           <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-[#003F6F] via-[#002A4D]/10 to-transparent pointer-events-none z-10" />
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-[#003F6F] via-[#007bc4]/10 to-transparent pointer-events-none z-10" />
+          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-[#003F6F] via-[#00A8E8]/10 to-transparent pointer-events-none z-10" />
         </div>
 
         {/* Subtítulo para continuidad */}
@@ -199,7 +199,7 @@ export default function TeamTimeline() {
           className="text-center"
         >
           <h3 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007bc4] to-[#003F6F]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A8E8] to-[#003F6F]">
               Momentos que Nos Definen
             </span>
           </h3>
@@ -219,7 +219,7 @@ export default function TeamTimeline() {
             </p>
             <div className="flex items-center justify-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-[#007bc4]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#00A8E8]"></div>
                 <span className="text-xs text-gray-500">Excelencia</span>
               </div>
               <div className="flex items-center space-x-2">

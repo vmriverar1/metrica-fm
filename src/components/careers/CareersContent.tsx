@@ -41,19 +41,7 @@ export default function CareersContent({ careersData }: CareersContentProps) {
       
       <SectionTransition variant="slide" />
       
-      <PortfolioCTA 
-        type="careers"
-        title={careersData.final_cta.title}
-        description={careersData.final_cta.description}
-        primaryButton={{
-          text: careersData.final_cta.primary_button.text,
-          href: careersData.final_cta.primary_button.href
-        }}
-        secondaryButton={{
-          text: careersData.final_cta.secondary_button.text,
-          href: careersData.final_cta.secondary_button.href
-        }}
-      />
+
     </main>
   );
 }

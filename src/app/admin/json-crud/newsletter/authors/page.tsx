@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import apiClient from '@/lib/api-client';
+import { useAutores } from '@/hooks/useNewsletterAdmin';
 import { useRouter } from 'next/navigation';
+import type { Autor } from '@/types/newsletter';
 import DataTable from '@/components/admin/DataTable';
 import DynamicForm from '@/components/admin/DynamicForm';
 import { Button } from '@/components/ui/button';
@@ -12,21 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Plus, Users, Mail, Calendar, Award } from 'lucide-react';
 
-interface Author {
-  id: string;
-  name: string;
-  email: string;
-  bio: string;
-  avatar: string;
-  role: string;
-  social_links: {
-    linkedin?: string;
-    twitter?: string;
-    github?: string;
-    website?: string;
-  };
+// Usar tipo de Firestore
+type Author = Autor & {
   specialties: string[];
-  joined_date: string;
   article_count: number;
   status: 'active' | 'inactive';
   metadata: {
@@ -34,33 +23,50 @@ interface Author {
     total_views: number;
     featured_articles: number;
   };
-}
+};
 
 const AuthorsManagement = () => {
-  const [authors, setAuthors] = useState<Author[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Usar hook de Firestore
+  const {
+    autores,
+    loading,
+    error: firestoreError,
+    create,
+    update,
+    remove
+  } = useAutores();
+
+  // Mapear datos de Firestore al formato esperado por el componente
+  const authors: Author[] = autores.map(autor => ({
+    ...autor,
+    specialties: autor.specializations || [],
+    article_count: autor.articles_count || 0,
+    status: autor.featured ? 'active' : 'inactive',
+    joined_date: autor.created_at?.toDate?.()?.toISOString() || new Date().toISOString(),
+    social_links: {
+      linkedin: autor.social?.linkedin,
+      twitter: autor.social?.twitter,
+      github: autor.social?.github,
+      website: autor.social?.website
+    },
+    metadata: {
+      last_published: '',
+      total_views: 0,
+      featured_articles: 0
+    }
+  }));
+
+  const [error, setError] = useState<string | null>(firestoreError);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAuthor, setSelectedAuthor] = useState<Author | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  const fetchAuthors = async () => {
-    try {
-      setLoading(true);
-      const data = await apiClient.get('/api/admin/newsletter/authors');
-      setAuthors(data.authors || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Sincronizar error de Firestore con error local
   useEffect(() => {
-    fetchAuthors();
-  }, []);
+    setError(firestoreError);
+  }, [firestoreError]);
 
   const filteredAuthors = authors.filter(author => {
     const matchesSearch = author.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -164,11 +170,13 @@ const AuthorsManagement = () => {
       label: author => author.status === 'active' ? 'Desactivar' : 'Activar',
       onClick: async (author: Author) => {
         try {
-          const data = await apiClient.put(`/api/admin/newsletter/authors/${author.id}`, {
-              ...author,
-              status: author.status === 'active' ? 'inactive' : 'active'
-            });
-          await fetchAuthors();
+          const newStatus = author.status === 'active' ? 'inactive' : 'active';
+          const response = await update(author.id, {
+            featured: newStatus === 'active'
+          });
+          if (!response.exito) {
+            setError(response.mensaje || 'Error al actualizar');
+          }
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Error al actualizar');
         }
@@ -180,8 +188,10 @@ const AuthorsManagement = () => {
       onClick: async (author: Author) => {
         if (!confirm('¿Estás seguro de que quieres eliminar este autor?')) return;
         try {
-          const data = await apiClient.delete(`/api/admin/newsletter/authors/${author.id}`);
-          await fetchAuthors();
+          const response = await remove(author.id);
+          if (!response.exito) {
+            setError(response.mensaje || 'Error al eliminar');
+          }
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Error al eliminar');
         }
@@ -295,44 +305,30 @@ const AuthorsManagement = () => {
         bio: values.bio,
         avatar: values.avatar || '',
         role: values.role,
-        social_links: {
+        social: {
           linkedin: values['social_links.linkedin'] || '',
           twitter: values['social_links.twitter'] || '',
           github: values['social_links.github'] || '',
           website: values['social_links.website'] || ''
         },
-        specialties: values.specialties || [],
-        status: values.status,
-        joined_date: selectedAuthor?.joined_date || new Date().toISOString(),
-        article_count: selectedAuthor?.article_count || 0,
-        metadata: selectedAuthor?.metadata || {
-          last_published: '',
-          total_views: 0,
-          featured_articles: 0
-        }
+        specializations: values.specialties || [],
+        featured: values.status === 'active'
       };
 
-      const url = selectedAuthor
-        ? `/api/admin/newsletter/authors/${selectedAuthor.id}`
-        : '/api/admin/newsletter/authors';
-      
-      const method = selectedAuthor ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(authorData)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Error al guardar autor');
+      let response;
+      if (selectedAuthor) {
+        response = await update(selectedAuthor.id, authorData);
+      } else {
+        response = await create(authorData);
       }
 
-      setIsModalOpen(false);
-      setSelectedAuthor(null);
-      await fetchAuthors();
-      setError(null);
+      if (response.exito) {
+        setIsModalOpen(false);
+        setSelectedAuthor(null);
+        setError(null);
+      } else {
+        setError(response.mensaje || 'Error al guardar autor');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar');
     }
@@ -420,12 +416,12 @@ const AuthorsManagement = () => {
             {authors.reduce((sum, author) => sum + author.article_count, 0)}
           </div>
         </div>
-        <div className="bg-orange-50 p-4 rounded-lg">
+        <div className="bg-cyan-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-5 w-5 text-orange-600" />
-            <span className="text-sm font-medium text-orange-800">Este Mes</span>
+            <Calendar className="h-5 w-5 text-cyan-600" />
+            <span className="text-sm font-medium text-cyan-800">Este Mes</span>
           </div>
-          <div className="text-2xl font-bold text-orange-900">
+          <div className="text-2xl font-bold text-cyan-900">
             {authors.filter(a => 
               new Date(a.metadata.last_published) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
             ).length}

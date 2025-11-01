@@ -47,9 +47,9 @@ const processCategories = [
     id: 'support',
     label: 'Soporte',
     icon: Users,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100',
-    borderColor: 'border-orange-200',
+    color: 'text-cyan-600',
+    bgColor: 'bg-cyan-100',
+    borderColor: 'border-cyan-200',
     description: 'Procesos que brindan soporte a las operaciones principales'
   },
   {

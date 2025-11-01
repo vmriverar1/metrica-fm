@@ -29,7 +29,7 @@ const comparisonItems: ComparisonItem[] = [
   {
     label: 'Año',
     icon: <Calendar className="w-4 h-4" />,
-    getValue: (p) => p.completedAt.getFullYear()
+    getValue: (p) => p.completedAt ? p.completedAt.getFullYear() : 'N/A'
   },
   {
     label: 'Área',

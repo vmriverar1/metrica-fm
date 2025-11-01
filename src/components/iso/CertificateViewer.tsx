@@ -401,10 +401,7 @@ export default function CertificateViewer() {
                   <div>
                     <span className="text-muted-foreground text-sm">Actividades Certificadas:</span>
                     <ul className="mt-2 space-y-1 text-sm">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                        Dirección integral de proyectos de construcción
-                      </li>
+
                       <li className="flex items-center gap-2">
                         <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
                         Gestión de proyectos de infraestructura

@@ -102,7 +102,7 @@ const METRIC_CATEGORIES = {
   performance: { label: 'Performance', color: 'bg-blue-500', icon: <Zap className="w-4 h-4" /> },
   users: { label: 'Users', color: 'bg-green-500', icon: <Users className="w-4 h-4" /> },
   content: { label: 'Content', color: 'bg-purple-500', icon: <BarChart3 className="w-4 h-4" /> },
-  business: { label: 'Business', color: 'bg-orange-500', icon: <Target className="w-4 h-4" /> },
+  business: { label: 'Business', color: 'bg-cyan-500', icon: <Target className="w-4 h-4" /> },
   system: { label: 'System', color: 'bg-red-500', icon: <Activity className="w-4 h-4" /> }
 };
 

@@ -8,7 +8,8 @@
 
 'use client';
 
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/components/auth';
+import { signOut } from '@/lib/firebase-auth';
 import { useApplicationsService, useRecruitmentStats } from '@/hooks/useApplicationsService';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -28,12 +29,13 @@ import {
 } from 'lucide-react';
 
 function AdminDashboard() {
-  const { user, actions } = useAuth();
+  const { user } = useAuth();
   const { applications, systemInfo } = useApplicationsService({ limit: 5 });
   const { stats, loading } = useRecruitmentStats();
 
   const handleLogout = async () => {
-    await actions.logout();
+    await signOut();
+    window.location.href = '/admin/login';
   };
 
   // No necesitamos verificar auth aquí - AdminLayout/ProtectedRoute ya se encarga
@@ -65,7 +67,7 @@ function AdminDashboard() {
       value: 3, // Basado en usuarios de ejemplo
       change: 0,
       icon: Users,
-      color: 'orange'
+      color: 'cyan'
     }
   ];
 
@@ -106,9 +108,9 @@ function AdminDashboard() {
 
 
   return (
-    <AdminLayout 
-      title="Panel de Administración" 
-      description={`Bienvenido, ${user.firstName} ${user.lastName} - ${user.role?.name || 'Usuario'}`}
+    <AdminLayout
+      title="Panel de Administración"
+      description={`Bienvenido, ${user?.displayName || user?.email || 'Administrador'}`}
       actions={
         <Button
           onClick={() => window.open('/recruitment-dashboard', '_blank')}

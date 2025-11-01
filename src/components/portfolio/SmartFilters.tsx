@@ -23,7 +23,7 @@ const smartFilters: SmartFilter[] = [
     icon: <Award className="w-4 h-4" />,
     description: 'Proyectos premiados y reconocidos',
     filter: (projects) => projects.filter(p => p.featured),
-    color: 'from-yellow-500 to-orange-500'
+    color: 'from-yellow-500 to-cyan-500'
   },
   {
     id: 'recent',

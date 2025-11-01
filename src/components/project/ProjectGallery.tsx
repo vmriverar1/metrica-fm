@@ -5,36 +5,22 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ImageIcon } from 'lucide-react';
 import { Project, GalleryImage } from '@/types/portfolio';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface ProjectGalleryProps {
   project: Project;
 }
 
-type GalleryStage = 'inicio' | 'proceso' | 'final';
-
 export default function ProjectGallery({ project }: ProjectGalleryProps) {
-  const [activeTab, setActiveTab] = useState<GalleryStage>('inicio');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  const tabs: { id: GalleryStage; label: string; description: string }[] = [
-    { id: 'inicio', label: 'Inicio', description: 'Fase inicial del proyecto' },
-    { id: 'proceso', label: 'Desarrollo', description: 'Proceso de construcción' },
-    { id: 'final', label: 'Finalización', description: 'Proyecto completado' }
-  ];
-
-  // Filtrar imágenes por etapa
-  const getImagesByStage = (stage: GalleryStage): GalleryImage[] => {
-    return project.gallery
-      .filter(img => img.stage === stage)
-      .sort((a, b) => a.order - b.order);
-  };
-
-  const currentImages = getImagesByStage(activeTab);
+  // Mostrar todas las imágenes ordenadas y filtrar las que no tienen URL
+  const allImages = project.gallery
+    .filter(image => image.url && typeof image.url === 'string' && image.url.trim() !== '')
+    .sort((a, b) => a.order - b.order);
 
   const openLightbox = (image: GalleryImage, index: number) => {
     setSelectedImage(image);
@@ -50,17 +36,17 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
   };
 
   const navigateLightbox = (direction: 'prev' | 'next') => {
-    if (!currentImages.length) return;
-    
+    if (!allImages.length) return;
+
     let newIndex;
     if (direction === 'prev') {
-      newIndex = selectedIndex > 0 ? selectedIndex - 1 : currentImages.length - 1;
+      newIndex = selectedIndex > 0 ? selectedIndex - 1 : allImages.length - 1;
     } else {
-      newIndex = selectedIndex < currentImages.length - 1 ? selectedIndex + 1 : 0;
+      newIndex = selectedIndex < allImages.length - 1 ? selectedIndex + 1 : 0;
     }
-    
+
     setSelectedIndex(newIndex);
-    setSelectedImage(currentImages[newIndex]);
+    setSelectedImage(allImages[newIndex]);
   };
 
   // Keyboard navigation
@@ -85,19 +71,10 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [lightboxOpen, selectedIndex]);
 
-  const getGridLayout = (stage: GalleryStage, imageCount: number) => {
+  const getGridLayout = (imageCount: number) => {
     if (imageCount === 0) return '';
-    
-    switch (stage) {
-      case 'inicio':
-        return imageCount === 1 ? 'grid-cols-1 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 gap-6';
-      case 'proceso':
-        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4';
-      case 'final':
-        return imageCount === 1 ? 'grid-cols-1 max-w-4xl mx-auto' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
-      default:
-        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4';
-    }
+    if (imageCount === 1) return 'grid-cols-1 max-w-4xl mx-auto';
+    return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
   };
 
   return (
@@ -116,61 +93,22 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
               Galería del Proyecto
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explora cada etapa de desarrollo desde la concepción hasta la finalización
+              {allImages.length} {allImages.length === 1 ? 'imagen' : 'imágenes'} del desarrollo del proyecto
             </p>
-          </motion.div>
-
-          {/* Tabs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-12"
-          >
-            <div className="bg-muted rounded-lg p-2 flex gap-1">
-              {tabs.map((tab) => {
-                const imageCount = getImagesByStage(tab.id).length;
-                
-                return (
-                  <Button
-                    key={tab.id}
-                    variant={activeTab === tab.id ? 'default' : 'ghost'}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={cn(
-                      "px-6 py-3 rounded-lg transition-all duration-300",
-                      activeTab === tab.id 
-                        ? "bg-background shadow-sm text-foreground" 
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    <div className="text-center">
-                      <div className="font-medium">{tab.label}</div>
-                      <div className="text-xs opacity-70">
-                        {imageCount} {imageCount === 1 ? 'imagen' : 'imágenes'}
-                      </div>
-                    </div>
-                  </Button>
-                );
-              })}
-            </div>
           </motion.div>
 
           {/* Gallery grid */}
           <div ref={galleryRef} className="min-h-[400px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className={cn(
-                  "grid",
-                  getGridLayout(activeTab, currentImages.length)
-                )}
-              >
-                {currentImages.map((image, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className={cn(
+                "grid",
+                getGridLayout(allImages.length)
+              )}
+            >
+              {allImages.map((image, index) => (
                   <motion.div
                     key={image.id}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -185,7 +123,7 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                     <div className="relative aspect-video overflow-hidden">
                       <Image
                         src={image.url}
-                        alt={image.caption || `${project.title} - ${activeTab}`}
+                        alt={image.caption || `${project.title} - Imagen ${index + 1}`}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -212,11 +150,10 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                     </div>
                   </motion.div>
                 ))}
-              </motion.div>
-            </AnimatePresence>
+            </motion.div>
 
             {/* Empty state */}
-            {currentImages.length === 0 && (
+            {allImages.length === 0 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -227,7 +164,7 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">No hay imágenes disponibles</h3>
                 <p className="text-muted-foreground">
-                  Las imágenes de esta etapa estarán disponibles próximamente.
+                  Las imágenes de este proyecto estarán disponibles próximamente.
                 </p>
               </motion.div>
             )}
@@ -254,7 +191,7 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
             </button>
 
             {/* Navigation buttons */}
-            {currentImages.length > 1 && (
+            {allImages.length > 1 && (
               <>
                 <button
                   onClick={(e) => {
@@ -287,14 +224,16 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
               className="relative max-w-5xl max-h-[80vh] mx-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={selectedImage.url}
-                alt={selectedImage.caption || project.title}
-                fill
-                className="object-contain"
-                priority
-                sizes="(max-width: 768px) 90vw, 80vw"
-              />
+              {selectedImage.url && selectedImage.url.trim() !== '' && (
+                <Image
+                  src={selectedImage.url}
+                  alt={selectedImage.caption || project.title}
+                  fill
+                  className="object-contain"
+                  priority
+                  sizes="(max-width: 768px) 90vw, 80vw"
+                />
+              )}
               
               {/* Caption */}
               {selectedImage.caption && (
@@ -305,9 +244,9 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
             </motion.div>
 
             {/* Image counter */}
-            {currentImages.length > 1 && (
+            {allImages.length > 1 && (
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm">
-                {selectedIndex + 1} de {currentImages.length}
+                {selectedIndex + 1} de {allImages.length}
               </div>
             )}
           </motion.div>

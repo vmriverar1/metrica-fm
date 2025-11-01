@@ -138,7 +138,7 @@ export default function PortfolioCTA() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full hover:bg-orange-50 hover:border-orange-200"
+                className="w-full hover:bg-cyan-50 hover:border-cyan-200"
                 asChild
               >
                 <a href="mailto:info@metrica-dip.com">
@@ -156,7 +156,7 @@ export default function PortfolioCTA() {
               asChild
             >
               <a href="/contact">
-                <span className="mr-3">Iniciar mi Proyecto</span>
+                <span className="mr-3">Contáctanos para iniciar tu proyecto</span>
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
               </a>
             </Button>
@@ -169,7 +169,7 @@ export default function PortfolioCTA() {
           >
             <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary mb-1">15+</div>
+                <div className="text-2xl font-bold text-primary mb-1">10+</div>
                 <div className="text-sm text-muted-foreground">Años de Experiencia</div>
               </div>
               <div className="text-center">

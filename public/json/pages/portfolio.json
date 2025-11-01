@@ -7,36 +7,10 @@
     "title": "Nuestro Portafolio",
     "subtitle": "Proyectos que Transforman el Paisaje Urbano del Perú",
     "description": "Más de 15 años dirigiendo proyectos de construcción e infraestructura que marcan la diferencia en el desarrollo del país.",
-    "background_image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080",
+    "background_image": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3620.webp",
     "background_image_fallback": "/img/portfolio/hero-background.jpg",
-    "stats": {
-      "projects": {
-        "value": 22,
-        "label": "Proyectos",
-        "description": "Completados exitosamente",
-        "icon": "Building2"
-      },
-      "experience": {
-        "value": 15,
-        "label": "Años",
-        "description": "De experiencia",
-        "icon": "Calendar"
-      },
-      "categories": {
-        "value": 7,
-        "label": "Categorías",
-        "description": "De especialización",
-        "icon": "Award"
-      },
-      "cities": {
-        "value": 5,
-        "label": "Ciudades",
-        "description": "En todo el Perú",
-        "icon": "MapPin"
-      }
-    },
-    "total_investment": "$1,030M USD",
-    "total_area": "670,000 m²"
+    "total_investment": "$340M USD",
+    "total_area": "151,480 m²"
   },
   "introduction": {
     "title": "Excelencia en Cada Proyecto",
@@ -606,7 +580,7 @@
     },
     "contact_info": {
       "phone": "+51 1 234-5678",
-      "email": "proyectos@metrica-dip.com",
+      "email": "info@metricadip.com",
       "office": "Av. Salaverry 3240, San Isidro, Lima"
     }
   },

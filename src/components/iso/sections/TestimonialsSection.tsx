@@ -89,8 +89,8 @@ function TestimonialFilters({
             onClick={filter.action || (() => onFilterChange('all'))}
             className={`
               ${activeFilter === filter.key 
-                ? 'bg-[#007bc4] text-white hover:bg-[#007bc4]/90' 
-                : 'border-[#007bc4]/30 text-[#007bc4] hover:bg-[#007bc4]/10'
+                ? 'bg-[#00A8E8] text-white hover:bg-[#00A8E8]/90' 
+                : 'border-[#00A8E8]/30 text-[#00A8E8] hover:bg-[#00A8E8]/10'
               }
             `}
           >
@@ -127,7 +127,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial, ind
       <Card className="h-full hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
         {/* Quote Icon */}
         <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <Quote className="w-12 h-12 text-[#007bc4]" />
+          <Quote className="w-12 h-12 text-[#00A8E8]" />
         </div>
 
         <CardContent className="p-6 h-full flex flex-col">
@@ -141,9 +141,9 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial, ind
           {/* Author Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <Avatar className="w-12 h-12 border-2 border-[#007bc4]/20">
+              <Avatar className="w-12 h-12 border-2 border-[#00A8E8]/20">
                 <AvatarImage src={testimonial.avatar} alt={testimonial.author} />
-                <AvatarFallback className="bg-[#007bc4]/10 text-[#007bc4] font-semibold">
+                <AvatarFallback className="bg-[#00A8E8]/10 text-[#00A8E8] font-semibold">
                   {getInitials(testimonial.author)}
                 </AvatarFallback>
               </Avatar>
@@ -177,7 +177,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial, ind
                 <span className="text-xs font-medium text-gray-600">Proyecto:</span>
                 <Badge 
                   variant="secondary"
-                  className="bg-[#007bc4]/10 text-[#007bc4] border-[#007bc4]/20 text-xs"
+                  className="bg-[#00A8E8]/10 text-[#00A8E8] border-[#00A8E8]/20 text-xs"
                 >
                   {testimonial.project}
                 </Badge>
@@ -247,8 +247,8 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-[#007bc4]/10 flex items-center justify-center">
-              <MessageCircle className="w-6 h-6 text-[#007bc4]" />
+            <div className="w-12 h-12 rounded-full bg-[#00A8E8]/10 flex items-center justify-center">
+              <MessageCircle className="w-6 h-6 text-[#00A8E8]" />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
               {data.section.title}
@@ -298,7 +298,7 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
               <Button
                 variant="outline"
                 onClick={() => handleFilterChange('all')}
-                className="border-[#007bc4] text-[#007bc4] hover:bg-[#007bc4] hover:text-white"
+                className="border-[#00A8E8] text-[#00A8E8] hover:bg-[#00A8E8] hover:text-white"
               >
                 Ver Todos los Testimonios
               </Button>
@@ -313,25 +313,25 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
           transition={{ delay: 0.5 }}
           className="mt-12 text-center"
         >
-          <Card className="inline-block bg-gradient-to-r from-[#007bc4]/10 to-[#FF6B35]/10 border-[#007bc4]/20">
+          <Card className="inline-block bg-gradient-to-r from-[#00A8E8]/10 to-[#FF6B35]/10 border-[#00A8E8]/20">
             <CardContent className="px-8 py-6">
               <div className="flex items-center gap-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {data.testimonials_list.filter(t => t.rating === 5).length}
                   </div>
                   <div className="text-sm text-gray-600">5 Estrellas</div>
                 </div>
                 <div className="w-px h-12 bg-gray-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {(data.testimonials_list.reduce((acc, t) => acc + t.rating, 0) / data.testimonials_list.length).toFixed(1)}
                   </div>
                   <div className="text-sm text-gray-600">Promedio</div>
                 </div>
                 <div className="w-px h-12 bg-gray-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#007bc4]">
+                  <div className="text-2xl font-bold text-[#00A8E8]">
                     {data.testimonials_list.length}
                   </div>
                   <div className="text-sm text-gray-600">Total</div>

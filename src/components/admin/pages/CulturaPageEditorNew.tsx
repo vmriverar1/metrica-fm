@@ -86,11 +86,6 @@ export interface CulturaPageData {
       subtitle: string;
     };
     members: TeamMember[];
-    moments: {
-      title: string;
-      subtitle: string;
-      gallery: MomentItem[];
-    };
   };
   technologies: {
     section: {
@@ -134,13 +129,6 @@ export interface TeamMember {
   image_fallback: string;
 }
 
-export interface MomentItem {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  image_fallback: string;
-}
 
 export interface TechItem {
   id: string;
@@ -234,7 +222,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
         historia: {
           title: 'Nuestra Historia',
           icon: 'Clock',
-          color: '#007bc4',
+          color: '#00A8E8',
           stats: []
         },
         equipo: {
@@ -246,7 +234,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
         alcance: {
           title: 'Alcance Nacional',
           icon: 'MapPin',
-          color: '#007bc4',
+          color: '#00A8E8',
           stats: []
         },
         logros: {
@@ -262,12 +250,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
         title: 'Nuestro Equipo',
         subtitle: 'Profesionales altamente calificados comprometidos con la excelencia'
       },
-      members: [],
-      moments: {
-        title: 'Momentos Destacados',
-        subtitle: 'Celebraciones, logros y experiencias que fortalecen nuestro equipo',
-        gallery: []
-      }
+      members: []
     },
     technologies: {
       section: {
@@ -362,7 +345,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
       title: '',
       description: '',
       icon: 'Target',
-      color: '#007bc4',
+      color: '#00A8E8',
       size: 'medium',
       images: [],
       image_descriptions: []
@@ -441,55 +424,6 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
     }));
   }, []);
 
-  // Moment Management
-  const addMoment = useCallback(() => {
-    const newMoment: MomentItem = {
-      id: Date.now(),
-      title: '',
-      description: '',
-      image: '',
-      image_fallback: ''
-    };
-    
-    setConfig(prev => ({
-      ...prev,
-      team: {
-        ...prev.team,
-        moments: {
-          ...prev.team.moments,
-          gallery: [...prev.team.moments.gallery, newMoment]
-        }
-      }
-    }));
-  }, []);
-
-  const updateMoment = useCallback((id: number, updates: Partial<MomentItem>) => {
-    setConfig(prev => ({
-      ...prev,
-      team: {
-        ...prev.team,
-        moments: {
-          ...prev.team.moments,
-          gallery: prev.team.moments.gallery.map(moment =>
-            moment.id === id ? { ...moment, ...updates } : moment
-          )
-        }
-      }
-    }));
-  }, []);
-
-  const removeMoment = useCallback((id: number) => {
-    setConfig(prev => ({
-      ...prev,
-      team: {
-        ...prev.team,
-        moments: {
-          ...prev.team.moments,
-          gallery: prev.team.moments.gallery.filter(moment => moment.id !== id)
-        }
-      }
-    }));
-  }, []);
 
   // Technology Management
   const addTechnology = useCallback(() => {
@@ -498,7 +432,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
       title: '',
       subtitle: '',
       icon: 'Layers',
-      color: '#007bc4',
+      color: '#00A8E8',
       description: '',
       features: [],
       image: '',
@@ -934,7 +868,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                           <Input
                             value={value.color}
                             onChange={(e) => updateValue(value.id, { color: e.target.value })}
-                            placeholder="#007bc4"
+                            placeholder="#00A8E8"
                             disabled={readOnly}
                           />
                         </div>
@@ -1180,7 +1114,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                                 }
                               }));
                             }}
-                            placeholder="#007bc4"
+                            placeholder="#00A8E8"
                             disabled={readOnly}
                           />
                         </div>
@@ -1211,7 +1145,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                             <Input
                               value={stat.value}
                               onChange={(e) => updateStat(categoryKey as keyof typeof config.culture_stats.categories, statIndex, { value: e.target.value })}
-                              placeholder="15+"
+                              placeholder="10+"
                               disabled={readOnly}
                             />
                             <Input
@@ -1254,7 +1188,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                 Nuestro Equipo
               </CardTitle>
               <CardDescription>
-                Gestión del equipo y momentos destacados
+                Gestión del equipo profesional
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1374,128 +1308,6 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                 )}
               </div>
 
-              <Separator />
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Título de momentos</Label>
-                    <Input
-                      value={config.team.moments.title}
-                      onChange={(e) => setConfig(prev => ({
-                        ...prev,
-                        team: {
-                          ...prev.team,
-                          moments: {
-                            ...prev.team.moments,
-                            title: e.target.value
-                          }
-                        }
-                      }))}
-                      placeholder="Momentos Destacados"
-                      disabled={readOnly}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Subtítulo de momentos</Label>
-                    <Input
-                      value={config.team.moments.subtitle}
-                      onChange={(e) => setConfig(prev => ({
-                        ...prev,
-                        team: {
-                          ...prev.team,
-                          moments: {
-                            ...prev.team.moments,
-                            subtitle: e.target.value
-                          }
-                        }
-                      }))}
-                      placeholder="Celebraciones, logros y experiencias..."
-                      disabled={readOnly}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Galería de Momentos</h3>
-                  <Button onClick={addMoment} disabled={readOnly} size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Agregar Momento
-                  </Button>
-                </div>
-
-                {config.team.moments.gallery.map((moment) => (
-                  <Card key={moment.id}>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">
-                          {moment.title || 'Nuevo Momento'}
-                        </CardTitle>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeMoment(moment.id)}
-                          disabled={readOnly}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label>Título</Label>
-                          <Input
-                            value={moment.title}
-                            onChange={(e) => updateMoment(moment.id, { title: e.target.value })}
-                            placeholder="Celebración ISO 9001"
-                            disabled={readOnly}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>Descripción</Label>
-                          <Input
-                            value={moment.description}
-                            onChange={(e) => updateMoment(moment.id, { description: e.target.value })}
-                            placeholder="Renovación exitosa de..."
-                            disabled={readOnly}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label>Imagen</Label>
-                          <Input
-                            value={moment.image}
-                            onChange={(e) => updateMoment(moment.id, { image: e.target.value })}
-                            placeholder="https://images.unsplash.com/..."
-                            disabled={readOnly}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>Imagen de respaldo</Label>
-                          <Input
-                            value={moment.image_fallback}
-                            onChange={(e) => updateMoment(moment.id, { image_fallback: e.target.value })}
-                            placeholder="/img/moments/iso-celebration.jpg"
-                            disabled={readOnly}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-
-                {config.team.moments.gallery.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    No hay momentos configurados
-                  </div>
-                )}
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -1590,7 +1402,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
                           <Input
                             value={tech.color}
                             onChange={(e) => updateTechnology(tech.id, { color: e.target.value })}
-                            placeholder="#007bc4"
+                            placeholder="#00A8E8"
                             disabled={readOnly}
                           />
                         </div>

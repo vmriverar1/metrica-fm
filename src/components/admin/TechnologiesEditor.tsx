@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Zap, Plus, Trash2, Edit3, Save, X, Layers, Eye, Cpu, Smartphone, Cloud, Palette, Image as ImageIcon, FileText, DollarSign, Target } from 'lucide-react';
-import ImageField from './ImageField';
+import ImageSelector from './ImageSelector';
 
 interface CaseStudy {
   project: string;
@@ -54,7 +54,7 @@ const availableIcons = [
 ];
 
 const availableColors = [
-  { value: '#007bc4', label: 'Naranja Principal', color: '#007bc4' },
+  { value: '#00A8E8', label: 'Naranja Principal', color: '#00A8E8' },
   { value: '#003F6F', label: 'Azul Principal', color: '#003F6F' },
   { value: '#D0D0D0', label: 'Gris Claro', color: '#D0D0D0' },
   { value: '#9D9D9C', label: 'Gris Medio', color: '#9D9D9C' },
@@ -71,7 +71,7 @@ const defaultTechnology: Omit<Technology, 'id'> = {
   title: '',
   subtitle: '',
   icon: 'Zap',
-  color: '#007bc4',
+  color: '#00A8E8',
   description: '',
   features: ['Característica 1', 'Característica 2', 'Característica 3', 'Característica 4'],
   image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop',
@@ -324,7 +324,7 @@ export default function TechnologiesEditor({
                     <ImageIcon className="w-4 h-4" />
                     Imagen Principal
                   </Label>
-                  <ImageField
+                  <ImageSelector
                     value={editForm.image}
                     onChange={(newValue) => updateEditForm('image', newValue)}
                     label=""

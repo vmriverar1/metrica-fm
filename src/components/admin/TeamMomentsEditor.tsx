@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Camera, Plus, Trash2, Edit3, Save, X, Calendar, FileText, Image as ImageIcon } from 'lucide-react';
-import ImageField from './ImageField';
+import ImageSelector from './ImageSelector';
 
 interface TeamMoment {
   id: number;
@@ -158,7 +158,7 @@ export default function TeamMomentsEditor({
                   <ImageIcon className="w-4 h-4" />
                   Imagen del Momento
                 </Label>
-                <ImageField
+                <ImageSelector
                   value={editForm.image}
                   onChange={(newValue) => updateEditForm('image', newValue)}
                   label=""

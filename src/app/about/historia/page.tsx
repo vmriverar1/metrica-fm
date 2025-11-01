@@ -1,52 +1,95 @@
-'use client';
-
 import React from 'react';
+import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import UniversalHero from '@/components/ui/universal-hero';
 import TimelineTransformWrapper from '@/components/historia/TimelineTransformWrapper';
 import Footer from '@/components/landing/footer';
-import { useHistoriaData } from '@/hooks/useJsonData';
+import { HistoriaPageData } from '@/types/historia';
+import { PagesService } from '@/lib/firestore/pages-service';
 
-export default function HistoriaPage() {
-  const { data: historiaData, loading, error } = useHistoriaData();
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const data = await getHistoriaData();
+    return {
+      title: `${data.page.title} | Métrica FM`,
+      description: data.page.description,
+      openGraph: {
+        title: data.page.title,
+        description: data.page.description,
+        type: 'website'
+      }
+    };
+  } catch {
+    return {
+      title: 'Nuestra Historia | Métrica FM',
+      description: 'Conoce la historia y evolución de Métrica FM a lo largo de los años.'
+    };
+  }
+}
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background overflow-x-hidden">
-        <Header />
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-accent"></div>
-            <p className="mt-4 text-foreground/70">Cargando historia...</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
+// Helper function to serialize Firestore data for Client Components
+function serializeFirestoreData(data: any): any {
+  if (!data) return data;
+
+  // Handle arrays
+  if (Array.isArray(data)) {
+    return data.map(item => serializeFirestoreData(item));
   }
 
-  if (error || !historiaData) {
-    return (
-      <div className="min-h-screen bg-background overflow-x-hidden">
-        <Header />
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <p className="text-destructive">Error: {error || 'No se pudo cargar la historia'}</p>
-            <p className="mt-2 text-foreground/70">Usando datos por defecto...</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
+  // Handle objects
+  if (typeof data === 'object' && data !== null) {
+    // Check if it's a Firestore timestamp
+    if (data.toDate && typeof data.toDate === 'function') {
+      return data.toDate().toISOString();
+    }
+
+    // Recursively process object properties
+    const serialized: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      serialized[key] = serializeFirestoreData(value);
+    }
+    return serialized;
   }
 
+  return data;
+}
+
+async function getHistoriaData(): Promise<HistoriaPageData> {
+  try {
+    // First try to load from Firestore
+    const firestoreData = await PagesService.getHistoriaPage();
+    if (firestoreData) {
+      // Serialize Firestore data before returning
+      const serializedData = serializeFirestoreData(firestoreData);
+      return serializedData as HistoriaPageData;
+    }
+
+    // Fallback to API if Firestore fails
+    const response = await fetch('/api/admin/pages/historia', { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch historia data: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to load historia data');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error('Error loading historia data:', error);
+    throw error;
+  }
+}
+
+function HistoriaPageContent({ historiaData }: { historiaData: HistoriaPageData }) {
   const { page } = historiaData;
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Header />
       <main className="relative">
-        <UniversalHero 
+        <UniversalHero
           title={page.title}
           subtitle={page.subtitle}
           backgroundImage={page.hero_image}
@@ -56,4 +99,9 @@ export default function HistoriaPage() {
       <Footer />
     </div>
   );
+}
+
+export default async function HistoriaPage() {
+  const historiaData = await getHistoriaData();
+  return <HistoriaPageContent historiaData={historiaData} />;
 }

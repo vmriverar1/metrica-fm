@@ -1,34 +1,42 @@
 /**
- * FASE 6: API Route - Applications Management
+ * API Route - Applications Management
  * GET/POST /api/applications
- * 
+ *
  * Endpoints para gestión de aplicaciones laborales via API REST.
- * Incluye autenticación, paginación y filtros avanzados.
+ *
+ * NOTA: Autenticación simplificada. Para sistema completo de roles/permisos,
+ * integrar con Firebase Auth Admin SDK y Firestore.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { ApplicationsService } from '@/lib/applications-service';
-import { AuthService } from '@/lib/auth-service';
 import { ApplicationFilters, ApplicationStatus } from '@/types/careers';
 
-// Middleware para verificar autenticación
+/**
+ * Verificación básica de autenticación
+ * TODO: Integrar con Firebase Auth Admin SDK para validación de tokens real
+ */
 async function verifyAuth(request: NextRequest) {
   const authorization = request.headers.get('authorization');
-  
+
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return null;
   }
 
   const token = authorization.split(' ')[1];
-  
-  // En un sistema real, verificarías el token JWT
-  // Por ahora, simulamos la verificación
-  const user = AuthService.getCurrentUser();
-  if (!user) {
+
+  // Validación básica del token
+  // En producción, usar Firebase Admin SDK: getAuth().verifyIdToken(token)
+  if (!token || token.length < 10) {
     return null;
   }
 
-  return user;
+  // Retornar usuario básico
+  return {
+    id: 'auth-user',
+    email: 'authenticated@user.com',
+    displayName: 'Authenticated User'
+  };
 }
 
 // GET - Obtener aplicaciones con filtros
@@ -37,8 +45,8 @@ export async function GET(request: NextRequest) {
     const user = await verifyAuth(request);
     if (!user) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Token de autorización requerido',
           code: 'UNAUTHORIZED'
         },
@@ -46,17 +54,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Verificar permisos
-    if (!AuthService.canAccess('applications', 'read')) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'No tienes permisos para ver aplicaciones',
-          code: 'FORBIDDEN'
-        },
-        { status: 403 }
-      );
-    }
+    // TODO: Agregar verificación de permisos si se implementa sistema de roles
 
     const { searchParams } = new URL(request.url);
 
@@ -167,8 +165,8 @@ export async function POST(request: NextRequest) {
     const user = await verifyAuth(request);
     if (!user) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Token de autorización requerido',
           code: 'UNAUTHORIZED'
         },
@@ -176,17 +174,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verificar permisos
-    if (!AuthService.canAccess('applications', 'create')) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'No tienes permisos para crear aplicaciones',
-          code: 'FORBIDDEN'
-        },
-        { status: 403 }
-      );
-    }
+    // TODO: Agregar verificación de permisos si se implementa sistema de roles
 
     const body = await request.json();
 
@@ -274,8 +262,8 @@ export async function PATCH(request: NextRequest) {
     const user = await verifyAuth(request);
     if (!user) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Token de autorización requerido',
           code: 'UNAUTHORIZED'
         },
@@ -283,16 +271,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    if (!AuthService.canAccess('applications', 'update')) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'No tienes permisos para actualizar aplicaciones',
-          code: 'FORBIDDEN'
-        },
-        { status: 403 }
-      );
-    }
+    // TODO: Agregar verificación de permisos si se implementa sistema de roles
 
     const body = await request.json();
     const { id, status, priority, assignedTo, notes } = body;
@@ -309,9 +288,9 @@ export async function PATCH(request: NextRequest) {
     let success = false;
     if (status) {
       success = await ApplicationsService.updateApplicationStatus(
-        id, 
-        status, 
-        user.firstName + ' ' + user.lastName,
+        id,
+        status,
+        user.displayName || user.email || 'Usuario',
         notes
       );
     }

@@ -1,768 +1,806 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
+import {
+  SEOAdvancedEditor,
+  ContentSectionsManager
+} from '@/components/admin/shared';
+import {
   Save,
   Eye,
-  RotateCcw,
+  FileText,
+  Settings,
+  Grid,
+  Phone,
   Mail,
   MapPin,
-  Phone,
   Clock,
-  HelpCircle,
-  Globe,
+  Loader2,
   CheckCircle,
-  AlertTriangle,
-  Loader2
+  AlertCircle,
+  MessageSquare,
+  Globe
 } from 'lucide-react';
 
-// Importar componentes shared
-import { ContactInfoManager, type ContactInfo } from '../shared/ContactInfoManager';
-import { FAQManager, type FAQ } from '../shared/FAQManager';
-import { SEOAdvancedEditor, type SEOData } from '../shared/SEOAdvancedEditor';
+// Interfaces específicas para Contact
+export interface ContactInfo {
+  title: string;
+  icon: string;
+  content: string;
+}
 
-// Tipos para la página de contacto
-interface ContactPageData {
-  page: {
-    title: string;
-    description: string;
-    url: string;
-  };
-  hero: {
-    title: string;
-    subtitle: string;
-    background_image: string;
-    background_image_fallback?: string;
-  };
+export interface ContactForm {
+  show_form: boolean;
+  form_title: string;
+  form_subtitle: string;
+  success_message: string;
+  error_message: string;
+  fields: Array<{
+    name: string;
+    label: string;
+    type: string;
+    required: boolean;
+    placeholder?: string;
+    options?: string[];
+  }>;
+}
+
+export interface ContactHeroSection {
+  title: string;
+  subtitle: string;
+  background_image?: string;
+  background_color?: string;
+  text_color?: string;
+  show_contact_info: boolean;
+  show_form: boolean;
+  show_map: boolean;
+}
+
+export interface ContactPageData {
+  hero: ContactHeroSection;
+
   sections: {
-    intro: {
+    intro?: {
       title: string;
       description: string;
     };
-    contact_info: {
+    contact_info?: {
       title: string;
       items: ContactInfo[];
     };
-    contact_form: {
-      title: string;
-      subtitle: string;
-      fields: FormField[];
-      submit_action: string;
-      success_message: string;
-      error_message: string;
-    };
-    map: {
-      title: string;
-      subtitle: string;
+    map?: {
       show_placeholder: boolean;
-      embed_url?: string;
-      coordinates?: {
-        lat: number;
-        lng: number;
-      };
-    };
-    urgent_quote: {
-      title: string;
-      description: string;
-      button: {
-        text: string;
-        href: string;
-        style: string;
-      };
-    };
-    faq: {
       title: string;
       subtitle: string;
-      items: FAQ[];
+      google_maps_embed?: string;
+    };
+    process?: {
+      title: string;
+      steps: Array<{
+        number: string;
+        title: string;
+        description: string;
+      }>;
     };
   };
-  // SEO Data
-  seo: SEOData;
-}
 
-interface FormField {
-  id: string;
-  name: string;
-  label: string;
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio';
-  placeholder?: string;
-  required: boolean;
-  order: number;
-  validation?: {
-    min_length?: number;
-    max_length?: number;
-    pattern?: string;
+  settings?: {
+    form_method?: string;
+    form_action?: string;
+    response_time?: string;
+    urgent_response_time?: string;
+    show_map_placeholder?: boolean;
   };
-  options?: string[]; // Para select, radio
+
+  seo?: {
+    meta_title: string;
+    meta_description: string;
+    keywords: string[];
+  };
 }
 
 interface ContactPageEditorProps {
-  slug?: string;
-  initialData?: ContactPageData;
+  initialData?: Partial<ContactPageData>;
   onSave?: (data: ContactPageData) => Promise<void>;
-  onPreview?: (data: ContactPageData) => void;
-  readonly?: boolean;
+  pageId?: string;
 }
 
-export const ContactPageEditor: React.FC<ContactPageEditorProps> = ({
-  slug = 'contact',
+export function ContactPageEditor({
   initialData,
   onSave,
-  onPreview,
-  readonly = false
-}) => {
-  const [data, setData] = useState<ContactPageData>(initialData || getDefaultContactData());
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [activeTab, setActiveTab] = useState('basic');
-
-  // Cargar datos al montar el componente
-  useEffect(() => {
-    if (!initialData) {
-      loadContactData();
-    }
-  }, [slug]);
-
-  const loadContactData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/admin/pages/${slug}`);
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setData(result.data);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading contact data:', error);
-      setErrors(['Error al cargar los datos de contacto']);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (readonly) return;
-    
-    setSaving(true);
-    setErrors([]);
-
-    try {
-      // Validar datos antes de guardar
-      const validationErrors = validateContactData(data);
-      if (validationErrors.length > 0) {
-        setErrors(validationErrors);
-        setSaving(false);
-        return;
-      }
-
-      if (onSave) {
-        await onSave(data);
-      } else {
-        const response = await fetch(`/api/admin/pages/${slug}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
+  pageId = 'contact'
+}: ContactPageEditorProps) {
+  const [data, setData] = useState<ContactPageData>({
+    hero: {
+      title: 'Contáctanos',
+      subtitle: 'Estamos aquí para ayudarte a transformar tus proyectos en realidad',
+      background_image: '',
+      show_contact_info: true,
+      show_form: true,
+      show_map: true
+    },
+    sections: {
+      intro: {
+        title: 'Hablemos de Tu Proyecto',
+        description: 'Nuestro equipo de expertos está listo para asesorarte'
+      },
+      contact_info: {
+        title: 'Información de Contacto',
+        items: [
+          {
+            title: 'Oficina Principal',
+            icon: 'MapPin',
+            content: 'Andrés Reyes 388, San Isidro'
           },
-          body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            setLastSaved(new Date());
-          } else {
-            setErrors([result.error || 'Error al guardar']);
+          {
+            title: 'Teléfonos',
+            icon: 'Phone',
+            content: '+51 1 719-5990\n+51 989 742 678 (WhatsApp)'
+          },
+          {
+            title: 'Email',
+            icon: 'Mail',
+            content: 'info@metrica-dip.com\ninfo@metricadip.com'
+          },
+          {
+            title: 'Horarios de Atención',
+            icon: 'Clock',
+            content: 'Lunes a Viernes: 8:00 AM - 6:00 PM\nSábados: 9:00 AM - 1:00 PM'
           }
-        } else {
-          setErrors(['Error de conexión al guardar']);
-        }
+        ]
+      },
+      map: {
+        show_placeholder: true,
+        title: 'Ubicación',
+        subtitle: 'Santiago de Surco, Lima'
+      },
+      process: {
+        title: 'Proceso de Contacto',
+        steps: [
+          {
+            number: '1',
+            title: 'Consulta Inicial',
+            description: 'Conversamos sobre tu proyecto'
+          },
+          {
+            number: '2',
+            title: 'Propuesta Técnica',
+            description: 'Desarrollamos una propuesta detallada'
+          },
+          {
+            number: '3',
+            title: 'Inicio del Proyecto',
+            description: 'Comenzamos a trabajar juntos'
+          }
+        ]
       }
-    } catch (error) {
-      console.error('Error saving contact data:', error);
-      setErrors(['Error inesperado al guardar']);
-    } finally {
-      setSaving(false);
-    }
-  };
+    },
+    settings: {
+      form_method: 'POST',
+      form_action: '/api/contact',
+      response_time: '24 horas',
+      urgent_response_time: '48 horas',
+      show_map_placeholder: true
+    },
+    seo: {
+      meta_title: 'Contacto - Métrica FM',
+      meta_description: 'Contáctanos para iniciar tu proyecto',
+      keywords: ['contacto', 'métrica', 'dip', 'proyectos']
+    },
+    ...initialData
+  });
 
-  const handlePreview = () => {
-    if (onPreview) {
-      onPreview(data);
-    } else {
-      // Abrir preview en nueva ventana
-      const previewWindow = window.open(`/api/admin/pages/${slug}/preview`, '_blank');
-      if (previewWindow) {
-        previewWindow.postMessage(data, '*');
-      }
-    }
-  };
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [activeTab, setActiveTab] = useState('general');
 
-  const handleReset = () => {
-    if (confirm('¿Estás seguro de resetear todos los cambios?')) {
-      setData(initialData || getDefaultContactData());
-      setErrors([]);
+  useEffect(() => {
+    if (initialData) {
+      setData(prev => ({ ...prev, ...initialData }));
     }
-  };
+  }, [initialData]);
 
-  const updateField = (path: string, value: any) => {
+  const handleInputChange = (field: string, value: any) => {
     setData(prev => {
+      const keys = field.split('.');
       const newData = { ...prev };
-      const keys = path.split('.');
       let current: any = newData;
-      
+
       for (let i = 0; i < keys.length - 1; i++) {
-        if (!current[keys[i]]) {
-          current[keys[i]] = {};
-        }
+        if (!current[keys[i]]) current[keys[i]] = {};
         current = current[keys[i]];
       }
-      
+
       current[keys[keys.length - 1]] = value;
       return newData;
     });
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin" />
-        <span className="ml-2">Cargando página de contacto...</span>
-      </div>
-    );
-  }
+  const handleContactInfoChange = (index: number, field: string, value: string) => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (!newData.sections.contact_info) {
+        newData.sections.contact_info = { title: '', items: [] };
+      }
+      if (!newData.sections.contact_info.items[index]) {
+        newData.sections.contact_info.items[index] = { title: '', icon: '', content: '' };
+      }
+      newData.sections.contact_info.items[index][field as keyof ContactInfo] = value;
+      return newData;
+    });
+  };
+
+  const addContactInfo = () => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (!newData.sections.contact_info) {
+        newData.sections.contact_info = { title: 'Información de Contacto', items: [] };
+      }
+      newData.sections.contact_info.items.push({
+        title: 'Nuevo contacto',
+        icon: 'Phone',
+        content: ''
+      });
+      return newData;
+    });
+  };
+
+  const removeContactInfo = (index: number) => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (newData.sections.contact_info?.items) {
+        newData.sections.contact_info.items.splice(index, 1);
+      }
+      return newData;
+    });
+  };
+
+  const handleProcessStepChange = (index: number, field: string, value: string) => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (!newData.sections.process) {
+        newData.sections.process = { title: '', steps: [] };
+      }
+      if (!newData.sections.process.steps[index]) {
+        newData.sections.process.steps[index] = { number: '', title: '', description: '' };
+      }
+      newData.sections.process.steps[index][field as keyof typeof newData.sections.process.steps[0]] = value;
+      return newData;
+    });
+  };
+
+  const addProcessStep = () => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (!newData.sections.process) {
+        newData.sections.process = { title: 'Proceso', steps: [] };
+      }
+      const nextNumber = (newData.sections.process.steps.length + 1).toString();
+      newData.sections.process.steps.push({
+        number: nextNumber,
+        title: 'Nuevo paso',
+        description: ''
+      });
+      return newData;
+    });
+  };
+
+  const removeProcessStep = (index: number) => {
+    setData(prev => {
+      const newData = { ...prev };
+      if (newData.sections.process?.steps) {
+        newData.sections.process.steps.splice(index, 1);
+      }
+      return newData;
+    });
+  };
+
+  const handleSave = async () => {
+    if (!onSave) return;
+
+    setIsSaving(true);
+    setSaveStatus('saving');
+
+    try {
+      await onSave(data);
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } catch (error) {
+      console.error('Error saving contact page:', error);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handlePreview = () => {
+    const previewUrl = `/contact?preview=true&data=${encodeURIComponent(JSON.stringify(data))}`;
+    window.open(previewUrl, '_blank');
+  };
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-[#003F6F] flex items-center gap-2">
-            <Mail className="w-8 h-8" />
-            Editor de Página de Contacto
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Gestiona toda la información de contacto y formularios
-          </p>
-        </div>
-        
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={handlePreview}>
-            <Eye className="w-4 h-4 mr-2" />
-            Vista Previa
-          </Button>
-          <Button variant="outline" onClick={handleReset} disabled={readonly}>
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Resetear
-          </Button>
-          <Button onClick={handleSave} disabled={saving || readonly}>
-            {saving ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="w-4 h-4 mr-2" />
-            )}
-            Guardar
-          </Button>
-        </div>
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Editor de Página de Contacto</h1>
+              <p className="text-gray-600 mt-2">
+                Personaliza toda la información y configuración de tu página de contacto
+              </p>
+            </div>
 
-      {/* Alertas */}
-      {errors.length > 0 && (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            <ul className="list-disc list-inside">
-              {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={handlePreview}>
+                <Eye className="w-4 h-4 mr-2" />
+                Vista Previa
+              </Button>
 
-      {lastSaved && (
-        <Alert>
-          <CheckCircle className="h-4 w-4" />
-          <AlertDescription>
-            Guardado exitosamente a las {lastSaved.toLocaleTimeString()}
-          </AlertDescription>
-        </Alert>
-      )}
+              <Button
+                onClick={handleSave}
+                disabled={isSaving}
+                className={saveStatus === 'success' ? 'bg-green-600' : ''}
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Guardando...
+                  </>
+                ) : saveStatus === 'success' ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Guardado
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Guardar Cambios
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
 
-      {/* Tabs principales */}
+          {saveStatus === 'error' && (
+            <Alert className="mt-4 bg-red-50 border-red-200">
+              <AlertCircle className="w-4 h-4 text-red-600" />
+              <AlertDescription className="text-red-700">
+                Error al guardar los cambios. Por favor, intenta nuevamente.
+              </AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="basic">Básico</TabsTrigger>
-          <TabsTrigger value="hero">Hero</TabsTrigger>
-          <TabsTrigger value="contact">Contacto</TabsTrigger>
-          <TabsTrigger value="form">Formulario</TabsTrigger>
-          <TabsTrigger value="faq">FAQ</TabsTrigger>
-          <TabsTrigger value="seo">SEO</TabsTrigger>
+        <TabsList className="grid grid-cols-5 w-full">
+          <TabsTrigger value="general">
+            <FileText className="w-4 h-4 mr-2" />
+            Hero
+          </TabsTrigger>
+          <TabsTrigger value="contact">
+            <Phone className="w-4 h-4 mr-2" />
+            Contacto
+          </TabsTrigger>
+          <TabsTrigger value="sections">
+            <Grid className="w-4 h-4 mr-2" />
+            Secciones
+          </TabsTrigger>
+          <TabsTrigger value="settings">
+            <Settings className="w-4 h-4 mr-2" />
+            Configuración
+          </TabsTrigger>
+          <TabsTrigger value="seo">
+            <Globe className="w-4 h-4 mr-2" />
+            SEO
+          </TabsTrigger>
         </TabsList>
 
-        {/* Tab Básico */}
-        <TabsContent value="basic" className="space-y-6">
+        {/* General Tab */}
+        <TabsContent value="general">
           <Card>
             <CardHeader>
-              <CardTitle>Información Básica de la Página</CardTitle>
+              <CardTitle>Configuración del Hero</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título de la Página</label>
-                <Input
-                  value={data.page.title}
-                  onChange={(e) => updateField('page.title', e.target.value)}
-                  placeholder="Contáctanos | Métrica FM"
-                  disabled={readonly}
-                />
-              </div>
+            <CardContent className="space-y-6">
+              {/* Hero Section */}
+              <div className="space-y-4 border-t pt-6">
+                <h3 className="text-lg font-semibold">Sección Hero</h3>
 
-              <div>
-                <label className="text-sm font-medium">Descripción</label>
-                <Textarea
-                  value={data.page.description}
-                  onChange={(e) => updateField('page.description', e.target.value)}
-                  placeholder="Ponte en contacto con nuestro equipo..."
-                  rows={3}
-                  disabled={readonly}
-                />
-              </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Título Principal
+                    </label>
+                    <Input
+                      value={data.hero?.title || ''}
+                      onChange={(e) => handleInputChange('hero.title', e.target.value)}
+                      placeholder="Contáctanos"
+                    />
+                  </div>
 
-              <div>
-                <label className="text-sm font-medium">URL</label>
-                <Input
-                  value={data.page.url}
-                  onChange={(e) => updateField('page.url', e.target.value)}
-                  placeholder="/contact"
-                  disabled={readonly}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Introducción</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título de Introducción</label>
-                <Input
-                  value={data.sections.intro.title}
-                  onChange={(e) => updateField('sections.intro.title', e.target.value)}
-                  placeholder="Hablemos de Tu Proyecto"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Descripción de Introducción</label>
-                <Textarea
-                  value={data.sections.intro.description}
-                  onChange={(e) => updateField('sections.intro.description', e.target.value)}
-                  placeholder="Nuestro equipo de expertos está listo..."
-                  rows={3}
-                  disabled={readonly}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Tab Hero */}
-        <TabsContent value="hero" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Sección Hero</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título Principal</label>
-                <Input
-                  value={data.hero.title}
-                  onChange={(e) => updateField('hero.title', e.target.value)}
-                  placeholder="Contáctanos"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Subtítulo</label>
-                <Textarea
-                  value={data.hero.subtitle}
-                  onChange={(e) => updateField('hero.subtitle', e.target.value)}
-                  placeholder="Estamos aquí para ayudarte..."
-                  rows={2}
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Imagen de Fondo</label>
-                <Input
-                  value={data.hero.background_image}
-                  onChange={(e) => updateField('hero.background_image', e.target.value)}
-                  placeholder="https://ejemplo.com/imagen.jpg"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Imagen de Fondo (Fallback)</label>
-                <Input
-                  value={data.hero.background_image_fallback || ''}
-                  onChange={(e) => updateField('hero.background_image_fallback', e.target.value)}
-                  placeholder="/img/contact/hero-fallback.jpg"
-                  disabled={readonly}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Tab Contacto */}
-        <TabsContent value="contact" className="space-y-6">
-          <ContactInfoManager
-            contactInfo={data.sections.contact_info.items}
-            onChange={(items) => updateField('sections.contact_info.items', items)}
-            contextType="contact"
-            maxItems={10}
-            allowReordering={true}
-            showVerification={true}
-            allowExternalLinks={true}
-          />
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Configuración del Mapa</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título del Mapa</label>
-                <Input
-                  value={data.sections.map.title}
-                  onChange={(e) => updateField('sections.map.title', e.target.value)}
-                  placeholder="Mapa Interactivo"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Subtítulo del Mapa</label>
-                <Input
-                  value={data.sections.map.subtitle}
-                  onChange={(e) => updateField('sections.map.subtitle', e.target.value)}
-                  placeholder="Santiago de Surco, Lima"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="show_placeholder"
-                  checked={data.sections.map.show_placeholder}
-                  onChange={(e) => updateField('sections.map.show_placeholder', e.target.checked)}
-                  disabled={readonly}
-                />
-                <label htmlFor="show_placeholder" className="text-sm">
-                  Mostrar placeholder del mapa
-                </label>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">URL de Embed del Mapa</label>
-                <Input
-                  value={data.sections.map.embed_url || ''}
-                  onChange={(e) => updateField('sections.map.embed_url', e.target.value)}
-                  placeholder="https://www.google.com/maps/embed/..."
-                  disabled={readonly}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Cotización Urgente</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título</label>
-                <Input
-                  value={data.sections.urgent_quote.title}
-                  onChange={(e) => updateField('sections.urgent_quote.title', e.target.value)}
-                  placeholder="¿Necesitas una Cotización Urgente?"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Descripción</label>
-                <Textarea
-                  value={data.sections.urgent_quote.description}
-                  onChange={(e) => updateField('sections.urgent_quote.description', e.target.value)}
-                  placeholder="Para proyectos con fechas límite ajustadas..."
-                  rows={3}
-                  disabled={readonly}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Texto del Botón</label>
-                  <Input
-                    value={data.sections.urgent_quote.button.text}
-                    onChange={(e) => updateField('sections.urgent_quote.button.text', e.target.value)}
-                    placeholder="Solicitar Cotización"
-                    disabled={readonly}
-                  />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Imagen de Fondo
+                    </label>
+                    <Input
+                      value={data.hero?.background_image || ''}
+                      onChange={(e) => handleInputChange('hero.background_image', e.target.value)}
+                      placeholder="URL de la imagen"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium">Enlace del Botón</label>
-                  <Input
-                    value={data.sections.urgent_quote.button.href}
-                    onChange={(e) => updateField('sections.urgent_quote.button.href', e.target.value)}
-                    placeholder="#contact-form"
-                    disabled={readonly}
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Subtítulo
+                  </label>
+                  <Textarea
+                    value={data.hero?.subtitle || ''}
+                    onChange={(e) => handleInputChange('hero.subtitle', e.target.value)}
+                    rows={2}
+                    placeholder="Estamos aquí para ayudarte..."
                   />
+                </div>
+
+                <div className="flex gap-6">
+                  <label className="flex items-center gap-2">
+                    <Switch
+                      checked={data.hero?.show_contact_info || false}
+                      onCheckedChange={(checked) => handleInputChange('hero.show_contact_info', checked)}
+                    />
+                    <span className="text-sm">Mostrar información de contacto</span>
+                  </label>
+
+                  <label className="flex items-center gap-2">
+                    <Switch
+                      checked={data.hero?.show_form || false}
+                      onCheckedChange={(checked) => handleInputChange('hero.show_form', checked)}
+                    />
+                    <span className="text-sm">Mostrar formulario</span>
+                  </label>
+
+                  <label className="flex items-center gap-2">
+                    <Switch
+                      checked={data.hero?.show_map || false}
+                      onCheckedChange={(checked) => handleInputChange('hero.show_map', checked)}
+                    />
+                    <span className="text-sm">Mostrar mapa</span>
+                  </label>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Tab Formulario */}
-        <TabsContent value="form" className="space-y-6">
+        {/* Contact Tab */}
+        <TabsContent value="contact">
+          <Card>
+            <CardHeader>
+              <CardTitle>Información de Contacto</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Título de la Sección
+                  </label>
+                  <Input
+                    value={data.sections?.contact_info?.title || ''}
+                    onChange={(e) => handleInputChange('sections.contact_info.title', e.target.value)}
+                    placeholder="Información de Contacto"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Items de Contacto</h3>
+                  <Button onClick={addContactInfo} size="sm">
+                    Agregar Contacto
+                  </Button>
+                </div>
+
+                {data.sections?.contact_info?.items?.map((item, index) => (
+                  <div key={index} className="border rounded-lg p-4 space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1 grid md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Título
+                          </label>
+                          <Input
+                            value={item.title}
+                            onChange={(e) => handleContactInfoChange(index, 'title', e.target.value)}
+                            placeholder="Ej: Oficina Principal"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Icono
+                          </label>
+                          <select
+                            value={item.icon}
+                            onChange={(e) => handleContactInfoChange(index, 'icon', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                          >
+                            <option value="MapPin">Ubicación</option>
+                            <option value="Phone">Teléfono</option>
+                            <option value="Mail">Email</option>
+                            <option value="Clock">Horario</option>
+                            <option value="Globe">Web</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Contenido
+                          </label>
+                          <Textarea
+                            value={item.content}
+                            onChange={(e) => handleContactInfoChange(index, 'content', e.target.value)}
+                            rows={2}
+                            placeholder="Información de contacto"
+                          />
+                        </div>
+                      </div>
+
+                      <Button
+                        onClick={() => removeContactInfo(index)}
+                        variant="ghost"
+                        size="sm"
+                        className="ml-2"
+                      >
+                        Eliminar
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Sections Tab */}
+        <TabsContent value="sections">
+          <div className="space-y-6">
+            {/* Intro Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Sección de Introducción</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Título
+                  </label>
+                  <Input
+                    value={data.sections?.intro?.title || ''}
+                    onChange={(e) => handleInputChange('sections.intro.title', e.target.value)}
+                    placeholder="Hablemos de Tu Proyecto"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Descripción
+                  </label>
+                  <Textarea
+                    value={data.sections?.intro?.description || ''}
+                    onChange={(e) => handleInputChange('sections.intro.description', e.target.value)}
+                    rows={3}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Process Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Proceso de Contacto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Título de la Sección
+                  </label>
+                  <Input
+                    value={data.sections?.process?.title || ''}
+                    onChange={(e) => handleInputChange('sections.process.title', e.target.value)}
+                    placeholder="Proceso de Contacto"
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold">Pasos del Proceso</h4>
+                    <Button onClick={addProcessStep} size="sm">
+                      Agregar Paso
+                    </Button>
+                  </div>
+
+                  {data.sections?.process?.steps?.map((step, index) => (
+                    <div key={index} className="border rounded-lg p-4 space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 grid md:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Número
+                            </label>
+                            <Input
+                              value={step.number}
+                              onChange={(e) => handleProcessStepChange(index, 'number', e.target.value)}
+                              placeholder="1"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Título
+                            </label>
+                            <Input
+                              value={step.title}
+                              onChange={(e) => handleProcessStepChange(index, 'title', e.target.value)}
+                              placeholder="Título del paso"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Descripción
+                            </label>
+                            <Textarea
+                              value={step.description}
+                              onChange={(e) => handleProcessStepChange(index, 'description', e.target.value)}
+                              rows={2}
+                              placeholder="Descripción del paso"
+                            />
+                          </div>
+                        </div>
+
+                        <Button
+                          onClick={() => removeProcessStep(index)}
+                          variant="ghost"
+                          size="sm"
+                          className="ml-2"
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Settings Tab */}
+        <TabsContent value="settings">
           <Card>
             <CardHeader>
               <CardTitle>Configuración del Formulario</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Título del Formulario</label>
-                <Input
-                  value={data.sections.contact_form.title}
-                  onChange={(e) => updateField('sections.contact_form.title', e.target.value)}
-                  placeholder="Formulario de Contacto"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Subtítulo</label>
-                <Input
-                  value={data.sections.contact_form.subtitle}
-                  onChange={(e) => updateField('sections.contact_form.subtitle', e.target.value)}
-                  placeholder="Completa el formulario y nos pondremos en contacto"
-                  disabled={readonly}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-sm font-medium">Mensaje de Éxito</label>
-                  <Input
-                    value={data.sections.contact_form.success_message}
-                    onChange={(e) => updateField('sections.contact_form.success_message', e.target.value)}
-                    placeholder="¡Mensaje enviado exitosamente!"
-                    disabled={readonly}
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Método del Formulario
+                  </label>
+                  <select
+                    value={data.settings?.form_method || 'POST'}
+                    onChange={(e) => handleInputChange('settings.form_method', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="POST">POST</option>
+                    <option value="GET">GET</option>
+                  </select>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium">Mensaje de Error</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    URL de Acción
+                  </label>
                   <Input
-                    value={data.sections.contact_form.error_message}
-                    onChange={(e) => updateField('sections.contact_form.error_message', e.target.value)}
-                    placeholder="Hubo un error al enviar el mensaje"
-                    disabled={readonly}
+                    value={data.settings?.form_action || ''}
+                    onChange={(e) => handleInputChange('settings.form_action', e.target.value)}
+                    placeholder="/api/contact"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="text-sm font-medium">Acción del Formulario</label>
-                <Input
-                  value={data.sections.contact_form.submit_action}
-                  onChange={(e) => updateField('sections.contact_form.submit_action', e.target.value)}
-                  placeholder="/api/contact/submit"
-                  disabled={readonly}
-                />
-              </div>
-            </CardContent>
-          </Card>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tiempo de Respuesta
+                  </label>
+                  <Input
+                    value={data.settings?.response_time || ''}
+                    onChange={(e) => handleInputChange('settings.response_time', e.target.value)}
+                    placeholder="24 horas"
+                  />
+                </div>
 
-          {/* Aquí iría un FormFieldsManager más adelante */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Campos del Formulario</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-500 text-sm">
-                Los campos del formulario se configurarán en la siguiente versión
-              </p>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tiempo de Respuesta Urgente
+                  </label>
+                  <Input
+                    value={data.settings?.urgent_response_time || ''}
+                    onChange={(e) => handleInputChange('settings.urgent_response_time', e.target.value)}
+                    placeholder="48 horas"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2">
+                  <Switch
+                    checked={data.settings?.show_map_placeholder || false}
+                    onCheckedChange={(checked) => handleInputChange('settings.show_map_placeholder', checked)}
+                  />
+                  <span className="text-sm">Mostrar placeholder del mapa</span>
+                </label>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Tab FAQ */}
-        <TabsContent value="faq" className="space-y-6">
+        {/* SEO Tab */}
+        <TabsContent value="seo">
           <Card>
             <CardHeader>
-              <CardTitle>Configuración de FAQ</CardTitle>
+              <CardTitle>Configuración SEO</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div>
-                <label className="text-sm font-medium">Título de FAQ</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Meta Título
+                </label>
                 <Input
-                  value={data.sections.faq.title}
-                  onChange={(e) => updateField('sections.faq.title', e.target.value)}
-                  placeholder="Preguntas Frecuentes"
-                  disabled={readonly}
+                  value={data.seo?.meta_title || ''}
+                  onChange={(e) => handleInputChange('seo.meta_title', e.target.value)}
+                  placeholder="Contacto - Métrica FM"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium">Subtítulo de FAQ</label>
-                <Input
-                  value={data.sections.faq.subtitle}
-                  onChange={(e) => updateField('sections.faq.subtitle', e.target.value)}
-                  placeholder="Respuestas a las consultas más comunes"
-                  disabled={readonly}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Meta Descripción
+                </label>
+                <Textarea
+                  value={data.seo?.meta_description || ''}
+                  onChange={(e) => handleInputChange('seo.meta_description', e.target.value)}
+                  rows={3}
+                  placeholder="Contáctanos para iniciar tu proyecto..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Palabras Clave (separadas por comas)
+                </label>
+                <Textarea
+                  value={data.seo?.keywords?.join(', ') || ''}
+                  onChange={(e) => handleInputChange('seo.keywords', e.target.value.split(',').map(k => k.trim()))}
+                  rows={2}
+                  placeholder="contacto, métrica dip, proyectos"
                 />
               </div>
             </CardContent>
           </Card>
-
-          <FAQManager
-            faqs={data.sections.faq.items}
-            onChange={(items) => updateField('sections.faq.items', items)}
-            contextType="contact"
-            maxFAQs={20}
-            allowCategories={true}
-            allowReordering={true}
-            allowTags={true}
-            showHelpfulCounts={true}
-            allowExport={true}
-            allowImport={true}
-          />
-        </TabsContent>
-
-        {/* Tab SEO */}
-        <TabsContent value="seo" className="space-y-6">
-          <SEOAdvancedEditor
-            data={data.seo}
-            onChange={(seoData) => updateField('seo', seoData)}
-            contextType="contact"
-            siteName="Métrica FM"
-            siteUrl="https://metrica-dip.com"
-            showAnalytics={true}
-            showSchema={true}
-            showPreview={true}
-          />
         </TabsContent>
       </Tabs>
     </div>
   );
-};
-
-// Función para obtener datos por defecto
-function getDefaultContactData(): ContactPageData {
-  return {
-    page: {
-      title: 'Contáctanos | Métrica FM',
-      description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.',
-      url: '/contact'
-    },
-    hero: {
-      title: 'Contáctanos',
-      subtitle: 'Estamos aquí para ayudarte a transformar tus proyectos en realidad',
-      background_image: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg'
-    },
-    sections: {
-      intro: {
-        title: 'Hablemos de Tu Proyecto',
-        description: 'Nuestro equipo de expertos está listo para asesorarte en cada etapa de tu proyecto de infraestructura. Desde la conceptualización hasta la entrega final, estamos comprometidos con tu éxito.'
-      },
-      contact_info: {
-        title: 'Información de Contacto',
-        items: []
-      },
-      contact_form: {
-        title: 'Formulario de Contacto',
-        subtitle: 'Completa el formulario y nos pondremos en contacto contigo',
-        fields: [],
-        submit_action: '/api/contact/submit',
-        success_message: '¡Mensaje enviado exitosamente!',
-        error_message: 'Hubo un error al enviar el mensaje'
-      },
-      map: {
-        title: 'Mapa Interactivo',
-        subtitle: 'Santiago de Surco, Lima',
-        show_placeholder: true
-      },
-      urgent_quote: {
-        title: '¿Necesitas una Cotización Urgente?',
-        description: 'Para proyectos con fechas límite ajustadas, contamos con un equipo especializado en respuesta rápida que puede brindarte una cotización preliminar en 48 horas.',
-        button: {
-          text: 'Solicitar Cotización',
-          href: '#contact-form',
-          style: 'primary'
-        }
-      },
-      faq: {
-        title: 'Preguntas Frecuentes',
-        subtitle: 'Respuestas a las consultas más comunes sobre nuestros servicios',
-        items: []
-      }
-    },
-    seo: {
-      title: 'Contáctanos | Métrica FM',
-      description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos. Estamos listos para transformar tus ideas en realidad.',
-      keywords: ['contacto', 'metrica dip', 'proyectos', 'construcción', 'perú'],
-      og_title: 'Contáctanos | Métrica FM',
-      og_description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos.',
-      og_type: 'website',
-      twitter_card: 'summary',
-      robots: 'index, follow'
-    }
-  };
-}
-
-// Función de validación
-function validateContactData(data: ContactPageData): string[] {
-  const errors: string[] = [];
-
-  if (!data.page.title?.trim()) {
-    errors.push('El título de la página es requerido');
-  }
-
-  if (!data.page.description?.trim()) {
-    errors.push('La descripción de la página es requerida');
-  }
-
-  if (!data.hero.title?.trim()) {
-    errors.push('El título del hero es requerido');
-  }
-
-  if (!data.hero.background_image?.trim()) {
-    errors.push('La imagen de fondo del hero es requerida');
-  }
-
-  if (data.sections.contact_info.items.length === 0) {
-    errors.push('Se requiere al menos un elemento de información de contacto');
-  }
-
-  return errors;
 }

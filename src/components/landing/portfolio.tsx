@@ -19,22 +19,34 @@ import { cn } from '@/lib/utils';
 import PortfolioProgress from '@/components/ui/portfolio-progress';
 import PortfolioTransition from '@/components/ui/portfolio-transition';
 import { HomePageData } from '@/types/home';
-import { EmptyContentNotice, PlaceholderNotice } from '@/components/ui/development-notice';
 
 
 interface PortfolioProps {
   data: HomePageData['portfolio'];
 }
 
-const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
-  const projects = data.featured_projects.map(project => ({
-    ...project,
-    imageUrl: project.image_url || project.image_url_fallback
-  }));
-  
-  // Check if we have projects or placeholder data
-  const hasProjects = data?.featured_projects && data.featured_projects.length > 0;
-  const isPlaceholder = data?.section?.title?.includes('Agrega') || data?.section?.subtitle?.includes('importantes') || false;
+export default function Portfolio({ data }: PortfolioProps) {
+  // Mapear proyectos y ordenarlos por featured_order y título
+  const projects = data.featured_projects
+    .map(project => ({
+      ...project,
+      imageUrl: project.image_url,
+      featured_order: (project as any).featured_order
+    }))
+    .sort((a, b) => {
+      // Ordenar por featured_order primero
+      const orderA = a.featured_order ?? 999;
+      const orderB = b.featured_order ?? 999;
+
+      if (orderA !== orderB) {
+        return orderA - orderB; // Menor número primero
+      }
+
+      // Si tienen el mismo orden, ordenar alfabéticamente por title
+      const nameA = (a as any).name || a.title || '';
+      const nameB = (b as any).name || b.title || '';
+      return nameA.localeCompare(nameB, 'es', { sensitivity: 'base' });
+    });
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -161,16 +173,16 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
             // Aplicar clases CSS para transición de color
             if (sectionRef.current) {
               if (progress >= 0.3) {
-                // Agregar clase azul y mantenerla
-                if (!sectionRef.current.classList.contains('overlay-blue-in')) {
-                  sectionRef.current.classList.add('overlay-blue-in');
-                  sectionRef.current.classList.remove('overlay-blue-out');
+                // Agregar clase cyan y mantenerla
+                if (!sectionRef.current.classList.contains('overlay-cyan-in')) {
+                  sectionRef.current.classList.add('overlay-cyan-in');
+                  sectionRef.current.classList.remove('overlay-cyan-out');
                 }
               } else if (progress < 0.3) {
-                // Solo quitar clase azul cuando se hace scroll hacia arriba
-                if (sectionRef.current.classList.contains('overlay-blue-in')) {
-                  sectionRef.current.classList.remove('overlay-blue-in');
-                  sectionRef.current.classList.add('overlay-blue-out');
+                // Solo quitar clase cyan cuando se hace scroll hacia arriba
+                if (sectionRef.current.classList.contains('overlay-cyan-in')) {
+                  sectionRef.current.classList.remove('overlay-cyan-in');
+                  sectionRef.current.classList.add('overlay-cyan-out');
                 }
               }
             }
@@ -473,14 +485,14 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
             const progress = self.progress;
             if (sectionRef.current) {
               if (progress >= 0.3) {
-                if (!sectionRef.current.classList.contains('overlay-blue-in')) {
-                  sectionRef.current.classList.add('overlay-blue-in');
-                  sectionRef.current.classList.remove('overlay-blue-out');
+                if (!sectionRef.current.classList.contains('overlay-cyan-in')) {
+                  sectionRef.current.classList.add('overlay-cyan-in');
+                  sectionRef.current.classList.remove('overlay-cyan-out');
                 }
               } else if (progress < 0.3) {
-                if (sectionRef.current.classList.contains('overlay-blue-in')) {
-                  sectionRef.current.classList.remove('overlay-blue-in');
-                  sectionRef.current.classList.add('overlay-blue-out');
+                if (sectionRef.current.classList.contains('overlay-cyan-in')) {
+                  sectionRef.current.classList.remove('overlay-cyan-in');
+                  sectionRef.current.classList.add('overlay-cyan-out');
                 }
               }
             }
@@ -561,14 +573,6 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
   return (
     <section ref={sectionRef} id="portfolio" className="relative w-full pt-16 pb-0 bg-background transition-colors duration-1000">
         <div ref={containerRef} className="" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-            {/* Development notices */}
-            {isPlaceholder && (
-              <PlaceholderNotice section="el portafolio" />
-            )}
-            {!hasProjects && !isPlaceholder && (
-              <EmptyContentNotice section="proyectos destacados" />
-            )}
-            
             <div className="text-center mb-12">
                 <h2 ref={titleRef} className="portfolio-title title-section text-4xl md:text-5xl">{data.section.title}</h2>
                 <p ref={subtitleRef} className="portfolio-subtitle mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-alliance-medium">
@@ -589,24 +593,16 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
                             <CarouselItem key={index}>
                                 <div className="project-card h-[60vh] w-full relative rounded-lg overflow-hidden flex items-center justify-center group" data-index={index}>
                                         <div className="absolute inset-0 overflow-hidden">
-                                            {project.imageUrl && project.imageUrl !== '/img/portfolio/proyecto1.jpg' ? (
+                                            {project.imageUrl && project.imageUrl.trim() !== '' ? (
                                               <Image
                                                   src={project.imageUrl}
-                                                  alt={project.name}
+                                                  alt={project.name || project.title || 'Proyecto'}
                                                   fill
                                                   sizes="100vw"
                                                   className="project-image object-cover z-0 transition-all ease-out group-hover:saturate-150 filter grayscale-0 saturate-100 brightness-50 scale-125 animate-ken-burns"
                                               />
                                             ) : (
-                                              <div className="w-full h-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                                                <div className="text-center text-white">
-                                                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
-                                                    <span className="text-3xl">🏗️</span>
-                                                  </div>
-                                                  <h3 className="text-xl font-bold mb-2">{project.name}</h3>
-                                                  <p className="text-sm opacity-90">Imagen del proyecto</p>
-                                                </div>
-                                              </div>
+                                              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
                                             )}
                                         </div>
                                         <div className="project-overlay absolute inset-0 bg-black/50 transition-opacity duration-300"></div>
@@ -623,7 +619,7 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
                                             >
                                                 {project.type}
                                             </Badge>
-                                            <h3 
+                                            <h3
                                                 className={cn(
                                                     "title-section text-4xl md:text-6xl mb-4 transition-all duration-700",
                                                     current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -632,7 +628,7 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
                                                     transitionDelay: current === index ? '500ms' : '0ms'
                                                 }}
                                             >
-                                                {project.name}
+                                                {project.name || project.title || 'Proyecto'}
                                             </h3>
                                             <p 
                                                 className={cn(
@@ -645,23 +641,25 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
                                             >
                                                 {project.description}
                                             </p>
-                                            <NavigationLink 
-                                                href={data.section.cta.url}
-                                                loadingMessage="Cargando portafolio completo..."
-                                            >
-                                                <Button 
-                                                    variant="outline" 
-                                                    className={cn(
-                                                        "bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-700",
-                                                        current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                                                    )}
-                                                    style={{
-                                                        transitionDelay: current === index ? '900ms' : '0ms'
-                                                    }}
+                                            {project.link_url && (
+                                                <NavigationLink
+                                                    href={project.link_url}
+                                                    loadingMessage="Cargando portafolio completo..."
                                                 >
-                                                    {data.section.cta.text}
-                                                </Button>
-                                            </NavigationLink>
+                                                    <Button
+                                                        variant="outline"
+                                                        className={cn(
+                                                            "bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-700",
+                                                            current === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                                        )}
+                                                        style={{
+                                                            transitionDelay: current === index ? '900ms' : '0ms'
+                                                        }}
+                                                    >
+                                                        {data.section.cta.text}
+                                                    </Button>
+                                                </NavigationLink>
+                                            )}
                                         </div>
                                     </div>
                             </CarouselItem>
@@ -686,6 +684,4 @@ const Portfolio = React.memo(function Portfolio({ data }: PortfolioProps) {
         </div>
     </section>
   );
-});
-
-export default Portfolio;
+}

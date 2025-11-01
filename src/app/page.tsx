@@ -1,37 +1,74 @@
 import Header from '@/components/landing/header';
 import HeroTransform from '@/components/landing/hero-transform';
+import PillarsCarousel from '@/components/landing/pillars-carousel';
+import Portfolio from '@/components/landing/portfolio';
+import Newsletter from '@/components/landing/newsletter';
 import Footer from '@/components/landing/footer';
 import Stats from '@/components/landing/stats';
 import Services from '@/components/landing/services';
-import dynamic from 'next/dynamic';
-
-// Lazy load heavy below-the-fold components with loading placeholders
-const Portfolio = dynamic(() => import('@/components/landing/portfolio'), {
-  loading: () => <div className="min-h-[600px] bg-gradient-to-br from-primary/5 to-accent/5 animate-pulse rounded-lg" />
-});
-
-const PillarsCarousel = dynamic(() => import('@/components/landing/pillars-carousel'), {
-  loading: () => <div className="min-h-[500px] bg-gradient-to-r from-primary/5 to-accent/5 animate-pulse rounded-lg" />
-});
-
-const PoliciesCarousel = dynamic(() => import('@/components/landing/policies-carousel'), {
-  loading: () => <div className="min-h-[400px] bg-gradient-to-br from-accent/5 to-primary/5 animate-pulse rounded-lg" />
-});
-
-const Clients = dynamic(() => import('@/components/landing/clients'), {
-  loading: () => <div className="min-h-[300px] bg-gradient-to-r from-gray-100 to-gray-200 animate-pulse rounded-lg" />
-});
-
-const Newsletter = dynamic(() => import('@/components/landing/newsletter'), {
-  loading: () => <div className="min-h-[200px] bg-gradient-to-br from-primary/5 to-accent/5 animate-pulse rounded-lg" />
-});
+import PoliciesCarousel from '@/components/landing/policies-carousel';
+import Clients from '@/components/landing/clients';
 import { HomePageData } from '@/types/home';
+import { Metadata } from 'next';
 
-import { readPublicJSONAsync } from '@/lib/json-reader';
+import { FirestoreCore } from '@/lib/firestore/firestore-core';
+import { HOME_PAGE_FALLBACK } from '@/lib/firestore/fallbacks';
 
 async function getHomeData(): Promise<HomePageData> {
-  return readPublicJSONAsync<HomePageData>('/json/pages/home.json');
+  try {
+    const result = await FirestoreCore.getDocumentById<HomePageData>('pages', 'home');
+
+    if (!result.success || !result.data) {
+      console.warn('⚠️ [FALLBACK] Home Page: Sin datos en Firestore, usando fallback descriptivo');
+      return HOME_PAGE_FALLBACK;
+    }
+
+    console.log('🔥 [FIRESTORE] Home data loaded successfully:', result.data);
+    console.log('🔥 [SERVICES] Services data specifically:', result.data.services);
+    return result.data;
+  } catch (error) {
+    console.error('❌ [FIRESTORE] Failed to load home data:', error);
+    console.warn('⚠️ [FALLBACK] Home Page: Error detectado, usando fallback descriptivo');
+    return HOME_PAGE_FALLBACK;
+  }
 }
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const data = await getHomeData();
+
+    return {
+      title: data.page.title,
+      description: data.page.description,
+      openGraph: {
+        title: data.page.title,
+        description: data.page.description,
+        type: 'website',
+        locale: 'es_PE',
+        url: 'https://metricadip.com',
+        siteName: 'Métrica FM'
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: data.page.title,
+        description: data.page.description
+      },
+      robots: {
+        index: true,
+        follow: true
+      }
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Métrica FM - Dirección Integral de Proyectos',
+      description: 'Especialistas en dirección integral de proyectos. Maximizamos el valor de tu inversión con soluciones innovadoras y sostenibles.'
+    };
+  }
+}
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home() {
   const data = await getHomeData();
@@ -46,7 +83,7 @@ export default async function Home() {
         <Portfolio data={data.portfolio} />
         <PillarsCarousel data={data.pillars} />
         <PoliciesCarousel data={data.policies} />
-        <Clients />
+        <Clients data={data.clients} />
         <Newsletter data={data.newsletter} />
       </main>
       <Footer />

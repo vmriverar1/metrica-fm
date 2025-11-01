@@ -14,10 +14,6 @@ import {
   Trash2,
   Eye,
   Star,
-  MapPin,
-  Calendar,
-  DollarSign,
-  User,
   AlertTriangle
 } from 'lucide-react';
 import DataTable, { Column, TableAction, FilterOption } from '@/components/admin/DataTable';
@@ -31,6 +27,7 @@ interface Project {
   category: string;
   status: 'active' | 'inactive' | 'draft';
   featured: boolean;
+  featured_order?: number;
   featured_image: string;
   gallery: string[];
   client: string;
@@ -142,13 +139,13 @@ export default function ProjectsPage() {
   };
 
   const handleCreateProject = () => {
-    setEditingProject(null);
-    setShowForm(true);
+    // Usar el nuevo editor estilo WordPress
+    router.push('/admin/json-crud/portfolio/projects/new');
   };
 
   const handleEditProject = (project: Project) => {
-    setEditingProject(project);
-    setShowForm(true);
+    // Usar el nuevo editor estilo WordPress
+    router.push(`/admin/json-crud/portfolio/projects/new?id=${project.id}`);
   };
 
   const handleDeleteProject = async (project: Project) => {
@@ -188,11 +185,11 @@ export default function ProjectsPage() {
     
     return {
       ...project,
-      // Aplanar category_info si existe
-      category: project.category_info?.name || project.category,
+      // Usar category_id para el formulario (que es lo que esperan las opciones del select)
+      category: project.category_id || project.category,
       // Gallery procesada con URLs extraídas
       gallery: processedGallery,
-      // Asegurar que tags sea un string si es array  
+      // Asegurar que tags sea un string si es array
       tags: Array.isArray(project.tags) ? project.tags.join(', ') : project.tags || '',
       // Eliminar objetos complejos que no necesita el formulario
       category_info: undefined
@@ -248,80 +245,18 @@ export default function ProjectsPage() {
         <div>
           <div className="flex items-center space-x-2">
             <span className="font-medium text-gray-900">{value}</span>
-            {row.featured && <Star className="w-4 h-4 text-yellow-500" />}
+            {row.featured && (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-yellow-500" />
+                {row.featured_order !== undefined && row.featured_order < 999 && (
+                  <span className="text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full font-medium">
+                    #{row.featured_order}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           <div className="text-sm text-gray-500">/{row.slug}</div>
-        </div>
-      )
-    },
-    {
-      key: 'category_info',
-      label: 'Categoría',
-      render: (value: any) => value ? (
-        <span
-          className="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-          style={{ backgroundColor: `${value.color}20`, color: value.color }}
-        >
-          {value.name}
-        </span>
-      ) : null
-    },
-    {
-      key: 'client',
-      label: 'Cliente',
-      render: (value: string) => (
-        <div className="flex items-center">
-          <User className="w-4 h-4 text-gray-400 mr-2" />
-          <span className="text-sm">{value || 'No especificado'}</span>
-        </div>
-      )
-    },
-    {
-      key: 'location',
-      label: 'Ubicación',
-      render: (value: any) => {
-        // Handle both string and object formats
-        let locationText = 'No especificada';
-        
-        if (typeof value === 'string') {
-          locationText = value;
-        } else if (value && typeof value === 'object') {
-          // Handle location object with city, region, etc.
-          const parts = [];
-          if (value.city) parts.push(value.city);
-          if (value.region) parts.push(value.region);
-          locationText = parts.length > 0 ? parts.join(', ') : 'No especificada';
-        }
-        
-        return (
-          <div className="flex items-center">
-            <MapPin className="w-4 h-4 text-gray-400 mr-2" />
-            <span className="text-sm">{locationText}</span>
-          </div>
-        );
-      }
-    },
-    {
-      key: 'status',
-      label: 'Estado',
-      render: (value: string) => (
-        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-          value === 'active' ? 'bg-green-100 text-green-800' :
-          value === 'inactive' ? 'bg-red-100 text-red-800' :
-          'bg-yellow-100 text-yellow-800'
-        }`}>
-          {value === 'active' ? 'Activo' : value === 'inactive' ? 'Inactivo' : 'Borrador'}
-        </span>
-      )
-    },
-    {
-      key: 'created_at',
-      label: 'Creado',
-      sortable: true,
-      render: (value: string) => (
-        <div className="flex items-center">
-          <Calendar className="w-4 h-4 text-gray-400 mr-2" />
-          <span className="text-sm">{new Date(value).toLocaleDateString()}</span>
         </div>
       )
     }
@@ -419,8 +354,9 @@ export default function ProjectsPage() {
       required: true,
       options: [
         { value: 'draft', label: 'Borrador' },
-        { value: 'active', label: 'Activo' },
-        { value: 'inactive', label: 'Inactivo' }
+        { value: 'in_progress', label: 'En Progreso' },
+        { value: 'completed', label: 'Completado' },
+        { value: 'cancelled', label: 'Cancelado' }
       ],
       defaultValue: 'draft',
       group: 'basic'
@@ -431,6 +367,17 @@ export default function ProjectsPage() {
       type: 'checkbox',
       description: 'Los proyectos destacados aparecen en posiciones prominentes',
       group: 'basic'
+    },
+    {
+      key: 'featured_order',
+      label: 'Orden de Proyecto Destacado',
+      type: 'number',
+      placeholder: 'Ej: 1, 2, 3...',
+      description: 'Posición del proyecto en la sección de destacados. Menor número = se muestra primero. Si dos proyectos tienen el mismo orden, se ordenan alfabéticamente.',
+      group: 'basic',
+      condition: (values: any) => values.featured === true,
+      min: 0,
+      defaultValue: 999
     },
     {
       key: 'featured_image',

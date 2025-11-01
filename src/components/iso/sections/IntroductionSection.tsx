@@ -118,9 +118,9 @@ function ScopeList({ items, title }: { items: string[], title: string }) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="flex items-center gap-3 p-4 bg-[#007bc4]/5 rounded-lg border border-[#007bc4]/20"
+            className="flex items-center gap-3 p-4 bg-[#00A8E8]/5 rounded-lg border border-[#00A8E8]/20"
           >
-            <div className="w-8 h-8 rounded-full bg-[#007bc4] flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#00A8E8] flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold text-sm">{index + 1}</span>
             </div>
             <span className="text-gray-800 font-medium">{item}</span>
@@ -154,7 +154,7 @@ function ImportanceCards({ reasons, title }: { reasons: ImportanceReason[], titl
             >
               <Card className="text-center h-full hover:shadow-xl transition-all duration-300 group">
                 <CardHeader className="pb-4">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#007bc4] to-[#FF6B35] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#00A8E8] to-[#FF6B35] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <IconComponent className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-xl font-bold text-gray-900">
@@ -167,7 +167,7 @@ function ImportanceCards({ reasons, title }: { reasons: ImportanceReason[], titl
                   </CardDescription>
                   
                   <div className="pt-4 border-t border-gray-100">
-                    <Badge className="bg-[#007bc4]/10 text-[#007bc4] border-[#007bc4]/20 font-semibold">
+                    <Badge className="bg-[#00A8E8]/10 text-[#00A8E8] border-[#00A8E8]/20 font-semibold">
                       {reason.stat}
                     </Badge>
                   </div>
@@ -214,19 +214,19 @@ export function IntroductionSection({ data }: IntroductionSectionProps) {
             <TabsList className="grid w-full grid-cols-3 mb-8 bg-white shadow-sm">
               <TabsTrigger 
                 value="benefits" 
-                className="data-[state=active]:bg-[#007bc4] data-[state=active]:text-white font-medium"
+                className="data-[state=active]:bg-[#00A8E8] data-[state=active]:text-white font-medium"
               >
                 Beneficios
               </TabsTrigger>
               <TabsTrigger 
                 value="scope"
-                className="data-[state=active]:bg-[#007bc4] data-[state=active]:text-white font-medium"
+                className="data-[state=active]:bg-[#00A8E8] data-[state=active]:text-white font-medium"
               >
                 Alcance
               </TabsTrigger>
               <TabsTrigger 
                 value="importance"
-                className="data-[state=active]:bg-[#007bc4] data-[state=active]:text-white font-medium"
+                className="data-[state=active]:bg-[#00A8E8] data-[state=active]:text-white font-medium"
               >
                 Importancia
               </TabsTrigger>

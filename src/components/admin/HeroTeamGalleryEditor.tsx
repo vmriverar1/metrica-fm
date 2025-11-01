@@ -35,17 +35,41 @@ const defaultImages = [
   ],
 ];
 
-export default function HeroTeamGalleryEditor({ 
-  value = defaultImages, 
-  onChange, 
-  disabled = false 
+export default function HeroTeamGalleryEditor({
+  value = defaultImages,
+  onChange,
+  disabled = false
 }: HeroTeamGalleryEditorProps) {
   const [editingCell, setEditingCell] = useState<{ col: number; row: number } | null>(null);
   const [tempUrl, setTempUrl] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Asegurar que value es un array válido de arrays
+  const safeValue = React.useMemo(() => {
+    if (!Array.isArray(value)) return defaultImages;
+
+    // Verificar que cada columna sea un array
+    const validatedValue = value.map((column, colIndex) => {
+      if (!Array.isArray(column)) {
+        return defaultImages[colIndex] || ['', '', ''];
+      }
+      // Asegurar que cada columna tiene 3 elementos
+      while (column.length < 3) {
+        column.push('');
+      }
+      return column.slice(0, 3); // Máximo 3 elementos por columna
+    });
+
+    // Asegurar que tenemos 3 columnas
+    while (validatedValue.length < 3) {
+      validatedValue.push(['', '', '']);
+    }
+
+    return validatedValue.slice(0, 3); // Máximo 3 columnas
+  }, [value]);
+
   const updateImage = (colIndex: number, rowIndex: number, newUrl: string) => {
-    const newValue = [...value];
+    const newValue = [...safeValue];
     newValue[colIndex] = [...newValue[colIndex]];
     newValue[colIndex][rowIndex] = newUrl;
     onChange(newValue);
@@ -53,7 +77,7 @@ export default function HeroTeamGalleryEditor({
 
   const handleEditStart = (col: number, row: number) => {
     setEditingCell({ col, row });
-    setTempUrl(value[col][row]);
+    setTempUrl(safeValue[col][row]);
   };
 
   const handleEditSave = () => {
@@ -163,7 +187,7 @@ export default function HeroTeamGalleryEditor({
       <CardContent>
         {/* Grid 3x3 */}
         <div className="grid grid-cols-3 gap-4 mb-6">
-          {value.map((column, colIndex) => (
+          {safeValue.map((column, colIndex) => (
             <div key={colIndex} className="space-y-3">
               <div className="text-center">
                 <Badge variant="outline">Columna {colIndex + 1}</Badge>

@@ -20,7 +20,7 @@ const valoresData = [
     title: 'Innovación',
     description: 'Aplicamos las últimas tecnologías y metodologías',
     color: '#e84e0f',
-    bgColor: 'bg-orange-50'
+    bgColor: 'bg-cyan-50'
   },
   {
     id: 'integridad',
@@ -36,7 +36,7 @@ const valoresData = [
     title: 'Colaboración',
     description: 'Fomentamos el trabajo en equipo y la sinergia',
     color: '#e84e0f',
-    bgColor: 'bg-orange-50'
+    bgColor: 'bg-cyan-50'
   },
   {
     id: 'sostenibilidad',
@@ -52,7 +52,7 @@ const valoresData = [
     title: 'Agilidad',
     description: 'Adaptamos rápidamente a los cambios y desafíos del mercado',
     color: '#e84e0f',
-    bgColor: 'bg-orange-50'
+    bgColor: 'bg-cyan-50'
   }
 ];
 

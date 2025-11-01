@@ -10,7 +10,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { useToast } from '@/hooks/use-toast-simple';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
   Settings,
@@ -97,7 +97,7 @@ const SETTINGS_CATEGORIES = [
     name: 'Características',
     description: 'Habilitar/deshabilitar funcionalidades',
     icon: Zap,
-    color: 'orange'
+    color: 'cyan'
   },
   {
     id: 'ui_preferences',

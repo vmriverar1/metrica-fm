@@ -71,7 +71,7 @@ const typeColors = {
   'career-job': 'bg-green-100 text-green-800',
   'career-department': 'bg-green-100 text-green-800',
   'newsletter-article': 'bg-purple-100 text-purple-800',
-  'newsletter-author': 'bg-orange-100 text-orange-800',
+  'newsletter-author': 'bg-cyan-100 text-cyan-800',
   'newsletter-category': 'bg-purple-100 text-purple-800'
 };
 

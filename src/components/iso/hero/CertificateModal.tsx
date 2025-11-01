@@ -62,8 +62,8 @@ function DetailRow({
 
   return (
     <div className="flex items-start gap-4 p-4 rounded-lg bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
-      <div className="w-10 h-10 rounded-full bg-[#007bc4]/10 flex items-center justify-center flex-shrink-0">
-        <Icon className="w-5 h-5 text-[#007bc4]" />
+      <div className="w-10 h-10 rounded-full bg-[#00A8E8]/10 flex items-center justify-center flex-shrink-0">
+        <Icon className="w-5 h-5 text-[#00A8E8]" />
       </div>
       
       <div className="flex-1 min-w-0">
@@ -76,7 +76,7 @@ function DetailRow({
               href={value}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-[#007bc4] hover:underline"
+              className="inline-flex items-center gap-1 text-[#00A8E8] hover:underline"
             >
               {linkText}
               <ExternalLink className="w-4 h-4" />
@@ -94,9 +94,9 @@ function DetailRow({
 
 export function CertificateModal({ isOpen, onClose, details }: CertificateModalProps) {
   const handleDownload = () => {
-    // Simular descarga del certificado
+    // Descargar certificado desde la API
     const link = document.createElement('a')
-    link.href = details.pdf_url
+    link.href = '/api/download/iso-certificate'
     link.download = 'certificado-iso-9001-metrica-dip.pdf'
     link.click()
   }
@@ -108,7 +108,7 @@ export function CertificateModal({ isOpen, onClose, details }: CertificateModalP
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#007bc4] to-[#FF6B35] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00A8E8] to-[#FF6B35] flex items-center justify-center">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -141,7 +141,7 @@ export function CertificateModal({ isOpen, onClose, details }: CertificateModalP
 
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#007bc4]" />
+            <FileText className="w-5 h-5 text-[#00A8E8]" />
             Información del Certificado
           </h3>
           
@@ -189,10 +189,7 @@ export function CertificateModal({ isOpen, onClose, details }: CertificateModalP
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <ul className="space-y-2 text-sm text-blue-800">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-blue-600" />
-                Dirección integral de proyectos de construcción
-              </li>
+
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-blue-600" />
                 Gestión de proyectos de infraestructura
@@ -215,7 +212,7 @@ export function CertificateModal({ isOpen, onClose, details }: CertificateModalP
         <div className="flex flex-col sm:flex-row gap-3 pt-4">
           <Button 
             onClick={handleDownload}
-            className="flex-1 bg-[#007bc4] hover:bg-[#D63E0A] text-white"
+            className="flex-1 bg-[#00A8E8] hover:bg-[#D63E0A] text-white"
           >
             <Download className="w-4 h-4 mr-2" />
             Descargar Certificado PDF
@@ -224,7 +221,7 @@ export function CertificateModal({ isOpen, onClose, details }: CertificateModalP
           <Button 
             variant="outline"
             onClick={() => window.open(details.verification_url, '_blank')}
-            className="flex-1 border-[#007bc4] text-[#007bc4] hover:bg-[#007bc4] hover:text-white"
+            className="flex-1 border-[#00A8E8] text-[#00A8E8] hover:bg-[#00A8E8] hover:text-white"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Verificar Online

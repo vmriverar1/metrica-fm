@@ -1,74 +1,52 @@
 /**
- * FASE 6: Página de Login Empresarial
- * URL: http://localhost:9003/admin/login
- * 
- * Página de autenticación con diseño empresarial moderno.
- * Incluye soporte para 2FA y recordar sesión.
+ * Página de Login con Google Sign-In
+ * URL: /admin/login
+ *
+ * Autenticación con Google para usuarios autorizados.
+ * Solo usuarios previamente agregados en Firebase Authentication pueden acceder.
  */
 
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, Shield, LogIn, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Shield, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { signInWithGoogle } from '@/lib/firebase-auth';
+import { useAuth } from '@/components/auth';
 
 export default function LoginPage() {
-  const { actions, error, isLoading, requiresTwoFactor, isAuthenticated } = useAuth();
   const router = useRouter();
-  
-  const [formData, setFormData] = useState({
-    email: 'admin@metrica.pe', // Pre-filled for development
-    password: 'admin123', // Pre-filled for development
-    rememberMe: false,
-    twoFactorCode: ''
-  });
-  
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, loading } = useAuth();
 
   // Redirigir si ya está autenticado
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      // Verificar si hay una ruta guardada para redireccionar
+    if (user && !loading) {
       const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/admin/dashboard';
       sessionStorage.removeItem('redirectAfterLogin');
       router.push(redirectTo);
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [user, loading, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleGoogleSignIn = async () => {
+    const result = await signInWithGoogle();
 
-    try {
-      const success = await actions.login({
-        email: formData.email,
-        password: formData.password,
-        rememberMe: formData.rememberMe,
-        twoFactorCode: formData.twoFactorCode || undefined
-      });
-
-      if (success) {
-        // Verificar si hay una ruta guardada para redireccionar
-        const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/admin/dashboard';
-        sessionStorage.removeItem('redirectAfterLogin');
-        router.push(redirectTo);
-      }
-    } catch (err) {
-      console.error('Login error:', err);
-    } finally {
-      setIsSubmitting(false);
+    if (result.success) {
+      // Redirección manejada por el useEffect
+      console.log('Login exitoso');
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+  // Mostrar loading mientras verifica autenticación
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-accent/5 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Verificando autenticación...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-accent/5 flex items-center justify-center p-4">
@@ -87,147 +65,32 @@ export default function LoginPage() {
 
         {/* Card de Login */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Correo Electrónico
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-                placeholder="tu@metrica.pe"
-              />
+          <div className="space-y-6">
+            {/* Mensaje de bienvenida */}
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                Bienvenido
+              </h2>
+              <p className="text-sm text-gray-600">
+                Inicia sesión con tu cuenta de Google autorizada
+              </p>
             </div>
 
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Contraseña
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
+            {/* Google Sign-In Button */}
+            <GoogleSignInButtonCustom onSignIn={handleGoogleSignIn} />
 
-            {/* 2FA Code Field - Solo mostrar si se requiere */}
-            {requiresTwoFactor && (
-              <div>
-                <label htmlFor="twoFactorCode" className="block text-sm font-medium text-gray-700 mb-2">
-                  Código de Verificación (2FA)
-                </label>
-                <input
-                  type="text"
-                  id="twoFactorCode"
-                  name="twoFactorCode"
-                  value={formData.twoFactorCode}
-                  onChange={handleInputChange}
-                  maxLength={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors text-center tracking-wider"
-                  placeholder="123456"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Ingresa el código de 6 dígitos de tu aplicación de autenticación
+            {/* Info sobre autorización */}
+            <div className="flex items-start space-x-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-700">
+                <p className="font-medium mb-1">Acceso Restringido</p>
+                <p className="text-blue-600">
+                  Solo usuarios autorizados previamente pueden acceder al panel de administración.
+                  Si necesitas acceso, contacta al administrador del sistema.
                 </p>
               </div>
-            )}
-
-            {/* Remember Me */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleInputChange}
-                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
-              />
-              <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-700">
-                Recordar mi sesión por 30 días
-              </label>
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="flex items-center space-x-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                <span className="text-sm text-red-700">{error}</span>
-              </div>
-            )}
-
-            {/* Success Message for 2FA */}
-            {requiresTwoFactor && (
-              <div className="flex items-center space-x-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                <span className="text-sm text-blue-700">
-                  Credenciales correctas. Ingresa tu código de verificación.
-                </span>
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting || isLoading}
-              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting || isLoading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-              ) : (
-                <>
-                  <LogIn className="w-5 h-5" />
-                  <span>{requiresTwoFactor ? 'Verificar Código' : 'Iniciar Sesión'}</span>
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Development Info */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-medium text-gray-800 mb-2">🧪 Cuentas de Desarrollo:</h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div className="flex justify-between">
-                    <span>Admin:</span>
-                    <code className="bg-white px-2 py-1 rounded">admin@metrica.pe / admin123</code>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Gestor:</span>
-                    <code className="bg-white px-2 py-1 rounded">gestor@metrica.pe / admin123</code>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Editor:</span>
-                    <code className="bg-white px-2 py-1 rounded">editor@metrica.pe / admin123</code>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Código 2FA para cuentas que lo requieren: <code>123456</code>
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Footer */}
@@ -235,6 +98,73 @@ export default function LoginPage() {
           <p>&copy; 2024 Métrica FM. Sistema seguro de gestión empresarial.</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Botón de Google Sign-In personalizado con el diseño de Métrica
+ */
+function GoogleSignInButtonCustom({ onSignIn }: { onSignIn: () => void }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleClick = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      await onSignIn();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <button
+        onClick={handleClick}
+        disabled={loading}
+        className="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border-2 border-gray-300 transition-all duration-200 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+      >
+        {loading ? (
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-700"></div>
+        ) : (
+          <>
+            {/* Google Logo SVG */}
+            <svg className="w-5 h-5" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            <span>Continuar con Google</span>
+          </>
+        )}
+      </button>
+
+      {error && (
+        <div className="flex items-center space-x-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <svg className="w-5 h-5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="text-sm text-red-700">{error}</span>
+        </div>
+      )}
     </div>
   );
 }

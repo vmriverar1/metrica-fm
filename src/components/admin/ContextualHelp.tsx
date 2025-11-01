@@ -125,7 +125,7 @@ const helpDatabase: Record<string, HelpTip[]> = {
 
 const typeConfig = {
   tip: { icon: Lightbulb, color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
-  warning: { icon: AlertTriangle, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
+  warning: { icon: AlertTriangle, color: 'text-cyan-600', bg: 'bg-cyan-50', border: 'border-cyan-200' },
   success: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
   info: { icon: HelpCircle, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
 };

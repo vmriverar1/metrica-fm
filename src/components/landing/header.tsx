@@ -15,7 +15,7 @@ import { useMegaMenuData } from '@/hooks/useMegaMenuData';
 
 const Logo = ({ isScrolled, menuOpen }: { isScrolled: boolean; menuOpen: boolean }) => (
   <NavigationLink href="/" className="flex items-center" loadingMessage="Volviendo al inicio...">
-    <Image 
+    <Image
       src={isScrolled || menuOpen ? "/img/logo-color.webp" : "/img/logo-blanco.png"}
       alt="Métrica Logo"
     width={200}

@@ -9,7 +9,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/components/auth';
 // import ProductionConfig from '@/lib/production-config';
 import { MonitoringService } from '@/lib/monitoring-service';
 import PerformanceService from '@/lib/performance-service';
@@ -65,7 +65,7 @@ interface DeploymentInfo {
 }
 
 export default function ProductionMonitor() {
-  const { user, actions } = useAuth();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'health' | 'performance' | 'deployments' | 'alerts'>('overview');
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());

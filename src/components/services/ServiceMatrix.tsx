@@ -70,7 +70,7 @@ const services: Service[] = [
       'Reportes en tiempo real'
     ],
     caseStudyLink: '/portfolio?service=supervision',
-    color: 'from-orange-500 to-orange-600'
+    color: 'from-cyan-500 to-cyan-600'
   },
   {
     id: 'desarrollo-inmobiliario',

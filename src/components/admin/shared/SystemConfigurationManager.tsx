@@ -837,7 +837,7 @@ export default function SystemConfigurationManager() {
         </div>
         <div className="flex items-center space-x-2">
           {hasUnsavedChanges && (
-            <Badge variant="outline" className="text-orange-600">
+            <Badge variant="outline" className="text-cyan-600">
               <AlertTriangle className="h-3 w-3 mr-1" />
               Cambios sin guardar
             </Badge>

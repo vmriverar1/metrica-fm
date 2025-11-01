@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import ImageField from './ImageField';
+import ImageSelector from './ImageSelector';
+import GalleryField from './GalleryField';
 import { 
   Calendar,
   Plus,
@@ -39,28 +40,30 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useTimelineData, createNewTimelineEvent, validateTimelineEvent, sortEventsByYear, duplicateTimelineEvent } from '@/hooks/useTimelineData';
 
 interface TimelineEvent {
   id: string;
-  year: number;
+  year: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
-  image?: string;
-  image_fallback?: string;
+  image: string;
+  contentImage?: string;
   achievements: string[];
   gallery: string[];
   impact: string;
-  metrics: {
-    team_size: number;
-    projects: number;
-    investment: string;
+  metrics?: {
+    team_size?: number;
+    projects?: number;
+    investment?: string;
   };
 }
 
 interface TimelineEditorProps {
-  events: TimelineEvent[];
-  onChange: (events: TimelineEvent[]) => void;
+  events?: TimelineEvent[];
+  onChange?: (events: TimelineEvent[]) => void;
+  useRealData?: boolean; // New prop to enable real data connection
 }
 
 // Componente sortable para los eventos
@@ -160,7 +163,23 @@ function SortableEventItem({ event, index, onEdit, onDelete, onDuplicate }: Sort
   );
 }
 
-export default function TimelineEditor({ events, onChange }: TimelineEditorProps) {
+export default function TimelineEditor({ events: propEvents, onChange: propOnChange, useRealData = false }: TimelineEditorProps) {
+  // Use real data hook when enabled
+  const {
+    events: realEvents,
+    loading: realLoading,
+    error: realError,
+    saveEvents: realSaveEvents,
+    validationErrors: realValidationErrors
+  } = useTimelineData();
+
+  // Determine which data source to use
+  const events = useRealData ? realEvents : (propEvents || []);
+  const onChange = useRealData ? realSaveEvents : propOnChange;
+  const loading = useRealData ? realLoading : false;
+  const error = useRealData ? realError : null;
+  const validationErrors = useRealData ? realValidationErrors : [];
+
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingEvent, setEditingEvent] = useState<TimelineEvent | null>(null);
 
@@ -173,26 +192,11 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
   );
 
   // Ordenar eventos por año
-  const sortedEvents = [...events].sort((a, b) => a.year - b.year);
+  const sortedEvents = sortEventsByYear(events);
 
   // Crear nuevo evento
   const handleNewEvent = () => {
-    const newEvent: TimelineEvent = {
-      id: `event-${Date.now()}`,
-      year: new Date().getFullYear(),
-      title: '',
-      subtitle: '',
-      description: '',
-      image: '',
-      achievements: [],
-      gallery: [],
-      impact: '',
-      metrics: {
-        team_size: 0,
-        projects: 0,
-        investment: ''
-      }
-    };
+    const newEvent = createNewTimelineEvent(new Date().getFullYear().toString());
     setEditingEvent(newEvent);
     setEditingIndex(-1); // -1 indica nuevo evento
   };
@@ -207,9 +211,10 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
   // Validar evento antes de guardar
   const validateEvent = (event: TimelineEvent): string[] => {
     const errors: string[] = [];
-    
+
     // Año obligatorio
-    if (!event.year) {
+    const yearStr = String(event.year || '').trim();
+    if (!yearStr) {
       errors.push('El año es obligatorio');
     }
     
@@ -227,10 +232,13 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
       errors.push(`Ya existe un evento en el año ${event.year}`);
     }
     
-    // Año válido
-    const currentYear = new Date().getFullYear();
-    if (event.year < 1990 || event.year > currentYear + 10) {
-      errors.push(`El año debe estar entre 1990 y ${currentYear + 10}`);
+    // Validación opcional de año si es numérico
+    const yearNumber = parseInt(event.year);
+    if (!isNaN(yearNumber)) {
+      const currentYear = new Date().getFullYear();
+      if (yearNumber < 1990 || yearNumber > currentYear + 10) {
+        errors.push(`Si es un año numérico, debe estar entre 1990 y ${currentYear + 10}`);
+      }
     }
 
     return errors;
@@ -283,7 +291,7 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
     const duplicatedEvent: TimelineEvent = {
       ...eventToDuplicate,
       id: `event-${Date.now()}`,
-      year: eventToDuplicate.year + 1,
+      year: `${eventToDuplicate.year} (Copia)`,
       title: `${eventToDuplicate.title} (Copia)`
     };
     
@@ -351,19 +359,50 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
       // Reordenar los eventos basado en la nueva posición
       const reorderedEvents = arrayMove(sortedEvents, oldIndex, newIndex);
       
-      // Actualizar los años para mantener orden cronológico
-      const yearsToAssign = reorderedEvents.map(e => e.year).sort((a, b) => a - b);
-      const eventsWithNewYears = reorderedEvents.map((event, index) => ({
-        ...event,
-        year: yearsToAssign[index]
-      }));
-      
-      onChange(eventsWithNewYears);
+      // Mantener el orden de reordenamiento sin modificar años
+      onChange(reorderedEvents);
     }
   };
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="w-full p-8 text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+        <p className="text-muted-foreground">Cargando datos del timeline...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Status indicators */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800 font-medium">Error</p>
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+      
+      {validationErrors.length > 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <p className="text-yellow-800 font-medium">Advertencias de validación</p>
+          <ul className="text-yellow-700 text-sm mt-2">
+            {validationErrors.map((error, index) => (
+              <li key={index}>• {error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {useRealData && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-blue-800 font-medium">
+            ✅ Conectado a datos reales - Los cambios se guardarán en historia.json
+          </p>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -403,11 +442,10 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
                 <Label htmlFor="year">Año *</Label>
                 <Input
                   id="year"
-                  type="number"
+                  type="text"
                   value={editingEvent.year}
-                  onChange={(e) => updateEventField('year', parseInt(e.target.value) || new Date().getFullYear())}
-                  min={1990}
-                  max={2050}
+                  onChange={(e) => updateEventField('year', e.target.value)}
+                  placeholder="Ej: 2015 o 2015 - 2020"
                 />
               </div>
               <div>
@@ -445,12 +483,30 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
             {/* Imagen principal */}
             <div>
               <Label>Imagen Principal</Label>
-              <ImageField
+              <ImageSelector
                 value={editingEvent.image || ''}
                 onChange={(value) => updateEventField('image', value)}
                 label="Imagen del evento"
                 description="Imagen que representa este hito histórico"
+                variant="card"
+                placeholder="Seleccionar imagen del evento..."
               />
+            </div>
+
+            {/* Imagen de Contenido (Opcional) */}
+            <div>
+              <Label>Imagen de Contenido (Opcional)</Label>
+              <ImageSelector
+                value={editingEvent.contentImage || ''}
+                onChange={(value) => updateEventField('contentImage', value)}
+                label="Imagen adicional"
+                description="Imagen que se mostrará debajo del texto descriptivo (opcional)"
+                variant="card"
+                placeholder="Seleccionar imagen adicional..."
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Esta imagen aparecerá debajo de la descripción en la línea de tiempo
+              </p>
             </div>
 
             {/* Logros/Achievements */}
@@ -502,6 +558,63 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
                 placeholder="Reflexión sobre el impacto de este evento..."
                 rows={2}
               />
+            </div>
+
+            {/* Galería de imágenes */}
+            <div>
+              <GalleryField
+                value={editingEvent.gallery}
+                onChange={(newGallery) => updateEventField('gallery', newGallery)}
+                label="Galería de Imágenes del Evento"
+                placeholder="Agregar imágenes al evento histórico..."
+                description="Galería de imágenes para ilustrar este evento histórico"
+                galleryType="simple"
+              />
+            </div>
+
+            {/* Métricas */}
+            <div>
+              <Label>Métricas del Evento</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                <div>
+                  <Label htmlFor="team_size">Tamaño del Equipo</Label>
+                  <Input
+                    id="team_size"
+                    type="number"
+                    value={editingEvent.metrics?.team_size || ''}
+                    onChange={(e) => updateEventField('metrics', {
+                      ...editingEvent.metrics,
+                      team_size: parseInt(e.target.value) || 0
+                    })}
+                    placeholder="Ej: 25"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="projects">Proyectos</Label>
+                  <Input
+                    id="projects"
+                    type="number"
+                    value={editingEvent.metrics?.projects || ''}
+                    onChange={(e) => updateEventField('metrics', {
+                      ...editingEvent.metrics,
+                      projects: parseInt(e.target.value) || 0
+                    })}
+                    placeholder="Ej: 5"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="investment">Inversión</Label>
+                  <Input
+                    id="investment"
+                    value={editingEvent.metrics?.investment || ''}
+                    onChange={(e) => updateEventField('metrics', {
+                      ...editingEvent.metrics,
+                      investment: e.target.value
+                    })}
+                    placeholder="Ej: $1.2M"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Botones de acción */}
@@ -578,7 +691,7 @@ export default function TimelineEditor({ events, onChange }: TimelineEditorProps
                 <div>
                   <span className="text-blue-800 font-medium block">Timeline listo para visualizar</span>
                   <span className="text-blue-600 text-sm">
-                    {events.length} eventos • Años: {Math.min(...events.map(e => e.year))} - {Math.max(...events.map(e => e.year))}
+                    {events.length} eventos • Años: {events.map(e => e.year).join(', ')}
                   </span>
                 </div>
               </div>

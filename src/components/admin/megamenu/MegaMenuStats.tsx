@@ -208,7 +208,7 @@ const MegaMenuStats: React.FC<MegaMenuStatsProps> = ({ items, analytics }) => {
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-2xl font-bold text-orange-600">{isNaN(stats.totalClicks) ? 0 : stats.totalClicks}</p>
+              <p className="text-2xl font-bold text-cyan-600">{isNaN(stats.totalClicks) ? 0 : stats.totalClicks}</p>
               <p className="text-sm text-muted-foreground">Total Clicks</p>
               {stats.mostClickedItem && (
                 <div className="flex items-center gap-1 mt-2">
@@ -219,7 +219,7 @@ const MegaMenuStats: React.FC<MegaMenuStatsProps> = ({ items, analytics }) => {
                 </div>
               )}
             </div>
-            <Activity className="h-8 w-8 text-orange-600" />
+            <Activity className="h-8 w-8 text-cyan-600" />
           </div>
         </CardContent>
       </Card>

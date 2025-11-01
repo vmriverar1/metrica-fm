@@ -1,104 +1,104 @@
-'use client';
-
 import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
-import HeroEquipo from '@/components/cultura/HeroEquipo';
+// import HeroEquipo from '@/components/cultura/HeroEquipo'; // Comentado temporalmente
+import UniversalHero from '@/components/ui/universal-hero';
 import ValuesGallery from '@/components/cultura/ValuesGallery';
-import TeamAndMoments from '@/components/cultura/TeamAndMoments';
-import CultureShowcase from '@/components/cultura/Culture3DSpace';
-import TechInnovationHub from '@/components/cultura/TechInnovationHub';
-import { useCulturaData } from '@/hooks/useCulturaData';
-import OptimizedLoading from '@/components/loading/OptimizedLoading';
+import { CulturaData } from '@/types/cultura';
+import { PagesService } from '@/lib/firestore/pages-service';
 
-function CulturaPageContent() {
-  const { data: culturaData, loading, error } = useCulturaData();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <OptimizedLoading type="careers" />
-        <Footer />
-      </div>
-    );
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const data = await getCulturaData();
+    return {
+      title: data.page?.title || 'Cultura Empresarial | Métrica FM',
+      description: data.page?.description || 'Conoce nuestra cultura empresarial, valores, equipo y forma de trabajo en Métrica FM.',
+      keywords: Array.isArray(data.page?.keywords) ? data.page.keywords.join(', ') : 'cultura, valores, equipo, Métrica FM',
+      openGraph: data.page?.openGraph || {
+        title: data.page?.title || 'Cultura Empresarial | Métrica FM',
+        description: data.page?.description || 'Conoce nuestra cultura empresarial, valores, equipo y forma de trabajo en Métrica FM.',
+        type: 'website',
+        locale: 'es_PE',
+        siteName: 'Métrica FM'
+      }
+    };
+  } catch (error) {
+    console.error('Error generating metadata for cultura page:', error);
+    return {
+      title: 'Cultura Empresarial | Métrica FM',
+      description: 'Conoce nuestra cultura empresarial, valores, equipo y forma de trabajo en Métrica FM.',
+      keywords: 'cultura, valores, equipo, Métrica FM',
+      openGraph: {
+        title: 'Cultura Empresarial | Métrica FM',
+        description: 'Conoce nuestra cultura empresarial, valores, equipo y forma de trabajo en Métrica FM.',
+        type: 'website',
+        locale: 'es_PE',
+        siteName: 'Métrica FM'
+      }
+    };
   }
+}
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Error al cargar la página</h2>
-            <p className="text-gray-600">{error}</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+async function getCulturaData(): Promise<CulturaData> {
+  try {
+    // First try to load from Firestore
+    const firestoreData = await PagesService.getCulturaPage();
+    if (firestoreData) {
+      return firestoreData as CulturaData;
+    }
 
-  if (!culturaData) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">No se encontraron datos</h2>
-            <p className="text-gray-600">La información de cultura no está disponible</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
+    // Fallback to API if Firestore fails
+    const response = await fetch('/api/admin/pages/cultura', { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch cultura data: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to load cultura data');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error('Error loading cultura data:', error);
+    throw error;
   }
+}
+
+function CulturaPageContent({ culturaData }: { culturaData: CulturaData }) {
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="relative">
-        {/* Hero fusionado con galería del equipo - DATOS DINÁMICOS */}
-        <HeroEquipo
+        {/* Hero normal - DATOS DINÁMICOS */}
+        {/* <HeroEquipo
           title={culturaData.hero.title}
           subtitle={culturaData.hero.subtitle}
-          backgroundImage={culturaData.hero.background_image}
-          teamImages={culturaData.hero.team_gallery.columns}
+          teamImages={culturaData.hero.team_gallery?.columns}
+        /> */}
+
+        <UniversalHero
+          title={culturaData.page?.title || culturaData.hero?.title || 'Cultura Empresarial'}
+          subtitle={culturaData.page?.subtitle || culturaData.hero?.subtitle || 'Nuestros valores nos definen'}
+          backgroundImage={culturaData.page?.hero_image || ''}
         />
-        
+
         {/* FASE 1: Galería Inmersiva de Valores - DATOS DINÁMICOS */}
-        <ValuesGallery 
+        <ValuesGallery
           title={culturaData.values.section.title}
           subtitle={culturaData.values.section.subtitle}
           values={culturaData.values.values_list}
         />
-        
-        {/* FASE 2: Cultura en Números - DATOS DINÁMICOS */}
-        <CultureShowcase 
-          title={culturaData.culture_stats.section.title}
-          subtitle={culturaData.culture_stats.section.subtitle}
-          categories={culturaData.culture_stats.categories}
-        />
-        
-        {/* FASE 3: Equipo y Momentos Unificados - DATOS DINÁMICOS */}
-        <TeamAndMoments 
-          teamSection={culturaData.team.section}
-          members={culturaData.team.members}
-          moments={culturaData.team.moments}
-        />
-        
-        {/* FASE 6: Centro de Innovación Tecnológica - DATOS DINÁMICOS */}
-        <TechInnovationHub 
-          section={culturaData.technologies.section}
-          technologies={culturaData.technologies.tech_list}
-        />
-        
+
+
       </main>
       <Footer />
     </div>
   );
 }
 
-export default function CulturaPage() {
-  return <CulturaPageContent />;
+export default async function CulturaPage() {
+  const culturaData = await getCulturaData();
+  return <CulturaPageContent culturaData={culturaData} />;
 }

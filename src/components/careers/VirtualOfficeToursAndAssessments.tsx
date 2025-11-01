@@ -836,13 +836,13 @@ export default function VirtualOfficeToursAndAssessments({
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-orange-600">Áreas de mejora</CardTitle>
+              <CardTitle className="text-cyan-600">Áreas de mejora</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
                 {assessmentResult.improvements.map((improvement, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <Target className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+                    <Target className="w-4 h-4 text-cyan-500 mt-0.5 flex-shrink-0" />
                     {improvement}
                   </li>
                 ))}

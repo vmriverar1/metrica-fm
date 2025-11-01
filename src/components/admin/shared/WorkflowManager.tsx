@@ -476,7 +476,7 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({
                 <p className="text-2xl font-bold">{workflowStats.totalExecutions.toLocaleString()}</p>
                 <p className="text-sm text-gray-600">Ejecuciones</p>
               </div>
-              <Target className="w-8 h-8 text-orange-500" />
+              <Target className="w-8 h-8 text-cyan-500" />
             </div>
           </CardContent>
         </Card>

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "incremental": false,
+    "tsBuildInfoFile": null,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": false
+  },
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "coverage",
+    "**/*.stories.tsx"
+  ]
+}

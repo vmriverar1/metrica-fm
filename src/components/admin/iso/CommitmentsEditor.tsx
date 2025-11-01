@@ -75,10 +75,10 @@ const colorSchemes = [
   },
   {
     name: 'Naranja',
-    color: 'text-orange-600',
-    bg_color: 'bg-orange-50',
-    border_color: 'border-orange-200',
-    preview: 'bg-orange-100'
+    color: 'text-cyan-600',
+    bg_color: 'bg-cyan-50',
+    border_color: 'border-cyan-200',
+    preview: 'bg-cyan-100'
   },
   {
     name: 'Púrpura',
@@ -427,7 +427,7 @@ export default function CommitmentsEditor({
                 <span className="text-gray-700">Desarrollo del Talento</span>
               </div>
               <div className="flex items-start space-x-2">
-                <Shield className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                <Shield className="w-4 h-4 text-cyan-600 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-700">Cumplimiento Normativo</span>
               </div>
               <div className="flex items-start space-x-2">

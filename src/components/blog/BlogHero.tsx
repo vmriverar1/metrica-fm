@@ -8,36 +8,10 @@ export default function BlogHero() {
   const { pageData, contentData, pageLoading, contentLoading, error } = useBlog();
   const stats = getBlogStats();
 
-  // Show loading state if data isn't ready
-  if (pageLoading || contentLoading) {
-    const heroProps = {
-      title: 'Cargando...',
-      subtitle: 'Obteniendo la información más reciente del blog',
-      backgroundImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630',
-      metadata: {
-        stats: ['Cargando estadísticas...']
-      }
-    };
-    return <UniversalHero {...heroProps} />;
-  }
-
-  // Show error state
-  if (error) {
-    const heroProps = {
-      title: 'Error',
-      subtitle: `Error al cargar el contenido: ${error}`,
-      backgroundImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630',
-      metadata: {
-        stats: ['Error en el sistema']
-      }
-    };
-    return <UniversalHero {...heroProps} />;
-  }
-
-  // Use dynamic data from JSON or fallback to defaults
+  // Use dynamic data from JSON - always use Firebase data
   const heroTitle = pageData?.hero.title || 'Blog Métrica FM';
   const heroSubtitle = pageData?.hero.subtitle || 'Insights, tendencias y casos de estudio del sector construcción e infraestructura en Perú';
-  const heroBackground = pageData?.hero.background.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=630';
+  const heroBackground = pageData?.hero.background.image || '';
 
   // Use actual stats from contentData if available, otherwise use defaults
   const actualStats = contentData ? {
@@ -65,12 +39,7 @@ export default function BlogHero() {
     subtitle: heroSubtitle,
     backgroundImage: heroBackground,
     metadata: {
-      stats: [
-        `${actualStats.totalPosts} ${labels.total_posts}`, 
-        `${actualStats.totalCategories} ${labels.total_categories}`, 
-        `${actualStats.totalAuthors} ${labels.total_authors}`, 
-        `${actualStats.averageReadingTime}${labels.average_reading_time}`
-      ]
+      centerText: "Un artículo nuevo cada 15 días"
     }
   };
 

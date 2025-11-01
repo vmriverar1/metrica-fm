@@ -1,8 +1,14 @@
 {
   "page": {
-    "title": "Bolsa de Trabajo | Tu Empresa - Únete a Nuestro Equipo",
+    "title": "Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo",
     "description": "Descubre oportunidades laborales en Métrica DIP. Construye tu carrera profesional en proyectos de construcción e infraestructura de gran impacto en Perú.",
-    "keywords": ["trabajos construcción", "empleos arquitectura", "carreras ingeniería civil", "oportunidades laborales Perú", "trabajo project manager"],
+    "keywords": [
+      "trabajos construcción",
+      "empleos arquitectura",
+      "carreras ingeniería civil",
+      "oportunidades laborales Perú",
+      "trabajo project manager"
+    ],
     "url": "/careers",
     "openGraph": {
       "title": "Bolsa de Trabajo | Métrica DIP - Únete a Nuestro Equipo",
@@ -14,7 +20,7 @@
   },
   "hero": {
     "background": {
-      "image": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=800",
+      "image": "/images/proyectos/EDUCACIÓN/Innova/Copia de _ARI3865-Pano.webp",
       "image_fallback": "/img/careers/hero-background.jpg",
       "overlay_opacity": 0.7,
       "overlay_color": "#000000"
@@ -101,34 +107,6 @@
     ],
     "benefits": [
       {
-        "id": "seguro-salud",
-        "title": "Seguro de Salud Integral",
-        "description": "Cobertura médica completa para ti y tu familia, incluyendo atención dental y oftalmológica.",
-        "icon": "Heart",
-        "category": "salud",
-        "highlight": true,
-        "details": [
-          "Cobertura médica 100% para titular",
-          "Cobertura 80% para dependientes",
-          "Incluye dental y oftalmológica",
-          "Red de clínicas de primer nivel"
-        ]
-      },
-      {
-        "id": "capacitacion",
-        "title": "Capacitación Continua",
-        "description": "Programas de desarrollo profesional, certificaciones y cursos especializados pagados por la empresa.",
-        "icon": "GraduationCap",
-        "category": "desarrollo",
-        "highlight": true,
-        "details": [
-          "Cursos y certificaciones pagadas",
-          "Conferencias internacionales",
-          "Programas de liderazgo",
-          "Mentoring personalizado"
-        ]
-      },
-      {
         "id": "work-life",
         "title": "Balance Vida-Trabajo",
         "description": "Horarios flexibles, trabajo remoto y políticas que priorizan tu bienestar personal y familiar.",
@@ -157,47 +135,8 @@
         ]
       },
       {
-        "id": "vacaciones",
-        "title": "Vacaciones Extendidas",
-        "description": "Días de vacaciones adicionales y flexibilidad para tomarlas cuando las necesites.",
-        "icon": "Plane",
-        "category": "bienestar",
-        "details": [
-          "30 días de vacaciones anuales",
-          "Flexibilidad en fechas",
-          "Bonus vacacional",
-          "No caducan si no se usan"
-        ]
-      },
-      {
-        "id": "gym",
-        "title": "Membresía Gimnasio",
-        "description": "Membresía pagada en gimnasios afiliados para mantener tu salud física.",
-        "icon": "Dumbbell",
-        "category": "salud",
-        "details": [
-          "Membresía 100% pagada",
-          "Red de gimnasios afiliados",
-          "Clases grupales incluidas",
-          "Evaluaciones físicas"
-        ]
-      },
-      {
-        "id": "transporte",
-        "title": "Subsidio de Transporte",
-        "description": "Apoyo económico para movilidad o estacionamiento en nuestras oficinas.",
-        "icon": "Car",
-        "category": "compensacion",
-        "details": [
-          "Subsidio mensual de transporte",
-          "Estacionamiento gratuito",
-          "Transporte corporativo para obras",
-          "Reembolso de combustible"
-        ]
-      },
-      {
         "id": "eventos",
-        "title": "Eventos y Celebraciones",
+        "title": "Eventos y Celebracionessss",
         "description": "Actividades de integración, celebraciones y eventos corporativos regulares.",
         "icon": "Gift",
         "category": "bienestar",

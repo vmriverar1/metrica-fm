@@ -9,11 +9,10 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useSectionAnimation } from '@/hooks/use-gsap-animations';
 import ParallaxWrapper from '@/components/parallax-wrapper';
-// import CanvasParticles from '@/components/canvas-particles'; // Removed for server performance
+import CanvasParticles from '@/components/canvas-particles';
 import TiltCard from '@/components/tilt-card';
 import NavigationLink from '@/components/ui/NavigationLink';
 import { HomePageData } from '@/types/home';
-import { EmptyContentNotice, PlaceholderNotice } from '@/components/ui/development-notice';
 
 
 interface ServiceCardProps {
@@ -22,7 +21,6 @@ interface ServiceCardProps {
     title: string;
     description: string;
     image_url?: string;
-    image_url_fallback?: string;
     icon_url?: string;
     imageUrl?: string;
     iconUrl?: string;
@@ -35,9 +33,10 @@ interface ServiceCardProps {
     };
   };
   index: number;
+  hideCTA?: boolean;
 }
 
-const ServiceCard = ({ service, index }: ServiceCardProps) => {
+const ServiceCard = ({ service, index, hideCTA = false }: ServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -45,7 +44,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
   useGSAP(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || !imageRef.current || !contentRef.current || !arrowRef.current) return;
     
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -99,19 +98,27 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
         ease: 'power2.out'
       }, 0);
     
-    cardRef.current.addEventListener('mouseenter', () => hoverTl.play());
-    cardRef.current.addEventListener('mouseleave', () => hoverTl.reverse());
+    const handleMouseEnter = () => hoverTl.play();
+    const handleMouseLeave = () => hoverTl.reverse();
     
-  }, { scope: cardRef });
+    cardRef.current.addEventListener('mouseenter', handleMouseEnter);
+    cardRef.current.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      if (cardRef.current) {
+        cardRef.current.removeEventListener('mouseenter', handleMouseEnter);
+        cardRef.current.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
+    
+  }, { scope: cardRef, dependencies: [service, index] });
   
-  return (
-    <div ref={cardRef} className="h-full">
-      <NavigationLink href={service.cta?.url || "/services"} loadingMessage="Navegando a Servicios...">
-        <TiltCard 
-          className="h-full"
-          maxTilt={10}
-          scale={1.02}
-        >
+  const cardContent = (
+    <TiltCard
+      className="h-full"
+      maxTilt={10}
+      scale={1.02}
+    >
           <Card 
             className={cn(
               'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full liquid-distortion cursor-pointer',
@@ -120,13 +127,13 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-          {/* Canvas particles overlay - Disabled for server performance */}
-          {/* <CanvasParticles 
+          {/* Canvas particles overlay */}
+          <CanvasParticles
             isActive={isHovered}
             particleCount={30}
-            color={service.isMain ? '#ffffff' : '#007bc4'}
+            color={service.isMain ? '#ffffff' : '#00A8E8'}
             className="z-10"
-          /> */}
+          />
           <CardContent ref={contentRef} className="p-6 flex flex-col flex-grow relative z-20">
             <div className="flex items-start gap-3 mb-2">
               {(service.iconUrl || service.icon_url) && (
@@ -151,16 +158,18 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             )}>
               {service.description}
             </p>
-            <div className="flex justify-end mt-auto">
-              <div ref={arrowRef} className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground">
-                <ArrowRight className="h-5 w-5" />
+            {!hideCTA && (
+              <div className="flex justify-end mt-auto">
+                <div ref={arrowRef} className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground">
+                  <ArrowRight className="h-5 w-5" />
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
           <div ref={imageRef} className="relative h-48 w-full overflow-hidden">
-            {(service.imageUrl || service.image_url || service.image_url_fallback) ? (
+            {(service.imageUrl || service.image_url) ? (
               <Image
-                src={service.imageUrl || service.image_url || service.image_url_fallback || ''}
+                src={service.imageUrl || service.image_url || '/images/proyectos/placeholder.jpg'}
                 alt={service.title}
                 layout="fill"
                 objectFit="cover"
@@ -176,7 +185,17 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           </div>
         </Card>
       </TiltCard>
-      </NavigationLink>
+  );
+
+  return (
+    <div ref={cardRef} className="h-full">
+      {!hideCTA && service.cta?.url ? (
+        <NavigationLink href={service.cta.url} loadingMessage="Navegando a Servicios...">
+          {cardContent}
+        </NavigationLink>
+      ) : (
+        cardContent
+      )}
     </div>
   );
 };
@@ -187,7 +206,6 @@ interface MainServiceCardProps {
     title: string;
     description: string;
     image_url?: string;
-    image_url_fallback?: string;
     icon_url?: string;
     is_main?: boolean;
     width?: '1/3' | '2/3' | '3/3';
@@ -199,16 +217,17 @@ interface MainServiceCardProps {
     iconUrl?: string;
     className?: string;
   };
+  hideCTA?: boolean;
 }
 
-const MainServiceCard = ({ service }: MainServiceCardProps) => {
+const MainServiceCard = ({ service, hideCTA = false }: MainServiceCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
   
   useGSAP(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || !imageRef.current || !contentRef.current || !arrowRef.current) return;
     
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -255,15 +274,23 @@ const MainServiceCard = ({ service }: MainServiceCardProps) => {
         ease: 'power2.out'
       }, 0);
     
-    cardRef.current.addEventListener('mouseenter', () => hoverTl.play());
-    cardRef.current.addEventListener('mouseleave', () => hoverTl.reverse());
+    const handleMouseEnter = () => hoverTl.play();
+    const handleMouseLeave = () => hoverTl.reverse();
     
-  }, { scope: cardRef });
-  
-  return (
-    <div ref={cardRef} className="h-full">
-      <NavigationLink href={service.cta?.url || "/services"} loadingMessage="Navegando a Servicios...">
-        <Card className={cn(
+    cardRef.current.addEventListener('mouseenter', handleMouseEnter);
+    cardRef.current.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      if (cardRef.current) {
+        cardRef.current.removeEventListener('mouseenter', handleMouseEnter);
+        cardRef.current.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
+    
+  }, { scope: cardRef, dependencies: [service] });
+
+  const cardContent = (
+    <Card className={cn(
           'group relative flex flex-col justify-between overflow-hidden rounded-lg shadow-sm h-full cursor-pointer',
           service.className
         )}>
@@ -274,16 +301,18 @@ const MainServiceCard = ({ service }: MainServiceCardProps) => {
           <p className="mb-6 flex-grow text-white/80 font-alliance-medium">
             {service.description}
           </p>
-          <div className="flex justify-start mt-auto">
-            <div ref={arrowRef} className="flex items-center justify-center h-12 w-12 rounded-full bg-accent text-accent-foreground">
-              <ArrowRight className="h-6 w-6" />
+          {!hideCTA && (
+            <div className="flex justify-start mt-auto">
+              <div ref={arrowRef} className="flex items-center justify-center h-12 w-12 rounded-full bg-accent text-accent-foreground">
+                <ArrowRight className="h-6 w-6" />
+              </div>
             </div>
-          </div>
+          )}
         </CardContent>
         <div ref={imageRef} className="relative h-64 w-full overflow-hidden">
-          {(service.imageUrl || service.image_url || service.image_url_fallback) ? (
+          {(service.imageUrl || service.image_url) ? (
             <Image
-              src={service.imageUrl || service.image_url || service.image_url_fallback || ''}
+              src={service.imageUrl || service.image_url || ''}
               alt={service.title}
               layout="fill"
               objectFit="cover"
@@ -298,25 +327,35 @@ const MainServiceCard = ({ service }: MainServiceCardProps) => {
           )}
         </div>
       </Card>
-      </NavigationLink>
+  );
+
+  return (
+    <div ref={cardRef} className="h-full">
+      {!hideCTA && service.cta?.url ? (
+        <NavigationLink href={service.cta.url} loadingMessage="Navegando a Servicios...">
+          {cardContent}
+        </NavigationLink>
+      ) : (
+        cardContent
+      )}
     </div>
   );
 };
 
 interface ServicesProps {
   data: HomePageData['services'];
+  hideCTA?: boolean;
 }
 
-const Services = React.memo(function Services({ data }: ServicesProps) {
+export default function Services({ data, hideCTA = false }: ServicesProps) {
   const sectionRef = useSectionAnimation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   
-  // Check if we have actual services or placeholder data
-  const hasServices = data?.services_list && data.services_list.length > 0;
-  const isPlaceholder = data?.section?.title?.includes('Configura') || false;
-  
   useGSAP(() => {
+    // Verificar que los elementos existan antes de animar
+    if (!titleRef.current || !subtitleRef.current) return;
+    
     // Animate section title
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -339,7 +378,7 @@ const Services = React.memo(function Services({ data }: ServicesProps) {
       ease: 'power3.out'
     }, '-=0.5');
     
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [data] });
 
   // Función para obtener clases CSS según el ancho
   const getWidthClass = (width: '1/3' | '2/3' | '3/3' | undefined): string => {
@@ -351,25 +390,16 @@ const Services = React.memo(function Services({ data }: ServicesProps) {
     }
   };
 
-  // Check if data has the expected structure
+  // Determinar si hay estructura de servicio principal o usar services_list
   const hasExpectedStructure = data.main_service && data.secondary_services;
-  
-  let allServices: any[] = [];
-  let hasMainService = false;
-  
-  if (hasExpectedStructure) {
-    // Handle the expected structure with main_service and secondary_services
-    hasMainService = data.main_service?.is_main && 
-      (data.main_service?.title || data.main_service?.description || data.main_service?.image_url);
-    
-    allServices = [
-      ...(hasMainService ? [{ ...data.main_service, isMain: true }] : []),
-      ...data.secondary_services.map(service => ({ ...service, isMain: false }))
-    ];
-  } else if ((data as any).services_list) {
-    // Handle the actual structure with services_list
-    allServices = (data as any).services_list.map((service: any) => ({ ...service, isMain: false }));
-  }
+  const hasMainService = data.main_service?.is_main &&
+    (data.main_service?.title || data.main_service?.description || data.main_service?.image_url);
+
+  // Combinar todos los servicios para renderizado dinámico
+  const allServices = hasExpectedStructure ? [
+    ...(hasMainService ? [{ ...data.main_service, isMain: true }] : []),
+    ...(data.secondary_services || []).map(service => ({ ...service, isMain: false }))
+  ] : (data.services_list || []).map(service => ({ ...service, isMain: false }));
   
   return (
     <section ref={sectionRef} id="services" className="py-24 bg-white overflow-hidden relative">
@@ -379,14 +409,6 @@ const Services = React.memo(function Services({ data }: ServicesProps) {
       </ParallaxWrapper>
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* Development notices */}
-        {isPlaceholder && (
-          <PlaceholderNotice section="la sección de servicios" />
-        )}
-        {!hasServices && !isPlaceholder && (
-          <EmptyContentNotice section="servicios" />
-        )}
-        
         <ParallaxWrapper speed={0.1} className="text-center mb-12">
           <h2 ref={titleRef} className="title-section text-4xl md:text-5xl">
             {data.section.title}
@@ -398,42 +420,47 @@ const Services = React.memo(function Services({ data }: ServicesProps) {
 
         {/* Grid dinámico con ancho respetado */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {allServices.map((service: any, index: number) => (
+          {allServices.map((service, index) => (
             <div 
               key={service.id} 
               className={getWidthClass(service.width)}
             >
               {service.isMain ? (
-                <MainServiceCard service={{
-                  ...service,
-                  className: 'bg-primary text-primary-foreground',
-                  imageUrl: service.image_url || service.image_url_fallback
-                }} />
+                <MainServiceCard
+                  service={{
+                    ...service,
+                    className: 'bg-primary text-primary-foreground',
+                    imageUrl: service.image_url
+                  }}
+                  hideCTA={hideCTA}
+                />
               ) : (
-                <ServiceCard service={{
-                  ...service,
-                  imageUrl: service.image_url || service.image_url_fallback
-                }} index={index} />
+                <ServiceCard
+                  service={{
+                    ...service,
+                    imageUrl: service.image_url
+                  }}
+                  index={index}
+                  hideCTA={hideCTA}
+                />
               )}
             </div>
           ))}
         </div>
 
-        {/* Placeholder cuando no hay servicio principal */}
-        {!hasMainService && (
+        {/* Placeholder cuando no hay servicios configurados */}
+        {allServices.length === 0 && (
           <div className="mb-8 p-8 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
             <div className="flex flex-col items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
                 <ArrowRight className="h-6 w-6 text-gray-400" />
               </div>
-              <p className="text-gray-600">No hay servicio principal configurado</p>
-              <p className="text-sm text-gray-400">Configure un servicio como principal desde el administrador</p>
+              <p className="text-gray-600">No hay servicios configurados</p>
+              <p className="text-sm text-gray-400">Configure los servicios desde el administrador</p>
             </div>
           </div>
         )}
       </div>
     </section>
   );
-});
-
-export default Services;
+}
