@@ -14,37 +14,37 @@ runConfig:
 env:
   # Firebase Client SDK (Frontend) - Públicas
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: metrica-dip
+    value: metrica-fm
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyB6KuX1pOsfyxRiGqLhrENT93SsGfiTdOM
+    value: AIzaSyAkpwp6CJRuhVnscV2HbNR-nQ-DpvglH_U
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    value: metrica-dip.firebaseapp.com
+    value: metrica-fm.firebaseapp.com
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    value: metrica-dip.firebasestorage.app
+    value: metrica-fm.firebasestorage.app
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    value: "423005031416"
+    value: "806061146235"
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: "1:423005031416:web:99ea0e37451fbad1d0e40d"
+    value: "1:806061146235:web:54b354f94f5872ef56a2de"
     availability:
       - BUILD
       - RUNTIME
@@ -57,13 +57,13 @@ env:
 
   # Google reCAPTCHA v3 - Para protección de formularios
   - variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-    value: 6Lf3hP0rAAAAAAkckvQA65w8wbIokJfIpqDeXXHk
+    value: 6Lc13_0rAAAAAGtNImO3exEbFVFpJfnopbGM-sp3
     availability:
       - BUILD
       - RUNTIME
 
   - variable: RECAPTCHA_SECRET_KEY
-    value: 6Lf3hP0rAAAAAIn1p7-6tZeC8YyYQOZ2sUDz3xDq
+    value: 6Lc13_0rAAAAAPDUaL3hu4pOfscis5btWkyDbQLd
     availability:
       - RUNTIME
 
@@ -73,13 +73,13 @@ env:
   # Descomentar solo si quieres sobreescribir las credenciales hardcodeadas:
 
   # - variable: FIREBASE_PROJECT_ID
-  #   value: metrica-dip
+  #   value: metrica-fm
   #   availability:
   #     - BUILD
   #     - RUNTIME
 
   # - variable: FIREBASE_CLIENT_EMAIL
-  #   value: firebase-adminsdk-fbsvc@metrica-dip.iam.gserviceaccount.com
+  #   value: firebase-adminsdk-fbsvc@metrica-fm.iam.gserviceaccount.com
   #   availability:
   #     - BUILD
   #     - RUNTIME
