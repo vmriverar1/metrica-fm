@@ -102,5 +102,9 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
   - variable: PRIVATE_KEY
     secret: PRIVATE_KEY
+    availability:
+      - BUILD
+      - RUNTIME
