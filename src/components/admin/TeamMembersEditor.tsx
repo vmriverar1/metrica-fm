@@ -189,7 +189,7 @@ export default function TeamMembersEditor({
           </CardContent>
         </Card>
       );
-      
+
     }
 
     return (
@@ -218,6 +218,7 @@ export default function TeamMembersEditor({
                   <h4 className="font-semibold text-gray-900 truncate">{member.name}</h4>
                   <Badge variant="secondary" className="text-xs mt-1">
                     {member.role}
+                    
                   </Badge>
                   <p className="text-sm text-gray-600 mt-2 line-clamp-3">
                     {member.description}
