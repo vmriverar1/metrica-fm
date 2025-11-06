@@ -103,7 +103,7 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
               'EDUCACIÓN': ProjectCategory.EDUCACION,
               'HOTELERÍA': ProjectCategory.HOTELERIA,
               'INDUSTRIA': ProjectCategory.INDUSTRIA,
-              'OFICINAS': ProjectCategory.OFICINA,
+              'OFICINA': ProjectCategory.OFICINA,
               'RETAIL': ProjectCategory.RETAIL,
               'VIVIENDA': ProjectCategory.VIVIENDA,
               'SALUD': ProjectCategory.SALUD,

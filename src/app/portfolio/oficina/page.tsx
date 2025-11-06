@@ -15,15 +15,15 @@ export default function ProyectosOficinaPage() {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        console.log('🏢 [OficinasPage] Fetching category data for oficinas...');
+        console.log('🏢 [OficinaPage] Fetching category data for oficina...');
 
-        const result = await FirestoreCore.getDocumentById('portfolio_categories', 'oficinas');
+        const result = await FirestoreCore.getDocumentById('portfolio_categories', 'oficina');
 
-        console.log('🏢 [OficinasPage] Firestore result:', result);
+        console.log('🏢 [OficinaPage] Firestore result:', result);
 
         if (result.success && result.data) {
           const category = result.data;
-          console.log('🏢 [OficinasPage] Category found:', category);
+          console.log('🏢 [OficinaPage] Category found:', category);
 
           setCategoryData({
             title: category.seoTitle || `Proyectos de ${category.name}`,
@@ -31,7 +31,7 @@ export default function ProyectosOficinaPage() {
             backgroundImage: category.backgroundImage || ""
           });
         } else {
-          console.warn('🏢 [OficinasPage] Category not found, using fallback');
+          console.warn('🏢 [OficinaPage] Category not found, using fallback');
           // Solo si no hay datos en Firestore, usar la imagen por defecto
           setCategoryData(prev => ({
             ...prev,
@@ -39,7 +39,7 @@ export default function ProyectosOficinaPage() {
           }));
         }
       } catch (error) {
-        console.error('🏢 [OficinasPage] Error fetching category data:', error);
+        console.error('🏢 [OficinaPage] Error fetching category data:', error);
         // En caso de error, usar la imagen por defecto
         setCategoryData(prev => ({
           ...prev,
