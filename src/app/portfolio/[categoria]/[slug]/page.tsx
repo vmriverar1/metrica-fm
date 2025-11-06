@@ -31,6 +31,27 @@ function ProjectPageContent({ params }: ProjectPageProps) {
     searchingForSlug: resolvedParams.slug
   });
 
+  // Track project view (must be before any conditional returns to follow Rules of Hooks)
+  useEffect(() => {
+    if (project) {
+      analytics.projectView(
+        project.title,
+        project.category,
+        project.id
+      );
+
+      // Track with additional details
+      analytics.logEvent('project_detail_view', {
+        project_id: project.id,
+        project_title: project.title,
+        project_category: project.category,
+        project_location: project.location?.city || 'unknown',
+        has_gallery: project.gallery && project.gallery.length > 0,
+        gallery_size: project.gallery?.length || 0
+      });
+    }
+  }, [project]);
+
   // Mostrar loading mientras se cargan los datos
   if (isLoading) {
     return (
@@ -87,27 +108,6 @@ function ProjectPageContent({ params }: ProjectPageProps) {
     // Temporarily allow mismatch for debugging
     // notFound();
   }
-
-  // Track project view
-  useEffect(() => {
-    if (project) {
-      analytics.projectView(
-        project.title,
-        project.category,
-        project.id
-      );
-
-      // Track with additional details
-      analytics.logEvent('project_detail_view', {
-        project_id: project.id,
-        project_title: project.title,
-        project_category: project.category,
-        project_location: project.location?.city || 'unknown',
-        has_gallery: project.gallery && project.gallery.length > 0,
-        gallery_size: project.gallery?.length || 0
-      });
-    }
-  }, [project]);
 
   return (
     <div className="min-h-screen bg-background">
