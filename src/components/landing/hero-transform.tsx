@@ -56,6 +56,9 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
   const scrollArrowRef = useRef<HTMLDivElement>(null);
   
   const words = data?.rotating_words || ['Maximiza', 'Optimiza', 'Impulsa'];
+  const cta = data?.cta || { text: 'Conocer más', target: '#services' };
+  const title = data?.title || { main: 'Métrica', secondary: 'FM' };
+  const subtitle = data?.subtitle || 'Dirección Integral de Proyectos';
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   
   useGSAP(() => {
@@ -319,17 +322,17 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
                   ref={heroTitleRef}
                   className="hero-title text-5xl md:text-7xl tracking-tight text-white mb-4"
                 >
-                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(0, 168, 232, 0.5)' }}>{data.title.main}</span>
-                  <span className="block">{data.title.secondary}</span>
+                  <span className="block text-accent" style={{ textShadow: '0 0 30px rgba(0, 168, 232, 0.5)' }}>{title.main}</span>
+                  <span className="block">{title.secondary}</span>
                 </h1>
                 
-                <p 
+                <p
                   ref={heroSubtitleRef}
                   className="hero-subtitle max-w-3xl mx-auto text-lg md:text-xl text-white/90 mb-8"
                 >
-                  {data.subtitle}
+                  {subtitle}
                 </p>
-                
+
                 <div ref={heroCTARef} className="hero-cta">
                   <Button
                     size="lg"
@@ -338,12 +341,12 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
                       // Track CTA click
                       analytics.buttonClick('hero_cta_main', 'hero_section');
                       analytics.logEvent('hero_cta_click', {
-                        cta_text: data.cta.text,
-                        cta_target: data.cta.target,
+                        cta_text: cta.text,
+                        cta_target: cta.target,
                         location: 'hero_section'
                       });
 
-                      const targetElement = document.querySelector(data.cta.target);
+                      const targetElement = document.querySelector(cta.target);
                       if (targetElement) {
                         targetElement.scrollIntoView({
                           behavior: 'smooth',
@@ -352,7 +355,7 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
                       }
                     }}
                   >
-                    {data.cta.text}
+                    {cta.text}
                     <MoveRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                     <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 group-hover:animate-shine" />
                   </Button>
