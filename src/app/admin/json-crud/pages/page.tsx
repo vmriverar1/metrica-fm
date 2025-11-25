@@ -234,8 +234,9 @@ const PagesManagement = () => {
       const cleanedData = cleanUndefinedValues(dataToSave);
       console.log('🔥 [FIRESTORE] Final data to save (cleaned):', cleanedData);
 
-      // Guardar datos reales en Firestore usando FirestoreCore
-      const result = await FirestoreCore.updateDocument('pages', firestoreDocName, cleanedData);
+      // Guardar datos reales en Firestore usando createDocumentWithId con merge: true
+      // Esto hace un "upsert": crea el documento si no existe, actualiza si existe
+      const result = await FirestoreCore.createDocumentWithId('pages', firestoreDocName, cleanedData, true);
 
       if (result.success) {
         console.log('🔥 [FIRESTORE] Data saved successfully to Firestore');
