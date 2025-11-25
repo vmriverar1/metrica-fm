@@ -497,7 +497,9 @@ export default function DynamicForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    console.log('📝 [DynamicForm] handleSubmit called');
+    console.log('📝 [DynamicForm] Current values:', values);
+
     // Validate all fields
     const newErrors: Record<string, string> = {};
     (fields || []).forEach(field => {
@@ -505,6 +507,7 @@ export default function DynamicForm({
         const error = validateField(field, getNestedValue(values, field.key));
         if (error) {
           newErrors[field.key] = error;
+          console.log('❌ [DynamicForm] Validation error:', field.key, error);
         }
       }
     });
@@ -512,12 +515,19 @@ export default function DynamicForm({
     setErrors(newErrors);
     setTouched((fields || []).reduce((acc, field) => ({ ...acc, [field.key]: true }), {}));
 
+    console.log('📝 [DynamicForm] Validation errors count:', Object.keys(newErrors).length);
+
     if (Object.keys(newErrors).length === 0) {
       try {
+        console.log('📝 [DynamicForm] Calling onSubmit with values:', values);
         await onSubmit(values);
+        console.log('✅ [DynamicForm] onSubmit completed successfully');
       } catch (error) {
-        console.error('Form submission error:', error);
+        console.error('❌ [DynamicForm] Form submission error:', error);
       }
+    } else {
+      console.log('❌ [DynamicForm] Form has validation errors, not submitting');
+      console.log('❌ [DynamicForm] Errors:', newErrors);
     }
   };
 

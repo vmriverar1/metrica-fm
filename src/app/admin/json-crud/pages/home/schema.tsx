@@ -72,7 +72,7 @@ export const homeSchema = {
         key: 'page.title',
         label: 'Título SEO',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'page_seo',
         description: 'Título para SEO y pestaña del navegador'
     },
@@ -80,7 +80,7 @@ export const homeSchema = {
         key: 'page.description',
         label: 'Descripción SEO',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'page_seo',
         description: 'Meta description para motores de búsqueda'
     },
@@ -136,7 +136,7 @@ export const homeSchema = {
             { value: 'image', label: 'Imagen de Fondo' },
             { value: 'video', label: 'Video de Fondo' }
         ],
-        required: true,
+        required: false,
         defaultValue: 'image'
     },
     {
@@ -203,7 +203,7 @@ export const homeSchema = {
         label: 'Palabras Rotatorias',
         type: 'custom' as const,
         component: 'rotating-words',
-        required: true,
+        required: false,
         group: 'hero_animations',
         description: 'Editor especializado para las palabras que rotan en la animación del hero',
         customProps: {
@@ -227,7 +227,7 @@ export const homeSchema = {
         label: 'Estadísticas Principales',
         type: 'custom' as const,
         component: 'statistics-grid',
-        required: true,
+        required: false,
         group: 'statistics_section',
         description: 'Editor visual para las 4 estadísticas principales del hero',
         customProps: {
@@ -241,7 +241,7 @@ export const homeSchema = {
         key: 'services.section.title',
         label: 'Título Sección Servicios',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'services_section',
         description: 'Título principal de la sección de servicios'
     },
@@ -249,7 +249,7 @@ export const homeSchema = {
         key: 'services.section.subtitle',
         label: 'Subtítulo Sección Servicios',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'services_section',
         description: 'Descripción general de la sección de servicios'
     },
@@ -258,7 +258,7 @@ export const homeSchema = {
         label: 'Editor Visual de Servicios',
         type: 'custom' as const,
         component: 'service-builder' as const,
-        required: true,
+        required: false,
         group: 'services_section',
         description: 'Editor dinámico para servicio principal (DIP) y servicios secundarios. Puede agregar, eliminar y duplicar servicios.',
         customProps: {
@@ -272,7 +272,7 @@ export const homeSchema = {
         key: 'portfolio.section.title',
         label: 'Título Sección Portfolio',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'portfolio_section',
         description: 'Título principal de la sección de portfolio'
     },
@@ -280,7 +280,7 @@ export const homeSchema = {
         key: 'portfolio.section.subtitle',
         label: 'Subtítulo Sección Portfolio',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'portfolio_section',
         description: 'Descripción general del portfolio'
     },
@@ -296,7 +296,7 @@ export const homeSchema = {
         label: 'Proyectos Destacados',
         type: 'custom' as const,
         component: 'portfolio-manager',
-        required: true,
+        required: false,
         group: 'portfolio_section',
         description: 'Gestor visual para los proyectos destacados del portfolio',
         customProps: {
@@ -310,7 +310,7 @@ export const homeSchema = {
         key: 'pillars.section.title',
         label: 'Título Sección Pilares',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'pillars_dip',
         description: 'Título de la sección "¿Qué es DIP?"'
     },
@@ -318,7 +318,7 @@ export const homeSchema = {
         key: 'pillars.section.subtitle',
         label: 'Subtítulo Sección Pilares',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'pillars_dip',
         description: 'Descripción de los pilares de DIP'
     },
@@ -327,7 +327,7 @@ export const homeSchema = {
         label: 'Pillars DIP Editor',
         type: 'custom' as const,
         component: 'pillars-editor' as const,
-        required: true,
+        required: false,
         group: 'pillars_dip',
         description: 'Editor completo para los 6 pilares fundamentales de DIP',
         customProps: {
@@ -342,7 +342,7 @@ export const homeSchema = {
         key: 'policies.section.title',
         label: 'Título Sección Políticas',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'policies_company',
         description: 'Título de las políticas empresariales'
     },
@@ -350,7 +350,7 @@ export const homeSchema = {
         key: 'policies.section.subtitle',
         label: 'Subtítulo Sección Políticas',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'policies_company',
         description: 'Descripción de las políticas corporativas'
     },
@@ -359,7 +359,7 @@ export const homeSchema = {
         label: 'Policies Manager',
         type: 'custom' as const,
         component: 'policies-manager',
-        required: true,
+        required: false,
         group: 'policies_company',
         description: 'Gestor completo para las 8 políticas empresariales con templates',
         customProps: {
@@ -384,7 +384,7 @@ export const homeSchema = {
         key: 'newsletter.section.title',
         label: 'Título Newsletter',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'newsletter_setup',
         description: 'Título de la sección de suscripción'
     },
@@ -392,7 +392,7 @@ export const homeSchema = {
         key: 'newsletter.section.subtitle',
         label: 'Subtítulo Newsletter',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'newsletter_setup',
         description: 'Descripción del beneficio de suscribirse'
     },
