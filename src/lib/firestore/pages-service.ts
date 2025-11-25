@@ -549,6 +549,13 @@ export class PagesService {
 
 
   /**
+   * Obtiene los datos de la página home desde Firestore
+   */
+  static async getHomePage(): Promise<any | null> {
+    return await this.getPageWithFallback('home');
+  }
+
+  /**
    * Actualiza los datos de la página home en Firestore
    */
   static async updateHomePage(data: any): Promise<void> {
