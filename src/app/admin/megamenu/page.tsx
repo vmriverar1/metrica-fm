@@ -301,15 +301,15 @@ export default function MegaMenuAdminPage() {
 
       const finalItems = [...reorderedItems, ...remainingItems];
 
-      // Actualizar documento en Firestore
-      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+      // Actualizar documento en Firestore (upsert con merge: true)
+      const updateResult = await FirestoreCore.createDocumentWithId(COLLECTIONS.MEGAMENU, 'main', {
         ...currentData,
         items: finalItems,
         settings: {
           ...currentData.settings,
           last_updated: new Date().toISOString()
         }
-      });
+      }, true);
 
       if (updateResult.success) {
         await fetchMegaMenuData(false);
@@ -369,15 +369,15 @@ export default function MegaMenuAdminPage() {
         console.log('✏️ [MegaMenu Admin] Actualizando item existente');
       }
 
-      // Actualizar documento en Firestore
-      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+      // Actualizar documento en Firestore (upsert con merge: true)
+      const updateResult = await FirestoreCore.createDocumentWithId(COLLECTIONS.MEGAMENU, 'main', {
         ...currentData,
         items: updatedItems,
         settings: {
           ...currentData.settings,
           last_updated: new Date().toISOString()
         }
-      });
+      }, true);
 
       if (updateResult.success) {
         await fetchMegaMenuData(false);
@@ -421,15 +421,15 @@ export default function MegaMenuAdminPage() {
       // Filtrar item a eliminar
       const updatedItems = currentItems.filter((item: any) => item.id !== itemId);
 
-      // Actualizar documento en Firestore
-      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+      // Actualizar documento en Firestore (upsert con merge: true)
+      const updateResult = await FirestoreCore.createDocumentWithId(COLLECTIONS.MEGAMENU, 'main', {
         ...currentData,
         items: updatedItems,
         settings: {
           ...currentData.settings,
           last_updated: new Date().toISOString()
         }
-      });
+      }, true);
 
       if (updateResult.success) {
         await fetchMegaMenuData(false);
@@ -493,15 +493,15 @@ export default function MegaMenuAdminPage() {
           : existingItem
       );
 
-      // Actualizar documento en Firestore
-      const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.MEGAMENU, 'main', {
+      // Actualizar documento en Firestore (upsert con merge: true)
+      const updateResult = await FirestoreCore.createDocumentWithId(COLLECTIONS.MEGAMENU, 'main', {
         ...currentData,
         items: updatedItems,
         settings: {
           ...currentData.settings,
           last_updated: new Date().toISOString()
         }
-      });
+      }, true);
 
       if (updateResult.success) {
         await fetchMegaMenuData(false);
