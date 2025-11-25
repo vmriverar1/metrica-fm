@@ -53,14 +53,14 @@ export const servicesSchema = {
             key: 'page.title',
             label: 'Título de la Página',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
             key: 'page.description',
             label: 'Descripción de la Página',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
 
@@ -69,14 +69,14 @@ export const servicesSchema = {
             key: 'hero.title',
             label: 'Título Principal',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
@@ -89,7 +89,7 @@ export const servicesSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -173,7 +173,7 @@ export const servicesSchema = {
                     key: 'text',
                     label: 'Texto de la Estadística',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'S/ 3B+ Gestionados',
                     width: 'full'
                 },
@@ -192,7 +192,7 @@ export const servicesSchema = {
             key: 'services.section.title',
             label: 'Título de Servicios',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'services_list',
             defaultValue: 'Nuestros Servicios'
         },
@@ -208,7 +208,7 @@ export const servicesSchema = {
             label: 'Editor Visual de Servicios',
             type: 'custom' as const,
             component: 'service-builder' as const,
-            required: true,
+            required: false,
             group: 'services_list',
             description: 'Editor dinámico para servicio principal y servicios secundarios. Puede agregar, eliminar, duplicar y reordenar servicios.',
             customProps: {
@@ -222,7 +222,7 @@ export const servicesSchema = {
             key: 'contact_form.title',
             label: 'Título del Formulario',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'contact_form'
         },
         {
@@ -324,7 +324,7 @@ export const servicesSchema = {
                     key: 'id',
                     label: 'ID del Beneficio',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'experiencia',
                     description: 'Identificador único para el beneficio'
                 },
@@ -332,7 +332,7 @@ export const servicesSchema = {
                     key: 'text',
                     label: 'Texto del Beneficio',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: '10+ años de experiencia',
                     description: 'Texto que aparece junto al ícono en el sidebar'
                 },

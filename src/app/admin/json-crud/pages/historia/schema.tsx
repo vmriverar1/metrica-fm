@@ -36,7 +36,7 @@ export const historiaSchema = {
       key: 'page.title',
       label: 'Título Principal',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 60,
       group: 'page_info',
       description: 'Título principal que aparece en el hero'
@@ -45,7 +45,7 @@ export const historiaSchema = {
       key: 'page.subtitle',
       label: 'Subtítulo',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 120,
       group: 'page_info',
       description: 'Subtítulo descriptivo del hero'
@@ -54,7 +54,7 @@ export const historiaSchema = {
       key: 'page.description',
       label: 'Descripción Principal',
       type: 'textarea' as const,
-      required: true,
+      required: false,
       rows: 3,
       maxLength: 300,
       group: 'page_info',
@@ -70,7 +70,7 @@ export const historiaSchema = {
         { value: 'image', label: 'Imagen de Fondo' },
         { value: 'video', label: 'Video de Fondo' }
       ],
-      required: true,
+      required: false,
       defaultValue: 'image'
     },
     {
@@ -148,10 +148,10 @@ export const historiaSchema = {
         showGallery: true,
         showAchievements: true,
         fieldsConfig: {
-          year: { required: true, type: 'text', placeholder: 'Ej: 2015 o 2015 - 2020' },
-          title: { required: true, maxLength: 100 },
-          subtitle: { required: true, maxLength: 150 },
-          description: { required: true, maxLength: 500 },
+          year: { required: false, type: 'text', placeholder: 'Ej: 2015 o 2015 - 2020' },
+          title: { required: false, maxLength: 100 },
+          subtitle: { required: false, maxLength: 150 },
+          description: { required: false, maxLength: 500 },
           image: { type: 'image-field', required: false },
           achievements: { type: 'list', maxItems: 10 },
           gallery: { type: 'image-gallery', maxImages: 6 },
@@ -179,7 +179,7 @@ export const historiaSchema = {
       key: 'achievement_summary.title',
       label: 'Título de Logros',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 50,
       group: 'achievement_stats',
       description: 'Título de la sección de logros'
@@ -195,9 +195,9 @@ export const historiaSchema = {
       config: {
         maxStats: 6,
         fieldsConfig: {
-          number: { required: true, placeholder: '200+' },
-          label: { required: true, maxLength: 50, placeholder: 'Proyectos Completados' },
-          description: { required: true, maxLength: 100, placeholder: 'Desde complejos hospitalarios hasta centros comerciales' },
+          number: { required: false, placeholder: '200+' },
+          label: { required: false, maxLength: 50, placeholder: 'Proyectos Completados' },
+          description: { required: false, maxLength: 100, placeholder: 'Desde complejos hospitalarios hasta centros comerciales' },
           icon: { type: 'icon-picker', required: false },
           color: { type: 'color-picker', default: '#003F6F' }
         }
@@ -209,7 +209,7 @@ export const historiaSchema = {
       key: 'call_to_action.title',
       label: 'Título del Call to Action',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 80,
       group: 'call_to_action',
       description: 'Título principal de la llamada a la acción'
@@ -218,7 +218,7 @@ export const historiaSchema = {
       key: 'call_to_action.description',
       label: 'Descripción',
       type: 'textarea' as const,
-      required: true,
+      required: false,
       rows: 2,
       maxLength: 200,
       group: 'call_to_action',
@@ -228,7 +228,7 @@ export const historiaSchema = {
       key: 'call_to_action.primary_button.text',
       label: 'Texto Botón Principal',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 30,
       group: 'call_to_action',
       description: 'Texto del botón principal'
@@ -237,7 +237,7 @@ export const historiaSchema = {
       key: 'call_to_action.primary_button.href',
       label: 'Enlace Botón Principal',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 100,
       group: 'call_to_action',
       description: 'URL o ruta del botón principal'
@@ -246,7 +246,7 @@ export const historiaSchema = {
       key: 'call_to_action.secondary_button.text',
       label: 'Texto Botón Secundario',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 30,
       group: 'call_to_action',
       description: 'Texto del botón secundario'
@@ -255,7 +255,7 @@ export const historiaSchema = {
       key: 'call_to_action.secondary_button.href',
       label: 'Enlace Botón Secundario',
       type: 'text' as const,
-      required: true,
+      required: false,
       maxLength: 100,
       group: 'call_to_action',
       description: 'URL o ruta del botón secundario'

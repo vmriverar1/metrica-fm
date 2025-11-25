@@ -50,7 +50,7 @@ export const contactSchema = {
             key: 'seo.meta_title',
             label: 'Meta Título',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'seo',
             placeholder: 'Contáctanos | Métrica FM',
             description: 'Título que aparece en la pestaña del navegador y resultados de búsqueda'
@@ -59,7 +59,7 @@ export const contactSchema = {
             key: 'seo.meta_description',
             label: 'Meta Descripción',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'seo',
             rows: 3,
             placeholder: 'Ponte en contacto con nuestro equipo de expertos...',
@@ -81,14 +81,14 @@ export const contactSchema = {
             key: 'hero.title',
             label: 'Título Hero',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo Hero',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'hero'
         },
         {
@@ -101,7 +101,7 @@ export const contactSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -168,14 +168,14 @@ export const contactSchema = {
             key: 'sections.intro.title',
             label: 'Título de Introducción',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'intro'
         },
         {
             key: 'sections.intro.description',
             label: 'Descripción de Introducción',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'intro'
         },
 
@@ -184,7 +184,7 @@ export const contactSchema = {
             key: 'sections.contact_info.title',
             label: 'Título Sección Contacto',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'contact_info',
             defaultValue: 'Información de Contacto'
         },
@@ -338,7 +338,7 @@ export const contactSchema = {
             key: 'sections.process.title',
             label: 'Título del Proceso',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'process',
             defaultValue: 'Proceso de Contacto'
         },
@@ -475,7 +475,7 @@ export const contactSchema = {
             key: 'settings.form_method',
             label: 'Método del Formulario',
             type: 'select' as const,
-            required: true,
+            required: false,
             group: 'settings',
             options: [
                 { value: 'POST', label: 'POST' },
@@ -487,7 +487,7 @@ export const contactSchema = {
             key: 'settings.form_action',
             label: 'Acción del Formulario',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'settings',
             defaultValue: '/api/contact'
         },

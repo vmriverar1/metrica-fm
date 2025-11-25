@@ -43,14 +43,14 @@ export const blogSchema = {
             key: 'page.title',
             label: 'Título de la Página',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
             key: 'page.description',
             label: 'Descripción de la Página',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
 
@@ -59,14 +59,14 @@ export const blogSchema = {
             key: 'hero.title',
             label: 'Título Principal',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
@@ -85,7 +85,7 @@ export const blogSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -180,7 +180,7 @@ export const blogSchema = {
             key: 'content_sections.latest_content.title',
             label: 'Título de Contenido Reciente',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'content_sections'
         },
         {
@@ -235,7 +235,7 @@ export const blogSchema = {
             key: 'contact_cta.title',
             label: 'Título CTA de Contacto',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'contact_cta',
             defaultValue: '¿Tienes un proyecto en mente?'
         },
@@ -243,7 +243,7 @@ export const blogSchema = {
             key: 'contact_cta.description',
             label: 'Descripción CTA de Contacto',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'contact_cta',
             rows: 3,
             placeholder: 'Contacta con nuestros expertos para recibir una consulta personalizada sobre tu proyecto de construcción o infraestructura.',
@@ -253,7 +253,7 @@ export const blogSchema = {
             key: 'contact_cta.primary_button.text',
             label: 'Texto Botón Primario',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'contact_cta',
             defaultValue: 'Consulta Gratuita'
         },
@@ -261,7 +261,7 @@ export const blogSchema = {
             key: 'contact_cta.primary_button.href',
             label: 'Enlace Botón Primario',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'contact_cta',
             defaultValue: '/contact'
         },

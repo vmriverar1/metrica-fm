@@ -36,14 +36,14 @@ export const careersSchema = {
             key: 'page.title',
             label: 'Título SEO',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
             key: 'page.description',
             label: 'Descripción SEO',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
@@ -59,14 +59,14 @@ export const careersSchema = {
             key: 'hero.title',
             label: 'Título Principal',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
@@ -91,7 +91,7 @@ export const careersSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -193,7 +193,7 @@ export const careersSchema = {
             key: 'company_benefits.title',
             label: 'Título de Beneficios',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'company_benefits',
             defaultValue: 'Beneficios Únicos que Ofrecemos'
         },
@@ -201,7 +201,7 @@ export const careersSchema = {
             key: 'company_benefits.description',
             label: 'Descripción de Beneficios',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'company_benefits',
             rows: 3,
             placeholder: 'Descripción de los beneficios que ofrece la empresa...'
@@ -220,21 +220,21 @@ export const careersSchema = {
                     key: 'id',
                     label: 'ID del Beneficio',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'health-insurance'
                 },
                 {
                     key: 'title',
                     label: 'Título',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Seguro de Salud Completo'
                 },
                 {
                     key: 'description',
                     label: 'Descripción',
                     type: 'textarea' as const,
-                    required: true,
+                    required: false,
                     rows: 3,
                     placeholder: 'Descripción detallada del beneficio...'
                 },
@@ -242,7 +242,7 @@ export const careersSchema = {
                     key: 'icon',
                     label: 'Icono',
                     type: 'icon' as const,
-                    required: true,
+                    required: false,
                     defaultValue: 'Heart'
                 },
                 {
@@ -319,7 +319,7 @@ export const careersSchema = {
             key: 'application_process.title',
             label: 'Título del Proceso',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'application_process'
         },
         {

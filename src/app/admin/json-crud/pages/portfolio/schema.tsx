@@ -99,14 +99,14 @@ export const portfolioSchema = {
             key: 'page.title',
             label: 'Título SEO',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
             key: 'page.description',
             label: 'Descripción SEO',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
 
@@ -115,14 +115,14 @@ export const portfolioSchema = {
             key: 'hero.title',
             label: 'Título Principal',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
@@ -141,7 +141,7 @@ export const portfolioSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -222,7 +222,7 @@ export const portfolioSchema = {
             key: 'introduction.title',
             label: 'Título de Introducción',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'introduction'
         },
         {
@@ -237,7 +237,7 @@ export const portfolioSchema = {
             key: 'featured_projects.title',
             label: 'Título de Proyectos Destacados',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'featured_projects'
         },
         {
@@ -258,7 +258,7 @@ export const portfolioSchema = {
             key: 'categories_overview.title',
             label: 'Título de Categorías',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'categories_overview'
         },
         {
@@ -286,7 +286,7 @@ export const portfolioSchema = {
             key: 'investment_analysis.title',
             label: 'Título de Análisis de Inversión',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'investment_analysis'
         },
         {
@@ -307,7 +307,7 @@ export const portfolioSchema = {
             key: 'project_methodology.title',
             label: 'Título de Metodología',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'project_methodology'
         },
         {
@@ -328,7 +328,7 @@ export const portfolioSchema = {
             key: 'success_metrics.title',
             label: 'Título de Métricas de Éxito',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'success_metrics'
         },
         {
@@ -349,7 +349,7 @@ export const portfolioSchema = {
             key: 'geographic_presence.title',
             label: 'Título de Presencia Geográfica',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'geographic_presence'
         },
         {
@@ -370,7 +370,7 @@ export const portfolioSchema = {
             key: 'innovation_highlights.title',
             label: 'Título de Innovación',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'innovation_highlights'
         },
         {
@@ -391,7 +391,7 @@ export const portfolioSchema = {
             key: 'portfolio_views.title',
             label: 'Título de Vistas del Portafolio',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'portfolio_views'
         },
         {
@@ -412,7 +412,7 @@ export const portfolioSchema = {
             key: 'interactive_features.title',
             label: 'Título de Funcionalidades Interactivas',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'interactive_features'
         },
         {
@@ -427,7 +427,7 @@ export const portfolioSchema = {
             key: 'call_to_action.title',
             label: 'Título CTA',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'call_to_action'
         },
         {

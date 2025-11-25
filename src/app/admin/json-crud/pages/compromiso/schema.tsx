@@ -50,14 +50,14 @@ export const compromisoSchema = {
             key: 'page.title',
             label: 'Título SEO',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
         {
             key: 'page.description',
             label: 'Descripción SEO',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info'
         },
 
@@ -66,14 +66,14 @@ export const compromisoSchema = {
             key: 'hero.title',
             label: 'Título Principal',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
             key: 'hero.subtitle',
             label: 'Subtítulo',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'hero_section'
         },
         {
@@ -86,7 +86,7 @@ export const compromisoSchema = {
                 { value: 'image', label: 'Imagen de Fondo' },
                 { value: 'video', label: 'Video de Fondo' }
             ],
-            required: true,
+            required: false,
             defaultValue: 'image'
         },
         {
@@ -153,14 +153,14 @@ export const compromisoSchema = {
             key: 'main_content.introduction.title',
             label: 'Título de Introducción',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'main_content'
         },
         {
             key: 'main_content.introduction.description',
             label: 'Descripción de Introducción',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'main_content'
         },
 
@@ -169,7 +169,7 @@ export const compromisoSchema = {
             key: 'sustainability_goals.title',
             label: 'Título de ODS',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'sustainability_goals'
         },
         {
@@ -190,7 +190,7 @@ export const compromisoSchema = {
             key: 'impact_metrics.title',
             label: 'Título de Métricas de Impacto',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'impact_metrics'
         },
         {
@@ -205,7 +205,7 @@ export const compromisoSchema = {
             key: 'future_commitments.title',
             label: 'Título de Compromisos Futuros',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'future_commitments'
         },
         {

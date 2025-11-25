@@ -76,7 +76,7 @@ export const clientesSchema = {
             key: 'page.title',
             label: 'Título de la Página',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'page_info',
             defaultValue: 'Nuestros Clientes | Métrica FM'
         },
@@ -84,7 +84,7 @@ export const clientesSchema = {
             key: 'page.description',
             label: 'Descripción de la Página',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'page_info',
             defaultValue: 'Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos de infraestructura.'
         },
@@ -94,7 +94,7 @@ export const clientesSchema = {
             key: 'hero.title',
             label: 'Título Hero',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section',
             defaultValue: 'Nuestros Clientes'
         },
@@ -102,7 +102,7 @@ export const clientesSchema = {
             key: 'hero.subtitle',
             label: 'Subtítulo Hero',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section',
             defaultValue: 'Empresas líderes que confían en nuestra experiencia'
         },
@@ -112,7 +112,7 @@ export const clientesSchema = {
             key: 'clientes.section.title',
             label: 'Título de la Sección Hero',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section',
             defaultValue: 'Nuestros Clientes'
         },
@@ -120,7 +120,7 @@ export const clientesSchema = {
             key: 'clientes.section.subtitle',
             label: 'Subtítulo de la Sección Hero',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'hero_section',
             defaultValue: 'Empresas líderes que confían en nuestra experiencia'
         },
@@ -143,7 +143,7 @@ export const clientesSchema = {
             key: 'introduction.title',
             label: 'Título de Introducción',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'introduction_section',
             defaultValue: 'Construyendo Confianza con Cada Proyecto'
         },
@@ -151,7 +151,7 @@ export const clientesSchema = {
             key: 'introduction.description',
             label: 'Descripción de Introducción',
             type: 'textarea' as const,
-            required: true,
+            required: false,
             group: 'introduction_section',
             rows: 4,
             defaultValue: 'En Métrica FM, nos enorgullece trabajar con una amplia gama de clientes del sector público y privado. Nuestra experiencia y compromiso con la excelencia nos han convertido en el socio preferido para proyectos de infraestructura de gran envergadura.'
@@ -168,9 +168,9 @@ export const clientesSchema = {
             config: {
                 maxStats: 4,
                 fieldsConfig: {
-                    number: { required: true, placeholder: '50+' },
-                    label: { required: true, maxLength: 50, placeholder: 'Total de Clientes' },
-                    description: { required: true, maxLength: 100, placeholder: 'Clientes satisfechos en diversos sectores' },
+                    number: { required: false, placeholder: '50+' },
+                    label: { required: false, maxLength: 50, placeholder: 'Total de Clientes' },
+                    description: { required: false, maxLength: 100, placeholder: 'Clientes satisfechos en diversos sectores' },
                     icon: { type: 'icon-picker', required: false },
                     color: { type: 'color-picker', default: '#003F6F' }
                 }
@@ -182,7 +182,7 @@ export const clientesSchema = {
             key: 'testimonials.title',
             label: 'Título de Testimonios',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'testimonials_section',
             defaultValue: 'Testimonios de Nuestros Clientes'
         },
@@ -206,14 +206,14 @@ export const clientesSchema = {
                     key: 'id',
                     label: 'ID',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'testimonio_cliente_1'
                 },
                 {
                     key: 'videoId',
                     label: 'ID del Video de YouTube',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'xBpz8Ret1Io',
                     description: 'ID del video de YouTube (lo que aparece después de v= en la URL)'
                 },
@@ -221,14 +221,14 @@ export const clientesSchema = {
                     key: 'title',
                     label: 'Título del Video',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Testimonio - Cliente XYZ'
                 },
                 {
                     key: 'description',
                     label: 'Descripción',
                     type: 'textarea' as const,
-                    required: true,
+                    required: false,
                     rows: 2,
                     placeholder: 'Descripción del testimonio...'
                 },
@@ -236,21 +236,21 @@ export const clientesSchema = {
                     key: 'author',
                     label: 'Autor',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Nombre del cliente'
                 },
                 {
                     key: 'position',
                     label: 'Cargo',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'CEO, Gerente, etc.'
                 },
                 {
                     key: 'company',
                     label: 'Empresa',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Nombre de la empresa'
                 },
                 {
@@ -276,7 +276,7 @@ export const clientesSchema = {
             key: 'client_benefits.title',
             label: 'Título de Beneficios',
             type: 'text' as const,
-            required: true,
+            required: false,
             group: 'client_benefits_section',
             defaultValue: 'Por Qué Nos Eligen'
         },
@@ -298,35 +298,35 @@ export const clientesSchema = {
                     key: 'id',
                     label: 'ID',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'benefit_1'
                 },
                 {
                     key: 'icon',
                     label: 'Ícono',
                     type: 'icon' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Star'
                 },
                 {
                     key: 'color',
                     label: 'Color del Ícono',
                     type: 'color' as const,
-                    required: true,
+                    required: false,
                     defaultValue: '#00A8E8'
                 },
                 {
                     key: 'title',
                     label: 'Título',
                     type: 'text' as const,
-                    required: true,
+                    required: false,
                     placeholder: 'Excelencia en Servicio'
                 },
                 {
                     key: 'description',
                     label: 'Descripción',
                     type: 'textarea' as const,
-                    required: true,
+                    required: false,
                     rows: 2,
                     placeholder: 'Descripción del beneficio'
                 },

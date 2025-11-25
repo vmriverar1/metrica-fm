@@ -36,7 +36,7 @@ export const isoSchema = {
                 key: 'page.title',
                 label: 'Título SEO',
                 type: 'text' as const,
-                required: true,
+                required: false,
                 group: 'page_info',
                 description: 'Título optimizado para motores de búsqueda (máximo 60 caracteres recomendados)',
                 placeholder: 'ISO 9001:2015 Certificación | Métrica FM - Calidad Garantizada'
@@ -45,7 +45,7 @@ export const isoSchema = {
         key: 'page.description',
         label: 'Descripción SEO',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'page_info',
         description: 'Meta descripción para buscadores (150-160 caracteres óptimo)',
         placeholder: 'Métrica FM cuenta con certificación ISO 9001:2015. Garantizamos excelencia en gestión de proyectos...'
@@ -70,7 +70,7 @@ export const isoSchema = {
         key: 'hero.title',
         label: 'Título Principal Hero',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'hero_certificate',
         description: 'Título principal visible en la cabecera de la página',
         placeholder: 'ISO 9001'
@@ -79,7 +79,7 @@ export const isoSchema = {
         key: 'hero.subtitle',
         label: 'Subtítulo Hero',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'hero_certificate',
         description: 'Subtítulo complementario del hero',
         placeholder: 'Certificación 2015'
@@ -88,7 +88,7 @@ export const isoSchema = {
         key: 'hero.description',
         label: 'Descripción Hero',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'hero_certificate',
         description: 'Descripción principal que explica el valor de la certificación',
         placeholder: 'Excelencia certificada en gestión de proyectos de construcción e infraestructura'
@@ -187,28 +187,28 @@ export const isoSchema = {
         key: 'introduction.section.title',
         label: 'Título Introducción',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'introduction_benefits'
     },
     {
         key: 'introduction.section.subtitle',
         label: 'Subtítulo Introducción',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'introduction_benefits'
     },
     {
         key: 'introduction.section.description',
         label: 'Descripción ISO 9001',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'introduction_benefits'
     },
     {
         key: 'introduction.importance.title',
         label: 'Título Importancia',
         type: 'text' as const,
-        required: true,
+        required: false,
         group: 'introduction_benefits',
         placeholder: '¿Por qué es importante?',
         description: 'Título de la sección que explica la importancia de ISO 9001'
@@ -279,7 +279,7 @@ export const isoSchema = {
         key: 'quality_policy.statement.content',
         label: 'Contenido de la Declaración',
         type: 'textarea' as const,
-        required: true,
+        required: false,
         group: 'quality_policy_commitments',
         rows: 6,
         placeholder: 'En Métrica FM nos comprometemos a ser líderes en la dirección integral de proyectos...',
