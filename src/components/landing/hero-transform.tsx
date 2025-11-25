@@ -55,7 +55,7 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
   const apprologLogoRef = useRef<HTMLDivElement>(null);
   const scrollArrowRef = useRef<HTMLDivElement>(null);
   
-  const words = data.rotating_words;
+  const words = data?.rotating_words || ['Maximiza', 'Optimiza', 'Impulsa'];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   
   useGSAP(() => {
