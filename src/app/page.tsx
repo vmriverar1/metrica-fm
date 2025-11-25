@@ -14,6 +14,26 @@ import { Metadata } from 'next';
 import { FirestoreCore } from '@/lib/firestore/firestore-core';
 import { HOME_PAGE_FALLBACK } from '@/lib/firestore/fallbacks';
 
+// Deep merge de datos de Firestore con fallbacks para evitar errores de undefined
+function mergeWithFallback(data: Partial<HomePageData> | null | undefined): HomePageData {
+  if (!data) return HOME_PAGE_FALLBACK;
+
+  return {
+    page: {
+      title: data.page?.title || HOME_PAGE_FALLBACK.page.title,
+      description: data.page?.description || HOME_PAGE_FALLBACK.page.description
+    },
+    hero: data.hero || HOME_PAGE_FALLBACK.hero,
+    stats: data.stats || HOME_PAGE_FALLBACK.stats,
+    services: data.services || HOME_PAGE_FALLBACK.services,
+    portfolio: data.portfolio || HOME_PAGE_FALLBACK.portfolio,
+    pillars: data.pillars || HOME_PAGE_FALLBACK.pillars,
+    policies: data.policies || HOME_PAGE_FALLBACK.policies,
+    clients: data.clients || HOME_PAGE_FALLBACK.clients,
+    newsletter: data.newsletter || HOME_PAGE_FALLBACK.newsletter
+  };
+}
+
 async function getHomeData(): Promise<HomePageData> {
   try {
     const result = await FirestoreCore.getDocumentById<HomePageData>('pages', 'home');
@@ -23,9 +43,10 @@ async function getHomeData(): Promise<HomePageData> {
       return HOME_PAGE_FALLBACK;
     }
 
-    console.log('🔥 [FIRESTORE] Home data loaded successfully:', result.data);
-    console.log('🔥 [SERVICES] Services data specifically:', result.data.services);
-    return result.data;
+    // Merge los datos de Firestore con el fallback para cubrir campos faltantes
+    const mergedData = mergeWithFallback(result.data);
+    console.log('🔥 [FIRESTORE] Home data loaded and merged successfully');
+    return mergedData;
   } catch (error) {
     console.error('❌ [FIRESTORE] Failed to load home data:', error);
     console.warn('⚠️ [FALLBACK] Home Page: Error detectado, usando fallback descriptivo');
