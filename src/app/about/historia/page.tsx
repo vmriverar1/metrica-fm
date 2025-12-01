@@ -54,31 +54,49 @@ function serializeFirestoreData(data: any): any {
   return data;
 }
 
+// Fallback data
+const HISTORIA_FALLBACK: HistoriaPageData = {
+  page: {
+    title: 'Nuestra Historia',
+    subtitle: 'Un recorrido por nuestra trayectoria',
+    description: 'Conoce la historia y evolución de Métrica FM.',
+    hero_image: '/images/historia/hero.jpg'
+  },
+  timeline: {
+    title: 'Línea de Tiempo',
+    subtitle: 'Nuestra evolución',
+    events: []
+  },
+  milestones: [],
+  closing: {
+    title: 'El Futuro',
+    description: 'Seguimos construyendo historia.',
+    cta_text: 'Contáctanos',
+    cta_link: '/contact'
+  }
+};
+
 async function getHistoriaData(): Promise<HistoriaPageData> {
   try {
-    // First try to load from Firestore
     const firestoreData = await PagesService.getHistoriaPage();
     if (firestoreData) {
-      // Serialize Firestore data before returning
       const serializedData = serializeFirestoreData(firestoreData);
-      return serializedData as HistoriaPageData;
+      // Deep merge con fallback
+      return {
+        ...HISTORIA_FALLBACK,
+        ...serializedData,
+        page: { ...HISTORIA_FALLBACK.page, ...serializedData.page },
+        timeline: { ...HISTORIA_FALLBACK.timeline, ...serializedData.timeline },
+        closing: { ...HISTORIA_FALLBACK.closing, ...serializedData.closing }
+      } as HistoriaPageData;
     }
 
-    // Fallback to API if Firestore fails
-    const response = await fetch('/api/admin/pages/historia', { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch historia data: ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.error || 'Failed to load historia data');
-    }
-
-    return result.data;
+    console.warn('⚠️ [FALLBACK] Historia Page: Sin datos en Firestore, usando fallback');
+    return HISTORIA_FALLBACK;
   } catch (error) {
     console.error('Error loading historia data:', error);
-    throw error;
+    console.warn('⚠️ [FALLBACK] Historia Page: Error detectado, usando fallback');
+    return HISTORIA_FALLBACK;
   }
 }
 

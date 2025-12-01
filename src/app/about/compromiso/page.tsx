@@ -41,29 +41,65 @@ export const metadata: Metadata = {
   description: 'Nuestro compromiso con el desarrollo sostenible, responsabilidad social y las mejores prácticas ambientales en la industria de la construcción.',
 };
 
+// Fallback data
+const COMPROMISO_FALLBACK: CompromisoPageData = {
+  hero: {
+    title: 'Compromiso Social y Medioambiental',
+    subtitle: 'Construyendo un futuro sostenible',
+    background_image: '/images/compromiso/hero.jpg'
+  },
+  main_content: {
+    introduction: {
+      title: 'Nuestro Compromiso',
+      description: 'Estamos comprometidos con el desarrollo sostenible y la responsabilidad social.'
+    },
+    sections: []
+  },
+  impact_metrics: {
+    title: 'Métricas de Impacto',
+    subtitle: 'Resultados de nuestro compromiso',
+    categories: []
+  },
+  sustainability_goals: {
+    title: 'Objetivos de Sostenibilidad',
+    subtitle: 'Metas 2030',
+    description: 'Trabajamos hacia un futuro más sostenible.',
+    goals: []
+  },
+  future_commitments: {
+    title: 'Compromisos Futuros',
+    subtitle: 'Nuestra visión',
+    description: 'Seguimos trabajando por un mejor mañana.',
+    commitments: []
+  }
+};
+
 async function getCompromisoData(): Promise<CompromisoPageData> {
   try {
-    // First try to load from Firestore
     const firestoreData = await PagesService.getCompromisoPage();
     if (firestoreData) {
-      return firestoreData as CompromisoPageData;
+      // Deep merge con fallback
+      return {
+        ...COMPROMISO_FALLBACK,
+        ...firestoreData,
+        hero: { ...COMPROMISO_FALLBACK.hero, ...firestoreData.hero },
+        main_content: {
+          ...COMPROMISO_FALLBACK.main_content,
+          ...firestoreData.main_content,
+          introduction: { ...COMPROMISO_FALLBACK.main_content.introduction, ...firestoreData.main_content?.introduction }
+        },
+        impact_metrics: { ...COMPROMISO_FALLBACK.impact_metrics, ...firestoreData.impact_metrics },
+        sustainability_goals: { ...COMPROMISO_FALLBACK.sustainability_goals, ...firestoreData.sustainability_goals },
+        future_commitments: { ...COMPROMISO_FALLBACK.future_commitments, ...firestoreData.future_commitments }
+      } as CompromisoPageData;
     }
 
-    // Fallback to API if Firestore fails
-    const response = await fetch('/api/admin/pages/compromiso', { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch compromiso data: ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.error || 'Failed to load compromiso data');
-    }
-
-    return result.data;
+    console.warn('⚠️ [FALLBACK] Compromiso Page: Sin datos en Firestore, usando fallback');
+    return COMPROMISO_FALLBACK;
   } catch (error) {
     console.error('Error loading compromiso data:', error);
-    throw error;
+    console.warn('⚠️ [FALLBACK] Compromiso Page: Error detectado, usando fallback');
+    return COMPROMISO_FALLBACK;
   }
 }
 

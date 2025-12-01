@@ -39,29 +39,60 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// Fallback data
+const CULTURA_FALLBACK: CulturaData = {
+  page: {
+    title: 'Cultura Empresarial',
+    description: 'Conoce nuestra cultura empresarial y valores.',
+    subtitle: 'Nuestros valores nos definen',
+    hero_image: '/images/cultura/hero.jpg',
+    keywords: ['cultura', 'valores', 'equipo'],
+    openGraph: {
+      title: 'Cultura Empresarial | Métrica FM',
+      description: 'Conoce nuestra cultura empresarial y valores.',
+      type: 'website',
+      locale: 'es_PE',
+      siteName: 'Métrica FM'
+    }
+  },
+  hero: {
+    title: 'Cultura Empresarial',
+    subtitle: 'Nuestros valores nos definen',
+    team_gallery: { columns: [] }
+  },
+  values: {
+    section: {
+      title: 'Nuestros Valores',
+      subtitle: 'Los principios que nos guían'
+    },
+    values_list: []
+  }
+};
+
 async function getCulturaData(): Promise<CulturaData> {
   try {
-    // First try to load from Firestore
     const firestoreData = await PagesService.getCulturaPage();
     if (firestoreData) {
-      return firestoreData as CulturaData;
+      // Deep merge con fallback
+      return {
+        ...CULTURA_FALLBACK,
+        ...firestoreData,
+        page: { ...CULTURA_FALLBACK.page, ...firestoreData.page },
+        hero: { ...CULTURA_FALLBACK.hero, ...firestoreData.hero },
+        values: {
+          ...CULTURA_FALLBACK.values,
+          ...firestoreData.values,
+          section: { ...CULTURA_FALLBACK.values.section, ...firestoreData.values?.section }
+        }
+      } as CulturaData;
     }
 
-    // Fallback to API if Firestore fails
-    const response = await fetch('/api/admin/pages/cultura', { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch cultura data: ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.error || 'Failed to load cultura data');
-    }
-
-    return result.data;
+    console.warn('⚠️ [FALLBACK] Cultura Page: Sin datos en Firestore, usando fallback');
+    return CULTURA_FALLBACK;
   } catch (error) {
     console.error('Error loading cultura data:', error);
-    throw error;
+    console.warn('⚠️ [FALLBACK] Cultura Page: Error detectado, usando fallback');
+    return CULTURA_FALLBACK;
   }
 }
 
