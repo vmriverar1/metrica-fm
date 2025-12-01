@@ -99,18 +99,74 @@ function serializeFirestoreData(data: any): any {
   return data;
 }
 
+// Fallback data with clean structure
+const CONTACT_FALLBACK: ContactPageData = {
+  hero: {
+    title: "Contáctanos",
+    background_image: "/images/proyectos/EDUCACIÓN/Cibertec/_ARI2623.webp",
+    subtitle: "Estamos aquí para ayudarte a transformar tus proyectos en realidad."
+  },
+  seo: {
+    meta_description: "Contáctanos para iniciar tu proyecto de infraestructura.",
+    meta_title: "Contacto - Métrica FM",
+    keywords: ["contacto", "métrica fm"]
+  },
+  settings: {
+    form_method: "POST",
+    form_action: "/api/contact",
+    urgent_response_time: "48 horas",
+    response_time: "24 horas",
+    show_map_placeholder: true
+  },
+  sections: {
+    contact_info: {
+      title: "Información de Contacto",
+      items: []
+    },
+    map: {
+      show_placeholder: true,
+      title: "Ubicación",
+      subtitle: "Lima, Perú",
+      address: "Lima, Perú",
+      embed_url: ""
+    },
+    intro: {
+      title: "Hablemos de Tu Proyecto",
+      description: "Nuestro equipo está listo para asesorarte."
+    },
+    process: {
+      title: "Proceso de Contacto",
+      steps: []
+    }
+  }
+};
+
 async function getContactData(): Promise<ContactPageData> {
   try {
-    // Get contact data directly from Firestore using FirestoreCore
     console.log('📄 [ContactPage] Loading contact data from Firestore...');
 
     const result = await FirestoreCore.getDocumentById('pages', 'contact');
 
     if (result.success && result.data) {
       console.log('✅ [ContactPage] Contact data loaded from Firestore');
-      // Serialize Firestore data before returning
       const serializedData = serializeFirestoreData(result.data);
-      return serializedData as ContactPageData;
+
+      // Deep merge con fallback para asegurar que todos los campos existan
+      return {
+        ...CONTACT_FALLBACK,
+        ...serializedData,
+        hero: { ...CONTACT_FALLBACK.hero, ...serializedData.hero },
+        seo: { ...CONTACT_FALLBACK.seo, ...serializedData.seo },
+        settings: { ...CONTACT_FALLBACK.settings, ...serializedData.settings },
+        sections: {
+          ...CONTACT_FALLBACK.sections,
+          ...serializedData.sections,
+          contact_info: { ...CONTACT_FALLBACK.sections.contact_info, ...serializedData.sections?.contact_info },
+          map: { ...CONTACT_FALLBACK.sections.map, ...serializedData.sections?.map },
+          intro: { ...CONTACT_FALLBACK.sections.intro, ...serializedData.sections?.intro },
+          process: { ...CONTACT_FALLBACK.sections.process, ...serializedData.sections?.process }
+        }
+      } as ContactPageData;
     }
 
     console.warn('⚠️ [FALLBACK] Contact Page: Sin datos en Firestore, usando fallback');
@@ -119,92 +175,7 @@ async function getContactData(): Promise<ContactPageData> {
     console.warn('⚠️ [FALLBACK] Contact Page: Error detectado, usando fallback');
   }
 
-  // Fallback data with clean structure
-  const fallbackData: ContactPageData = {
-      hero: {
-        title: "Contáctanos",
-        background_image: "/images/proyectos/EDUCACIÓN/Cibertec/_ARI2623.webp",
-        subtitle: "Estamos aquí para ayudarte a transformar tus proyectos en realidad, cuidando cada detalle para garantizar su rentabilidad."
-      },
-      seo: {
-        meta_description: "Contáctanos para iniciar tu proyecto de infraestructura. Equipo experto en dirección integral de proyectos con más de 15 años de experiencia en Perú.",
-        meta_title: "Contacto - Métrica FM | Dirección Integral de Proyectos",
-        keywords: [
-          "contacto métrica dip",
-          "dirección integral proyectos perú",
-          "consultoría construcción lima",
-          "gestión proyectos infraestructura",
-          "contacto empresa construcción"
-        ]
-      },
-      settings: {
-        form_method: "POST",
-        form_action: "/api/contact",
-        urgent_response_time: "48 horas",
-        response_time: "24 horas",
-        show_map_placeholder: true
-      },
-      sections: {
-        contact_info: {
-          title: "Información de Contacto",
-          items: [
-            {
-              icon: "MapPin",
-              content: "Andrés Reyes 388, San Isidro",
-              title: "Oficina Principal"
-            },
-            {
-              title: "Teléfonos",
-              content: "+51 1 719-5990\n+51 989 742 678 (WhatsApp)",
-              icon: "Phone"
-            },
-            {
-              content: "info@metrica-dip.com\ninfo@metricadip.com",
-              title: "Email",
-              icon: "Mail"
-            },
-            {
-              content: "Lunes a Viernes: 8:00 AM - 6:00 PM\nSábados: 9:00 AM - 1:00 PM",
-              icon: "Clock",
-              title: "Horarios de Atención"
-            }
-          ]
-        },
-        map: {
-          show_placeholder: true,
-          title: "Mapa Interactivo",
-          subtitle: "Santiago de Surco, Lima",
-          address: "Andrés Reyes 388, San Isidro, Lima",
-          embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.747374654482!2d-77.05284708570265!3d-12.09724084509915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c834244b1e1b%3A0x7e8bbf4c5a4b1f2c!2sAndres%20Reyes%20388%2C%20San%20Isidro%2015036%2C%20Peru!5e0!3m2!1sen!2sus!4v1632920000000!5m2!1sen!2sus"
-        },
-        intro: {
-          title: "Hablemos de Tu Proyecto",
-          description: "Nuestro equipo de expertos está listo para asesorarte en cada etapa de tu proyecto de CONSTRUCCIÓN. Desde la conceptualización hasta la entrega final, estamos comprometidos con tu éxito."
-        },
-        process: {
-          title: "Proceso de Contacto",
-          steps: [
-            {
-              description: "Conversamos sobre tu proyecto y necesidades específicas",
-              title: "Consulta Inicial",
-              number: "1"
-            },
-            {
-              title: "Propuesta Técnica",
-              number: "2",
-              description: "Desarrollamos una propuesta detallada y personalizada"
-            },
-            {
-              title: "Inicio del Proyecto",
-              number: "3",
-              description: "Comenzamos a trabajar juntos en la ejecución de tu visión"
-            }
-          ]
-        }
-      }
-    };
-
-  return fallbackData;
+  return CONTACT_FALLBACK;
 }
 
 function ContactContent({ data }: { data: ContactPageData }) {
