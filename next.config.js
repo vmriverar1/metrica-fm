@@ -143,7 +143,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'metrica-dip.com',
+        hostname: 'metrica-fm.com',
         port: '',
         pathname: '/**',
       },

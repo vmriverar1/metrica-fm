@@ -60,31 +60,7 @@
   },
   "apphosting": [
     {
-      "backendId": "metrica-dip",
-      "rootDir": "y",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ],
-      "alwaysDeployFromSource": true
-    },
-    {
-      "backendId": "metrica-dip",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ],
-      "alwaysDeployFromSource": true
-    },
-    {
-      "backendId": "metrica-dip",
+      "backendId": "metrica-fm",
       "rootDir": "/",
       "ignore": [
         "node_modules",
