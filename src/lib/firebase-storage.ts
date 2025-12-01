@@ -12,7 +12,7 @@ import { getFirebaseAdmin } from './firebase-admin-safe';
  * bucket() sin parámetros puede fallar si storageBucket no se configura correctamente
  * durante la inicialización de Firebase Admin
  */
-const STORAGE_BUCKET_NAME = 'metrica-dip.firebasestorage.app';
+const STORAGE_BUCKET_NAME = 'metrica-fm.firebasestorage.app';
 
 /**
  * Helper para obtener el bucket de forma consistente
