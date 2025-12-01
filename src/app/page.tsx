@@ -18,12 +18,31 @@ import { HOME_PAGE_FALLBACK } from '@/lib/firestore/fallbacks';
 function mergeWithFallback(data: Partial<HomePageData> | null | undefined): HomePageData {
   if (!data) return HOME_PAGE_FALLBACK;
 
+  // Merge profundo para hero para asegurar que todos los campos existan
+  const mergedHero = {
+    ...HOME_PAGE_FALLBACK.hero,
+    ...data.hero,
+    title: {
+      ...HOME_PAGE_FALLBACK.hero.title,
+      ...data.hero?.title
+    },
+    background: {
+      ...HOME_PAGE_FALLBACK.hero.background,
+      ...data.hero?.background
+    },
+    cta: {
+      ...HOME_PAGE_FALLBACK.hero.cta,
+      ...data.hero?.cta
+    },
+    rotating_words: data.hero?.rotating_words?.length ? data.hero.rotating_words : HOME_PAGE_FALLBACK.hero.rotating_words
+  };
+
   return {
     page: {
       title: data.page?.title || HOME_PAGE_FALLBACK.page.title,
       description: data.page?.description || HOME_PAGE_FALLBACK.page.description
     },
-    hero: data.hero || HOME_PAGE_FALLBACK.hero,
+    hero: mergedHero,
     stats: data.stats || HOME_PAGE_FALLBACK.stats,
     services: data.services || HOME_PAGE_FALLBACK.services,
     portfolio: data.portfolio || HOME_PAGE_FALLBACK.portfolio,
