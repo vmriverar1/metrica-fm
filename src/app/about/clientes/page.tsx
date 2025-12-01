@@ -104,29 +104,74 @@ export const metadata: Metadata = {
   description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia y profesionalismo en dirección integral de proyectos de infraestructura.',
 };
 
+// Fallback data para cuando Firestore no tiene datos
+const CLIENTES_FALLBACK: ClientesData = {
+  page: {
+    title: 'Nuestros Clientes | Métrica FM',
+    description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia'
+  },
+  hero: {
+    title: 'Nuestros Clientes',
+    subtitle: 'Empresas líderes que confían en nuestra experiencia',
+    background_image: '/images/clientes/hero.jpg',
+    background_image_fallback: '/images/clientes/hero.jpg'
+  },
+  introduction: {
+    title: 'Relaciones de Confianza',
+    description: 'Construimos relaciones duraderas con nuestros clientes basadas en la excelencia, transparencia y resultados.',
+    stats: []
+  },
+  client_sectors: [],
+  clientes: {
+    logos: [],
+    section: {
+      title: 'Nuestros Clientes',
+      subtitle: 'Empresas que confían en nosotros'
+    }
+  },
+  testimonials: {
+    title: 'Testimonios',
+    subtitle: 'Lo que dicen nuestros clientes',
+    testimonials_list: [],
+    youtube_videos: []
+  },
+  client_benefits: {
+    title: 'Beneficios para Nuestros Clientes',
+    subtitle: 'Por qué elegirnos',
+    benefits: []
+  },
+  success_metrics: {
+    title: 'Métricas de Éxito',
+    subtitle: 'Resultados que hablan por sí mismos',
+    metrics: []
+  }
+};
+
 async function getClientesData(): Promise<ClientesData> {
   try {
     // First try to load from Firestore
     const firestoreData = await PagesService.getClientesPage();
     if (firestoreData) {
-      return firestoreData as ClientesData;
+      // Merge con fallback para cubrir campos faltantes
+      return {
+        ...CLIENTES_FALLBACK,
+        ...firestoreData,
+        page: { ...CLIENTES_FALLBACK.page, ...firestoreData.page },
+        hero: { ...CLIENTES_FALLBACK.hero, ...firestoreData.hero },
+        introduction: { ...CLIENTES_FALLBACK.introduction, ...firestoreData.introduction },
+        clientes: { ...CLIENTES_FALLBACK.clientes, ...firestoreData.clientes },
+        testimonials: { ...CLIENTES_FALLBACK.testimonials, ...firestoreData.testimonials },
+        client_benefits: { ...CLIENTES_FALLBACK.client_benefits, ...firestoreData.client_benefits },
+        success_metrics: { ...CLIENTES_FALLBACK.success_metrics, ...firestoreData.success_metrics }
+      } as ClientesData;
     }
 
-    // Fallback to API if Firestore fails
-    const response = await fetch('/api/admin/pages/clientes', { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch clientes data: ${response.status}`);
-    }
-
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.error || 'Failed to load clientes data');
-    }
-
-    return result.data;
+    console.warn('⚠️ [FALLBACK] Clientes Page: Sin datos en Firestore, usando fallback');
+    return CLIENTES_FALLBACK;
   } catch (error) {
     console.error('Error loading clientes data:', error);
-    throw error;
+    console.warn('⚠️ [FALLBACK] Clientes Page: Error detectado, usando fallback');
+    return CLIENTES_FALLBACK;
   }
 }
 
