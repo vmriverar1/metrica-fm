@@ -107,9 +107,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-// Forzar generación estática para que metadata esté en HTML inicial (mejor SEO)
-export const dynamic = 'force-static';
-export const revalidate = 3600; // Revalidar cada hora
+// Forzar contenido dinámico para que los cambios del admin se reflejen inmediatamente
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // Sin caché
 
 export default async function Home() {
   const data = await getHomeData();

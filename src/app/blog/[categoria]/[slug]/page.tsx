@@ -11,8 +11,9 @@ import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import { BlogContentData } from '@/types/blog-page';
 
-// Revalidar cada 60 segundos para mantener datos actualizados
-export const revalidate = 60;
+// Contenido dinámico para que los cambios del admin se reflejen inmediatamente
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface ArticlePageProps {
   params: {
