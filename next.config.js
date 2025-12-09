@@ -52,6 +52,9 @@ const nextConfig = {
   experimental: {
     // optimizeCss: false, // Deshabilitado - puede causar problemas con NODE_OPTIONS
     optimizePackageImports: ['framer-motion', 'gsap', '@radix-ui/react-accordion'], // Removed lucide-react due to barrel optimization conflicts
+    serverActions: {
+      bodySizeLimit: '50mb', // Permitir subir imágenes grandes de cámaras profesionales (se procesan y reducen después)
+    },
   },
 
   // Source maps configuration to avoid 404s in development

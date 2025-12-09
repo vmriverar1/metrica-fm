@@ -11,7 +11,10 @@ import sharp from 'sharp';
 import { uploadToStorage, generateDateFolder } from '@/lib/firebase-storage';
 
 // Configuración de upload a Firebase
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+// Límite para archivo ORIGINAL (antes de procesar) - permite imágenes de cámaras profesionales
+const MAX_ORIGINAL_FILE_SIZE = 50 * 1024 * 1024; // 50MB para el archivo original
+// Límite para archivo PROCESADO (después de redimensionar y comprimir)
+const MAX_PROCESSED_FILE_SIZE = 10 * 1024 * 1024; // 10MB para el archivo final
 const ALLOWED_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -204,10 +207,12 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        if (file.size > MAX_FILE_SIZE) {
+        // Validar tamaño del archivo ORIGINAL (antes de procesar)
+        // Permite archivos grandes de cámaras profesionales que serán reducidos
+        if (file.size > MAX_ORIGINAL_FILE_SIZE) {
           errors.push({
             file: file.name,
-            error: `Archivo demasiado grande (máximo ${MAX_FILE_SIZE / 1024 / 1024}MB)`
+            error: `Archivo original demasiado grande (máximo ${MAX_ORIGINAL_FILE_SIZE / 1024 / 1024}MB). Incluso las imágenes de cámaras profesionales no deberían exceder este límite.`
           });
           continue;
         }
@@ -230,6 +235,10 @@ export async function POST(request: NextRequest) {
         let finalDimensions = originalDimensions;
 
         if (enableProcessing && file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
+          // Log para imágenes grandes (útil para debugging)
+          if (file.size > 10 * 1024 * 1024) {
+            console.log(`[UPLOAD-FIREBASE] Procesando imagen grande de cámara profesional: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB, ${originalDimensions.width}x${originalDimensions.height}px)`);
+          }
           const processed = await processImage(originalBuffer, file.type);
           finalBuffer = processed.processedBuffer;
           finalType = processed.finalType;
@@ -242,6 +251,16 @@ export async function POST(request: NextRequest) {
             const nameWithoutExt = path.basename(fileName, path.extname(fileName));
             fileName = `${nameWithoutExt}.webp`;
           }
+        }
+
+        // Validar tamaño del archivo PROCESADO (después de redimensionar y comprimir)
+        if (finalBuffer.length > MAX_PROCESSED_FILE_SIZE) {
+          console.error(`[UPLOAD-FIREBASE] Archivo procesado sigue siendo muy grande: ${Math.round(finalBuffer.length / 1024 / 1024)}MB`);
+          errors.push({
+            file: file.name,
+            error: `El archivo procesado (${(finalBuffer.length / 1024 / 1024).toFixed(2)}MB) sigue excediendo el límite de ${MAX_PROCESSED_FILE_SIZE / 1024 / 1024}MB. Intente con una imagen de menor resolución.`
+          });
+          continue;
         }
 
         // Determinar content type

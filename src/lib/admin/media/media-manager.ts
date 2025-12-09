@@ -100,7 +100,10 @@ export interface MediaStats {
 const MEDIA_DIR = 'public/uploads';
 const THUMBNAILS_DIR = 'public/uploads/thumbnails';
 const MEDIA_INDEX_FILE = 'data/media-index.json';
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB por defecto
+// Límite para archivo ORIGINAL (antes de procesar) - permite imágenes de cámaras profesionales
+const MAX_ORIGINAL_FILE_SIZE = 50 * 1024 * 1024; // 50MB para el archivo original
+// Límite para archivo PROCESADO (después de redimensionar y comprimir)
+const MAX_PROCESSED_FILE_SIZE = 10 * 1024 * 1024; // 10MB para el archivo final
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/ogg'];
 const ALLOWED_AUDIO_TYPES = ['audio/mp3', 'audio/wav', 'audio/ogg'];
@@ -346,16 +349,19 @@ export class MediaManager {
   }
 
   /**
-   * Validar archivo subido
+   * Validar archivo subido (tamaño ORIGINAL antes de procesar)
+   * Para imágenes, se permite un tamaño mayor porque serán reducidas después
    */
   private validateFile(
-    filename: string, 
-    size: number, 
-    mimeType: string, 
+    filename: string,
+    size: number,
+    mimeType: string,
     options: UploadOptions = {}
   ): { valid: boolean; error?: string } {
-    // Verificar tamaño
-    const maxSize = options.maxSize || MAX_FILE_SIZE;
+    // Verificar tamaño del archivo ORIGINAL
+    // Para imágenes se permite hasta MAX_ORIGINAL_FILE_SIZE porque serán procesadas
+    const isImage = mimeType.startsWith('image/');
+    const maxSize = options.maxSize || (isImage ? MAX_ORIGINAL_FILE_SIZE : MAX_PROCESSED_FILE_SIZE);
     if (size > maxSize) {
       return {
         valid: false,
@@ -478,11 +484,21 @@ export class MediaManager {
       // 2. Si es una imagen, intentar normalizarla
       const isImage = actualMimeType.startsWith('image/');
       if (isImage && options.optimizeImage !== false) {
-        await logger.info('media', 'Procesando imagen...', {
-          originalName,
-          detectedMime: actualMimeType,
-          browserMime: mimeType
-        });
+        // Log especial para imágenes grandes de cámaras profesionales
+        if (fileBuffer.length > 10 * 1024 * 1024) {
+          await logger.info('media', 'Procesando imagen grande de cámara profesional...', {
+            originalName,
+            originalSize: `${(fileBuffer.length / 1024 / 1024).toFixed(2)}MB`,
+            detectedMime: actualMimeType,
+            browserMime: mimeType
+          });
+        } else {
+          await logger.info('media', 'Procesando imagen...', {
+            originalName,
+            detectedMime: actualMimeType,
+            browserMime: mimeType
+          });
+        }
 
         const normalized = await normalizeImage(processedBuffer, actualMimeType);
         processedBuffer = normalized.buffer;
@@ -497,7 +513,15 @@ export class MediaManager {
         }
       }
 
-      // 3. Validar archivo (ahora con el tipo correcto)
+      // 3. Validar tamaño del archivo PROCESADO
+      // Para imágenes, verificar que después del procesamiento esté dentro del límite
+      if (processedBuffer.length > MAX_PROCESSED_FILE_SIZE) {
+        throw new Error(
+          `El archivo procesado (${(processedBuffer.length / 1024 / 1024).toFixed(2)}MB) excede el límite de ${MAX_PROCESSED_FILE_SIZE / 1024 / 1024}MB. Intente con una imagen de menor resolución.`
+        );
+      }
+
+      // Validar tipo de archivo
       const validation = this.validateFile(originalName, processedBuffer.length, actualMimeType, options);
       if (!validation.valid) {
         throw new Error(validation.error);
