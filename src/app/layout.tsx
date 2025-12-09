@@ -11,6 +11,7 @@ import OfflineIndicator from '@/components/offline/OfflineIndicator';
 import FloatingEmail from '@/components/ui/FloatingEmail';
 import AnalyticsProvider from '@/components/analytics/AnalyticsProvider';
 import ReCaptchaProvider from '@/components/recaptcha/ReCaptchaProvider';
+import GSAPNavigationHandler from '@/components/gsap/GSAPNavigationHandler';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -151,6 +152,7 @@ export default function RootLayout({
                 <PWAUpdateManager position="top-right" autoUpdate={false} />
                 <OfflineIndicator showOnlyWhenOffline={true} position="bottom-left" />
                 <FloatingEmail hiddenOnPaths={['/portfolio*', '/admin*']} />
+                <GSAPNavigationHandler />
               </RobustNavigationProvider>
             </AppInitializer>
           </AnalyticsProvider>
