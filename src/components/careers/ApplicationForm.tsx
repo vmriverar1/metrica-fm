@@ -27,6 +27,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useEnhancedFormValidation } from '@/hooks/useEnhancedFormValidation';
+import { uploadJobApplicationFile, validateFile, formatFileSize } from '@/lib/storage/file-upload-service';
+import { Progress } from '@/components/ui/progress';
 
 interface ApplicationFormData {
   firstName: string;
@@ -95,6 +97,14 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
   const [coverLetter, setCoverLetter] = useState<File | undefined>();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [agreeToDataProcessing, setAgreeToDataProcessing] = useState(false);
+
+  // Estados para subida de archivos a Firebase Storage
+  const [resumeURL, setResumeURL] = useState<string>('');
+  const [coverLetterURL, setCoverLetterURL] = useState<string>('');
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const [uploadingCoverLetter, setUploadingCoverLetter] = useState(false);
+  const [resumeProgress, setResumeProgress] = useState(0);
+  const [coverLetterProgress, setCoverLetterProgress] = useState(0);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -203,7 +213,7 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
       // Obtener valores validados
       const formValues = formValidation.getFormValues();
 
-      // Preparar datos del formulario (sin archivos por ahora)
+      // Preparar datos del formulario con URLs de archivos subidos a Storage
       const submissionData = {
         firstName: formValues.firstName,
         lastName: formValues.lastName,
@@ -217,6 +227,8 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
         motivationLetter: formValues.motivationLetter,
         availability: availability,
         salaryExpectation: salaryExpectation || '',
+        resumeURL: resumeURL || '',
+        coverLetterURL: coverLetterURL || '',
         jobTitle: job.title,
         jobId: job.id,
         department: job.department
@@ -281,12 +293,79 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
     }
   };
 
-  const handleFileUpload = (field: 'resume' | 'coverLetter', file: File | null) => {
-    if (file) {
+  const handleFileUpload = async (field: 'resume' | 'coverLetter', file: File | null) => {
+    if (!file) return;
+
+    // Validar archivo antes de subir
+    const validation = validateFile(file);
+    if (!validation.valid) {
+      const newErrors = { ...errors };
+      newErrors[field] = validation.error || 'Archivo inválido';
+      setErrors(newErrors);
+      return;
+    }
+
+    // Limpiar errores previos
+    const newErrors = { ...errors };
+    delete newErrors[field];
+    setErrors(newErrors);
+
+    try {
       if (field === 'resume') {
+        setUploadingResume(true);
         setResume(file);
+
+        const result = await uploadJobApplicationFile(
+          file,
+          job.id,
+          'resume',
+          (progress) => setResumeProgress(progress.progress)
+        );
+
+        if (result.success && result.url) {
+          setResumeURL(result.url);
+          console.log('✅ Resume uploaded:', result.url);
+        } else {
+          throw new Error(result.error || 'Error al subir CV');
+        }
       } else {
+        setUploadingCoverLetter(true);
         setCoverLetter(file);
+
+        const result = await uploadJobApplicationFile(
+          file,
+          job.id,
+          'coverLetter',
+          (progress) => setCoverLetterProgress(progress.progress)
+        );
+
+        if (result.success && result.url) {
+          setCoverLetterURL(result.url);
+          console.log('✅ Cover letter uploaded:', result.url);
+        } else {
+          throw new Error(result.error || 'Error al subir carta de presentación');
+        }
+      }
+    } catch (error) {
+      const newErrors = { ...errors };
+      newErrors[field] = error instanceof Error ? error.message : 'Error al subir archivo';
+      setErrors(newErrors);
+
+      // Limpiar archivo en caso de error
+      if (field === 'resume') {
+        setResume(undefined);
+        setResumeURL('');
+      } else {
+        setCoverLetter(undefined);
+        setCoverLetterURL('');
+      }
+    } finally {
+      if (field === 'resume') {
+        setUploadingResume(false);
+        setResumeProgress(0);
+      } else {
+        setUploadingCoverLetter(false);
+        setCoverLetterProgress(0);
       }
     }
   };
@@ -612,26 +691,47 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <div className="space-y-2">
             <Label>CV/Currículum (opcional)</Label>
             <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
-              <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Arrastra tu CV aquí o haz clic para seleccionar
-              </p>
-              <Input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => handleFileUpload('resume', e.target.files?.[0] || null)}
-                className="hidden"
-                id="resume-upload"
-              />
-              <Button variant="outline" size="sm" asChild>
-                <label htmlFor="resume-upload" className="cursor-pointer">
-                  Seleccionar archivo
-                </label>
-              </Button>
-              {resume && (
-                <p className="text-sm text-primary mt-2 flex items-center justify-center gap-1">
+              {uploadingResume ? (
+                <>
+                  <Loader2 className="w-8 h-8 mx-auto text-primary mb-2 animate-spin" />
+                  <p className="text-sm text-muted-foreground mb-2">Subiendo CV...</p>
+                  <div className="w-full max-w-xs mx-auto">
+                    <Progress value={resumeProgress} className="h-2" />
+                    <p className="text-xs text-muted-foreground mt-1">{Math.round(resumeProgress)}%</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Arrastra tu CV aquí o haz clic para seleccionar
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-2">PDF, DOC, DOCX (máx. 5MB)</p>
+                  <Input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={(e) => handleFileUpload('resume', e.target.files?.[0] || null)}
+                    className="hidden"
+                    id="resume-upload"
+                    disabled={uploadingResume}
+                  />
+                  <Button variant="outline" size="sm" asChild disabled={uploadingResume}>
+                    <label htmlFor="resume-upload" className="cursor-pointer">
+                      Seleccionar archivo
+                    </label>
+                  </Button>
+                </>
+              )}
+              {resume && resumeURL && !uploadingResume && (
+                <p className="text-sm text-green-600 mt-2 flex items-center justify-center gap-1">
                   <CheckCircle className="w-4 h-4" />
-                  {resume.name}
+                  {resume.name} - Subido correctamente
+                </p>
+              )}
+              {errors.resume && (
+                <p className="text-sm text-destructive mt-2 flex items-center justify-center gap-1">
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.resume}
                 </p>
               )}
             </div>
@@ -640,26 +740,47 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
           <div className="space-y-2">
             <Label>Carta de presentación (opcional)</Label>
             <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
-              <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Arrastra tu carta aquí o haz clic para seleccionar
-              </p>
-              <Input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => handleFileUpload('coverLetter', e.target.files?.[0] || null)}
-                className="hidden"
-                id="cover-letter-upload"
-              />
-              <Button variant="outline" size="sm" asChild>
-                <label htmlFor="cover-letter-upload" className="cursor-pointer">
-                  Seleccionar archivo
-                </label>
-              </Button>
-              {coverLetter && (
-                <p className="text-sm text-primary mt-2 flex items-center justify-center gap-1">
+              {uploadingCoverLetter ? (
+                <>
+                  <Loader2 className="w-8 h-8 mx-auto text-primary mb-2 animate-spin" />
+                  <p className="text-sm text-muted-foreground mb-2">Subiendo carta...</p>
+                  <div className="w-full max-w-xs mx-auto">
+                    <Progress value={coverLetterProgress} className="h-2" />
+                    <p className="text-xs text-muted-foreground mt-1">{Math.round(coverLetterProgress)}%</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Arrastra tu carta aquí o haz clic para seleccionar
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-2">PDF, DOC, DOCX (máx. 5MB)</p>
+                  <Input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={(e) => handleFileUpload('coverLetter', e.target.files?.[0] || null)}
+                    className="hidden"
+                    id="cover-letter-upload"
+                    disabled={uploadingCoverLetter}
+                  />
+                  <Button variant="outline" size="sm" asChild disabled={uploadingCoverLetter}>
+                    <label htmlFor="cover-letter-upload" className="cursor-pointer">
+                      Seleccionar archivo
+                    </label>
+                  </Button>
+                </>
+              )}
+              {coverLetter && coverLetterURL && !uploadingCoverLetter && (
+                <p className="text-sm text-green-600 mt-2 flex items-center justify-center gap-1">
                   <CheckCircle className="w-4 h-4" />
-                  {coverLetter.name}
+                  {coverLetter.name} - Subido correctamente
+                </p>
+              )}
+              {errors.coverLetter && (
+                <p className="text-sm text-destructive mt-2 flex items-center justify-center gap-1">
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.coverLetter}
                 </p>
               )}
             </div>
