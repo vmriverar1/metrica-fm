@@ -11,6 +11,9 @@ import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import { BlogContentData } from '@/types/blog-page';
 
+// Revalidar cada 60 segundos para mantener datos actualizados
+export const revalidate = 60;
+
 interface ArticlePageProps {
   params: {
     categoria: string;

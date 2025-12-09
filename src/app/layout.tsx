@@ -14,8 +14,9 @@ import ReCaptchaProvider from '@/components/recaptcha/ReCaptchaProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Métrica FM - Ingeniería y Construcción',
-  description: 'Dirección Integral de Proyectos que transforman la infraestructura del Perú',
+  title: 'Métrica FM | Gerencia de Proyectos y Supervisión de Obras',
+  description: 'Gerenciamos y supervisamos proyectos con control, metodología y eficiencia. Experiencia en retail, industrial, salud, vivienda, etc.',
+  keywords: 'gerencia de proyectos, supervisión de obra, control de obra, gerencia industrial, metrica fm, dirección de proyectos, construcción industrial, retail, logística',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -53,6 +54,87 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+
+        {/* Schema.org JSON-LD - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Métrica FM",
+              "url": "https://metricafm.com",
+              "logo": "https://metricafm.com/img/logo-color.png",
+              "description": "Gerencia de Proyectos y supervisión de obras con control de costos, tiempos y calidad. Metodologías PMI y Prince2.",
+              "sameAs": [
+                "https://www.linkedin.com/company/metrica-fm",
+                "https://www.youtube.com/@metricafm"
+              ]
+            })
+          }}
+        />
+
+        {/* Schema.org JSON-LD - WebSite with Sitelinks Search Box */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Métrica FM",
+              "url": "https://metricafm.com",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://metricafm.com/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
+
+        {/* Schema.org JSON-LD - ItemList for Main Navigation */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "itemListElement": [
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 1,
+                  "name": "Servicios",
+                  "description": "Nuestros servicios de gerencia de proyectos y supervisión de obras",
+                  "url": "https://metricafm.com/services"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 2,
+                  "name": "Proyectos",
+                  "description": "Portfolio de proyectos realizados",
+                  "url": "https://metricafm.com/portfolio"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 3,
+                  "name": "Contacto",
+                  "description": "Contáctanos para tu proyecto",
+                  "url": "https://metricafm.com/contact"
+                },
+                {
+                  "@type": "SiteNavigationElement",
+                  "position": 4,
+                  "name": "Nosotros",
+                  "description": "Conoce nuestra historia y trayectoria",
+                  "url": "https://metricafm.com/about/historia"
+                }
+              ]
+            })
+          }}
+        />
       </head>
       <body className="font-body antialiased">
         <ReCaptchaProvider>

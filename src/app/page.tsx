@@ -107,8 +107,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Forzar generación estática para que metadata esté en HTML inicial (mejor SEO)
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidar cada hora
 
 export default async function Home() {
   const data = await getHomeData();
