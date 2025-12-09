@@ -9,15 +9,14 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
             <h4 className="font-bold text-lg font-headline">Métrica FM SAC</h4>
-            <p className="text-sm text-primary-foreground/70 mt-2">Dirección Integral de Proyectos</p>
+            <p className="text-sm text-primary-foreground/70 mt-2">Gestión y Mantenimiento de Inmuebles</p>
           </div>
           <div>
             <h4 className="font-bold text-lg font-headline">Navegación</h4>
             <ul className="mt-2 space-y-1">
               <li><Link href="#hero" className="text-sm text-primary-foreground/70 hover:text-white">Inicio</Link></li>
-              <li><Link href="#pillars" className="text-sm text-primary-foreground/70 hover:text-white">DIP</Link></li>
+              <li><Link href="#services" className="text-sm text-primary-foreground/70 hover:text-white">Servicios</Link></li>
               <li><Link href="#portfolio" className="text-sm text-primary-foreground/70 hover:text-white">Proyectos</Link></li>
-              <li><Link href="#newsletter" className="text-sm text-primary-foreground/70 hover:text-white">Newsletter</Link></li>
               <li><Link href="/libro-reclamaciones" className="text-sm text-primary-foreground/70 hover:text-white">Libro de Reclamaciones</Link></li>
               <li><Link href="/canal-de-denuncias" className="text-sm text-primary-foreground/70 hover:text-white">Canal de Denuncias</Link></li>
             </ul>
