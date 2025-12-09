@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "email_config",
+    "_path": "config/email_config",
+    "notify_on_subscribe": true,
+    "notify_on_unsubscribe": false,
+    "recipients": [
+      "aslybaca@digitalmediabalance.com",
+      "rvillegas@metrica-dip.com"
+    ],
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1764368032,
+      "nanoseconds": 693000000,
+      "iso": "2025-11-28T22:13:52.693Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1764368032,
+      "nanoseconds": 693000000,
+      "iso": "2025-11-28T22:13:52.693Z"
+    },
+    "employment_recipients": [
+      "cmatos@metrica-dip.com",
+      "ezevallos@metrica-dip.com",
+      "rvillegas@metrica-dip.com"
+    ],
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1764368032,
+      "nanoseconds": 693000000,
+      "iso": "2025-11-28T22:13:52.693Z"
+    }
+  }
+]

@@ -407,12 +407,12 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
             className="new-content absolute left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] z-20 pointer-events-none bottom-[calc(21vh+100px)] min-[480px]:bottom-[calc(21vh+200px)] md:bottom-[calc(45vh+100px)]"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-4">
-              <h2 
+              <h2
                 ref={newTitleRef}
-                className="text-4xl md:text-6xl"
+                className="text-4xl md:text-5xl"
               >
                 <span ref={wordRef} className="text-accent inline-block">{words[currentWordIndex]}</span><br/>
-                <span className="text-white">tu rentabilidad.</span>
+                <span className="text-white">soluciones.</span>
               </h2>
               <p 
                 ref={newDescriptionRef}

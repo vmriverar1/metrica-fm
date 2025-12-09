@@ -64,6 +64,13 @@ export const homeSchema = {
         description: 'Configuración del formulario de newsletter',
         collapsible: true,
         defaultExpanded: false
+    },
+    {
+        name: 'clients_logos',
+        label: 'Logos de Clientes',
+        description: 'Slider de logos de clientes en el home',
+        collapsible: true,
+        defaultExpanded: false
     }
     ],
     fields: [
@@ -430,6 +437,54 @@ export const homeSchema = {
         type: 'text' as const,
         group: 'newsletter_setup',
         description: 'Descripción del mensaje de confirmación'
+    },
+
+    // ===== CLIENTS LOGOS GROUP =====
+    {
+        key: 'clients.section.title',
+        label: 'Título Sección Clientes',
+        type: 'text' as const,
+        required: false,
+        group: 'clients_logos',
+        description: 'Título de la sección de logos de clientes'
+    },
+    {
+        key: 'clients.section.subtitle',
+        label: 'Subtítulo Sección Clientes',
+        type: 'textarea' as const,
+        required: false,
+        group: 'clients_logos',
+        description: 'Descripción de la sección de clientes'
+    },
+    {
+        key: 'clients.logos',
+        label: 'Logos de Clientes',
+        type: 'array' as const,
+        group: 'clients_logos',
+        description: 'Gestiona los logos que aparecen en el slider del home',
+        arrayFields: [
+            {
+                key: 'name',
+                label: 'Nombre del Cliente',
+                type: 'text' as const,
+                required: true,
+                placeholder: 'Ej: BCP, Alicorp, etc.'
+            },
+            {
+                key: 'image',
+                label: 'Logo',
+                type: 'image' as const,
+                required: true,
+                placeholder: 'Seleccionar logo'
+            },
+            {
+                key: 'alt',
+                label: 'Texto Alternativo',
+                type: 'text' as const,
+                required: false,
+                placeholder: 'Descripción del logo para accesibilidad'
+            }
+        ]
     }
 
     ]

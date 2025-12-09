@@ -88,7 +88,7 @@ import {
 export interface FormField {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'number' | 'date' | 'datetime-local' | 'email' | 'url' | 'password' | 'file' | 'tags' | 'markdown' | 'media' | 'image' | 'gallery' | 'video' | 'custom';
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'checkbox' | 'number' | 'date' | 'datetime-local' | 'email' | 'url' | 'password' | 'file' | 'tags' | 'markdown' | 'media' | 'image' | 'gallery' | 'video' | 'custom' | 'array';
   required?: boolean;
   placeholder?: string;
   options?: { value: string; label: string }[];
@@ -111,6 +111,21 @@ export interface FormField {
   component?: 'rotating-words' | 'statistics-grid' | 'service-builder' | 'portfolio-manager' | 'pillars-editor' | 'policies-manager' | 'image-field' | 'video-field' | 'pdf-field' | 'timeline-builder' | 'statistics-builder' | 'phases-builder' | 'hero-team-gallery-editor' | 'team-members-editor' | 'team-moments-editor' | 'values-editor' | 'culture-stats-editor' | 'technologies-editor' | 'benefits-editor' | 'commitments-editor' | 'action-buttons-editor' | 'testimonials-editor' | 'quality-objectives-editor' | 'scope-items-editor' | 'gradient-selector' | 'importance-reasons-editor';
   customProps?: Record<string, any>;
   config?: Record<string, any>;
+  // Para campos tipo array
+  arrayFields?: Array<{
+    key: string;
+    label: string;
+    type: 'text' | 'textarea' | 'number' | 'select' | 'image' | 'icon' | 'color' | 'multitext' | 'boolean';
+    required?: boolean;
+    placeholder?: string;
+    description?: string;
+    width?: 'full' | 'half';
+    defaultValue?: any;
+    options?: { value: string; label: string }[];
+    rows?: number;
+    min?: number;
+    max?: number;
+  }>;
 }
 
 export interface FormGroup {
@@ -289,20 +304,40 @@ export default function DynamicForm({
     return path.split('.').reduce((current, key) => current && current[key], obj);
   };
 
-  // Helper function to set nested values using dot notation
+  // Helper function to set nested values using dot notation (immutable)
   const setNestedValue = (obj: any, path: string, value: any): any => {
     const keys = path.split('.');
-    const lastKey = keys.pop();
-    const target = keys.reduce((current, key) => {
-      if (!(key in current)) {
-        current[key] = {};
+
+    // Create a deep clone for the path we're updating
+    const clone = (source: any): any => {
+      if (Array.isArray(source)) {
+        return source.map(item => clone(item));
       }
-      return current[key];
-    }, obj);
-    if (lastKey) {
-      target[lastKey] = value;
+      if (source && typeof source === 'object') {
+        return { ...source };
+      }
+      return source;
+    };
+
+    // Start with a shallow clone of the root
+    const result = { ...obj };
+
+    // Navigate and clone each level
+    let current = result;
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i];
+      // Clone the nested object to maintain immutability
+      current[key] = current[key] ? { ...current[key] } : {};
+      current = current[key];
     }
-    return { ...obj };
+
+    // Set the final value
+    const lastKey = keys[keys.length - 1];
+    if (lastKey) {
+      current[lastKey] = value;
+    }
+
+    return result;
   };
 
   useEffect(() => {
@@ -428,7 +463,8 @@ export default function DynamicForm({
       'metadata': <Settings className="w-4 h-4" />,
       'images': <Image className="w-4 h-4" />,
       'performance': <TrendingUp className="w-4 h-4" />,
-      
+      'clients_logos': <Users className="w-4 h-4" />,
+
       // Portfolio sections
       'general': <Info className="w-4 h-4" />,
       'gallery': <Image className="w-4 h-4" />,
@@ -2059,7 +2095,9 @@ export default function DynamicForm({
             if (mediaLibraryField.arrayIndex !== undefined && mediaLibraryField.parentArrayField) {
               const parentField = mediaLibraryField.parentArrayField;
               const arrayIndex = mediaLibraryField.arrayIndex;
-              const currentArray = Array.isArray(values[parentField.key]) ? values[parentField.key] : [];
+              // Use getNestedValue for nested array fields like 'clients.logos'
+              const nestedArray = getNestedValue(values, parentField.key);
+              const currentArray = Array.isArray(nestedArray) ? nestedArray : [];
               const newArray = [...currentArray];
               newArray[arrayIndex] = {
                 ...newArray[arrayIndex],
@@ -2068,7 +2106,7 @@ export default function DynamicForm({
               handleChange(parentField, newArray);
             } else if (mediaLibraryField.multiple) {
               // Modo múltiple: agregar a las imágenes existentes
-              const currentImages = (values[mediaLibraryField.key] || []) as string[];
+              const currentImages = (getNestedValue(values, mediaLibraryField.key) || []) as string[];
               handleChange(mediaLibraryField, [...currentImages, ...imageUrls]);
             } else {
               // Modo único: reemplazar con la primera imagen
@@ -2083,15 +2121,18 @@ export default function DynamicForm({
             if (mediaLibraryField.arrayIndex !== undefined && mediaLibraryField.parentArrayField) {
               const parentField = mediaLibraryField.parentArrayField;
               const arrayIndex = mediaLibraryField.arrayIndex;
-              const currentArray = Array.isArray(values[parentField.key]) ? values[parentField.key] : [];
+              // Use getNestedValue for nested array fields
+              const nestedArray = getNestedValue(values, parentField.key);
+              const currentArray = Array.isArray(nestedArray) ? nestedArray : [];
               const currentValue = currentArray[arrayIndex]?.[mediaLibraryField.key];
               return currentValue ? [currentValue] : [];
             }
-            // Campo normal
+            // Campo normal - also use getNestedValue for nested fields
+            const fieldValue = getNestedValue(values, mediaLibraryField.key);
             if (mediaLibraryField.multiple) {
-              return (values[mediaLibraryField.key] || []) as string[];
+              return (fieldValue || []) as string[];
             }
-            return values[mediaLibraryField.key] ? [values[mediaLibraryField.key] as string] : [];
+            return fieldValue ? [fieldValue as string] : [];
           })()}
           title={mediaLibraryField.label || 'Seleccionar Imagen'}
         />

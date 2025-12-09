@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "author-1",
+    "_path": "blog_authors/author-1",
+    "role": "Director General",
+    "bio": "Arquitecto con 15+ años de experiencia en dirección de proyectos",
+    "email": "carlos.mendoza@metrica-dip.com",
+    "avatar": "/img/authors/carlos-mendoza.jpg",
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858170,
+      "nanoseconds": 49000000,
+      "iso": "2025-09-14T13:56:10.049Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858170,
+      "nanoseconds": 49000000,
+      "iso": "2025-09-14T13:56:10.049Z"
+    },
+    "name": "Carlos Alberto"
+  },
+  {
+    "_id": "carlos-mendoza",
+    "_path": "blog_authors/carlos-mendoza",
+    "id": "carlos-mendoza",
+    "name": "Carlos Mendoza",
+    "email": "carlos.mendoza@metrica-dip.com",
+    "role": "Ingeniero Senior de Proyectos",
+    "bio": "Especialista en gestión de proyectos de construcción e infraestructura con más de 10 años de experiencia en el sector.",
+    "avatar": "/img/authors/carlos-mendoza.jpg",
+    "linkedin": "https://linkedin.com/in/carlos-mendoza-metrica",
+    "featured": true,
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757861252,
+      "nanoseconds": 789000000,
+      "iso": "2025-09-14T14:47:32.789Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757861252,
+      "nanoseconds": 789000000,
+      "iso": "2025-09-14T14:47:32.789Z"
+    }
+  },
+  {
+    "_id": "equipo-metrica",
+    "_path": "blog_authors/equipo-metrica",
+    "id": "equipo-metrica",
+    "name": "Equipo Métrica",
+    "email": "info@metrica.com",
+    "role": "Equipo Editorial",
+    "bio": "Equipo multidisciplinario de expertos en construcción, infraestructura y gestión de proyectos de Métrica DIP.",
+    "avatar": "/images/team/admin.jpg",
+    "linkedin": "https://linkedin.com/company/metrica-dip",
+    "featured": true,
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757861252,
+      "nanoseconds": 789000000,
+      "iso": "2025-09-14T14:47:32.789Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757861252,
+      "nanoseconds": 789000000,
+      "iso": "2025-09-14T14:47:32.789Z"
+    },
+    "articles_count": 5
+  }
+]

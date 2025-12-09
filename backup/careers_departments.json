@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "LGTzN5bj7diqiS0pR6HF",
+    "_path": "careers_departments/LGTzN5bj7diqiS0pR6HF",
+    "name": "RECURSOS HUMANOS",
+    "slug": "recursos-humanos",
+    "description": "reclutamiento y selección",
+    "color": "#003F6F",
+    "icon": "building-2",
+    "active": true,
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1763484413,
+      "nanoseconds": 291000000,
+      "iso": "2025-11-18T16:46:53.291Z"
+    },
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1763663734,
+      "nanoseconds": 77000000,
+      "iso": "2025-11-20T18:35:34.077Z"
+    }
+  }
+]

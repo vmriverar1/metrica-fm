@@ -1,0 +1,111 @@
+[
+  {
+    "_id": "arquitectura",
+    "_path": "blog_categories/arquitectura",
+    "id": "arquitectura",
+    "name": "Arquitectura",
+    "description": "Diseño arquitectónico y tendencias",
+    "slug": "arquitectura",
+    "color": "#003F6F",
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    }
+  },
+  {
+    "_id": "category-1",
+    "_path": "blog_categories/category-1",
+    "name": "Construcción Sostenible",
+    "slug": "construccion-sostenible",
+    "description": "Artículos sobre construcción ecológica y sostenible",
+    "featured": true,
+    "order": 1,
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858169,
+      "nanoseconds": 435000000,
+      "iso": "2025-09-14T13:56:09.435Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858169,
+      "nanoseconds": 435000000,
+      "iso": "2025-09-14T13:56:09.435Z"
+    },
+    "articles_count": 1
+  },
+  {
+    "_id": "category-2",
+    "_path": "blog_categories/category-2",
+    "name": "Gestión de Proyectos",
+    "slug": "gestion-proyectos",
+    "description": "Tips y estrategias para la gestión efectiva de proyectos",
+    "featured": true,
+    "order": 2,
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858169,
+      "nanoseconds": 435000000,
+      "iso": "2025-09-14T13:56:09.435Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757858169,
+      "nanoseconds": 435000000,
+      "iso": "2025-09-14T13:56:09.435Z"
+    },
+    "articles_count": 4
+  },
+  {
+    "_id": "construccion",
+    "_path": "blog_categories/construccion",
+    "id": "construccion",
+    "name": "Construcción",
+    "description": "Artículos sobre construcción y metodologías",
+    "slug": "construccion",
+    "color": "#E84E0F",
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    },
+    "articles_count": 2
+  },
+  {
+    "_id": "ingenieria",
+    "_path": "blog_categories/ingenieria",
+    "id": "ingenieria",
+    "name": "Ingeniería",
+    "description": "Soluciones de ingeniería y tecnología",
+    "slug": "ingenieria",
+    "color": "#646363",
+    "created_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    },
+    "updated_at": {
+      "_type": "Timestamp",
+      "seconds": 1757778621,
+      "nanoseconds": 405000000,
+      "iso": "2025-09-13T15:50:21.405Z"
+    },
+    "articles_count": 0
+  }
+]

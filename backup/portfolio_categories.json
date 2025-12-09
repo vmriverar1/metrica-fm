@@ -1,0 +1,252 @@
+[
+  {
+    "_id": "educacion",
+    "_path": "portfolio_categories/educacion",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758535799,
+      "nanoseconds": 441000000,
+      "iso": "2025-09-22T10:09:59.441Z"
+    },
+    "color": "#003F6F",
+    "sortOrder": 2,
+    "icon": "graduation-cap",
+    "name": "Educación",
+    "description": "Centros educativos y espacios de aprendizaje",
+    "id": "educacion",
+    "isActive": true,
+    "backgroundImage": "/images/uploads/2025/09/imagen-de-whatsapp-2024-05-08-a-las-15-48-27_e8661f5a-4d44788b.webp",
+    "slug": "educacin",
+    "projectCount": 8,
+    "updated_by": "1",
+    "projects_count": 20,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760365336,
+      "nanoseconds": 558000000,
+      "iso": "2025-10-13T14:22:16.558Z"
+    }
+  },
+  {
+    "_id": "hoteleria",
+    "_path": "portfolio_categories/hoteleria",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758534034,
+      "nanoseconds": 327000000,
+      "iso": "2025-09-22T09:40:34.327Z"
+    },
+    "description": "Hoteles y complejos turísticos que combinan confort, elegancia y funcionalidad para experiencias memorables",
+    "id": "hoteleria",
+    "seoDescription": "Hoteles y complejos turísticos de lujo con diseño arquitectónico excepcional y estándares internacionales",
+    "metadata": {
+      "specialties": [
+        "Hoteles de Lujo",
+        "Complejos Turísticos",
+        "Centros de Convenciones",
+        "Spas y Wellness Centers"
+      ],
+      "services": [
+        "Arquitectura Hotelera",
+        "Diseño de Interiores",
+        "Construcción Especializada",
+        "Gestión de Proyectos Hoteleros",
+        "Instalaciones de Lujo"
+      ],
+      "keywords": [
+        "hotelería",
+        "hotel",
+        "turismo",
+        "hospitalidad",
+        "resort"
+      ],
+      "certifications": [
+        "Estándares Internacionales de Hospitalidad",
+        "Certificaciones de Sostenibilidad Hotelera",
+        "Normas de Seguridad Turística"
+      ]
+    },
+    "sortOrder": 3,
+    "isActive": true,
+    "color": "#f59e0b",
+    "seoTitle": "Proyectos de Hotelería - Métrica DIP",
+    "name": "Hotelería",
+    "icon": "🏨",
+    "backgroundImage": "/images/proyectos/HOTELERIA/Hotel Hilton Bajada Balta/_ARI2411-Editar.webp",
+    "slug": "hotelera",
+    "projectCount": 4,
+    "updated_by": "1",
+    "projects_count": 5,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760108351,
+      "nanoseconds": 581000000,
+      "iso": "2025-10-10T14:59:11.581Z"
+    }
+  },
+  {
+    "_id": "industria",
+    "_path": "portfolio_categories/industria",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758535800,
+      "nanoseconds": 859000000,
+      "iso": "2025-09-22T10:10:00.859Z"
+    },
+    "color": "#646363",
+    "sortOrder": 4,
+    "icon": "factory",
+    "name": "Industria",
+    "description": "Proyectos industriales y logísticos",
+    "id": "industria",
+    "isActive": true,
+    "slug": "industria",
+    "backgroundImage": "/images/proyectos/INDUSTRIA/Parque Lima Sur (cliente LPA)/Panorama 2.webp",
+    "updated_by": "1",
+    "projectCount": 20,
+    "projects_count": 12,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760365688,
+      "nanoseconds": 938000000,
+      "iso": "2025-10-13T14:28:08.938Z"
+    }
+  },
+  {
+    "_id": "oficinas",
+    "_path": "portfolio_categories/oficinas",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758535801,
+      "nanoseconds": 553000000,
+      "iso": "2025-09-22T10:10:01.553Z"
+    },
+    "color": "#D0D0D0",
+    "sortOrder": 5,
+    "icon": "building",
+    "name": "Oficinas",
+    "description": "Espacios corporativos y de oficinas",
+    "id": "oficinas",
+    "isActive": true,
+    "slug": "oficinas",
+    "backgroundImage": "/images/proyectos/OFICINA/Oficinas INMA_/Copia de _ARI2452.webp",
+    "projectCount": 5,
+    "updated_by": "1",
+    "projects_count": 9,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760365104,
+      "nanoseconds": 151000000,
+      "iso": "2025-10-13T14:18:24.151Z"
+    }
+  },
+  {
+    "_id": "retail",
+    "_path": "portfolio_categories/retail",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758535800,
+      "nanoseconds": 152000000,
+      "iso": "2025-09-22T10:10:00.152Z"
+    },
+    "color": "#9D9D9C",
+    "sortOrder": 3,
+    "icon": "shopping-bag",
+    "name": "Retail",
+    "description": "Centros comerciales y espacios de venta",
+    "id": "retail",
+    "isActive": true,
+    "slug": "retail",
+    "backgroundImage": "/images/proyectos/RETAIL/Chillis opne plaza angamos/chilis-open-plaza-3-1536x1025.webp",
+    "updated_by": "1",
+    "projectCount": 18,
+    "projects_count": 30,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760366065,
+      "nanoseconds": 288000000,
+      "iso": "2025-10-13T14:34:25.288Z"
+    }
+  },
+  {
+    "_id": "salud",
+    "_path": "portfolio_categories/salud",
+    "color": "#10b981",
+    "name": "Salud",
+    "slug": "salud",
+    "metadata": {
+      "services": [
+        "Arquitectura Hospitalaria",
+        "Construcción Especializada",
+        "Instalaciones Médicas",
+        "Sistemas de Gases Medicinales",
+        "Equipamiento Médico"
+      ],
+      "regulations": [
+        "Normas MINSA",
+        "Estándares Hospitalarios",
+        "Certificaciones de Calidad"
+      ],
+      "keywords": [
+        "salud",
+        "clínica",
+        "hospital",
+        "médico",
+        "centro de salud"
+      ]
+    },
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758533184,
+      "nanoseconds": 640000000,
+      "iso": "2025-09-22T09:26:24.640Z"
+    },
+    "description": "Proyectos de infraestructura de salud, clínicas, hospitales y centros médicos especializados",
+    "order": 6,
+    "active": true,
+    "id": "salud",
+    "seoDescription": "Infraestructura médica especializada: clínicas, hospitales y centros de salud con estándares internacionales",
+    "sortOrder": 6,
+    "icon": "🏥",
+    "isActive": true,
+    "seoTitle": "Proyectos de Salud - Métrica DIP",
+    "backgroundImage": "/images/proyectos/salud/Clinica valle sur/WhatsApp-Image-2022-07-22-at-11.54.32-AM.webp",
+    "projectCount": 2,
+    "updated_by": "1",
+    "projects_count": 13,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760365977,
+      "nanoseconds": 361000000,
+      "iso": "2025-10-13T14:32:57.361Z"
+    }
+  },
+  {
+    "_id": "vivienda",
+    "_path": "portfolio_categories/vivienda",
+    "createdAt": {
+      "_type": "Timestamp",
+      "seconds": 1758535797,
+      "nanoseconds": 847000000,
+      "iso": "2025-09-22T10:09:57.847Z"
+    },
+    "color": "#E84E0F",
+    "sortOrder": 1,
+    "icon": "home",
+    "name": "Vivienda",
+    "description": "Proyectos residenciales y habitacionales",
+    "id": "vivienda",
+    "isActive": true,
+    "slug": "vivienda",
+    "backgroundImage": "/images/uploads/2025/09/listo-scaled-48307081.webp",
+    "updated_by": "1",
+    "projectCount": 23,
+    "projects_count": 20,
+    "updatedAt": {
+      "_type": "Timestamp",
+      "seconds": 1760218455,
+      "nanoseconds": 305000000,
+      "iso": "2025-10-11T21:34:15.305Z"
+    }
+  }
+]
