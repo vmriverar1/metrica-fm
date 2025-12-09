@@ -25,10 +25,10 @@ const ALLOWED_TYPES = [
 // Configuración de procesamiento por defecto
 const DEFAULT_PROCESSING_CONFIG = {
   maxWidth: 1920,
-  maxHeight: 1080,
+  maxHeight: 1920,
   quality: 85,
-  enableWebP: false, // Deshabilitado por defecto
-  enableResize: false // Deshabilitado por defecto
+  enableWebP: true,   // Habilitado: convierte a WebP para mejor rendimiento
+  enableResize: true  // Habilitado: redimensiona imágenes grandes
 };
 
 // Utilidad para generar nombre único de archivo
@@ -66,46 +66,57 @@ const processImage = async (
   finalDimensions: { width: number; height: number };
 }> => {
   try {
-    let image = sharp(buffer);
+    // .rotate() sin parámetros aplica la rotación EXIF automáticamente
+    // Esto corrige fotos verticales que se muestran horizontales
+    let image = sharp(buffer).rotate();
     const metadata = await image.metadata();
 
     let wasResized = false;
     let wasConverted = false;
     let finalType = originalType;
 
-    // Redimensionar si es necesario
-    if (metadata.width && metadata.width > config.maxWidth) {
+    const originalWidth = metadata.width || 0;
+    const originalHeight = metadata.height || 0;
+
+    // Redimensionar solo si el ancho excede el máximo
+    // Solo se reduce el ancho, el alto se calcula automáticamente para mantener proporción
+    // Si la imagen es más pequeña que maxWidth, no se redimensiona
+    if (config.enableResize && originalWidth > config.maxWidth) {
       image = image.resize(config.maxWidth, null, {
         withoutEnlargement: true,
-        fit: 'inside'
+        fit: 'inside' // Mantiene aspect ratio
       });
       wasResized = true;
-      console.log(`[PROCESSING] Resizing image: ${metadata.width}px → ${config.maxWidth}px`);
+      console.log(`[PROCESSING] Resizing image: ${originalWidth}px width → ${config.maxWidth}px width (height auto)`);
     }
 
-    // Convertir a WebP si está habilitado y no es PNG con transparencia
-    if (config.enableWebP && originalType !== 'image/webp') {
-      const shouldConvert = originalType !== 'image/png' || !metadata.hasAlpha;
-
-      if (shouldConvert) {
-        image = image.webp({ quality: config.quality });
-        finalType = 'image/webp';
-        wasConverted = true;
-        console.log(`[PROCESSING] Converting to WebP: ${originalType} → ${finalType}`);
-      }
-    }
-
-    // Aplicar optimizaciones generales
-    if (!wasConverted) {
+    // Convertir a WebP si está habilitado
+    // No convertir: SVG (vectorial), GIF (animaciones), PNG (transparencia/logos)
+    if (config.enableWebP && originalType !== 'image/webp' && originalType !== 'image/svg+xml' && originalType !== 'image/gif' && originalType !== 'image/png') {
+      image = image.webp({
+        quality: config.quality,
+        effort: 4 // Balance entre velocidad y compresión (0-6)
+      });
+      finalType = 'image/webp';
+      wasConverted = true;
+      console.log(`[PROCESSING] Converting to WebP: ${originalType} → ${finalType}`);
+    } else if (!wasConverted) {
+      // Si no se convierte a WebP, aplicar optimizaciones al formato original
       if (originalType === 'image/jpeg' || originalType === 'image/jpg') {
         image = image.jpeg({ quality: config.quality, progressive: true });
       } else if (originalType === 'image/png') {
-        image = image.png({ compressionLevel: 9, progressive: true });
+        image = image.png({ compressionLevel: 9 });
       }
     }
 
     const processedBuffer = await image.toBuffer();
     const finalMetadata = await sharp(processedBuffer).metadata();
+
+    const finalWidth = finalMetadata.width || 0;
+    const finalHeight = finalMetadata.height || 0;
+    const compressionRatio = processedBuffer.length / buffer.length;
+
+    console.log(`[PROCESSING] Complete: ${originalWidth}x${originalHeight} → ${finalWidth}x${finalHeight}, ${Math.round(buffer.length/1024)}KB → ${Math.round(processedBuffer.length/1024)}KB (${Math.round(compressionRatio * 100)}%)`);
 
     return {
       processedBuffer,
@@ -113,8 +124,8 @@ const processImage = async (
       wasResized,
       wasConverted,
       finalDimensions: {
-        width: finalMetadata.width || 0,
-        height: finalMetadata.height || 0
+        width: finalWidth,
+        height: finalHeight
       }
     };
 

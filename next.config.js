@@ -133,7 +133,9 @@ const nextConfig = {
   images: {
     // MÁXIMA optimización para hosting compartido - SIN Sharp
     unoptimized: true, // Desactiva Sharp completamente - 33MB menos en servidor
-    dangerouslyAllowSVG: false,
+    dangerouslyAllowSVG: true, // Permitir SVGs en next/image
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
@@ -144,6 +146,30 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'metrica-fm.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'metricafm.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'metrica-fm.firebasestorage.app',
         port: '',
         pathname: '/**',
       },

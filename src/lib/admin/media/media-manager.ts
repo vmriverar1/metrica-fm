@@ -14,8 +14,27 @@
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
+import sharp from 'sharp';
 import { fileManager } from '../core/file-manager';
 import { logger } from '../core/logger';
+
+// Magic bytes para detectar tipos de archivo reales
+const FILE_SIGNATURES = {
+  jpeg: [
+    [0xFF, 0xD8, 0xFF, 0xE0], // JFIF
+    [0xFF, 0xD8, 0xFF, 0xE1], // EXIF
+    [0xFF, 0xD8, 0xFF, 0xE2], // ICC Profile
+    [0xFF, 0xD8, 0xFF, 0xE8], // SPIFF
+    [0xFF, 0xD8, 0xFF, 0xDB], // Sin marcador APP
+    [0xFF, 0xD8, 0xFF, 0xEE], // Adobe
+  ],
+  png: [[0x89, 0x50, 0x4E, 0x47]],
+  gif: [[0x47, 0x49, 0x46, 0x38]],
+  webp: [[0x52, 0x49, 0x46, 0x46]], // RIFF (WebP comienza así)
+  bmp: [[0x42, 0x4D]],
+  tiff: [[0x49, 0x49, 0x2A, 0x00], [0x4D, 0x4D, 0x00, 0x2A]],
+  heic: [[0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70]], // ftyp
+};
 
 // Tipos
 export interface MediaFile {
@@ -86,6 +105,168 @@ const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/ogg'];
 const ALLOWED_AUDIO_TYPES = ['audio/mp3', 'audio/wav', 'audio/ogg'];
 const ALLOWED_DOCUMENT_TYPES = ['application/pdf', 'text/plain', 'application/json'];
+
+/**
+ * Detecta el tipo real de archivo por sus magic bytes
+ */
+function detectRealFileType(buffer: Buffer): { type: string; mime: string } | null {
+  for (const [type, signatures] of Object.entries(FILE_SIGNATURES)) {
+    for (const signature of signatures) {
+      let match = true;
+      for (let i = 0; i < signature.length; i++) {
+        if (buffer[i] !== signature[i]) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        const mimeTypes: Record<string, string> = {
+          jpeg: 'image/jpeg',
+          png: 'image/png',
+          gif: 'image/gif',
+          webp: 'image/webp',
+          bmp: 'image/bmp',
+          tiff: 'image/tiff',
+          heic: 'image/heic',
+        };
+        return { type, mime: mimeTypes[type] || `image/${type}` };
+      }
+    }
+  }
+  return null;
+}
+
+// Ancho máximo para imágenes (el alto se calcula automáticamente para mantener proporción)
+const MAX_IMAGE_WIDTH = 1920;
+
+/**
+ * Normaliza una imagen problemática usando Sharp
+ * - Convierte CMYK a RGB
+ * - Limpia metadatos problemáticos
+ * - Re-codifica para asegurar compatibilidad
+ * - Redimensiona si excede el ancho máximo (manteniendo proporción)
+ */
+async function normalizeImage(
+  buffer: Buffer,
+  originalMime: string
+): Promise<{ buffer: Buffer; mime: string; normalized: boolean; issues: string[] }> {
+  const issues: string[] = [];
+
+  try {
+    // Intentar leer la imagen con Sharp
+    const image = sharp(buffer, { failOnError: false });
+    const metadata = await image.metadata();
+
+    // Detectar problemas
+    if (metadata.space === 'cmyk') {
+      issues.push('Imagen en espacio de color CMYK - convertida a sRGB');
+    }
+
+    if (metadata.hasProfile) {
+      issues.push('Perfil ICC detectado - normalizado');
+    }
+
+    if (metadata.orientation && metadata.orientation !== 1) {
+      issues.push(`Orientación EXIF ${metadata.orientation} - corregida`);
+    }
+
+    // Si no hay problemas detectados pero el MIME original era sospechoso
+    if (issues.length === 0 && (!originalMime || originalMime === 'application/octet-stream')) {
+      issues.push('MIME type no detectado por navegador - identificado por contenido');
+    }
+
+    // Normalizar la imagen - primero rotar según EXIF para obtener dimensiones correctas
+    let processedImage = image
+      .rotate() // Auto-rotar según EXIF (IMPORTANTE: hacer esto primero)
+      .toColorspace('srgb'); // Convertir a sRGB
+
+    // Obtener dimensiones DESPUÉS de la rotación EXIF
+    const rotatedBuffer = await processedImage.toBuffer();
+    const rotatedMetadata = await sharp(rotatedBuffer).metadata();
+    const actualWidth = rotatedMetadata.width || 0;
+    const actualHeight = rotatedMetadata.height || 0;
+
+    // Redimensionar si excede el ancho máximo (después de la rotación)
+    const needsResize = actualWidth > MAX_IMAGE_WIDTH;
+
+    if (needsResize) {
+      const newHeight = Math.round(actualHeight * (MAX_IMAGE_WIDTH / actualWidth));
+      issues.push(`Redimensionada: ${actualWidth}x${actualHeight} → ${MAX_IMAGE_WIDTH}x${newHeight}`);
+
+      processedImage = sharp(rotatedBuffer).resize({
+        width: MAX_IMAGE_WIDTH,
+        height: undefined, // Auto-calculado para mantener proporción
+        fit: 'inside',
+        withoutEnlargement: true // No agrandar imágenes pequeñas
+      });
+    } else {
+      // Usar el buffer ya rotado
+      processedImage = sharp(rotatedBuffer);
+    }
+
+    // Convertir a WebP solo JPG/JPEG (mantener PNG para transparencia y GIF para animaciones)
+    let outputBuffer: Buffer;
+    let outputMime: string;
+
+    if (metadata.format === 'gif' || originalMime === 'image/gif') {
+      // Mantener GIFs para preservar animaciones
+      outputBuffer = await processedImage.gif().toBuffer();
+      outputMime = 'image/gif';
+    } else if (metadata.format === 'png' || originalMime === 'image/png') {
+      // Mantener PNGs para preservar transparencia (logos, iconos, etc.)
+      outputBuffer = await processedImage.png({ quality: 90 }).toBuffer();
+      outputMime = 'image/png';
+      issues.push('PNG mantenido (preserva transparencia)');
+    } else {
+      // Convertir JPG/JPEG y otros formatos a WebP
+      outputBuffer = await processedImage
+        .webp({ quality: 85, effort: 4 })
+        .toBuffer();
+      outputMime = 'image/webp';
+      issues.push(`Convertida a WebP (${metadata.format?.toUpperCase() || 'imagen'} → WebP)`);
+    }
+
+    return {
+      buffer: outputBuffer,
+      mime: outputMime,
+      normalized: issues.length > 0,
+      issues
+    };
+
+  } catch (error: any) {
+    // Si Sharp falla, agregar el error como issue
+    issues.push(`Error al procesar imagen: ${error.message}`);
+
+    // Intentar una normalización más agresiva
+    try {
+      const forcedBuffer = await sharp(buffer, {
+        failOnError: false,
+        limitInputPixels: false
+      })
+        .toColorspace('srgb')
+        .jpeg({ quality: 85, mozjpeg: true })
+        .toBuffer();
+
+      issues.push('Imagen re-codificada forzosamente');
+
+      return {
+        buffer: forcedBuffer,
+        mime: 'image/jpeg',
+        normalized: true,
+        issues
+      };
+    } catch (secondError: any) {
+      // Si todo falla, retornar el buffer original
+      issues.push(`No se pudo normalizar: ${secondError.message}`);
+      return {
+        buffer,
+        mime: originalMime || 'image/jpeg',
+        normalized: false,
+        issues
+      };
+    }
+  }
+}
 
 /**
  * MediaManager - Gestor principal de medios
@@ -223,34 +404,45 @@ export class MediaManager {
   }
 
   /**
-   * Obtener metadata de imagen
+   * Obtener metadata de imagen usando Sharp
    */
   private async getImageMetadata(filePath: string): Promise<{ width?: number; height?: number }> {
-    // Placeholder - en producción usar sharp o similar
-    // Por ahora retornar metadata vacía
-    return {};
+    try {
+      const metadata = await sharp(filePath).metadata();
+      return {
+        width: metadata.width,
+        height: metadata.height
+      };
+    } catch (error) {
+      await logger.warn('media', 'Could not read image metadata', { filePath, error: error.message });
+      return {};
+    }
   }
 
   /**
-   * Generar thumbnail para imagen
+   * Generar thumbnail para imagen usando Sharp
    */
   private async generateThumbnail(
-    sourceFile: string, 
+    sourceFile: string,
     filename: string
   ): Promise<string | null> {
     try {
-      // Placeholder - en producción usar sharp para generar thumbnail
-      // Por ahora copiar el archivo original como thumbnail
-      const thumbnailName = `thumb_${filename}`;
+      const thumbnailName = `thumb_${filename.replace(/\.[^.]+$/, '.jpg')}`;
       const thumbnailPath = path.join(THUMBNAILS_DIR, thumbnailName);
-      
-      await fs.copyFile(sourceFile, thumbnailPath);
-      
+
+      await sharp(sourceFile)
+        .resize(300, 300, {
+          fit: 'cover',
+          position: 'center'
+        })
+        .jpeg({ quality: 80 })
+        .toFile(thumbnailPath);
+
       return `/uploads/thumbnails/${thumbnailName}`;
-    } catch (error) {
-      await logger.warn('media', 'Failed to generate thumbnail', { 
-        file: filename, 
-        error: error.message 
+    } catch (error: any) {
+      await logger.warn('media', 'Failed to generate thumbnail', {
+        file: filename,
+        error: error.message
       });
       return null;
     }
@@ -267,22 +459,72 @@ export class MediaManager {
     options: UploadOptions = {}
   ): Promise<MediaFile> {
     try {
-      // Validar archivo
-      const validation = this.validateFile(originalName, fileBuffer.length, mimeType, options);
+      // 1. Detectar tipo real del archivo por magic bytes
+      const detectedType = detectRealFileType(fileBuffer);
+      let actualMimeType = mimeType;
+      let processedBuffer = fileBuffer;
+      const processingNotes: string[] = [];
+
+      if (detectedType) {
+        if (detectedType.mime !== mimeType) {
+          processingNotes.push(`MIME corregido: ${mimeType} → ${detectedType.mime}`);
+          actualMimeType = detectedType.mime;
+        }
+      } else if (!mimeType || mimeType === 'application/octet-stream') {
+        // Si no se detectó tipo y el navegador tampoco lo detectó, rechazar
+        throw new Error('No se pudo determinar el tipo de archivo. Asegúrese de que sea una imagen válida.');
+      }
+
+      // 2. Si es una imagen, intentar normalizarla
+      const isImage = actualMimeType.startsWith('image/');
+      if (isImage && options.optimizeImage !== false) {
+        await logger.info('media', 'Procesando imagen...', {
+          originalName,
+          detectedMime: actualMimeType,
+          browserMime: mimeType
+        });
+
+        const normalized = await normalizeImage(processedBuffer, actualMimeType);
+        processedBuffer = normalized.buffer;
+        actualMimeType = normalized.mime;
+
+        if (normalized.issues.length > 0) {
+          processingNotes.push(...normalized.issues);
+          await logger.info('media', 'Imagen normalizada', {
+            originalName,
+            issues: normalized.issues
+          });
+        }
+      }
+
+      // 3. Validar archivo (ahora con el tipo correcto)
+      const validation = this.validateFile(originalName, processedBuffer.length, actualMimeType, options);
       if (!validation.valid) {
         throw new Error(validation.error);
       }
 
-      // Generar nombre único
-      const filename = this.generateUniqueFilename(originalName, options.prefix);
+      // 4. Generar nombre único (con extensión corregida según el formato de salida)
+      let finalName = originalName;
+      if (isImage) {
+        const extMap: Record<string, string> = {
+          'image/webp': '.webp',
+          'image/png': '.png',
+          'image/gif': '.gif',
+        };
+        const correctExt = extMap[actualMimeType] || '.webp';
+        const baseName = originalName.replace(/\.[^.]+$/, '');
+        finalName = baseName + correctExt;
+      }
+
+      const filename = this.generateUniqueFilename(finalName, options.prefix);
       const filePath = path.join(MEDIA_DIR, filename);
       const relativeUrl = `/uploads/${filename}`;
 
-      // Guardar archivo
-      await fs.writeFile(filePath, fileBuffer);
+      // 5. Guardar archivo procesado
+      await fs.writeFile(filePath, processedBuffer);
 
       // Obtener tipo de media
-      const mediaType = this.getMediaType(mimeType);
+      const mediaType = this.getMediaType(actualMimeType);
 
       // Crear registro de media
       const mediaFile: MediaFile = {
@@ -292,8 +534,8 @@ export class MediaManager {
         path: filePath,
         url: relativeUrl,
         type: mediaType,
-        mime_type: mimeType,
-        size: fileBuffer.length,
+        mime_type: actualMimeType,
+        size: processedBuffer.length,
         alt_text: options.alt_text || '',
         title: options.title || originalName,
         description: options.description || '',
@@ -301,7 +543,11 @@ export class MediaManager {
         uploaded_by: uploadedBy,
         uploaded_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        metadata: {}
+        metadata: {
+          original_size: fileBuffer.length,
+          original_mime: mimeType,
+          processing_notes: processingNotes.length > 0 ? processingNotes : undefined
+        }
       };
 
       // Obtener metadata específica para imágenes
