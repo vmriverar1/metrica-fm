@@ -33,6 +33,7 @@ export interface HomePageData {
       suffix: string;
       prefix?: string;
       label: string;
+      description?: string;
     }>;
   };
   services: {

@@ -15,7 +15,8 @@ interface StatCardProps {
     value: number;
     suffix: string;
     label: string;
-    description: string;
+    description?: string;
+    prefix?: string;
   };
   index: number;
 }

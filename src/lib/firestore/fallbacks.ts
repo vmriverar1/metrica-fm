@@ -42,24 +42,27 @@ export const HOME_PAGE_FALLBACK: HomePageData = {
     statistics: [
       {
         id: 'stat-1',
-        number: '0',
+        icon: 'Briefcase',
+        value: 0,
         suffix: '+',
         label: '📊 Proyectos (agregar desde Firestore)',
-        color: '#00A8E8'
+        description: ''
       },
       {
         id: 'stat-2',
-        number: '0',
+        icon: 'Users',
+        value: 0,
         suffix: '+',
         label: '📊 Clientes (agregar desde Firestore)',
-        color: '#003F6F'
+        description: ''
       },
       {
         id: 'stat-3',
-        number: '0',
+        icon: 'Award',
+        value: 0,
         suffix: '%',
         label: '📊 Satisfacción (agregar desde Firestore)',
-        color: '#00A8E8'
+        description: ''
       }
     ]
   },
