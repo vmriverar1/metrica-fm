@@ -89,9 +89,9 @@ const StatCard = ({ stat, index }: StatCardProps) => {
   }, { scope: cardRef });
   
   return (
-    <div ref={cardRef} className="text-center p-4 cursor-pointer transition-colors hover:bg-accent/5">
+    <div ref={cardRef} className="w-full text-center p-6 cursor-pointer transition-colors hover:bg-accent/5">
       <div ref={iconRef} className="inline-block">
-        <DynamicIcon 
+        <DynamicIcon
           name={stat.icon}
           className="h-12 w-12 text-accent mx-auto mb-4"
           fallbackIcon="Award"
@@ -111,15 +111,32 @@ interface StatsProps {
 
 export default function Stats({ data }: StatsProps) {
   const sectionRef = useSectionAnimation();
-  
+  const statsCount = data.statistics.length;
+
+  // Si no hay estadísticas, no renderizar la sección
+  if (statsCount === 0) return null;
+
   return (
     <section id="stats" ref={sectionRef} className="relative -mt-[100px] z-30 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="w-[80vw] md:w-[65vw] mx-auto">
+        <div className="w-[90vw] md:w-[80vw] lg:w-[70vw] mx-auto">
           <div className="bg-white rounded-2xl p-6 md:p-8 border border-border/10">
-            <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border/50">
+            <div className="flex flex-wrap justify-center items-stretch">
               {data.statistics.map((stat, index) => (
-                <StatCard key={stat.id} stat={stat} index={index} />
+                <div
+                  key={stat.id}
+                  className={`
+                    flex-shrink-0
+                    ${statsCount === 1 ? 'w-full' : ''}
+                    ${statsCount === 2 ? 'w-full sm:w-1/2' : ''}
+                    ${statsCount === 3 ? 'w-full sm:w-1/2 md:w-1/3' : ''}
+                    ${statsCount >= 4 ? 'w-1/2 md:w-1/4' : ''}
+                    ${index > 0 ? 'border-t sm:border-t-0 sm:border-l border-border/30' : ''}
+                    ${statsCount === 3 && index === 2 ? 'sm:border-t md:border-t-0' : ''}
+                  `}
+                >
+                  <StatCard stat={stat} index={index} />
+                </div>
               ))}
             </div>
           </div>
