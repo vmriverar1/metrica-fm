@@ -380,16 +380,6 @@ export default function Services({ data, hideCTA = false }: ServicesProps) {
     
   }, { scope: sectionRef, dependencies: [data] });
 
-  // Función para obtener clases CSS según el ancho
-  const getWidthClass = (width: '1/3' | '2/3' | '3/3' | undefined): string => {
-    switch (width) {
-      case '2/3': return 'lg:col-span-2';
-      case '3/3': return 'lg:col-span-3';
-      case '1/3':
-      default: return 'lg:col-span-1';
-    }
-  };
-
   // Determinar si hay estructura de servicio principal o usar services_list
   const hasExpectedStructure = data.main_service && data.secondary_services;
   const hasMainService = data.main_service?.is_main &&
@@ -418,34 +408,53 @@ export default function Services({ data, hideCTA = false }: ServicesProps) {
           </p>
         </ParallaxWrapper>
 
-        {/* Grid dinámico con ancho respetado */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {allServices.map((service, index) => (
-            <div 
-              key={service.id} 
-              className={getWidthClass(service.width)}
-            >
-              {service.isMain ? (
-                <MainServiceCard
-                  service={{
-                    ...service,
-                    className: 'bg-primary text-primary-foreground',
-                    imageUrl: service.image_url
-                  }}
-                  hideCTA={hideCTA}
-                />
-              ) : (
-                <ServiceCard
-                  service={{
-                    ...service,
-                    imageUrl: service.image_url
-                  }}
-                  index={index}
-                  hideCTA={hideCTA}
-                />
-              )}
-            </div>
-          ))}
+        {/* Grid dinámico con centrado automático */}
+        <div className="flex flex-wrap justify-center gap-8">
+          {allServices.map((service, index) => {
+            // Determinar el ancho según la cantidad de servicios y el width configurado
+            const servicesCount = allServices.length;
+            const serviceWidth = service.width;
+
+            // Clases de ancho responsivas
+            let widthClass = 'w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]'; // Por defecto 1/3
+
+            if (serviceWidth === '2/3') {
+              widthClass = 'w-full lg:w-[calc(66.666%-1rem)]';
+            } else if (serviceWidth === '3/3') {
+              widthClass = 'w-full';
+            } else if (servicesCount === 1) {
+              widthClass = 'w-full max-w-2xl';
+            } else if (servicesCount === 2) {
+              widthClass = 'w-full sm:w-[calc(50%-1rem)] max-w-md';
+            }
+
+            return (
+              <div
+                key={service.id}
+                className={widthClass}
+              >
+                {service.isMain ? (
+                  <MainServiceCard
+                    service={{
+                      ...service,
+                      className: 'bg-primary text-primary-foreground',
+                      imageUrl: service.image_url
+                    }}
+                    hideCTA={hideCTA}
+                  />
+                ) : (
+                  <ServiceCard
+                    service={{
+                      ...service,
+                      imageUrl: service.image_url
+                    }}
+                    index={index}
+                    hideCTA={hideCTA}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Placeholder cuando no hay servicios configurados */}
