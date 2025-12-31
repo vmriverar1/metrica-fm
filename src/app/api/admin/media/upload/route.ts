@@ -15,7 +15,7 @@ import { uploadToStorage, generateDateFolder } from '@/lib/firebase-storage';
 const MAX_ORIGINAL_FILE_SIZE = 50 * 1024 * 1024; // 50MB para el archivo original
 // Límite para archivo PROCESADO (después de redimensionar y comprimir)
 const MAX_PROCESSED_FILE_SIZE = 10 * 1024 * 1024; // 10MB para el archivo final
-const ALLOWED_TYPES = [
+const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
   'image/png',
@@ -24,6 +24,19 @@ const ALLOWED_TYPES = [
   'image/svg+xml',
   'image/avif'
 ];
+
+const ALLOWED_VIDEO_TYPES = [
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
+  'video/quicktime', // .mov
+  'video/x-msvideo'  // .avi
+];
+
+const ALLOWED_TYPES = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
+
+// Límite de video: 100MB
+const MAX_VIDEO_FILE_SIZE = 100 * 1024 * 1024;
 
 // Configuración de procesamiento por defecto
 const DEFAULT_PROCESSING_CONFIG = {
@@ -207,60 +220,72 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Validar tamaño del archivo ORIGINAL (antes de procesar)
-        // Permite archivos grandes de cámaras profesionales que serán reducidos
-        if (file.size > MAX_ORIGINAL_FILE_SIZE) {
+        // Determinar si es video o imagen
+        const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
+        const maxSize = isVideo ? MAX_VIDEO_FILE_SIZE : MAX_ORIGINAL_FILE_SIZE;
+
+        // Validar tamaño del archivo según tipo
+        if (file.size > maxSize) {
           errors.push({
             file: file.name,
-            error: `Archivo original demasiado grande (máximo ${MAX_ORIGINAL_FILE_SIZE / 1024 / 1024}MB). Incluso las imágenes de cámaras profesionales no deberían exceder este límite.`
+            error: `Archivo demasiado grande (máximo ${maxSize / 1024 / 1024}MB para ${isVideo ? 'videos' : 'imágenes'}).`
           });
           continue;
         }
 
-        // Generar carpeta con fecha (formato: images/proyectos/DD-MM-YYYY)
-        const folderPath = generateDateFolder();
-        console.log(`[UPLOAD-FIREBASE] Using folder: ${folderPath}`);
+        // Generar carpeta con fecha (formato: images/DD-MM-YYYY o videos/DD-MM-YYYY)
+        const baseFolderPath = generateDateFolder();
+        const folderPath = isVideo ? baseFolderPath.replace('images/', 'videos/') : baseFolderPath;
+        console.log(`[UPLOAD-FIREBASE] Using folder: ${folderPath} (${isVideo ? 'video' : 'image'})`);
 
         // Generar nombre único para el archivo
         let fileName = generateUniqueFileName(file.name);
 
         // Procesar archivo
         const originalBuffer = Buffer.from(await file.arrayBuffer());
-        const originalDimensions = await validateImageDimensions(originalBuffer);
 
         let finalBuffer = originalBuffer;
         let finalType = file.type;
         let wasResized = false;
         let wasConverted = false;
-        let finalDimensions = originalDimensions;
+        let finalDimensions = { width: 0, height: 0 };
 
-        if (enableProcessing && file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
-          // Log para imágenes grandes (útil para debugging)
-          if (file.size > 10 * 1024 * 1024) {
-            console.log(`[UPLOAD-FIREBASE] Procesando imagen grande de cámara profesional: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB, ${originalDimensions.width}x${originalDimensions.height}px)`);
+        // Solo procesar imágenes, NO videos
+        if (!isVideo) {
+          const originalDimensions = await validateImageDimensions(originalBuffer);
+          finalDimensions = originalDimensions;
+
+          if (enableProcessing && file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
+            // Log para imágenes grandes (útil para debugging)
+            if (file.size > 10 * 1024 * 1024) {
+              console.log(`[UPLOAD-FIREBASE] Procesando imagen grande de cámara profesional: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB, ${originalDimensions.width}x${originalDimensions.height}px)`);
+            }
+            const processed = await processImage(originalBuffer, file.type);
+            finalBuffer = processed.processedBuffer;
+            finalType = processed.finalType;
+            wasResized = processed.wasResized;
+            wasConverted = processed.wasConverted;
+            finalDimensions = processed.finalDimensions;
+
+            // Actualizar extensión del archivo si se convirtió
+            if (wasConverted && finalType === 'image/webp') {
+              const nameWithoutExt = path.basename(fileName, path.extname(fileName));
+              fileName = `${nameWithoutExt}.webp`;
+            }
           }
-          const processed = await processImage(originalBuffer, file.type);
-          finalBuffer = processed.processedBuffer;
-          finalType = processed.finalType;
-          wasResized = processed.wasResized;
-          wasConverted = processed.wasConverted;
-          finalDimensions = processed.finalDimensions;
 
-          // Actualizar extensión del archivo si se convirtió
-          if (wasConverted && finalType === 'image/webp') {
-            const nameWithoutExt = path.basename(fileName, path.extname(fileName));
-            fileName = `${nameWithoutExt}.webp`;
+          // Validar tamaño del archivo PROCESADO (solo para imágenes)
+          if (finalBuffer.length > MAX_PROCESSED_FILE_SIZE) {
+            console.error(`[UPLOAD-FIREBASE] Archivo procesado sigue siendo muy grande: ${Math.round(finalBuffer.length / 1024 / 1024)}MB`);
+            errors.push({
+              file: file.name,
+              error: `El archivo procesado (${(finalBuffer.length / 1024 / 1024).toFixed(2)}MB) sigue excediendo el límite de ${MAX_PROCESSED_FILE_SIZE / 1024 / 1024}MB. Intente con una imagen de menor resolución.`
+            });
+            continue;
           }
-        }
-
-        // Validar tamaño del archivo PROCESADO (después de redimensionar y comprimir)
-        if (finalBuffer.length > MAX_PROCESSED_FILE_SIZE) {
-          console.error(`[UPLOAD-FIREBASE] Archivo procesado sigue siendo muy grande: ${Math.round(finalBuffer.length / 1024 / 1024)}MB`);
-          errors.push({
-            file: file.name,
-            error: `El archivo procesado (${(finalBuffer.length / 1024 / 1024).toFixed(2)}MB) sigue excediendo el límite de ${MAX_PROCESSED_FILE_SIZE / 1024 / 1024}MB. Intente con una imagen de menor resolución.`
-          });
-          continue;
+        } else {
+          // Para videos, simplemente log el tamaño
+          console.log(`[UPLOAD-FIREBASE] Subiendo video sin procesar: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
         }
 
         // Determinar content type
