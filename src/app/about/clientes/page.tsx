@@ -32,12 +32,11 @@ interface ClientesData {
   page: {
     title: string;
     description: string;
+    hero_image?: string;
   };
   hero: {
     title: string;
     subtitle: string;
-    background_image: string;
-    background_image_fallback: string;
   };
   introduction: {
     title: string;
@@ -113,13 +112,12 @@ export const metadata: Metadata = {
 const CLIENTES_FALLBACK: ClientesData = {
   page: {
     title: 'Nuestros Clientes | Métrica FM',
-    description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia'
+    description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia',
+    hero_image: ''
   },
   hero: {
     title: 'Nuestros Clientes',
-    subtitle: 'Empresas líderes que confían en nuestra experiencia',
-    background_image: '/images/clientes/hero.jpg',
-    background_image_fallback: '/images/clientes/hero.jpg'
+    subtitle: 'Empresas líderes que confían en nuestra experiencia'
   },
   introduction: {
     title: 'Relaciones de Confianza',
@@ -189,7 +187,7 @@ function ClientesContent({ data }: { data: ClientesData }) {
         <UniversalHero
           title={data.hero?.title || 'Nuestros Clientes'}
           subtitle={data.hero?.subtitle || 'Empresas líderes que confían en nuestra experiencia'}
-          backgroundImage={data.hero?.background_image || ''}
+          backgroundImage={data.page?.hero_image || ''}
         />
         
         {/* Introducción y estadísticas */}

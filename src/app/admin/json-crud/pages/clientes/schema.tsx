@@ -107,12 +107,12 @@ export const clientesSchema = {
             defaultValue: 'Empresas líderes que confían en nuestra experiencia'
         },
         {
-            key: 'hero.background_image',
-            label: 'Imagen de Fondo del Hero',
+            key: 'page.hero_image',
+            label: 'Imagen Principal del Hero',
             type: 'image' as const,
             required: false,
             group: 'hero_section',
-            description: 'Imagen de fondo para el banner principal de la página',
+            description: 'Imagen de fondo para el hero de la página',
             placeholder: 'Seleccionar imagen de fondo'
         },
 
