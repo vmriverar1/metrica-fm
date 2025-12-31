@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings, Plus, Eye, EyeOff, Upload, ExternalLink, Star, Trash2, Edit3, Save, X, GripVertical } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,199 @@ interface ServicesData {
   main_service: Service;
   secondary_services: Service[];
 }
+
+// ServiceEditor extraído fuera para evitar re-creación en cada render
+interface ServiceEditorProps {
+  service: Service;
+  isMain: boolean;
+  index?: number;
+  onFieldChange: (field: keyof Service, value: any) => void;
+  onToggleMain: () => void;
+  imageUpload: boolean;
+  iconLibrary: boolean;
+}
+
+const ServiceEditor: React.FC<ServiceEditorProps> = ({
+  service,
+  isMain,
+  index,
+  onFieldChange,
+  onToggleMain,
+  imageUpload,
+  iconLibrary
+}) => {
+  // Estado local para inputs de texto (evita pérdida de foco)
+  const [localTitle, setLocalTitle] = useState(service.title || '');
+  const [localDescription, setLocalDescription] = useState(service.description || '');
+  const [localCtaText, setLocalCtaText] = useState(service.cta?.text || '');
+  const [localCtaUrl, setLocalCtaUrl] = useState(service.cta?.url || '');
+
+  // Sincronizar cuando cambia el servicio (ej: al cambiar de servicio editado)
+  useEffect(() => {
+    setLocalTitle(service.title || '');
+    setLocalDescription(service.description || '');
+    setLocalCtaText(service.cta?.text || '');
+    setLocalCtaUrl(service.cta?.url || '');
+  }, [service.id]);
+
+  const handleCtaBlur = () => {
+    onFieldChange('cta', { text: localCtaText, url: localCtaUrl });
+  };
+
+  return (
+    <Card className="mb-4">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg flex items-center gap-2">
+            {isMain && <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />}
+            {isMain ? 'Servicio Principal (DIP)' : `Servicio Secundario ${(index || 0) + 1}`}
+            <Badge variant={isMain ? "default" : "outline"}>
+              {service.id}
+            </Badge>
+          </CardTitle>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onToggleMain}
+            className={`flex items-center gap-1 ${service.is_main ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}
+            title={service.is_main ? "Quitar como principal" : "Hacer principal"}
+          >
+            <Star className={`h-4 w-4 ${service.is_main ? 'fill-yellow-500' : ''}`} />
+            {service.is_main ? 'Es Principal' : 'Hacer Principal'}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Textos */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Título del Servicio *
+              </label>
+              <Input
+                value={localTitle}
+                onChange={(e) => setLocalTitle(e.target.value)}
+                onBlur={() => onFieldChange('title', localTitle)}
+                placeholder="ej: Dirección Integral de Proyectos"
+                maxLength={50}
+              />
+              <p className="text-xs text-gray-500 mt-1">{localTitle.length}/50</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Descripción *
+              </label>
+              <Textarea
+                value={localDescription}
+                onChange={(e) => setLocalDescription(e.target.value)}
+                onBlur={() => onFieldChange('description', localDescription)}
+                placeholder="Describa los beneficios y alcance del servicio..."
+                rows={4}
+                maxLength={200}
+              />
+              <p className="text-xs text-gray-500 mt-1">{localDescription.length}/200</p>
+            </div>
+
+            {/* Control de ancho - solo para servicios secundarios */}
+            {!isMain && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ancho de la Card
+                </label>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant={service.width === '1/3' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onFieldChange('width', '1/3')}
+                    className="flex-1"
+                  >
+                    1/3
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={service.width === '2/3' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onFieldChange('width', '2/3')}
+                    className="flex-1"
+                  >
+                    2/3
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={service.width === '3/3' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onFieldChange('width', '3/3')}
+                    className="flex-1"
+                  >
+                    Completo
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Controla qué tan ancha será esta card en la grilla de servicios
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Recursos y CTA */}
+          <div className="space-y-4">
+            {imageUpload && (
+              <div>
+                <ImageSelector
+                  value={service.image_url || ''}
+                  onChange={(newValue) => onFieldChange('image_url', newValue)}
+                  label="Imagen del Servicio"
+                  placeholder="Seleccionar imagen..."
+                  required={false}
+                  disabled={false}
+                  description="Imagen principal que se mostrará en la card del servicio"
+                />
+              </div>
+            )}
+
+            {iconLibrary && (
+              <div>
+                <ImageSelector
+                  value={service.icon_url || ''}
+                  onChange={(newValue) => onFieldChange('icon_url', newValue)}
+                  label="Icono del Servicio"
+                  placeholder="Seleccionar icono..."
+                  required={false}
+                  disabled={false}
+                  description="Icono pequeño que representa el servicio (opcional)"
+                />
+              </div>
+            )}
+
+            {/* CTA */}
+            <div className="border-t pt-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Call to Action (Opcional)</h4>
+              <div className="space-y-2">
+                <Input
+                  value={localCtaText}
+                  onChange={(e) => setLocalCtaText(e.target.value)}
+                  onBlur={handleCtaBlur}
+                  placeholder="Texto del botón (ej: Conoce más sobre DIP)"
+                  maxLength={30}
+                />
+                <Input
+                  value={localCtaUrl}
+                  onChange={(e) => setLocalCtaUrl(e.target.value)}
+                  onBlur={handleCtaBlur}
+                  placeholder="URL de destino (ej: /services)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 interface ServiceBuilderProps {
   mainService: Service;
@@ -417,171 +610,6 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     );
   };
 
-  const ServiceEditor = ({ service, isMain, index }: { service: Service; isMain: boolean; index?: number }) => {
-    const handleChange = (field: keyof Service, value: any) => {
-      if (isMain) {
-        handleMainServiceChange(field, value);
-      } else if (index !== undefined) {
-        handleSecondaryServiceChange(index, field, value);
-      }
-    };
-
-    const handleCTAChange = (field: string, value: string) => {
-      const newCTA = { ...service.cta, [field]: value };
-      handleChange('cta', newCTA);
-    };
-
-    return (
-      <Card className="mb-4">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg flex items-center gap-2">
-              {isMain && <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />}
-              {isMain ? 'Servicio Principal (DIP)' : `Servicio Secundario ${(index || 0) + 1}`}
-              <Badge variant={isMain ? "default" : "outline"}>
-                {service.id}
-              </Badge>
-            </CardTitle>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => toggleMainService(isMain ? -1 : index || 0)}
-              className={`flex items-center gap-1 ${service.is_main ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}
-              title={service.is_main ? "Quitar como principal" : "Hacer principal"}
-            >
-              <Star className={`h-4 w-4 ${service.is_main ? 'fill-yellow-500' : ''}`} />
-              {service.is_main ? 'Es Principal' : 'Hacer Principal'}
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Textos */}
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Título del Servicio *
-                </label>
-                <Input
-                  value={service.title || ''}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  placeholder="ej: Dirección Integral de Proyectos"
-                  maxLength={50}
-                />
-                <p className="text-xs text-gray-500 mt-1">{service.title?.length || 0}/50</p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Descripción *
-                </label>
-                <Textarea
-                  value={service.description || ''}
-                  onChange={(e) => handleChange('description', e.target.value)}
-                  placeholder="Describa los beneficios y alcance del servicio..."
-                  rows={4}
-                  maxLength={200}
-                />
-                <p className="text-xs text-gray-500 mt-1">{service.description?.length || 0}/200</p>
-              </div>
-
-              {/* Control de ancho - solo para servicios secundarios */}
-              {!isMain && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ancho de la Card
-                  </label>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant={service.width === '1/3' ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handleChange('width', '1/3')}
-                      className="flex-1"
-                    >
-                      1/3
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={service.width === '2/3' ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handleChange('width', '2/3')}
-                      className="flex-1"
-                    >
-                      2/3
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={service.width === '3/3' ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handleChange('width', '3/3')}
-                      className="flex-1"
-                    >
-                      Completo
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Controla qué tan ancha será esta card en la grilla de servicios
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Recursos y CTA */}
-            <div className="space-y-4">
-              {imageUpload && (
-                <div>
-                  <ImageSelector
-                    value={service.image_url || ''}
-                    onChange={(newValue) => handleChange('image_url', newValue)}
-                    label="Imagen del Servicio"
-                    placeholder="Seleccionar imagen..."
-                    required={false}
-                    disabled={false}
-                    description="Imagen principal que se mostrará en la card del servicio"
-                  />
-                </div>
-              )}
-
-              {iconLibrary && (
-                <div>
-                  <ImageSelector
-                    value={service.icon_url || ''}
-                    onChange={(newValue) => handleChange('icon_url', newValue)}
-                    label="Icono del Servicio"
-                    placeholder="Seleccionar icono..."
-                    required={false}
-                    disabled={false}
-                    description="Icono pequeño que representa el servicio (opcional)"
-                  />
-                </div>
-              )}
-
-              {/* CTA */}
-              <div className="border-t pt-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Call to Action (Opcional)</h4>
-                <div className="space-y-2">
-                  <Input
-                    value={service.cta?.text || ''}
-                    onChange={(e) => handleCTAChange('text', e.target.value)}
-                    placeholder="Texto del botón (ej: Conoce más sobre DIP)"
-                    maxLength={30}
-                  />
-                  <Input
-                    value={service.cta?.url || ''}
-                    onChange={(e) => handleCTAChange('url', e.target.value)}
-                    placeholder="URL de destino (ej: /services)"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -782,15 +810,26 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
 
                 {/* Servicio Principal Editor */}
                 {editingService === -1 && (
-                  <ServiceEditor service={mainService} isMain={true} />
+                  <ServiceEditor
+                    service={mainService}
+                    isMain={true}
+                    onFieldChange={(field, value) => handleMainServiceChange(field, value)}
+                    onToggleMain={() => toggleMainService(-1)}
+                    imageUpload={imageUpload}
+                    iconLibrary={iconLibrary}
+                  />
                 )}
 
                 {/* Servicios Secundarios Editor */}
                 {editingService !== -1 && editingService >= 0 && secondaryServices[editingService] && (
-                  <ServiceEditor 
-                    service={secondaryServices[editingService]} 
-                    isMain={false} 
-                    index={editingService} 
+                  <ServiceEditor
+                    service={secondaryServices[editingService]}
+                    isMain={false}
+                    index={editingService}
+                    onFieldChange={(field, value) => handleSecondaryServiceChange(editingService, field, value)}
+                    onToggleMain={() => toggleMainService(editingService)}
+                    imageUpload={imageUpload}
+                    iconLibrary={iconLibrary}
                   />
                 )}
               </>
