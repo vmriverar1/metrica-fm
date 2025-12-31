@@ -119,9 +119,16 @@ export default function ClientStatistics({ stats }: ClientStatisticsProps) {
     return null;
   }
 
+  // Determinar clases de grid según cantidad de estadísticas
+  const gridClasses =
+    stats.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+    stats.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto' :
+    stats.length === 3 ? 'grid-cols-1 md:grid-cols-3 max-w-4xl mx-auto' :
+    'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+
   return (
     <div className="mb-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className={`grid ${gridClasses} gap-8`}>
         {stats.map((stat, index) => (
           <StatCard
             key={`stat-${index}`}

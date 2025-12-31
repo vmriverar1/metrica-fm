@@ -464,9 +464,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                   Título del Servicio *
                 </label>
                 <Input
-                  key={`title-${service.id}`}
-                  defaultValue={service.title}
-                  onBlur={(e) => handleChange('title', e.target.value)}
+                  value={service.title || ''}
+                  onChange={(e) => handleChange('title', e.target.value)}
                   placeholder="ej: Dirección Integral de Proyectos"
                   maxLength={50}
                 />
@@ -478,9 +477,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                   Descripción *
                 </label>
                 <Textarea
-                  key={`desc-${service.id}`}
-                  defaultValue={service.description}
-                  onBlur={(e) => handleChange('description', e.target.value)}
+                  value={service.description || ''}
+                  onChange={(e) => handleChange('description', e.target.value)}
                   placeholder="Describa los beneficios y alcance del servicio..."
                   rows={4}
                   maxLength={200}
@@ -565,16 +563,14 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                 <h4 className="text-sm font-medium text-gray-700 mb-2">Call to Action (Opcional)</h4>
                 <div className="space-y-2">
                   <Input
-                    key={`cta-text-${service.id}`}
-                    defaultValue={service.cta?.text || ''}
-                    onBlur={(e) => handleCTAChange('text', e.target.value)}
+                    value={service.cta?.text || ''}
+                    onChange={(e) => handleCTAChange('text', e.target.value)}
                     placeholder="Texto del botón (ej: Conoce más sobre DIP)"
                     maxLength={30}
                   />
                   <Input
-                    key={`cta-url-${service.id}`}
-                    defaultValue={service.cta?.url || ''}
-                    onBlur={(e) => handleCTAChange('url', e.target.value)}
+                    value={service.cta?.url || ''}
+                    onChange={(e) => handleCTAChange('url', e.target.value)}
                     placeholder="URL de destino (ej: /services)"
                   />
                 </div>

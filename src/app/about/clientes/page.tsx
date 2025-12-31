@@ -20,7 +20,6 @@ import {
   Target
 } from 'lucide-react';
 import { PagesService } from '@/lib/firestore/pages-service';
-import YouTubeEmbed from '@/components/ui/YouTubeEmbed';
 import ClientStatistics from '@/components/clientes/ClientStatistics';
 import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
 
@@ -219,67 +218,6 @@ function ClientesContent({ data }: { data: ClientesData }) {
               )}
             </div>
           
-            {/* SECCIÓN DE TESTIMONIOS DE YOUTUBE */}
-            <div className="mb-20">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold text-primary mb-6">
-                  Testimonios de Nuestros Clientes
-                </h3>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  Escucha de primera mano lo que nuestros clientes opinan sobre nuestro trabajo
-                  y cómo hemos contribuido al éxito de sus proyectos.
-                </p>
-              </div>
-
-              {/* Grid de Videos */}
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                {data.testimonials?.youtube_videos && data.testimonials.youtube_videos.length > 0 ? (
-                  data.testimonials.youtube_videos
-                    .sort((a: any, b: any) => (a.order || 999) - (b.order || 999))
-                    .map((video: any) => (
-                      <YouTubeEmbed
-                        key={video.id}
-                        videoId={video.videoId}
-                        title={video.title}
-                        description={video.description}
-                      />
-                    ))
-                ) : (
-                  // Fallback a videos hardcodeados si no hay datos en Firestore
-                  <>
-                    <YouTubeEmbed
-                      videoId="xBpz8Ret1Io"
-                      title="Testimonio - Nora Valencia, Gerente de BCP"
-                      description="Nora Valencia, Gerente de BCP, comparte su experiencia trabajando con Métrica FM en proyectos de infraestructura bancaria."
-                    />
-                    <YouTubeEmbed
-                      videoId="DkUC15ltTYs"
-                      title="Testimonio - Mario Cruz Galarza CEO ™"
-                      description="Mario Cruz Galarza, CEO, nos cuenta cómo Métrica FM contribuyó al éxito de sus proyectos empresariales."
-                    />
-                    <YouTubeEmbed
-                      videoId="d3aYMlb5VKA"
-                      title="Álvaro Chinchayán - CEO Latam Logistic"
-                      description="Álvaro Chinchayán, CEO de Latam Logistic, destaca la calidad y profesionalismo en la dirección de proyectos logísticos."
-                    />
-                  </>
-                )}
-              </div>
-
-              {/* Call to action */}
-              <div className="text-center mt-12">
-                <p className="text-muted-foreground mb-4">
-                  ¿Quieres conocer más testimonios y casos de éxito?
-                </p>
-                <a
-                  href="/portfolio"
-                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                >
-                  Ver Nuestro Portfolio
-                </a>
-              </div>
-            </div>
-
             {/* Client Benefits */}
             <div className="mb-20">
               <div className="text-center mb-12">

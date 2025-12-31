@@ -14,7 +14,19 @@ const MissionVision: React.FC = () => {
   const visionRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!missionRef.current || !visionRef.current) return;
+    if (!missionRef.current || !visionRef.current || !sectionRef.current) return;
+
+    // Forzar refresh de ScrollTrigger para recalcular posiciones después de navegación
+    ScrollTrigger.refresh();
+
+    // Si la sección ya está visible al cargar (navegación cliente), mostrar directamente
+    const rect = sectionRef.current.getBoundingClientRect();
+    const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isAlreadyVisible) {
+      // Mostrar inmediatamente sin esperar scroll
+      gsap.set([missionRef.current, visionRef.current], { opacity: 1, x: 0 });
+    }
 
     // Animación para Misión (desde la izquierda)
     gsap.fromTo(
@@ -85,7 +97,7 @@ const MissionVision: React.FC = () => {
 
               {/* Descripción */}
               <p className="text-gray-700 leading-relaxed text-base font-alliance-medium">
-                Maximizar los beneficios de nuestros clientes, agregando valor a sus proyectos y organizaciones, a través de un equipo especializado y comprometido; brindando un servicio ágil e innovador de desarrollo de ingenierías, gerencia y supervisión, para sus diversos proyectos del sector construcción.
+                Proporcionar soluciones de Facility Management eficientes y personalizadas para mejorar la operación de las instalaciones de nuestros clientes.
               </p>
 
               {/* Línea decorativa inferior */}
@@ -115,7 +127,7 @@ const MissionVision: React.FC = () => {
 
               {/* Descripción */}
               <p className="text-gray-700 leading-relaxed text-base font-alliance-medium">
-                Ser una organización referente en la gestión y supervisión de proyectos del sector construcción a nivel nacional, caracterizándonos por el valor agregado y la especialización de nuestros servicios.
+                Ser reconocidos como líderes en el mercado de Facility Management en Perú, brindando servicios de alta calidad y generando valor para nuestros clientes.
               </p>
 
               {/* Línea decorativa inferior */}
