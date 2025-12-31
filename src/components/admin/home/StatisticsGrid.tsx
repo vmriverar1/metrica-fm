@@ -14,7 +14,8 @@ import { getSafeNumberInputProps, formatNumber } from '@/lib/form-utils';
 interface Statistic {
   id: string;
   icon: string;
-  value: number;
+  value: string | number;
+  prefix?: string;
   suffix: string;
   label: string;
   description: string;
@@ -134,7 +135,7 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
                   <div className={`text-3xl font-bold mb-1 ${getStatisticColor(index)} ${
                     animatingStats[index] ? 'animate-pulse' : ''
                   }`}>
-                    {stat.value}{stat.suffix}
+                    {stat.prefix || ''}{stat.value}{stat.suffix}
                   </div>
                   <div className="text-sm font-medium text-gray-700 mb-1">
                     {stat.label}
@@ -179,30 +180,39 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Número/Valor *
+                        Valor * (números, texto, decimales)
                       </label>
                       <Input
-                        {...getSafeNumberInputProps({
-                          value: stat.value || 0,
-                          onChange: (newValue) => handleStatisticChange(index, 'value', newValue),
-                          min: 0,
-                          max: 9999,
-                          fallback: 0
-                        })}
+                        value={String(stat.value || '')}
+                        onChange={(e) => handleStatisticChange(index, 'value', e.target.value)}
+                        placeholder="ej: 300, 3.5B, 10+"
                         className="text-2xl font-bold text-center"
                       />
                     </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Sufijo (ej: +, M, K)
-                      </label>
-                      <Input
-                        value={stat.suffix}
-                        onChange={(e) => handleStatisticChange(index, 'suffix', e.target.value)}
-                        placeholder="+"
-                        maxLength={3}
-                      />
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Prefijo (ej: S/, $, +)
+                        </label>
+                        <Input
+                          value={stat.prefix || ''}
+                          onChange={(e) => handleStatisticChange(index, 'prefix', e.target.value)}
+                          placeholder="S/"
+                          maxLength={10}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Sufijo (ej: +, M, K)
+                        </label>
+                        <Input
+                          value={stat.suffix || ''}
+                          onChange={(e) => handleStatisticChange(index, 'suffix', e.target.value)}
+                          placeholder="+"
+                          maxLength={10}
+                        />
+                      </div>
                     </div>
 
                     {iconPicker && (
@@ -291,22 +301,19 @@ const StatisticsGrid: React.FC<StatisticsGridProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <p className="text-2xl font-bold text-[#003F6F]">
-                {formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0))}
+                {statistics.length}
               </p>
-              <p className="text-xs text-gray-600">Suma Total</p>
+              <p className="text-xs text-gray-600">Total Estadísticas</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-[#00A8E8]">
-                {statistics.length > 0 ? 
-                  formatNumber(statistics.reduce((acc, stat) => acc + (stat.value || 0), 0) / statistics.length) : 
-                  '0'
-                }
+                {statistics.filter(stat => stat.prefix).length}
               </p>
-              <p className="text-xs text-gray-600">Promedio</p>
+              <p className="text-xs text-gray-600">Con Prefijo</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-green-600">
-                {statistics.filter(stat => stat.value > 0 && stat.label.length > 0).length}
+                {statistics.filter(stat => stat.value && stat.label).length}
               </p>
               <p className="text-xs text-gray-600">Completas</p>
             </div>
