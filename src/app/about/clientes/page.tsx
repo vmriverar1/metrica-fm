@@ -32,11 +32,16 @@ interface ClientesData {
   page: {
     title: string;
     description: string;
-    hero_image?: string;
   };
   hero: {
     title: string;
     subtitle: string;
+    background?: {
+      type?: 'image' | 'video';
+      image?: string;
+      video_url?: string;
+      image_fallback?: string;
+    };
   };
   introduction: {
     title: string;
@@ -112,12 +117,15 @@ export const metadata: Metadata = {
 const CLIENTES_FALLBACK: ClientesData = {
   page: {
     title: 'Nuestros Clientes | Métrica FM',
-    description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia',
-    hero_image: ''
+    description: 'Organismos públicos y empresas líderes que confían en nuestra experiencia'
   },
   hero: {
     title: 'Nuestros Clientes',
-    subtitle: 'Empresas líderes que confían en nuestra experiencia'
+    subtitle: 'Empresas líderes que confían en nuestra experiencia',
+    background: {
+      type: 'image',
+      image: ''
+    }
   },
   introduction: {
     title: 'Relaciones de Confianza',
@@ -183,11 +191,17 @@ function ClientesContent({ data }: { data: ClientesData }) {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="relative">
-        {/* Hero con imagen de fondo */}
+        {/* Hero con imagen o video de fondo */}
         <UniversalHero
           title={data.hero?.title || 'Nuestros Clientes'}
           subtitle={data.hero?.subtitle || 'Empresas líderes que confían en nuestra experiencia'}
-          backgroundImage={data.page?.hero_image || ''}
+          background={{
+            type: data.hero?.background?.type || 'image',
+            primary_url: data.hero?.background?.type === 'video' ? data.hero?.background?.video_url : undefined,
+            fallback_url: data.hero?.background?.type === 'video'
+              ? data.hero?.background?.image_fallback
+              : data.hero?.background?.image
+          }}
         />
         
         {/* Introducción y estadísticas */}

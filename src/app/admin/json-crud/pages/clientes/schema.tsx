@@ -107,44 +107,53 @@ export const clientesSchema = {
             defaultValue: 'Empresas líderes que confían en nuestra experiencia'
         },
         {
-            key: 'page.hero_image',
-            label: 'Imagen Principal del Hero',
+            key: 'hero.background.type',
+            label: 'Tipo de Fondo',
+            type: 'select' as const,
+            group: 'hero_section',
+            description: 'Selecciona si quieres usar un video o una imagen como fondo del hero',
+            options: [
+                { value: 'image', label: 'Imagen de Fondo' },
+                { value: 'video', label: 'Video de Fondo' }
+            ],
+            required: false,
+            defaultValue: 'image'
+        },
+        {
+            key: 'hero.background.video_url',
+            label: 'Video Principal',
+            type: 'video' as const,
+            placeholder: 'Seleccionar video de fondo',
+            group: 'hero_section',
+            description: 'Video principal para el hero. Puedes subir un archivo o usar una URL externa.',
+            dependsOn: {
+                field: 'hero.background.type',
+                value: 'video'
+            }
+        },
+        {
+            key: 'hero.background.image_fallback',
+            label: 'Imagen Fallback del Video',
             type: 'image' as const,
-            required: false,
+            placeholder: 'Seleccionar imagen fallback',
             group: 'hero_section',
-            description: 'Imagen de fondo para el hero de la página',
-            placeholder: 'Seleccionar imagen de fondo'
-        },
-
-        // Títulos de la Sección Hero
-        {
-            key: 'clientes.section.title',
-            label: 'Título de la Sección Hero',
-            type: 'text' as const,
-            required: false,
-            group: 'hero_section',
-            defaultValue: 'Nuestros Clientes'
+            description: 'Imagen que se muestra mientras carga el video o si el video falla.',
+            dependsOn: {
+                field: 'hero.background.type',
+                value: 'video'
+            }
         },
         {
-            key: 'clientes.section.subtitle',
-            label: 'Subtítulo de la Sección Hero',
-            type: 'text' as const,
-            required: false,
-            group: 'hero_section',
-            defaultValue: 'Empresas líderes que confían en nuestra experiencia'
-        },
-
-        // Galería de Logos de Clientes
-        {
-            key: 'clientes.logos',
-            label: 'Galería de Logos de Clientes',
+            key: 'hero.background.image',
+            label: 'Imagen Principal',
             type: 'image' as const,
+            placeholder: 'Seleccionar imagen de fondo',
             group: 'hero_section',
-            description: 'Lista de logos de clientes que aparecen en el hero de la página (máximo 50 logos)',
-            multiple: true,
-            maxImages: 50,
-            placeholder: 'Agregar logos de clientes...',
-            required: false
+            description: 'Imagen principal para el fondo del hero.',
+            dependsOn: {
+                field: 'hero.background.type',
+                value: 'image'
+            }
         },
 
         // Introducción y Estadísticas
