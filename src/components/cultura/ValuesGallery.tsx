@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from 'next/image';
 import {
   Target,
@@ -24,9 +22,6 @@ const ImageSkeleton = ({ className }: { className?: string }) => (
     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[shimmer_2s_infinite]" />
   </div>
 );
-
-// Registrar plugins
-gsap.registerPlugin(ScrollTrigger);
 
 // Mapeo de iconos por nombre
 const iconMap = {
@@ -222,20 +217,16 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedValue, setSelectedValue] = useState<Value | null>(null);
 
-  useGSAP(() => {
+  useEffect(() => {
     if (!containerRef.current) return;
 
-    const valuesGrid = containerRef.current.querySelector('.values-grid');
-    if (!valuesGrid) return;
+    const cards = containerRef.current.querySelectorAll('.value-card');
+    if (!cards.length) return;
 
-    // Verificar si la sección ya está visible (navegación cliente)
-    const rect = valuesGrid.getBoundingClientRect();
-    const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (isAlreadyVisible) {
-      // Si ya es visible, animar directamente sin ScrollTrigger
-      gsap.fromTo('.value-card',
-        { opacity: 0, y: 30 },
+    // Pequeño delay para asegurar que el DOM esté listo
+    const timer = setTimeout(() => {
+      gsap.fromTo(cards,
+        { opacity: 0.3, y: 20 },
         {
           opacity: 1,
           y: 0,
@@ -244,28 +235,10 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
           ease: "power2.out"
         }
       );
-    } else {
-      // Si no es visible, usar ScrollTrigger
-      gsap.fromTo('.value-card',
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".values-grid",
-            start: "top 90%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
+    }, 50);
 
-    // Refresh ScrollTrigger
-    ScrollTrigger.refresh();
-  }, { scope: containerRef });
+    return () => clearTimeout(timer);
+  }, [values]);
 
   // Todas las imágenes son del mismo tamaño en cuadrícula uniforme
   const getGridSize = (size: string) => {
