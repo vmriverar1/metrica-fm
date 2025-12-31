@@ -415,17 +415,13 @@ export default function Services({ data, hideCTA = false }: ServicesProps) {
             const servicesCount = allServices.length;
             const serviceWidth = service.width;
 
-            // Clases de ancho responsivas
-            let widthClass = 'w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]'; // Por defecto 1/3
+            // Clases de ancho responsivas - 2 columnas en pantallas grandes
+            let widthClass = 'w-full sm:w-[calc(50%-1rem)]'; // Por defecto 1/2
 
-            if (serviceWidth === '2/3') {
-              widthClass = 'w-full lg:w-[calc(66.666%-1rem)]';
-            } else if (serviceWidth === '3/3') {
+            if (serviceWidth === '2/2') {
               widthClass = 'w-full';
             } else if (servicesCount === 1) {
               widthClass = 'w-full max-w-2xl';
-            } else if (servicesCount === 2) {
-              widthClass = 'w-full sm:w-[calc(50%-1rem)] max-w-md';
             }
 
             return (

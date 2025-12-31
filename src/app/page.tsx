@@ -2,7 +2,6 @@ import Header from '@/components/landing/header';
 import HeroTransform from '@/components/landing/hero-transform';
 import PillarsCarousel from '@/components/landing/pillars-carousel';
 import Portfolio from '@/components/landing/portfolio';
-import Newsletter from '@/components/landing/newsletter';
 import Footer from '@/components/landing/footer';
 import Stats from '@/components/landing/stats';
 import Services from '@/components/landing/services';
@@ -48,8 +47,7 @@ function mergeWithFallback(data: Partial<HomePageData> | null | undefined): Home
     portfolio: data.portfolio || HOME_PAGE_FALLBACK.portfolio,
     pillars: data.pillars || HOME_PAGE_FALLBACK.pillars,
     policies: data.policies || HOME_PAGE_FALLBACK.policies,
-    clients: data.clients || HOME_PAGE_FALLBACK.clients,
-    newsletter: data.newsletter || HOME_PAGE_FALLBACK.newsletter
+    clients: data.clients || HOME_PAGE_FALLBACK.clients
   };
 }
 
@@ -125,7 +123,6 @@ export default async function Home() {
         <PillarsCarousel data={data.pillars} />
         <PoliciesCarousel data={data.policies} />
         <Clients data={data.clients} />
-        <Newsletter data={data.newsletter} />
       </main>
       <Footer />
     </div>
