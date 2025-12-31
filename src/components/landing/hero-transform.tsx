@@ -411,7 +411,7 @@ const HeroTransform = ({ data }: HeroTransformProps) => {
                 ref={newTitleRef}
                 className="text-4xl md:text-5xl"
               >
-                <span className="text-accent">soluciones</span><br/>
+                <span className="text-accent">Soluciones</span><br/>
                 <span ref={wordRef} className="text-white inline-block">{words[currentWordIndex]}.</span>
               </h2>
               <p 

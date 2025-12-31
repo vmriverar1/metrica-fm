@@ -277,9 +277,11 @@ export default function DynamicForm({
     setValues(memoizedInitialValues);
   }, [memoizedInitialValues]);
 
-  // Apply default values for fields that don't have values
+  // Apply default values for fields that don't have values - only on initial mount
+  const defaultsAppliedRef = useRef(false);
   useEffect(() => {
     if (!fields || fields.length === 0) return;
+    if (defaultsAppliedRef.current) return; // Solo aplicar una vez
 
     const valuesWithDefaults = { ...values };
     let hasChanges = false;
@@ -295,9 +297,10 @@ export default function DynamicForm({
     });
 
     if (hasChanges) {
+      defaultsAppliedRef.current = true;
       setValues(valuesWithDefaults);
     }
-  }, [fields, values]);
+  }, [fields]);
 
   // Helper function to get nested values using dot notation
   const getNestedValue = (obj: any, path: string): any => {
