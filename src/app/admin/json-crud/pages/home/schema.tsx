@@ -212,7 +212,7 @@ export const homeSchema = {
         component: 'rotating-words',
         required: false,
         group: 'hero_animations',
-        description: 'Editor especializado para las palabras que rotan en la animación del hero',
+        description: 'Palabras que rotan debajo de "soluciones" (se agrega punto automáticamente)',
         customProps: {
         maxWords: 8,
         placeholder: 'Agregue palabra...',

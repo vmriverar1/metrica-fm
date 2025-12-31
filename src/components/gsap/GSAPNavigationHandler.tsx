@@ -11,10 +11,11 @@ import { gsap } from 'gsap';
  *
  * Problema: Next.js App Router usa navegación del cliente que no desmonta
  * completamente los componentes, causando que ScrollTrigger quede en estados
- * inconsistentes.
+ * inconsistentes. Además, el bfcache (back-forward cache) del navegador
+ * puede restaurar páginas sin ejecutar JavaScript.
  *
- * Solución: Detectar navegación popstate y forzar recarga completa de la página
- * para asegurar que todas las animaciones se inicialicen correctamente.
+ * Solución: Detectar navegación popstate Y restauración desde bfcache,
+ * forzando recarga completa para reiniciar todas las animaciones.
  */
 export default function GSAPNavigationHandler() {
   const pathname = usePathname();
@@ -31,18 +32,38 @@ export default function GSAPNavigationHandler() {
     const handlePopstate = () => {
       console.log('[GSAP] Popstate detectado - navegación back/forward');
       isPopstateRef.current = true;
-
-      // Forzar recarga completa para reiniciar todas las animaciones
-      // Esto es necesario porque GSAP/ScrollTrigger no se reinicia correctamente
-      // con la navegación del cliente de Next.js
       window.location.reload();
     };
 
-    // Escuchar evento popstate (back/forward del navegador)
+    // Handler para detectar restauración desde bfcache (back-forward cache)
+    // Este evento se dispara cuando la página se muestra, incluyendo
+    // cuando se restaura desde el caché del navegador
+    const handlePageShow = (event: PageTransitionEvent) => {
+      // persisted = true significa que la página fue restaurada desde bfcache
+      if (event.persisted) {
+        console.log('[GSAP] Página restaurada desde bfcache - forzando recarga');
+        window.location.reload();
+      }
+    };
+
+    // Handler para antes de que la página entre en bfcache
+    // Limpiamos el estado para evitar problemas
+    const handlePageHide = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        console.log('[GSAP] Página entrando en bfcache - limpiando ScrollTrigger');
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      }
+    };
+
+    // Escuchar eventos
     window.addEventListener('popstate', handlePopstate);
+    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('pagehide', handlePageHide);
 
     return () => {
       window.removeEventListener('popstate', handlePopstate);
+      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('pagehide', handlePageHide);
     };
   }, []);
 

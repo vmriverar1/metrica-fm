@@ -1,8 +1,13 @@
 import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
+
+// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 // import HeroEquipo from '@/components/cultura/HeroEquipo'; // Comentado temporalmente
 import UniversalHero from '@/components/ui/universal-hero';
+import MissionVision from '@/components/historia/MissionVision';
 import ValuesGallery from '@/components/cultura/ValuesGallery';
 import { CulturaData } from '@/types/cultura';
 import { PagesService } from '@/lib/firestore/pages-service';
@@ -114,6 +119,9 @@ function CulturaPageContent({ culturaData }: { culturaData: CulturaData }) {
           subtitle={culturaData.page?.subtitle || culturaData.hero?.subtitle || 'Nuestros valores nos definen'}
           backgroundImage={culturaData.page?.hero_image || ''}
         />
+
+        {/* Misión y Visión */}
+        <MissionVision />
 
         {/* FASE 1: Galería Inmersiva de Valores - DATOS DINÁMICOS */}
         <ValuesGallery

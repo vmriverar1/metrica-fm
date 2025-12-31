@@ -106,6 +106,15 @@ export const clientesSchema = {
             group: 'hero_section',
             defaultValue: 'Empresas líderes que confían en nuestra experiencia'
         },
+        {
+            key: 'hero.background_image',
+            label: 'Imagen de Fondo del Hero',
+            type: 'image' as const,
+            required: false,
+            group: 'hero_section',
+            description: 'Imagen de fondo para el banner principal de la página',
+            placeholder: 'Seleccionar imagen de fondo'
+        },
 
         // Títulos de la Sección Hero
         {

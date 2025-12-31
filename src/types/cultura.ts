@@ -1,10 +1,12 @@
 export interface CulturaData {
   page: {
     title: string;
+    subtitle?: string;
     description: string;
+    hero_image?: string;
     keywords: string[];
-    url: string;
-    openGraph: {
+    url?: string;
+    openGraph?: {
       title: string;
       description: string;
       type: string;

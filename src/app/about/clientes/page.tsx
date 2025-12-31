@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
+import UniversalHero from '@/components/ui/universal-hero';
 import {
   Heart,
   GraduationCap,
@@ -22,6 +23,10 @@ import { PagesService } from '@/lib/firestore/pages-service';
 import YouTubeEmbed from '@/components/ui/YouTubeEmbed';
 import ClientStatistics from '@/components/clientes/ClientStatistics';
 import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
+
+// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface ClientesData {
   page: {
@@ -180,11 +185,11 @@ function ClientesContent({ data }: { data: ClientesData }) {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="relative">
-        {/* Hero con Cuadrícula Dinámica de Logos */}
-        <DynamicLogoGrid
-          logos={data.clientes?.logos || []}
-          title={data.clientes?.section?.title || data.hero?.title || 'Nuestros Clientes'}
-          subtitle={data.clientes?.section?.subtitle || data.hero?.subtitle || 'Empresas líderes que confían en nuestra experiencia'}
+        {/* Hero con imagen de fondo */}
+        <UniversalHero
+          title={data.hero?.title || 'Nuestros Clientes'}
+          subtitle={data.hero?.subtitle || 'Empresas líderes que confían en nuestra experiencia'}
+          backgroundImage={data.hero?.background_image || ''}
         />
         
         {/* Introducción y estadísticas */}
