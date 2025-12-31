@@ -69,18 +69,6 @@ function ServicesPageContent({ servicesData }: { servicesData: any | null }) {
     services_list: []
   };
 
-  // Fallback stats
-  const defaultStats = [
-    'S/ 3B+ Gestionados',
-    '300+ Proyectos Exitosos',
-    '99% Satisfacción Cliente'
-  ];
-
-  // Get stats from Firestore or use fallback
-  const heroStats = servicesData?.hero?.stats?.length > 0
-    ? servicesData.hero.stats.map((stat: any) => stat.text || stat)
-    : defaultStats;
-
   return (
     <ServicesProvider>
       <MobileOptimizer>
@@ -94,13 +82,6 @@ function ServicesPageContent({ servicesData }: { servicesData: any | null }) {
               title={servicesData?.hero?.title || "Supervisamos y gerenciamos proyectos"}
               subtitle={servicesData?.hero?.subtitle || "10+ años liderando proyectos de infraestructura que transforman el Perú"}
               backgroundImage={servicesData?.hero?.background_image || "https://metricadip.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp"}
-              metadata={{
-                stats: heroStats
-              }}
-              primaryButton={{
-                text: servicesData?.hero?.buttons?.primary?.text || "Ver Proyectos Emblemáticos",
-                href: servicesData?.hero?.buttons?.primary?.href || "/portfolio"
-              }}
             />
 
             <Services data={servicesData?.services || defaultServicesData} hideCTA={true} />
