@@ -569,8 +569,17 @@ export default function DynamicForm({
 
   const shouldShowField = (field: FormField): boolean => {
     if (!field.dependsOn) return true;
-    
-    const dependentValue = getNestedValue(values, field.dependsOn.field);
+
+    let dependentValue = getNestedValue(values, field.dependsOn.field);
+
+    // Si el valor del campo dependiente es undefined, buscar el defaultValue del campo
+    if (dependentValue === undefined || dependentValue === null || dependentValue === '') {
+      const dependentField = fields.find(f => f.key === field.dependsOn?.field);
+      if (dependentField?.defaultValue !== undefined) {
+        dependentValue = dependentField.defaultValue;
+      }
+    }
+
     return dependentValue === field.dependsOn.value;
   };
 
