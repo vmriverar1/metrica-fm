@@ -16,58 +16,63 @@ const MissionVision: React.FC = () => {
   useGSAP(() => {
     if (!missionRef.current || !visionRef.current || !sectionRef.current) return;
 
-    // Forzar refresh de ScrollTrigger para recalcular posiciones después de navegación
-    ScrollTrigger.refresh();
-
-    // Si la sección ya está visible al cargar (navegación cliente), mostrar directamente
+    // Verificar si la sección ya está visible (navegación cliente)
     const rect = sectionRef.current.getBoundingClientRect();
     const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
     if (isAlreadyVisible) {
-      // Mostrar inmediatamente sin esperar scroll
-      gsap.set([missionRef.current, visionRef.current], { opacity: 1, x: 0 });
+      // Si ya es visible, mostrar directamente con animación suave
+      gsap.to(missionRef.current, {
+        opacity: 1,
+        x: 0,
+        duration: 0.5,
+        ease: 'power2.out'
+      });
+      gsap.to(visionRef.current, {
+        opacity: 1,
+        x: 0,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'power2.out'
+      });
+    } else {
+      // Si no es visible, configurar animación con ScrollTrigger
+      gsap.fromTo(
+        missionRef.current,
+        { x: -50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: missionRef.current,
+            start: 'top 95%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+
+      gsap.fromTo(
+        visionRef.current,
+        { x: 50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          delay: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: visionRef.current,
+            start: 'top 95%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
     }
 
-    // Animación para Misión (desde la izquierda)
-    gsap.fromTo(
-      missionRef.current,
-      {
-        x: -50,
-        opacity: 0
-      },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: missionRef.current,
-          start: 'top 95%',
-          toggleActions: 'play none none reverse'
-        }
-      }
-    );
-
-    // Animación para Visión (desde la derecha)
-    gsap.fromTo(
-      visionRef.current,
-      {
-        x: 50,
-        opacity: 0
-      },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.6,
-        delay: 0.1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: visionRef.current,
-          start: 'top 95%',
-          toggleActions: 'play none none reverse'
-        }
-      }
-    );
+    // Refresh ScrollTrigger después de configurar
+    ScrollTrigger.refresh();
   }, { scope: sectionRef });
 
   return (

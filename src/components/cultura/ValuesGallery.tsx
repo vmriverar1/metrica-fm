@@ -223,41 +223,48 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
   const [selectedValue, setSelectedValue] = useState<Value | null>(null);
 
   useGSAP(() => {
-    // Animación de entrada más simple y rápida
-    gsap.fromTo('.value-card', 
-      { 
-        opacity: 0, 
-        y: 30
-      },
-      { 
-        opacity: 1, 
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".values-grid",
-          start: "top 90%",
-          toggleActions: "play none none reverse"
+    if (!containerRef.current) return;
+
+    const valuesGrid = containerRef.current.querySelector('.values-grid');
+    if (!valuesGrid) return;
+
+    // Verificar si la sección ya está visible (navegación cliente)
+    const rect = valuesGrid.getBoundingClientRect();
+    const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isAlreadyVisible) {
+      // Si ya es visible, animar directamente sin ScrollTrigger
+      gsap.fromTo('.value-card',
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out"
         }
-      }
-    );
+      );
+    } else {
+      // Si no es visible, usar ScrollTrigger
+      gsap.fromTo('.value-card',
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".values-grid",
+            start: "top 90%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
 
-    // Parallax desactivado para evitar espacios vacíos
-    // const images = gsap.utils.toArray<HTMLElement>('.value-image');
-    // images.slice(0, 3).forEach((image) => {
-    //   gsap.to(image, {
-    //     yPercent: -15,
-    //     ease: "none",
-    //     scrollTrigger: {
-    //       trigger: image,
-    //       start: "top bottom",
-    //       end: "bottom top",
-    //       scrub: true
-    //     }
-    //   });
-    // });
-
+    // Refresh ScrollTrigger
+    ScrollTrigger.refresh();
   }, { scope: containerRef });
 
   // Todas las imágenes son del mismo tamaño en cuadrícula uniforme
