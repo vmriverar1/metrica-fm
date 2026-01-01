@@ -7,6 +7,11 @@ import { ContactPageData } from '@/types/contact';
 import { FirestoreCore } from '@/lib/firestore/firestore-core';
 import { Metadata } from 'next';
 
+
+// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const data = await getContactData();
