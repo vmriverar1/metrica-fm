@@ -1064,9 +1064,25 @@ export default function DynamicForm({
                     return metric;
                   }
 
-                  // Si está en formato Firestore (tiene 'number'), transformarlo
+                  // NUEVO FORMATO: Si tiene campos separados (prefix, suffix, value), usarlos directamente
+                  if (metric && (metric.prefix !== undefined || metric.suffix !== undefined || typeof metric.value === 'number')) {
+                    console.log('🔄 [TRANSFORM] Formato nuevo con campos separados:', metric);
+                    const transformed = {
+                      id: `metric-${metric.index ?? index}`,
+                      icon: metric.icon || 'Award',
+                      value: typeof metric.value === 'number' ? metric.value : parseFloat(metric.value) || 0,
+                      suffix: metric.suffix || '',
+                      prefix: metric.prefix || '',
+                      label: metric.label || 'Sin etiqueta',
+                      description: metric.description || ''
+                    };
+                    console.log('🔄 [TRANSFORM] Transformado desde formato nuevo:', transformed);
+                    return transformed;
+                  }
+
+                  // FORMATO VIEJO: Si está en formato Firestore antiguo (solo tiene 'number'), parsearlo
                   if (metric && metric.number !== undefined) {
-                    console.log('🔄 [TRANSFORM] Formato Firestore:', metric);
+                    console.log('🔄 [TRANSFORM] Formato Firestore antiguo:', metric);
 
                     // Extraer número y sufijo del campo "number"
                     const numberStr = metric.number || '0';
@@ -1090,7 +1106,7 @@ export default function DynamicForm({
 
                     const transformed = {
                       id: `metric-${metric.index || index}`,
-                      icon: metric.icon || 'Award', // Leer del Firestore o usar Award por defecto
+                      icon: metric.icon || 'Award',
                       value: numValue,
                       suffix: suffix,
                       prefix: prefix,
@@ -1098,7 +1114,7 @@ export default function DynamicForm({
                       description: metric.description || ''
                     };
 
-                    console.log('🔄 [TRANSFORM] Transformado a:', transformed);
+                    console.log('🔄 [TRANSFORM] Transformado desde formato antiguo:', transformed);
                     return transformed;
                   }
 
@@ -1122,8 +1138,9 @@ export default function DynamicForm({
                 console.log('🔄 [SAVE TRANSFORM] Recibiendo para guardar:', statistics);
 
                 // Transformar de vuelta al formato Firestore para guardar
+                // NUEVO: Guardar prefix, suffix, value como campos separados
                 const backTransformed = statistics.map((stat: any, index: number) => {
-                  // Reconstruir el campo "number" combinando prefix + value + suffix
+                  // Reconstruir el campo "number" combinando prefix + value + suffix (para compatibilidad)
                   let numberStr = '';
                   if (stat.prefix) numberStr += stat.prefix;
                   if (stat.value !== undefined && stat.value !== null) {
@@ -1135,8 +1152,13 @@ export default function DynamicForm({
                     index: index,
                     label: stat.label || 'Sin etiqueta',
                     description: stat.description || '',
-                    number: numberStr || '0',
-                    icon: stat.icon || 'Award'
+                    icon: stat.icon || 'Award',
+                    // Campos separados (nuevo formato)
+                    prefix: stat.prefix || '',
+                    value: typeof stat.value === 'number' ? stat.value : parseFloat(stat.value) || 0,
+                    suffix: stat.suffix || '',
+                    // Campo combinado (compatibilidad con formato antiguo)
+                    number: numberStr || '0'
                   };
 
                   console.log('🔄 [SAVE TRANSFORM] Item transformado:', result);

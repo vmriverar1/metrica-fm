@@ -32,6 +32,11 @@ export interface HistoriaPageData {
       number: string;
       label: string;
       description: string;
+      icon?: string;
+      // Nuevos campos para formato separado
+      prefix?: string;
+      suffix?: string;
+      value?: number;
     }>;
   };
   call_to_action: {

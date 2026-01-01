@@ -560,20 +560,15 @@ export default function EnhancedStatisticsManager({
                                 </div>
 
                                 {/* Prefijo */}
-                                <div key={`prefix-container-${stat.id}-${stat.prefix}`}>
+                                <div>
                                   <Label>Prefijo</Label>
-                                  <input
+                                  <Input
                                     type="text"
                                     id={`stat-prefix-${stat.id}`}
-                                    name={`prefix-${stat.id}`}
-                                    defaultValue={stat.prefix || ''}
-                                    onBlur={(e) => {
-                                      console.log('🔍 Prefix onBlur:', { id: stat.id, value: e.target.value, field: 'prefix' });
-                                      updateStatistic(stat.id, 'prefix', e.target.value);
-                                    }}
+                                    value={stat.prefix || ''}
+                                    onChange={(e) => updateStatistic(stat.id, 'prefix', e.target.value)}
                                     placeholder="$, €, +, -, etc."
                                     maxLength={10}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                   />
                                   <p className="text-xs text-muted-foreground mt-1">
                                     {(stat.prefix || '').length}/10 caracteres
@@ -581,20 +576,15 @@ export default function EnhancedStatisticsManager({
                                 </div>
 
                                 {/* Sufijo */}
-                                <div key={`suffix-container-${stat.id}-${stat.suffix}`}>
+                                <div>
                                   <Label>Sufijo</Label>
-                                  <input
+                                  <Input
                                     type="text"
                                     id={`stat-suffix-${stat.id}`}
-                                    name={`suffix-${stat.id}`}
-                                    defaultValue={stat.suffix || ''}
-                                    onBlur={(e) => {
-                                      console.log('🔍 Suffix onBlur:', { id: stat.id, value: e.target.value, field: 'suffix' });
-                                      updateStatistic(stat.id, 'suffix', e.target.value);
-                                    }}
+                                    value={stat.suffix || ''}
+                                    onChange={(e) => updateStatistic(stat.id, 'suffix', e.target.value)}
                                     placeholder="+, %, K, M, años, proyectos, etc."
                                     maxLength={10}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                   />
                                   <p className="text-xs text-muted-foreground mt-1">
                                     {(stat.suffix || '').length}/10 caracteres

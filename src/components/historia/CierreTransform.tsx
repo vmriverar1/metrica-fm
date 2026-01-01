@@ -38,10 +38,10 @@ const iconMap = {
 } as const;
 
 const statsDefault = [
-  { icon: Briefcase, end: 200, label: 'Proyectos Exitosos', suffix: '+' },
-  { icon: Award, end: 14, label: 'Años de Experiencia', suffix: '' },
-  { icon: Users, end: 50, label: 'Profesionales Especializados', suffix: '+' },
-  { icon: Target, end: 98, label: 'Satisfacción del Cliente', suffix: '%' },
+  { icon: Briefcase, end: 200, label: 'Proyectos Exitosos', prefix: '', suffix: '+' },
+  { icon: Award, end: 14, label: 'Años de Experiencia', prefix: '', suffix: '' },
+  { icon: Users, end: 50, label: 'Profesionales Especializados', prefix: '', suffix: '+' },
+  { icon: Target, end: 98, label: 'Satisfacción del Cliente', prefix: '', suffix: '%' },
 ];
 
 const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number }) => {
@@ -83,12 +83,15 @@ const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number
       snap: { textContent: stat.end % 1 === 0 ? 1 : 0.1 }, // Si es entero snap a 1, si tiene decimales snap a 0.1
       onUpdate: function() {
         if (numberRef.current) {
-          const currentValue = Number(numberRef.current.textContent);
+          // Extraer solo el número del contenido actual (ignorando prefix/suffix)
+          const currentText = numberRef.current.textContent || '0';
+          const numMatch = currentText.match(/[\d.]+/);
+          const currentValue = numMatch ? Number(numMatch[0]) : 0;
           // Si el número objetivo tiene decimales, mostrarlos. Si no, mostrar entero.
           const displayValue = stat.end % 1 === 0
             ? Math.floor(currentValue)
             : currentValue.toFixed(1);
-          numberRef.current.textContent = displayValue + stat.suffix;
+          numberRef.current.textContent = (stat.prefix || '') + displayValue + stat.suffix;
         }
       }
     }, '-=0.4');
@@ -117,7 +120,7 @@ const StatCard = ({ stat, index }: { stat: typeof statsDefault[0], index: number
         <stat.icon className="h-12 w-12 text-accent mx-auto mb-4" />
       </div>
       <p ref={numberRef} className="text-4xl font-alliance-extrabold text-foreground">
-        0{stat.suffix}
+        {stat.prefix}0{stat.suffix}
       </p>
       <p className="text-foreground/70 mt-2 font-alliance-medium">{stat.label}</p>
     </div>
@@ -135,18 +138,37 @@ export default function CierreTransform({ historiaData }: CierreTransformProps) 
         const iconKey = (metric.icon || 'Award') as keyof typeof iconMap;
         const IconComponent = iconMap[iconKey] || Award;
 
-        // Extraer número incluyendo decimales
-        const numMatch = metric.number.match(/[\d.]+/);
-        const num = numMatch ? parseFloat(numMatch[0]) : 0;
+        // Usar campos separados si están disponibles (nuevo formato)
+        const hasNewFormat = metric.prefix !== undefined || metric.suffix !== undefined || metric.value !== undefined;
 
-        // Extraer sufijo (caracteres no numéricos al final)
-        const suffixMatch = metric.number.match(/[^\d.]+$/);
-        const suffix = suffixMatch ? suffixMatch[0] : '';
+        let num: number;
+        let prefix: string;
+        let suffix: string;
+
+        if (hasNewFormat) {
+          // Nuevo formato con campos separados
+          num = typeof metric.value === 'number' ? metric.value : parseFloat(metric.value) || 0;
+          prefix = metric.prefix || '';
+          suffix = metric.suffix || '';
+        } else {
+          // Formato antiguo - parsear del campo number
+          const numMatch = metric.number.match(/[\d.]+/);
+          num = numMatch ? parseFloat(numMatch[0]) : 0;
+
+          // Extraer prefijo (caracteres no numéricos al inicio)
+          const prefixMatch = metric.number.match(/^[^\d.]+/);
+          prefix = prefixMatch ? prefixMatch[0] : '';
+
+          // Extraer sufijo (caracteres no numéricos al final)
+          const suffixMatch = metric.number.match(/[^\d.]+$/);
+          suffix = suffixMatch ? suffixMatch[0] : '';
+        }
 
         return {
           icon: IconComponent,
           end: num,
           label: metric.label,
+          prefix: prefix,
           suffix: suffix,
           description: metric.description
         };

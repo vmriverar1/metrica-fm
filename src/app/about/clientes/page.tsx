@@ -51,6 +51,10 @@ interface ClientesData {
       description: string;
       icon?: string;
       color?: string;
+      // Nuevos campos para formato separado
+      prefix?: string;
+      suffix?: string;
+      value?: number;
     }>;
   };
   client_sectors: any[];

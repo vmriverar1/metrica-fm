@@ -9,6 +9,10 @@ interface Statistic {
   description: string;
   icon?: string;
   color?: string;
+  // Nuevos campos para formato separado
+  prefix?: string;
+  suffix?: string;
+  value?: number;
 }
 
 interface StatCardProps {
@@ -20,11 +24,28 @@ const StatCard = ({ stat, index }: StatCardProps) => {
   const [counter, setCounter] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Extract numeric value from the number string
-    const match = stat.number.match(/([0-9.,]+)/);
-    const targetValue = match ? parseFloat(match[1].replace(/,/g, '')) : 0;
+  // Usar campos separados si están disponibles, sino parsear del campo number
+  const hasNewFormat = stat.prefix !== undefined || stat.suffix !== undefined || stat.value !== undefined;
 
+  let prefix: string;
+  let suffix: string;
+  let targetValue: number;
+
+  if (hasNewFormat) {
+    // Nuevo formato con campos separados
+    prefix = stat.prefix || '';
+    suffix = stat.suffix || '';
+    targetValue = typeof stat.value === 'number' ? stat.value : 0;
+  } else {
+    // Formato antiguo - parsear del campo number
+    const numberMatch = stat.number.match(/^([^0-9.,]*)([0-9.,]+)(.*)$/);
+    prefix = numberMatch?.[1] || '';
+    suffix = numberMatch?.[3] || '';
+    const match = stat.number.match(/([0-9.,]+)/);
+    targetValue = match ? parseFloat(match[1].replace(/,/g, '')) : 0;
+  }
+
+  useEffect(() => {
     // Simple counter animation on mount
     const duration = 2000; // 2 seconds
     const steps = 60;
@@ -42,12 +63,7 @@ const StatCard = ({ stat, index }: StatCardProps) => {
     }, duration / steps);
 
     return () => clearInterval(timer);
-  }, [stat.number]);
-
-  // Extract prefix and suffix from number
-  const numberMatch = stat.number.match(/^([^0-9.,]*)([0-9.,]+)(.*)$/);
-  const prefix = numberMatch?.[1] || '';
-  const suffix = numberMatch?.[3] || '';
+  }, [targetValue]);
 
   return (
     <div
