@@ -1,39 +1,19 @@
-/**
- * API Route para obtener categorías de portfolio desde Firestore
- * Simplificado para resolver problemas del sistema unificado
- */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-
-// Inicializar Firebase Admin
-async function initializeFirebaseAdmin() {
-  try {
-    if (getApps().length === 0) {
-      const serviceAccountPath = join(process.cwd(), 'credencials', 'service-account.json');
-      const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
-
-      initializeApp({
-        credential: cert(serviceAccount),
-        projectId: serviceAccount.project_id
-      });
-    }
-
-    return getFirestore();
-  } catch (error) {
-    console.error('❌ Error initializing Firebase Admin:', error);
-    throw error;
-  }
-}
+import { getFirebaseAdmin } from '@/lib/firebase-admin-safe';
 
 export async function GET(request: NextRequest) {
   try {
-    const db = await initializeFirebaseAdmin();
+    const { db } = await getFirebaseAdmin();
 
-    // Obtener categorías de portfolio desde Firestore
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        data: [],
+        count: 0,
+        source: 'fallback'
+      });
+    }
+
     const categoriesSnapshot = await db.collection('portfolio_categories').get();
     const categories = categoriesSnapshot.docs.map(doc => ({
       id: doc.id,
@@ -44,20 +24,16 @@ export async function GET(request: NextRequest) {
       success: true,
       data: categories,
       count: categories.length,
-      source: 'firestore',
-      timestamp: new Date().toISOString()
+      source: 'firestore'
     });
 
   } catch (error) {
-    console.error('❌ Error fetching portfolio categories:', error);
-
+    console.error('Error fetching portfolio categories:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
       data: [],
-      count: 0,
-      source: 'error',
-      timestamp: new Date().toISOString()
+      count: 0
     }, { status: 500 });
   }
 }
