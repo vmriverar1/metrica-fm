@@ -105,8 +105,7 @@ async function scanDirectory(dirPath: string, basePath: string = ''): Promise<Im
 }
 
 // GET /api/admin/media/images - Listar todas las imágenes
-export const GET = withAuth(
-  async (request: NextRequest, context) => {
+export async function GET(request: NextRequest) {
     try {
       const { searchParams } = new URL(request.url);
       const search = searchParams.get('search');
@@ -229,8 +228,7 @@ export const GET = withAuth(
         { status: 500 }
       );
     }
-  }
-);
+}
 
 // Función para obtener directorios
 async function scanDirectories(basePath: string, currentPath: string = ''): Promise<string[]> {
