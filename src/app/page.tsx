@@ -82,7 +82,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description: data.page.description,
         type: 'website',
         locale: 'es_PE',
-        url: 'https://metricadip.com',
+        url: 'https://metricafm.com',
         siteName: 'Métrica FM'
       },
       twitter: {

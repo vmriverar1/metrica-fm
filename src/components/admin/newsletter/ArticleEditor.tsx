@@ -845,7 +845,7 @@ export default function ArticleEditor({
                       {formData.seo_description || formData.excerpt || 'Descripción del artículo...'}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
-                      metrica-dip.com
+                      metricafm.com
                     </p>
                   </div>
                 </div>

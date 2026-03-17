@@ -19,7 +19,7 @@ export const getTypeIcon = (type: string) => {
 
 export const getPreviewUrl = (page: PageData): string => {
   const baseUrl = process.env.NODE_ENV === 'production'
-    ? 'https://metrica-dip.com'
+    ? 'https://metricafm.com'
     : 'http://localhost:9002';
 
   return `${baseUrl}${page.path}`;

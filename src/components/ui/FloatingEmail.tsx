@@ -383,7 +383,7 @@ function EmailModal({ isOpen, onClose, recipientEmail }: EmailModalProps) {
 }
 
 export default function FloatingEmail({
-  email = "info@metrica-dip.com",
+  email = "info@metricafm.com",
   className = "",
   hiddenOnPaths = ['/portfolio*', '/admin*']
 }: FloatingEmailProps) {

@@ -5,7 +5,7 @@ import { sampleBlogPosts } from '@/types/blog';
 const sampleJobPostings: any[] = [];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://metrica-dip.com';
+  const baseUrl = 'https://metricafm.com';
   
   // Static pages
   const staticPages = [

@@ -251,7 +251,7 @@ export default function QualityPolicy() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button 
                     className="bg-primary hover:bg-primary/90"
-                    onClick={() => window.open('/documents/politica-calidad-metrica-dip.pdf', '_blank')}
+                    onClick={() => window.open('/documents/politica-calidad-metrica-fm.pdf', '_blank')}
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Descargar PDF

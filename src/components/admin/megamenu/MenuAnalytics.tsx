@@ -80,7 +80,7 @@ const MenuAnalytics: React.FC<MenuAnalyticsProps> = ({
       action: 'click',
       timestamp: '2025-09-01T10:30:00Z',
       session_id: 'session1',
-      page_url: 'https://metricadip.com/',
+      page_url: 'https://metricafm.com/',
       is_mobile: false
     },
     {
@@ -90,7 +90,7 @@ const MenuAnalytics: React.FC<MenuAnalyticsProps> = ({
       action: 'hover',
       timestamp: '2025-09-01T10:29:45Z',
       session_id: 'session1',
-      page_url: 'https://metricadip.com/',
+      page_url: 'https://metricafm.com/',
       is_mobile: false
     },
     {
@@ -102,7 +102,7 @@ const MenuAnalytics: React.FC<MenuAnalyticsProps> = ({
       action: 'click',
       timestamp: '2025-09-01T11:15:00Z',
       session_id: 'session2',
-      page_url: 'https://metricadip.com/',
+      page_url: 'https://metricafm.com/',
       is_mobile: true
     }
   ];

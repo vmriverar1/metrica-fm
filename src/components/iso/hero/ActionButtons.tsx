@@ -29,7 +29,7 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
       // Descargar el certificado desde la API
       const link = document.createElement('a')
       link.href = '/api/download/iso-certificate'
-      link.download = 'certificado-iso-9001-metrica-dip.pdf'
+      link.download = 'certificado-iso-9001-metrica-fm.pdf'
       link.click()
     } catch (error) {
       toast.error('Error al descargar', {

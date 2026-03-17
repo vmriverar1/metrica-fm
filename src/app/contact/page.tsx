@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description,
         type: 'website',
         locale: 'es_PE',
-        url: 'https://metricadip.com/contact',
+        url: 'https://metricafm.com/contact',
         siteName: 'Métrica FM',
         images: [
           {
@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
         follow: true
       },
       alternates: {
-        canonical: 'https://metricadip.com/contact'
+        canonical: 'https://metricafm.com/contact'
       }
     };
   } catch (error) {
@@ -65,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description: 'Ponte en contacto con nuestro equipo de expertos en dirección integral de proyectos.',
         type: 'website',
         locale: 'es_PE',
-        url: 'https://metricadip.com/contact',
+        url: 'https://metricafm.com/contact',
         siteName: 'Métrica FM'
       },
       robots: {

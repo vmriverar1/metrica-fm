@@ -44,7 +44,7 @@ export default function UniversalHero({
   title,
   subtitle,
   description,
-  backgroundImage = 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+  backgroundImage = 'https://metricafm.com/images/slider-inicio-es/01.jpg',
   background,
   overlay = true,
   className = '',

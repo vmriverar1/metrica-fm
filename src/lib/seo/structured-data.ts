@@ -8,8 +8,8 @@ export const COMPANY_DATA = {
   name: 'Métrica FM',
   legalName: 'Métrica FM S.A.C.',
   description: 'Empresa líder en gerencia de proyectos, supervisión de obras y desarrollo de ingeniería en Perú. Especialistas en construcción, infraestructura y consultoría técnica.',
-  url: 'https://metrica-dip.com',
-  logo: 'https://metrica-dip.com/icons/icon-512x512.png',
+  url: 'https://metricafm.com',
+  logo: 'https://metricafm.com/icons/icon-512x512.png',
   address: {
     streetAddress: 'Av. Javier Prado Este 1066',
     addressLocality: 'San Isidro',
@@ -19,12 +19,12 @@ export const COMPANY_DATA = {
   },
   contact: {
     telephone: '+51 1 234-5678',
-    email: 'info@metrica-dip.com',
+    email: 'info@metricafm.com',
   },
   social: {
-    facebook: 'https://facebook.com/metricadip',
-    linkedin: 'https://linkedin.com/company/metrica-dip',
-    instagram: 'https://instagram.com/metricadip',
+    facebook: 'https://facebook.com/metricafm',
+    linkedin: 'https://linkedin.com/company/metricafm',
+    instagram: 'https://instagram.com/metricafm',
   },
   foundingDate: '2015-01-01',
   employees: '11-50',
@@ -350,8 +350,8 @@ export class MetaTagsGenerator {
         title,
         description,
         images: [`${COMPANY_DATA.url}/images/og-image.jpg`],
-        creator: '@metricadip',
-        site: '@metricadip',
+        creator: '@metricafm',
+        site: '@metricafm',
       },
       robots: {
         index: true,

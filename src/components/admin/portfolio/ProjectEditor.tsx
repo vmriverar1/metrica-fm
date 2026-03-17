@@ -1463,7 +1463,7 @@
 //                       {formData.seo.meta_description || formData.short_description || 'Descripción del proyecto...'}
 //                     </p>
 //                     <p className="text-sm text-gray-500 mt-1">
-//                       metrica-dip.com
+//                       metricafm.com
 //                     </p>
 //                   </div>
 //                 </div>

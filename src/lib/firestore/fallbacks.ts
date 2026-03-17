@@ -281,7 +281,7 @@ export const BLOG_AUTHORS_FALLBACK: Autor[] = [
   {
     id: 'admin',
     name: '👤 Administrador',
-    email: 'admin@metrica-dip.com',
+    email: 'admin@metricafm.com',
     bio: 'Configura autores desde Firestore: authors',
     avatar: '/images/team/placeholder-avatar.jpg',
     role: 'Editor',

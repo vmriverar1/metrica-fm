@@ -11,7 +11,7 @@ interface ProjectSEOProps {
 
 export default function ProjectSEO({ 
   project, 
-  baseUrl = 'https://metrica-dip.com' 
+  baseUrl = 'https://metricafm.com' 
 }: ProjectSEOProps) {
   const title = `${project.title} | Métrica FM - Dirección Integral de Proyectos`;
   const description = project.description || project.shortDescription;
@@ -136,7 +136,7 @@ export default function ProjectSEO({
       
       {/* DNS prefetch for external resources */}
       <link rel="dns-prefetch" href="//images.unsplash.com" />
-      <link rel="dns-prefetch" href="//metrica-dip.com" />
+      <link rel="dns-prefetch" href="//metricafm.com" />
     </Head>
   );
 }

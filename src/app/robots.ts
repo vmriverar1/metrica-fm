@@ -15,6 +15,6 @@ export default function robots(): MetadataRoute.Robots {
         '/*.json$',
       ],
     },
-    sitemap: 'https://metrica-dip.com/sitemap.xml',
+    sitemap: 'https://metricafm.com/sitemap.xml',
   };
 }

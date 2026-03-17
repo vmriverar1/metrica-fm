@@ -200,7 +200,7 @@ const PillarsEditor: React.FC<PillarsEditorProps> = ({
                     <Input
                       value={pillar.image}
                       onChange={(e) => handlePillarChange(index, 'image', e.target.value)}
-                      placeholder="https://metrica-dip.com/images/pilar.jpg"
+                      placeholder="https://metricafm.com/images/pilar.jpg"
                       type="url"
                     />
                   </div>

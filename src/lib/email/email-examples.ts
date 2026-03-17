@@ -45,7 +45,7 @@ export const contactFormExample: SendEmailRequest = {
     metadata: {
       'IP del Cliente': '192.168.1.1',
       'Navegador': 'Chrome 120',
-      'Página de Origen': 'https://metricadip.com/contact'
+      'Página de Origen': 'https://metricafm.com/contact'
     }
   }
 };
@@ -147,7 +147,7 @@ export const newsletterExample: SendEmailRequest = {
     ],
     metadata: {
       'Origen': 'Footer Newsletter',
-      'Página': 'https://metricadip.com/'
+      'Página': 'https://metricafm.com/'
     }
   }
 };
@@ -237,7 +237,7 @@ export const customFormExample: SendEmailRequest = {
       },
       {
         label: 'CV Adjunto',
-        value: 'https://metricadip.com/uploads/cv-luis-sanchez.pdf',
+        value: 'https://metricafm.com/uploads/cv-luis-sanchez.pdf',
         type: 'url'
       },
       {

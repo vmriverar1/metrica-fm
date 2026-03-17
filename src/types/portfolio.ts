@@ -136,61 +136,61 @@ export const sampleProjects: Project[] = [
       address: 'Av. El Derby 254, San Isidro',
       coordinates: [-77.0365, -12.0931]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
     gallery: [
       {
         id: '1-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
         caption: 'Vista frontal inicial del terreno',
         stage: 'inicio',
         order: 1
       },
       {
         id: '1-2',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
         caption: 'Planos arquitectónicos y diseño conceptual',
         stage: 'inicio',
         order: 2
       },
       {
         id: '1-3',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
         caption: 'Excavación y cimentación en proceso',
         stage: 'proceso',
         order: 1
       },
       {
         id: '1-4',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Estructura de concreto en construcción',
         stage: 'proceso',
         order: 2
       },
       {
         id: '1-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Instalación de fachada de vidrio',
         stage: 'proceso',
         order: 3
       },
       {
         id: '1-6',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
         caption: 'Vista frontal del edificio completado',
         stage: 'final',
         order: 1
       },
       {
         id: '1-7',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
         caption: 'Lobby principal con acabados de lujo',
         stage: 'final',
         order: 2
@@ -285,61 +285,61 @@ export const sampleProjects: Project[] = [
       address: 'Av. Alfredo Mendiola 3698, Independencia',
       coordinates: [-77.0667, -11.9833]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
     gallery: [
       {
         id: '2-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
         caption: 'Terreno inicial para el centro comercial',
         stage: 'inicio',
         order: 1
       },
       {
         id: '2-2',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
         caption: 'Diseño arquitectónico y masterplan',
         stage: 'inicio',
         order: 2
       },
       {
         id: '2-3',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Construcción de la estructura principal',
         stage: 'proceso',
         order: 1
       },
       {
         id: '2-4',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Instalación de sistemas MEP',
         stage: 'proceso',
         order: 2
       },
       {
         id: '2-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
         caption: 'Acabados interiores en progress',
         stage: 'proceso',
         order: 3
       },
       {
         id: '2-6',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
         caption: 'Vista general del centro comercial terminado',
         stage: 'final',
         order: 1
       },
       {
         id: '2-7',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
         caption: 'Food court y áreas de entretenimiento',
         stage: 'final',
         order: 2
@@ -433,29 +433,29 @@ export const sampleProjects: Project[] = [
       address: 'Av. Brasil 2950, Magdalena del Mar',
       coordinates: [-77.0717, -12.0961]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
     gallery: [
       {
         id: '3-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
         caption: 'Vista inicial del terreno en Magdalena',
         stage: 'inicio',
         order: 1
       },
       {
         id: '3-2',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Estructura principal en construcción',
         stage: 'proceso',
         order: 1
       },
       {
         id: '3-3',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Torre corporativa completada',
         stage: 'final',
         order: 1
@@ -486,13 +486,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Pardo 692, Miraflores',
       coordinates: [-77.0319, -12.1164]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
     gallery: [
       {
         id: '4-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Centro de negocios en Miraflores',
         stage: 'final',
         order: 1
@@ -522,8 +522,8 @@ export const sampleProjects: Project[] = [
       address: 'Av. Paseo de la República Sur, San Juan de Miraflores',
       coordinates: [-76.9833, -12.1500]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
     gallery: [
       {
         id: '5-1',
@@ -559,8 +559,8 @@ export const sampleProjects: Project[] = [
       },
       {
         id: '5-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Mall del Sur completado',
         stage: 'final',
         order: 1
@@ -606,8 +606,8 @@ export const sampleProjects: Project[] = [
       address: 'Av. Oscar R. Benavides 5915, Callao',
       coordinates: [-77.1167, -12.0167]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
     gallery: [
       {
         id: '6-1',
@@ -643,8 +643,8 @@ export const sampleProjects: Project[] = [
       },
       {
         id: '6-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
         caption: 'Outlet Premium en Callao completado',
         stage: 'final',
         order: 1
@@ -682,8 +682,8 @@ export const sampleProjects: Project[] = [
       address: 'Av. Néstor Gambetta Km 8.5',
       coordinates: [-77.1167, -11.8833]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
     gallery: [
       {
         id: '7-1',
@@ -719,8 +719,8 @@ export const sampleProjects: Project[] = [
       },
       {
         id: '7-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
         caption: 'Vista aérea del complejo industrial',
         stage: 'final',
         order: 1
@@ -766,13 +766,13 @@ export const sampleProjects: Project[] = [
       address: 'Km 35 Panamericana Sur, Lurín',
       coordinates: [-76.8667, -12.2833]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
     gallery: [
       {
         id: '8-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
         caption: 'Planta industrial en Lurín',
         stage: 'final',
         order: 1
@@ -803,8 +803,8 @@ export const sampleProjects: Project[] = [
       address: 'Av. Túpac Amaru Km 12, Ancón',
       coordinates: [-77.1667, -11.7667]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
     gallery: [
       {
         id: '9-1',
@@ -832,8 +832,8 @@ export const sampleProjects: Project[] = [
       },
       {
         id: '9-4',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
         caption: 'Centro logístico completado',
         stage: 'final',
         order: 1
@@ -871,8 +871,8 @@ export const sampleProjects: Project[] = [
       address: 'Malecón de la Reserva 610, Miraflores',
       coordinates: [-77.0319, -12.1203]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
     gallery: [
       {
         id: '10-1',
@@ -908,8 +908,8 @@ export const sampleProjects: Project[] = [
       },
       {
         id: '10-5',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Fachada principal del hotel',
         stage: 'final',
         order: 1
@@ -956,13 +956,13 @@ export const sampleProjects: Project[] = [
       address: 'Reserva Nacional de Paracas, Ica',
       coordinates: [-76.2500, -13.8667]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
     gallery: [
       {
         id: '11-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Resort eco lodge en Paracas',
         stage: 'final',
         order: 1
@@ -993,13 +993,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. El Sol 954, Cusco',
       coordinates: [-71.9675, -13.5164]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
     gallery: [
       {
         id: '12-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
         caption: 'Hotel business en Cusco',
         stage: 'final',
         order: 1
@@ -1030,13 +1030,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. La Molina 1678, La Molina',
       coordinates: [-76.9667, -12.0833]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
     gallery: [
       {
         id: '5-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Campus del colegio',
         stage: 'final',
         order: 1
@@ -1067,13 +1067,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. América Norte 3145, Trujillo',
       coordinates: [-79.0192, -8.1116]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
     gallery: [
       {
         id: '14-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
         caption: 'Campus universitario en Trujillo',
         stage: 'final',
         order: 1
@@ -1104,13 +1104,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Universitaria 1920, San Martín de Porres',
       coordinates: [-77.0833, -12.0167]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
     gallery: [
       {
         id: '15-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/01.jpg',
         caption: 'Instituto técnico en San Martín',
         stage: 'final',
         order: 1
@@ -1140,13 +1140,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Los Jardines 234, Surco',
       coordinates: [-76.9833, -12.1333]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
     gallery: [
       {
         id: '6-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/06.jpg',
         caption: 'Vista del condominio',
         stage: 'final',
         order: 1
@@ -1176,13 +1176,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Grau 1245, Barranco',
       coordinates: [-77.0167, -12.1333]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
     gallery: [
       {
         id: '17-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/02.jpg',
         caption: 'Torres residenciales en Barranco',
         stage: 'final',
         order: 1
@@ -1212,13 +1212,13 @@ export const sampleProjects: Project[] = [
       address: 'Km 38.5 Panamericana Sur, Asia',
       coordinates: [-76.7833, -12.7833]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
     gallery: [
       {
         id: '18-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
         caption: 'Condominio eco village en Asia',
         stage: 'final',
         order: 1
@@ -1249,13 +1249,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. San Borja Norte 523, San Borja',
       coordinates: [-76.9967, -12.1000]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
     gallery: [
       {
         id: '7-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/07.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/07.jpg',
         caption: 'Fachada de la clínica',
         stage: 'final',
         order: 1
@@ -1286,13 +1286,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Independencia 355, Arequipa',
       coordinates: [-71.5370, -16.3988]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
     gallery: [
       {
         id: '20-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/04.jpg',
         caption: 'Hospital regional en Arequipa',
         stage: 'final',
         order: 1
@@ -1323,13 +1323,13 @@ export const sampleProjects: Project[] = [
       address: 'Av. Benavides 2180, Miraflores',
       coordinates: [-77.0319, -12.1297]
     },
-    featuredImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-    thumbnailImage: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+    featuredImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+    thumbnailImage: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
     gallery: [
       {
         id: '21-1',
-        url: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
-        thumbnail: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg',
+        url: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
+        thumbnail: 'https://metricafm.com/images/slider-inicio-es/05.jpg',
         caption: 'Centro oncológico en Miraflores',
         stage: 'final',
         order: 1

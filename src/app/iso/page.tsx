@@ -52,8 +52,8 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Métrica FM",
-  "url": "https://metricadip.com",
-  "logo": "https://metricadip.com/images/logo.png",
+  "url": "https://metricafm.com",
+  "logo": "https://metricafm.com/images/logo.png",
   "description": "Empresa certificada ISO 9001:2015 especializada en dirección integral de proyectos de construcción e infraestructura en Perú",
   "hasCredential": {
     "@type": "EducationalOccupationalCredential",
@@ -67,7 +67,7 @@ const structuredData = {
       "name": "SGS Peru"
     }
   },
-  "qualityPolicy": "https://metricadip.com/iso/quality-policy.pdf",
+  "qualityPolicy": "https://metricafm.com/iso/quality-policy.pdf",
   "iso9001Certified": true,
   "certificationBody": "SGS Peru",
   "certificationDate": "2018-06-15",

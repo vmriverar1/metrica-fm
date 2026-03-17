@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
             title: 'Supervisamos y gerenciamos proyectos',
             subtitle: '10+ años liderando proyectos de infraestructura que transforman el Perú',
             background_type: 'image',
-            background_image: 'https://metricadip.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp',
+            background_image: 'https://metricafm.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp',
             overlay_opacity: 0.5,
             buttons: {
               primary: {

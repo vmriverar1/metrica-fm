@@ -238,7 +238,7 @@ export default function ISOHero() {
                 onClick={() => {
                   const link = document.createElement('a')
                   link.href = '/api/download/iso-certificate'
-                  link.download = 'certificado-iso-9001-metrica-dip.pdf'
+                  link.download = 'certificado-iso-9001-metrica-fm.pdf'
                   link.click()
                 }}
               >

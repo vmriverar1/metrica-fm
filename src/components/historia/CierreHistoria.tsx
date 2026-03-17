@@ -90,7 +90,7 @@ export default function CierreHistoria() {
           }}
         >
           <Image
-            src="https://metrica-dip.com/images/slider-inicio-es/06.jpg"
+            src="https://metricafm.com/images/slider-inicio-es/06.jpg"
             alt="Equipo Métrica"
             fill
             className="object-cover"

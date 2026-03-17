@@ -184,7 +184,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
     hero: {
       title: 'Cultura y Personas',
       subtitle: 'Un equipo multidisciplinario comprometido con la excelencia, innovación y desarrollo continuo',
-      background_image: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg',
+      background_image: 'https://metricafm.com/images/slider-inicio-es/03.jpg',
       background_image_fallback: '/img/cultura/hero-background.jpg',
       team_gallery: {
         columns: [

@@ -396,14 +396,14 @@ export const SocialMetricsEditor: React.FC<SocialMetricsEditorProps> = ({
           type: 'platform',
           name: 'LinkedIn Corporativo',
           platform: 'linkedin',
-          url: 'https://linkedin.com/company/metrica-dip',
+          url: 'https://linkedin.com/company/metricafm',
           display_settings: { show_follower_count: true, show_on_footer: true }
         },
         {
           type: 'platform',
           name: 'Facebook Responsabilidad Social',
           platform: 'facebook',
-          url: 'https://facebook.com/metricadip.responsabilidad',
+          url: 'https://facebook.com/metricafm.responsabilidad',
           display_settings: { show_recent_posts: true, show_on_contact: true }
         }
       ],
@@ -412,7 +412,7 @@ export const SocialMetricsEditor: React.FC<SocialMetricsEditorProps> = ({
           type: 'platform',
           name: 'Instagram Cultura',
           platform: 'instagram',
-          url: 'https://instagram.com/metricadip_cultura',
+          url: 'https://instagram.com/metricafm_cultura',
           display_settings: { show_recent_posts: true, show_engagement_rate: true }
         },
         {
@@ -544,7 +544,7 @@ export const SocialMetricsEditor: React.FC<SocialMetricsEditorProps> = ({
                       <Input
                         value={newPlatform.url || ''}
                         onChange={(e) => setNewPlatform(prev => ({ ...prev, url: e.target.value }))}
-                        placeholder="https://facebook.com/metricadip"
+                        placeholder="https://facebook.com/metricafm"
                       />
                     </div>
 
@@ -553,7 +553,7 @@ export const SocialMetricsEditor: React.FC<SocialMetricsEditorProps> = ({
                       <Input
                         value={newPlatform.username || ''}
                         onChange={(e) => setNewPlatform(prev => ({ ...prev, username: e.target.value }))}
-                        placeholder="@metricadip"
+                        placeholder="@metricafm"
                       />
                     </div>
 

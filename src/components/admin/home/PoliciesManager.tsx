@@ -285,7 +285,7 @@ const PoliciesManager: React.FC<PoliciesManagerProps> = ({
                   <Input
                     value={policy.image}
                     onChange={(e) => handlePolicyChange(index, 'image', e.target.value)}
-                    placeholder="https://metrica-dip.com/images/politica.jpg"
+                    placeholder="https://metricafm.com/images/politica.jpg"
                     type="url"
                   />
                 </div>

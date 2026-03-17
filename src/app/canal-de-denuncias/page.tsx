@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: 'Canal confidencial para reportar irregularidades en el sector construcción.'
   },
   alternates: {
-    canonical: 'https://metrica-dip.com/canal-de-denuncias'
+    canonical: 'https://metricafm.com/canal-de-denuncias'
   }
 };
 

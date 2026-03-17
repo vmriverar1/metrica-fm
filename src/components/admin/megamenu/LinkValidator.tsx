@@ -68,18 +68,18 @@ const LinkValidator: React.FC<LinkValidatorProps> = ({
       
       // Enlaces que simulamos como activos
       const activeLinks = [
-        'https://linkedin.com/company/metrica-dip',
-        'https://facebook.com/metricadip',
-        'https://instagram.com/metricadip',
-        'https://youtube.com/metricadip',
-        'mailto:info@metricadip.com',
+        'https://linkedin.com/company/metricafm',
+        'https://facebook.com/metricafm',
+        'https://instagram.com/metricafm',
+        'https://youtube.com/metricafm',
+        'mailto:info@metricafm.com',
         'tel:+51999999999'
       ];
       
       // Enlaces que simulamos como redirects
       const redirectLinks = [
-        'http://linkedin.com/company/metrica-dip',
-        'http://facebook.com/metricadip'
+        'http://linkedin.com/company/metricafm',
+        'http://facebook.com/metricafm'
       ];
       
       // Enlaces que simulamos como rotos

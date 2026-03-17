@@ -1624,7 +1624,7 @@ export default function CareersJobEditor({
                       ...prev, 
                       application: { ...prev.application, email: e.target.value }
                     }))}
-                    placeholder="rrhh@metricadip.com"
+                    placeholder="rrhh@metricafm.com"
                     disabled={isReadOnly}
                   />
                 </div>
@@ -1641,7 +1641,7 @@ export default function CareersJobEditor({
                       ...prev, 
                       application: { ...prev.application, external_url: e.target.value }
                     }))}
-                    placeholder="https://aplicaciones.metricadip.com/trabajo/123"
+                    placeholder="https://aplicaciones.metricafm.com/trabajo/123"
                     disabled={isReadOnly}
                   />
                 </div>

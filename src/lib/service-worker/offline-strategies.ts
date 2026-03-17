@@ -122,7 +122,7 @@ export const OFFLINE_URL_PATTERNS = {
     '/images/**',
     '/icons/**',
     '/screenshots/**',
-    'https://metrica-dip.com/**',
+    'https://metricafm.com/**',
     'https://images.unsplash.com/**',
     'https://picsum.photos/**',
   ],

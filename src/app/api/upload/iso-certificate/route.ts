@@ -14,7 +14,7 @@ import { db } from '@/lib/firebase/config';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const ISO_CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'iso');
-const ISO_CERT_FILENAME = 'certificado-iso-9001-metrica-dip.pdf';
+const ISO_CERT_FILENAME = 'certificado-iso-9001-metrica-fm.pdf';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export async function POST(request: NextRequest) {

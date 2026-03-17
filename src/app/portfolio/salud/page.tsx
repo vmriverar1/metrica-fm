@@ -22,7 +22,7 @@ export default function ProyectosSaludPage() {
         category={ProjectCategory.SALUD}
         title="Proyectos de Salud"
         subtitle="Infraestructura hospitalaria de vanguardia para el cuidado de la salud"
-        backgroundImage="https://metrica-dip.com/images/slider-inicio-es/07.jpg"
+        backgroundImage="https://metricafm.com/images/slider-inicio-es/07.jpg"
       />
     );
   }
@@ -32,7 +32,7 @@ export default function ProyectosSaludPage() {
       category={ProjectCategory.SALUD}
       title={categoryData.name}
       subtitle={categoryData.description}
-      backgroundImage={categoryData.backgroundImage || "https://metrica-dip.com/images/slider-inicio-es/07.jpg"}
+      backgroundImage={categoryData.backgroundImage || "https://metricafm.com/images/slider-inicio-es/07.jpg"}
     />
   );
 }

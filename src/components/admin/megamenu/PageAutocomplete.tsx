@@ -69,11 +69,11 @@ const PageAutocomplete: React.FC<PageAutocompleteProps> = ({
 
   // URLs externas comunes
   const externalSuggestions: PageSuggestion[] = [
-    { path: 'https://linkedin.com/company/metrica-dip', title: 'LinkedIn', description: 'Perfil de empresa', type: 'external', category: 'Redes Sociales' },
-    { path: 'https://facebook.com/metricadip', title: 'Facebook', description: 'Página de Facebook', type: 'external', category: 'Redes Sociales' },
-    { path: 'https://instagram.com/metricadip', title: 'Instagram', description: 'Perfil de Instagram', type: 'external', category: 'Redes Sociales' },
-    { path: 'https://youtube.com/metricadip', title: 'YouTube', description: 'Canal de YouTube', type: 'external', category: 'Redes Sociales' },
-    { path: 'mailto:info@metricadip.com', title: 'Email Directo', description: 'Contacto por email', type: 'external', category: 'Contacto' },
+    { path: 'https://linkedin.com/company/metricafm', title: 'LinkedIn', description: 'Perfil de empresa', type: 'external', category: 'Redes Sociales' },
+    { path: 'https://facebook.com/metricafm', title: 'Facebook', description: 'Página de Facebook', type: 'external', category: 'Redes Sociales' },
+    { path: 'https://instagram.com/metricafm', title: 'Instagram', description: 'Perfil de Instagram', type: 'external', category: 'Redes Sociales' },
+    { path: 'https://youtube.com/metricafm', title: 'YouTube', description: 'Canal de YouTube', type: 'external', category: 'Redes Sociales' },
+    { path: 'mailto:info@metricafm.com', title: 'Email Directo', description: 'Contacto por email', type: 'external', category: 'Contacto' },
     { path: 'tel:+51999999999', title: 'Teléfono', description: 'Llamada directa', type: 'external', category: 'Contacto' }
   ];
 

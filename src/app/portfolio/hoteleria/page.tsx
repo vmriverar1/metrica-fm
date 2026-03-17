@@ -22,7 +22,7 @@ export default function ProyectosHoteleriaPage() {
         category={ProjectCategory.HOTELERIA}
         title="Proyectos de Hotelería"
         subtitle="Hoteles y complejos turísticos que combinan confort y elegancia"
-        backgroundImage="https://metrica-dip.com/images/slider-inicio-es/04.jpg"
+        backgroundImage="https://metricafm.com/images/slider-inicio-es/04.jpg"
       />
     );
   }
@@ -32,7 +32,7 @@ export default function ProyectosHoteleriaPage() {
       category={ProjectCategory.HOTELERIA}
       title={categoryData.seoTitle || categoryData.name}
       subtitle={categoryData.seoDescription || categoryData.description}
-      backgroundImage={categoryData.backgroundImage || "https://metrica-dip.com/images/slider-inicio-es/04.jpg"}
+      backgroundImage={categoryData.backgroundImage || "https://metricafm.com/images/slider-inicio-es/04.jpg"}
     />
   );
 }

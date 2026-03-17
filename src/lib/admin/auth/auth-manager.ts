@@ -186,7 +186,7 @@ export class AuthManager {
   private async createDefaultAdmin(): Promise<void> {
     const defaultAdmin: User = {
       id: 'admin_' + crypto.randomBytes(8).toString('hex'),
-      email: process.env.DEFAULT_ADMIN_EMAIL || 'admin@metrica-dip.com',
+      email: process.env.DEFAULT_ADMIN_EMAIL || 'admin@metricafm.com',
       name: 'Administrador',
       role: 'admin',
       status: 'active',

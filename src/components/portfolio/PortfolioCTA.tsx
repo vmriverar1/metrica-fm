@@ -141,7 +141,7 @@ export default function PortfolioCTA() {
                 className="w-full hover:bg-cyan-50 hover:border-cyan-200"
                 asChild
               >
-                <a href="mailto:info@metrica-dip.com">
+                <a href="mailto:info@metricafm.com">
                   Escribir email
                 </a>
               </Button>

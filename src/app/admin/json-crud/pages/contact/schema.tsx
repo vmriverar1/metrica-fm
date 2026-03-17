@@ -292,7 +292,7 @@ export const contactSchema = {
             required: false,
             group: 'contact_info',
             rows: 2,
-            placeholder: 'info@metricadip.com\\njmorales@metrica-dip.com',
+            placeholder: 'info@metricadip.com\\njmorales@metricafm.com',
             description: 'Contenido del tercer item (puedes usar \\n para saltos de línea)'
         },
 

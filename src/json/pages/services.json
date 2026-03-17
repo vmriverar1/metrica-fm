@@ -2,7 +2,7 @@
   "page": {
     "title": "Nuestros Servicios",
     "subtitle": "Soluciones integrales para cada etapa de tu proyecto",
-    "hero_image": "https://metrica-dip.com/images/slider-inicio-es/01.jpg",
+    "hero_image": "https://metricafm.com/images/slider-inicio-es/01.jpg",
     "hero_image_fallback": "/img/services-hero.jpg",
     "description": "Ofrecemos un portafolio completo de servicios especializados en dirección integral de proyectos, diseñados para asegurar el éxito de proyectos de infraestructura de cualquier escala y complejidad.",
     "url": "/services"

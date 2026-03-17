@@ -136,7 +136,7 @@ export const ContactInfoManager: React.FC<ContactInfoManagerProps> = ({
     },
     email: {
       title: 'Email',
-      content: 'info@metrica-dip.com\ninfo@metricadip.com',
+      content: 'info@metricafm.com\ninfo@metricadip.com',
       metadata: { clickable: true }
     },
     hours: {

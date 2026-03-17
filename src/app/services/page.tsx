@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     description: 'Servicios especializados que transforman proyectos en éxitos garantizados.'
   },
   alternates: {
-    canonical: 'https://metrica-dip.com/services'
+    canonical: 'https://metricafm.com/services'
   }
 };
 
@@ -79,7 +79,7 @@ function ServicesPageContent({ servicesData }: { servicesData: any | null }) {
             <UniversalHero
               title={servicesData?.hero?.title || "Supervisamos y gerenciamos proyectos"}
               subtitle={servicesData?.hero?.subtitle || "10+ años liderando proyectos de infraestructura que transforman el Perú"}
-              backgroundImage={servicesData?.hero?.background_image || "https://metricadip.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp"}
+              backgroundImage={servicesData?.hero?.background_image || "https://metricafm.com/images/proyectos/RETAIL/REMODELACION TD6/317906044_611374014122511_6533312105092675192_n.webp"}
             />
 
             <Services data={servicesData?.services || defaultServicesData} hideCTA={true} />

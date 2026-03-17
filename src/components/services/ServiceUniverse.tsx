@@ -13,7 +13,7 @@ const serviciosData = [
     descripcion: 'Transformamos visiones en roadmaps ejecutables',
     color: '#003F6F',
     ambiente: 'corporate',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/01.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/01.jpg'
   },
   {
     id: 'gestion',
@@ -21,7 +21,7 @@ const serviciosData = [
     descripcion: 'Lideramos la ejecución con precisión y eficiencia',
     color: '#00A8E8',
     ambiente: 'construction',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/02.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/02.jpg'
   },
   {
     id: 'supervision',
@@ -29,7 +29,7 @@ const serviciosData = [
     descripcion: 'Garantizamos calidad en cada detalle',
     color: '#D0D0D0',
     ambiente: 'technical',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/03.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/03.jpg'
   },
   {
     id: 'consultoria',
@@ -37,7 +37,7 @@ const serviciosData = [
     descripcion: 'Asesoramiento experto para decisiones críticas',
     color: '#9D9D9C',
     ambiente: 'consulting',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/04.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/04.jpg'
   },
   {
     id: 'ingenieria',
@@ -45,7 +45,7 @@ const serviciosData = [
     descripcion: 'Diseños técnicos de precisión milimétrica',
     color: '#646363',
     ambiente: 'engineering',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/05.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/05.jpg'
   },
   {
     id: 'innovacion',
@@ -53,7 +53,7 @@ const serviciosData = [
     descripcion: 'Soluciones vanguardistas para el futuro',
     color: '#1D1D1B',
     ambiente: 'innovation',
-    imagen: 'https://metrica-dip.com/images/slider-inicio-es/06.jpg'
+    imagen: 'https://metricafm.com/images/slider-inicio-es/06.jpg'
   }
 ];
 

@@ -430,7 +430,7 @@ export class JobsService {
       const author = {
         id: job.authorId,
         name: 'Admin User',
-        email: 'admin@metrica-dip.com'
+        email: 'admin@metricafm.com'
       };
 
       return {

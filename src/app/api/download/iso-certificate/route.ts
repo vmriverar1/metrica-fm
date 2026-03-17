@@ -9,7 +9,7 @@ import { existsSync } from 'fs';
 import path from 'path';
 
 const ISO_CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'iso');
-const ISO_CERT_FILENAME = 'certificado-iso-9001-metrica-dip.pdf';
+const ISO_CERT_FILENAME = 'certificado-iso-9001-metrica-fm.pdf';
 
 export async function GET(request: NextRequest) {
   try {

@@ -3,7 +3,7 @@
     "title": "Métrica FM - Dirección Integral de Proyectos",
     "description": "Líderes en dirección integral de proyectos de infraestructura en Perú desde 2010. Transformamos la infraestructura del país con excelencia, innovación y sostenibilidad.",
     "keywords": ["dirección integral de proyectos", "DIP", "infraestructura", "Perú", "construcción", "supervisión", "PMO"],
-    "url": "https://metrica-dip.com"
+    "url": "https://metricafm.com"
   },
   "company": {
     "name": "Métrica FM",
@@ -18,15 +18,15 @@
       "name": "Oficina Principal",
       "address": "San Isidro, Lima, Perú",
       "phone": "+51 1 234-5678",
-      "email": "contacto@metrica-dip.com",
+      "email": "contacto@metricafm.com",
       "hours": "Lunes a Viernes: 8:00 AM - 6:00 PM"
     }
   },
   "social_networks": {
-    "linkedin": "https://linkedin.com/company/metrica-dip",
-    "facebook": "https://facebook.com/metrica-dip",
-    "twitter": "https://twitter.com/metrica-dip",
-    "instagram": "https://instagram.com/metrica-dip"
+    "linkedin": "https://linkedin.com/company/metricafm",
+    "facebook": "https://facebook.com/metricafm",
+    "twitter": "https://twitter.com/metricafm",
+    "instagram": "https://instagram.com/metricafm"
   },
   "assets": {
     "logo_light": "/img/logo-blanco.png",
@@ -37,7 +37,7 @@
   "seo": {
     "meta_description": "Métrica FM - Líderes en dirección integral de proyectos de infraestructura en Perú. PMO, supervisión técnica y gestión de calidad con más de 15 años de experiencia.",
     "og_image": "/img/og-image.jpg",
-    "twitter_handle": "@metrica-dip"
+    "twitter_handle": "@metricafm"
   },
   "copyright": {
     "year": 2024,

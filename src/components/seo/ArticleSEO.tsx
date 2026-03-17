@@ -10,7 +10,7 @@ interface ArticleSEOProps {
 }
 
 export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
-  const url = canonicalUrl || `https://metricadip.com/blog/${article.category}/${article.slug}`;
+  const url = canonicalUrl || `https://metricafm.com/blog/${article.category}/${article.slug}`;
   const publishedDate = article.publishedAt.toISOString();
   const modifiedDate = article.updatedAt?.toISOString() || publishedDate;
 
@@ -34,7 +34,7 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         "dateModified": modifiedDate,
         "author": {
           "@type": "Person",
-          "@id": `https://metricadip.com/author/${article.author.id}#person`,
+          "@id": `https://metricafm.com/author/${article.author.id}#person`,
           "name": article.author.name,
           "image": {
             "@type": "ImageObject",
@@ -44,16 +44,16 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
           "description": article.author.bio,
           "jobTitle": article.author.role,
           "knowsAbout": article.author.expertise,
-          "url": `https://metricadip.com/author/${article.author.id}`
+          "url": `https://metricafm.com/author/${article.author.id}`
         },
         "publisher": {
           "@type": "Organization",
-          "@id": "https://metricadip.com#organization",
+          "@id": "https://metricafm.com#organization",
           "name": "Métrica FM",
-          "url": "https://metricadip.com",
+          "url": "https://metricafm.com",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://metricadip.com/images/logo.png",
+            "url": "https://metricafm.com/images/logo.png",
             "width": 180,
             "height": 60
           }
@@ -96,18 +96,18 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         },
         "isPartOf": {
           "@type": "WebSite",
-          "@id": "https://metricadip.com#website"
+          "@id": "https://metricafm.com#website"
         }
       },
       {
         "@type": "Organization",
-        "@id": "https://metricadip.com#organization",
+        "@id": "https://metricafm.com#organization",
         "name": "Métrica FM",
         "alternateName": "Métrica Dirección Integral de Proyectos",
-        "url": "https://metricadip.com",
+        "url": "https://metricafm.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://metricadip.com/images/logo.png",
+          "url": "https://metricafm.com/images/logo.png",
           "width": 180,
           "height": 60
         },
@@ -132,8 +132,8 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
           "addressLocality": "Lima"
         },
         "sameAs": [
-          "https://linkedin.com/company/metrica-dip",
-          "https://facebook.com/metricadip"
+          "https://linkedin.com/company/metricafm",
+          "https://facebook.com/metricafm"
         ]
       }
     ]
@@ -178,8 +178,8 @@ export default function ArticleSEO({ article, canonicalUrl }: ArticleSEOProps) {
         <meta name="twitter:description" content={article.seo?.twitterDescription || article.excerpt} />
         <meta name="twitter:image" content={article.featuredImage} />
         <meta name="twitter:image:alt" content={article.title} />
-        <meta name="twitter:creator" content={`@${article.author.social?.twitter || 'metricadip'}`} />
-        <meta name="twitter:site" content="@metricadip" />
+        <meta name="twitter:creator" content={`@${article.author.social?.twitter || 'metricafm'}`} />
+        <meta name="twitter:site" content="@metricafm" />
         
         {/* Additional Meta Tags */}
         <meta name="publish_date" property="og:publish_date" content={publishedDate} />

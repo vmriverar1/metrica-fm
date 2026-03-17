@@ -261,7 +261,7 @@ export const sampleAuthors: Author[] = [
     bio: 'Especialista en gestión de proyectos de infraestructura con más de 15 años de experiencia.',
     avatar: '/images/authors/carlos-mendez.jpg',
     linkedin: 'https://linkedin.com/in/carlos-mendez',
-    email: 'carlos.mendez@metrica-dip.com'
+    email: 'carlos.mendez@metricafm.com'
   },
   {
     id: 'ana-rodriguez',
@@ -270,7 +270,7 @@ export const sampleAuthors: Author[] = [
     bio: 'Ingeniera civil especializada en estructuras complejas y tecnología BIM.',
     avatar: '/images/authors/ana-rodriguez.jpg',
     linkedin: 'https://linkedin.com/in/ana-rodriguez',
-    email: 'ana.rodriguez@metrica-dip.com'
+    email: 'ana.rodriguez@metricafm.com'
   }
 ];
 

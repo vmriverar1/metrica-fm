@@ -6,8 +6,8 @@ export default function ServiceSchema() {
     "@type": "Organization",
     "name": "Métrica FM",
     "description": "Empresa líder en Dirección Integral de Proyectos de infraestructura en Perú",
-    "url": "https://metrica-dip.com",
-    "logo": "https://metrica-dip.com/img/logo-color.webp",
+    "url": "https://metricafm.com",
+    "logo": "https://metricafm.com/img/logo-color.webp",
     "foundingDate": "2008",
     "address": {
       "@type": "PostalAddress",
@@ -21,11 +21,11 @@ export default function ServiceSchema() {
       "@type": "ContactPoint",
       "telephone": "+51-1-234-5678",
       "contactType": "customer service",
-      "email": "contacto@metrica-dip.com",
+      "email": "contacto@metricafm.com",
       "availableLanguage": ["Spanish", "English"]
     },
     "sameAs": [
-      "https://www.linkedin.com/company/metrica-dip",
+      "https://www.linkedin.com/company/metricafm",
       "https://www.facebook.com/metrica.dip",
       "https://twitter.com/metrica_dip"
     ]
@@ -111,7 +111,7 @@ export default function ServiceSchema() {
     "@type": "WebPage",
     "name": "Servicios de Dirección Integral de Proyectos | Métrica FM",
     "description": "Servicios especializados en gestión, consultoría y supervisión de proyectos de infraestructura en Perú",
-    "url": "https://metrica-dip.com/services",
+    "url": "https://metricafm.com/services",
     "mainEntity": servicesSchema,
     "about": {
       "@type": "Organization",

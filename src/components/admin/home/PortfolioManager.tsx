@@ -232,7 +232,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({
                   <Input
                     value={project.image_url || ''}
                     onChange={(e) => handleProjectChange(index, 'image_url', e.target.value)}
-                    placeholder="https://metrica-dip.com/images/proyecto.jpg"
+                    placeholder="https://metricafm.com/images/proyecto.jpg"
                     type="url"
                   />
                 </div>

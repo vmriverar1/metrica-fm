@@ -217,7 +217,7 @@ export default function PrivacyPolicyPage() {
                       <Mail className="w-5 h-5 text-primary" />
                       <div>
                         <p className="font-semibold text-primary">Email</p>
-                        <p className="text-sm text-muted-foreground">privacy@metrica-dip.com</p>
+                        <p className="text-sm text-muted-foreground">privacy@metricafm.com</p>
                       </div>
                     </div>
 

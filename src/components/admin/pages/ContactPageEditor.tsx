@@ -148,7 +148,7 @@ export function ContactPageEditor({
           {
             title: 'Email',
             icon: 'Mail',
-            content: 'info@metrica-dip.com\ninfo@metricadip.com'
+            content: 'info@metricafm.com\ninfo@metricadip.com'
           },
           {
             title: 'Horarios de Atención',

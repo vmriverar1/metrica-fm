@@ -28,7 +28,7 @@ export default function ProyectosOficinaPage() {
           // Solo si no hay datos en Firestore, usar la imagen por defecto
           setCategoryData(prev => ({
             ...prev,
-            backgroundImage: "https://metrica-dip.com/images/slider-inicio-es/01.jpg"
+            backgroundImage: "https://metricafm.com/images/slider-inicio-es/01.jpg"
           }));
         }
       } catch (error) {
@@ -36,7 +36,7 @@ export default function ProyectosOficinaPage() {
         // En caso de error, usar la imagen por defecto
         setCategoryData(prev => ({
           ...prev,
-          backgroundImage: "https://metrica-dip.com/images/slider-inicio-es/01.jpg"
+          backgroundImage: "https://metricafm.com/images/slider-inicio-es/01.jpg"
         }));
       }
     };

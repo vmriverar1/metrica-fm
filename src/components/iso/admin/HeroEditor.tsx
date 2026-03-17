@@ -193,7 +193,7 @@ function CertificateDetailsEditor({
           <Input
             value={details.pdf_url}
             onChange={(e) => onUpdate('pdf_url', e.target.value)}
-            placeholder="/documents/certificado-iso-9001-metrica-dip.pdf"
+            placeholder="/documents/certificado-iso-9001-metrica-fm.pdf"
           />
           <Button 
             variant="outline" 
