@@ -348,7 +348,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor="tipo_proyecto" className="block text-sm font-medium text-foreground mb-2">
-            Tipo de Proyecto
+            Sector
           </label>
           <select
             id="tipo_proyecto"
@@ -358,14 +358,14 @@ export default function ContactForm() {
             disabled={isSubmitting || isSuccess}
             className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <option value="">Selecciona un tipo de proyecto</option>
-            <option value="salud">Proyectos de Salud</option>
-            <option value="educacion">Proyectos de Educación</option>
-            <option value="vivienda">Proyectos de Vivienda</option>
-            <option value="oficina">Proyectos de Oficina</option>
-            <option value="retail">Proyectos de Retail</option>
-            <option value="industria">Proyectos de Industria</option>
-            <option value="hoteleria">Proyectos de Hotelería</option>
+            <option value="">Selecciona tu sector</option>
+            <option value="salud">Salud</option>
+            <option value="educacion">Educación</option>
+            <option value="vivienda">Vivienda</option>
+            <option value="oficina">Oficina</option>
+            <option value="retail">Retail</option>
+            <option value="industria">Industria</option>
+            <option value="hoteleria">Hotelería</option>
             <option value="otro">Otro</option>
           </select>
         </div>

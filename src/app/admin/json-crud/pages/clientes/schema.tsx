@@ -44,11 +44,11 @@ export const clientesSchema = {
             defaultExpanded: true
         },
         {
-            name: 'client_benefits_section',
-            label: 'Beneficios para Clientes',
-            description: 'Beneficios y propuestas de valor',
+            name: 'valor_agregado_section',
+            label: 'Valor Agregado',
+            description: 'Sección de texto descriptivo sobre el valor agregado',
             collapsible: true,
-            defaultExpanded: false
+            defaultExpanded: true
         }
     ],
     fields: [
@@ -315,90 +315,23 @@ export const clientesSchema = {
             ]
         },
 
-        // Beneficios para Clientes
+        // Valor Agregado
         {
-            key: 'client_benefits.title',
-            label: 'Título de Beneficios',
+            key: 'valor_agregado.title',
+            label: 'Título',
             type: 'text' as const,
             required: false,
-            group: 'client_benefits_section',
-            defaultValue: 'Por Qué Nos Eligen'
+            group: 'valor_agregado_section',
+            defaultValue: 'Valor Agregado'
         },
         {
-            key: 'client_benefits.subtitle',
-            label: 'Subtítulo de Beneficios',
-            type: 'text' as const,
-            group: 'client_benefits_section',
-            defaultValue: 'Beneficios clave que ofrecemos a nuestros clientes'
-        },
-        {
-            key: 'client_benefits.benefits',
-            label: 'Lista de Beneficios',
-            type: 'array' as const,
-            group: 'client_benefits_section',
-            description: 'Beneficios que ofrecemos a nuestros clientes',
-            arrayFields: [
-                {
-                    key: 'id',
-                    label: 'ID',
-                    type: 'text' as const,
-                    required: false,
-                    placeholder: 'benefit_1'
-                },
-                {
-                    key: 'icon',
-                    label: 'Ícono',
-                    type: 'icon' as const,
-                    required: false,
-                    placeholder: 'Star'
-                },
-                {
-                    key: 'color',
-                    label: 'Color del Ícono',
-                    type: 'color' as const,
-                    required: false,
-                    defaultValue: '#00A8E8'
-                },
-                {
-                    key: 'title',
-                    label: 'Título',
-                    type: 'text' as const,
-                    required: false,
-                    placeholder: 'Excelencia en Servicio'
-                },
-                {
-                    key: 'description',
-                    label: 'Descripción',
-                    type: 'textarea' as const,
-                    required: false,
-                    rows: 2,
-                    placeholder: 'Descripción del beneficio'
-                },
-                {
-                    key: 'metrics',
-                    label: 'Métricas',
-                    type: 'multitext' as const,
-                    required: false,
-                    description: 'Lista de métricas (una por línea)'
-                }
-            ]
-        },
-
-        // Métricas de Éxito (comentado en la página actual)
-        {
-            key: 'success_metrics.title',
-            label: 'Título de Métricas',
-            type: 'text' as const,
+            key: 'valor_agregado.description',
+            label: 'Descripción',
+            type: 'textarea' as const,
             required: false,
-            group: 'success_metrics_section',
-            defaultValue: 'Nuestro Impacto en Números'
-        },
-        {
-            key: 'success_metrics.subtitle',
-            label: 'Subtítulo de Métricas',
-            type: 'text' as const,
-            group: 'success_metrics_section',
-            defaultValue: 'Resultados que demuestran nuestro compromiso con la excelencia'
+            group: 'valor_agregado_section',
+            rows: 8,
+            description: 'Texto descriptivo sobre el valor agregado de la empresa. Se muestra centrado debajo del portfolio.'
         }
     ]
 };

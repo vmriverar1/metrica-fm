@@ -2,23 +2,6 @@ import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 import UniversalHero from '@/components/ui/universal-hero';
-import {
-  Heart,
-  GraduationCap,
-  Truck,
-  Home,
-  Building2,
-  Building,
-  Settings,
-  Award,
-  Shield,
-  TrendingUp,
-  Cpu,
-  Star,
-  Users,
-  Clock,
-  Target
-} from 'lucide-react';
 import { PagesService } from '@/lib/firestore/pages-service';
 import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
 import Portfolio from '@/components/landing/portfolio';
@@ -71,35 +54,12 @@ interface ClientesData {
       order?: number;
     }>;
   };
-  client_benefits: {
+  valor_agregado: {
     title: string;
-    subtitle: string;
-    benefits: any[];
-  };
-  success_metrics: {
-    title: string;
-    subtitle: string;
-    metrics: any[];
+    description: string;
   };
 }
 
-const iconMap = {
-  Heart,
-  GraduationCap,
-  Truck,
-  Home,
-  Building2,
-  Building,
-  Settings,
-  Award,
-  Shield,
-  TrendingUp,
-  Cpu,
-  Star,
-  Users,
-  Clock,
-  Target
-};
 
 export const metadata: Metadata = {
   title: 'Nuestros Clientes | Métrica FM',
@@ -146,15 +106,9 @@ const CLIENTES_FALLBACK: ClientesData = {
     testimonials_list: [],
     youtube_videos: []
   },
-  client_benefits: {
-    title: 'Beneficios para Nuestros Clientes',
-    subtitle: 'Por qué elegirnos',
-    benefits: []
-  },
-  success_metrics: {
-    title: 'Métricas de Éxito',
-    subtitle: 'Resultados que hablan por sí mismos',
-    metrics: []
+  valor_agregado: {
+    title: 'Valor Agregado',
+    description: 'Nuestra empresa se distingue por su enfoque centrado en el cliente y su compromiso con la calidad y la excelencia en el servicio. Nos esforzamos por establecer relaciones sólidas y duraderas con nuestros clientes, basadas en la confianza mutua y la transparencia. Creemos en la comunicación abierta y constante, y nos aseguramos de mantener a nuestros clientes informados sobre el progreso de los proyectos y cualquier cambio relevante.\nTrabajamos de cerca con nuestros clientes para entender sus necesidades específicas y diseñar soluciones personalizadas que se adapten a sus requerimientos.'
   }
 };
 
@@ -173,8 +127,7 @@ async function getClientesData(): Promise<ClientesData> {
         portfolio: { ...CLIENTES_FALLBACK.portfolio, ...firestoreData.portfolio },
         clientes: { ...CLIENTES_FALLBACK.clientes, ...firestoreData.clientes },
         testimonials: { ...CLIENTES_FALLBACK.testimonials, ...firestoreData.testimonials },
-        client_benefits: { ...CLIENTES_FALLBACK.client_benefits, ...firestoreData.client_benefits },
-        success_metrics: { ...CLIENTES_FALLBACK.success_metrics, ...firestoreData.success_metrics }
+        valor_agregado: { ...CLIENTES_FALLBACK.valor_agregado, ...firestoreData.valor_agregado }
       } as ClientesData;
     }
 
@@ -220,66 +173,17 @@ function ClientesContent({ data }: { data: ClientesData }) {
           <Portfolio data={data.portfolio} />
         )}
 
-        {/* Client Benefits */}
-        <section className="py-16 px-4">
-          <div className="container mx-auto max-w-6xl">
-            {/* Client Benefits */}
-            <div className="mb-20">
-              <div className="text-center mb-12">
-                <h3 className="text-2xl font-semibold text-primary mb-4">{data.client_benefits.title}</h3>
-                <p className="text-muted-foreground">{data.client_benefits.subtitle}</p>
-              </div>
-
-              <div className={`grid gap-8 ${
-                data.client_benefits.benefits.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
-                data.client_benefits.benefits.length === 2 ? 'md:grid-cols-2 max-w-3xl mx-auto' :
-                data.client_benefits.benefits.length === 3 ? 'md:grid-cols-3 max-w-5xl mx-auto' :
-                'md:grid-cols-2 lg:grid-cols-4'
-              }`}>
-                {data.client_benefits.benefits.map((benefit) => {
-                  const IconComponent = iconMap[benefit.icon as keyof typeof iconMap];
-                  return (
-                    <div key={benefit.id} className="text-center">
-                      {IconComponent && (
-                        <div className="flex justify-center mb-4">
-                          <div className="p-4 rounded-full" style={{ backgroundColor: `${benefit.color}20` }}>
-                            <IconComponent className="w-8 h-8" style={{ color: benefit.color }} />
-                          </div>
-                        </div>
-                      )}
-                      <h4 className="text-lg font-semibold text-primary mb-2">{benefit.title}</h4>
-                      <p className="text-sm text-muted-foreground mb-4">{benefit.description}</p>
-                      <div className="space-y-1">
-                        {Array.isArray(benefit.metrics) && benefit.metrics.map((metric: string, idx: number) => (
-                          <div key={idx} className="text-xs text-muted-foreground">• {metric}</div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+        {/* Valor Agregado */}
+        {data.valor_agregado?.description && (
+          <section className="py-16 px-4">
+            <div className="container mx-auto max-w-4xl text-center">
+              <h3 className="text-2xl font-semibold text-primary mb-8">{data.valor_agregado.title}</h3>
+              <div className="text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+                {data.valor_agregado.description}
               </div>
             </div>
-
-            {/* Success Metrics */}
-            {/* <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-8 text-white">
-              <div className="text-center mb-12">
-                <h3 className="text-2xl font-bold mb-4">{data.success_metrics.title}</h3>
-                <p className="text-white/90">{data.success_metrics.subtitle}</p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {Array.isArray(data.success_metrics?.metrics) && data.success_metrics.metrics.map((metric, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-3xl font-bold text-white mb-2">{metric.value}</div>
-                    <div className="text-sm font-semibold text-white/90 mb-1">{metric.category}</div>
-                    <div className="text-xs text-white/80 mb-2">{metric.description}</div>
-                    <div className="text-xs text-accent font-medium">{metric.trend}</div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
-          </div>
-        </section>
+          </section>
+        )}
       </main>
       <Footer />
     </div>

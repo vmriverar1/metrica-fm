@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 interface RobustLoadingScreenProps {
   isVisible: boolean;
@@ -26,7 +25,21 @@ export default function RobustLoadingScreen({
   showCancelButton = false,
   currentNavigation
 }: RobustLoadingScreenProps) {
-  if (!isVisible) return null;
+  // Auto-hide safety: force hide after 8 seconds to prevent stuck screens
+  const [forceHidden, setForceHidden] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      setForceHidden(false);
+      const safetyTimer = setTimeout(() => {
+        setForceHidden(true);
+        onCancel?.();
+      }, 8000);
+      return () => clearTimeout(safetyTimer);
+    }
+  }, [isVisible, onCancel]);
+
+  if (!isVisible || forceHidden) return null;
 
   return (
     <AnimatePresence>

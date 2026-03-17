@@ -769,6 +769,10 @@ export default function SmartContactForm() {
                       <span>info@metricadip.com</span>
                     </div>
                     <div className="flex items-center gap-3 text-sm">
+                      <Mail className="w-4 h-4 text-primary" />
+                      <span>jmorales@metricafm.com</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
                       <Clock className="w-4 h-4 text-primary" />
                       <span>Lun - Vie: 8:00 AM - 6:00 PM</span>
                     </div>

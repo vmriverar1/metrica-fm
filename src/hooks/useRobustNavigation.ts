@@ -279,12 +279,22 @@ export const useRobustNavigation = (callbacks?: LoadingCallbacks) => {
     }
   }, [router, networkConditions]);
 
-  // Cleanup al desmontar
+  // Reset navigation state on browser back/forward (popstate)
   useEffect(() => {
+    const handlePopState = () => {
+      clearTimers();
+      setNavigating(false);
+      setCurrentNavigation(null);
+      clearQueue();
+      callbacks?.onComplete?.();
+    };
+
+    window.addEventListener('popstate', handlePopState);
     return () => {
+      window.removeEventListener('popstate', handlePopState);
       clearTimers();
     };
-  }, [clearTimers]);
+  }, [clearTimers, setNavigating, setCurrentNavigation, clearQueue, callbacks]);
 
   return {
     // Estado
