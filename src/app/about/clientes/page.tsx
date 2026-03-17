@@ -86,8 +86,8 @@ const CLIENTES_FALLBACK: ClientesData = {
   },
   portfolio: {
     section: {
-      title: 'Proyectos Destacados',
-      subtitle: 'Conoce algunos de los proyectos que hemos desarrollado para nuestros clientes',
+      title: 'Clientes que Confían en Nosotros',
+      subtitle: 'Hemos construido relaciones sólidas con organismos públicos y empresas privadas.',
       cta: { text: 'Ver portfolio completo' }
     },
     featured_projects: []
@@ -124,7 +124,10 @@ async function getClientesData(): Promise<ClientesData> {
         page: { ...CLIENTES_FALLBACK.page, ...firestoreData.page },
         hero: { ...CLIENTES_FALLBACK.hero, ...firestoreData.hero },
         introduction: { ...CLIENTES_FALLBACK.introduction, ...firestoreData.introduction },
-        portfolio: { ...CLIENTES_FALLBACK.portfolio, ...firestoreData.portfolio },
+        portfolio: {
+          section: { ...CLIENTES_FALLBACK.portfolio?.section, ...firestoreData.portfolio?.section },
+          featured_projects: firestoreData.portfolio?.featured_projects || CLIENTES_FALLBACK.portfolio?.featured_projects || []
+        },
         clientes: { ...CLIENTES_FALLBACK.clientes, ...firestoreData.clientes },
         testimonials: { ...CLIENTES_FALLBACK.testimonials, ...firestoreData.testimonials },
         valor_agregado: { ...CLIENTES_FALLBACK.valor_agregado, ...firestoreData.valor_agregado }
@@ -156,18 +159,6 @@ function ClientesContent({ data }: { data: ClientesData }) {
           }}
         />
         
-        {/* Introducción */}
-        <section className="py-16 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-primary mb-6">{data.introduction.title}</h2>
-              <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
-                {data.introduction.description}
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* Portfolio Slider */}
         {data.portfolio && data.portfolio.featured_projects && data.portfolio.featured_projects.length > 0 && (
           <Portfolio data={data.portfolio} />
