@@ -179,7 +179,7 @@ export default function MegaMenu({ items: propItems, isScrolled, onMenuChange }:
                             
                             {/* Tercera columna - Imagen con overlay */}
                             <div className="col-span-1">
-                              <div className="relative h-full overflow-hidden rounded-xl group cursor-pointer">
+                              <div className="relative h-full min-h-[400px] overflow-hidden rounded-xl group cursor-pointer">
                                 {/* Imagen de fondo */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
                                 {item.subItems.section3.image && (

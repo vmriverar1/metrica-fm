@@ -1,3 +1,22 @@
+export interface PortfolioSectionData {
+  section: {
+    title: string;
+    subtitle: string;
+    cta: {
+      text: string;
+    };
+  };
+  featured_projects: Array<{
+    id: string;
+    name: string;
+    type: string;
+    description: string;
+    image_url: string;
+    link_url?: string;
+    featured_order?: number;
+  }>;
+}
+
 export interface HomePageData {
   page: {
     title: string;
@@ -75,24 +94,7 @@ export interface HomePageData {
       };
     }>;
   };
-  portfolio: {
-    section: {
-      title: string;
-      subtitle: string;
-      cta: {
-        text: string;
-      };
-    };
-    featured_projects: Array<{
-      id: string;
-      name: string;
-      type: string;
-      description: string;
-      image_url: string;
-      link_url?: string;
-      featured_order?: number;
-    }>;
-  };
+  portfolio: PortfolioSectionData;
   pillars: {
     section: {
       title: string;

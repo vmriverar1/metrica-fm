@@ -24,10 +24,17 @@ export const clientesSchema = {
         },
         {
             name: 'introduction_section',
-            label: 'Introducción y Estadísticas',
-            description: 'Sección de introducción con estadísticas',
+            label: 'Introducción',
+            description: 'Sección de introducción',
             collapsible: true,
             defaultExpanded: false
+        },
+        {
+            name: 'portfolio_section',
+            label: 'Portfolio / Proyectos Destacados',
+            description: 'Slider de proyectos destacados para la página de clientes',
+            collapsible: true,
+            defaultExpanded: true
         },
         {
             name: 'testimonials_section',
@@ -174,24 +181,43 @@ export const clientesSchema = {
             rows: 4,
             defaultValue: 'En Métrica FM, nos enorgullece trabajar con una amplia gama de clientes del sector público y privado. Nuestra experiencia y compromiso con la excelencia nos han convertido en el socio preferido para proyectos de infraestructura de gran envergadura.'
         },
-        // Estadísticas usando statistics-builder
+        // Portfolio / Proyectos Destacados
         {
-            key: 'introduction.stats',
-            label: 'Estadísticas de Clientes',
-            type: 'custom' as const,
-            component: 'statistics-builder' as const,
+            key: 'portfolio.section.title',
+            label: 'Título Sección Portfolio',
+            type: 'text' as const,
             required: false,
-            group: 'introduction_section',
-            description: 'Editor dinámico de métricas con iconos y colores personalizables',
-            config: {
-                maxStats: 4,
-                fieldsConfig: {
-                    number: { required: false, placeholder: '50+' },
-                    label: { required: false, maxLength: 50, placeholder: 'Total de Clientes' },
-                    description: { required: false, maxLength: 100, placeholder: 'Clientes satisfechos en diversos sectores' },
-                    icon: { type: 'icon-picker', required: false },
-                    color: { type: 'color-picker', default: '#003F6F' }
-                }
+            group: 'portfolio_section',
+            description: 'Título principal de la sección de proyectos',
+            defaultValue: 'Proyectos Destacados'
+        },
+        {
+            key: 'portfolio.section.subtitle',
+            label: 'Subtítulo Sección Portfolio',
+            type: 'textarea' as const,
+            required: false,
+            group: 'portfolio_section',
+            description: 'Descripción general del portfolio'
+        },
+        {
+            key: 'portfolio.section.cta.text',
+            label: 'Texto CTA Portfolio',
+            type: 'text' as const,
+            required: false,
+            group: 'portfolio_section',
+            description: 'Texto del botón "Ver más"',
+            defaultValue: 'Ver portfolio completo'
+        },
+        {
+            key: 'portfolio.featured_projects',
+            label: 'Proyectos Destacados',
+            type: 'custom' as const,
+            component: 'portfolio-manager',
+            required: false,
+            group: 'portfolio_section',
+            description: 'Gestor visual para los proyectos destacados (independiente del home)',
+            customProps: {
+                imageUpload: true
             }
         },
 

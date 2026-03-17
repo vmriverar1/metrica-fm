@@ -18,11 +18,11 @@ import { useGSAP } from '@gsap/react';
 import { cn } from '@/lib/utils';
 import PortfolioProgress from '@/components/ui/portfolio-progress';
 import PortfolioTransition from '@/components/ui/portfolio-transition';
-import { HomePageData } from '@/types/home';
+import { PortfolioSectionData } from '@/types/home';
 
 
 interface PortfolioProps {
-  data: HomePageData['portfolio'];
+  data: PortfolioSectionData;
 }
 
 export default function Portfolio({ data }: PortfolioProps) {

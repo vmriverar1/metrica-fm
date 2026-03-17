@@ -20,8 +20,9 @@ import {
   Target
 } from 'lucide-react';
 import { PagesService } from '@/lib/firestore/pages-service';
-import ClientStatistics from '@/components/clientes/ClientStatistics';
 import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
+import Portfolio from '@/components/landing/portfolio';
+import { PortfolioSectionData } from '@/types/home';
 
 // ISR: revalidar cada hora
 export const revalidate = 3600;
@@ -44,18 +45,8 @@ interface ClientesData {
   introduction: {
     title: string;
     description: string;
-    stats?: Array<{
-      number: string;
-      label: string;
-      description: string;
-      icon?: string;
-      color?: string;
-      // Nuevos campos para formato separado
-      prefix?: string;
-      suffix?: string;
-      value?: number;
-    }>;
   };
+  portfolio?: PortfolioSectionData;
   client_sectors: any[];
   clientes: {
     logos: string[]; // Array simple de URLs
@@ -131,8 +122,15 @@ const CLIENTES_FALLBACK: ClientesData = {
   },
   introduction: {
     title: 'Relaciones de Confianza',
-    description: 'Construimos relaciones duraderas con nuestros clientes basadas en la excelencia, transparencia y resultados.',
-    stats: []
+    description: 'Construimos relaciones duraderas con nuestros clientes basadas en la excelencia, transparencia y resultados.'
+  },
+  portfolio: {
+    section: {
+      title: 'Proyectos Destacados',
+      subtitle: 'Conoce algunos de los proyectos que hemos desarrollado para nuestros clientes',
+      cta: { text: 'Ver portfolio completo' }
+    },
+    featured_projects: []
   },
   client_sectors: [],
   clientes: {
@@ -172,6 +170,7 @@ async function getClientesData(): Promise<ClientesData> {
         page: { ...CLIENTES_FALLBACK.page, ...firestoreData.page },
         hero: { ...CLIENTES_FALLBACK.hero, ...firestoreData.hero },
         introduction: { ...CLIENTES_FALLBACK.introduction, ...firestoreData.introduction },
+        portfolio: { ...CLIENTES_FALLBACK.portfolio, ...firestoreData.portfolio },
         clientes: { ...CLIENTES_FALLBACK.clientes, ...firestoreData.clientes },
         testimonials: { ...CLIENTES_FALLBACK.testimonials, ...firestoreData.testimonials },
         client_benefits: { ...CLIENTES_FALLBACK.client_benefits, ...firestoreData.client_benefits },
@@ -204,21 +203,26 @@ function ClientesContent({ data }: { data: ClientesData }) {
           }}
         />
         
-        {/* Introducción y estadísticas */}
+        {/* Introducción */}
         <section className="py-16 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-primary mb-6">{data.introduction.title}</h2>
-              <p className="text-lg text-muted-foreground max-w-4xl mx-auto mb-12">
+              <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
                 {data.introduction.description}
               </p>
-              
-              {/* Stats */}
-              {data.introduction.stats && data.introduction.stats.length > 0 && (
-                <ClientStatistics stats={data.introduction.stats} />
-              )}
             </div>
-          
+          </div>
+        </section>
+
+        {/* Portfolio Slider */}
+        {data.portfolio && data.portfolio.featured_projects && data.portfolio.featured_projects.length > 0 && (
+          <Portfolio data={data.portfolio} />
+        )}
+
+        {/* Client Benefits */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-6xl">
             {/* Client Benefits */}
             <div className="mb-20">
               <div className="text-center mb-12">
