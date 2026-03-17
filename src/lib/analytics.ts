@@ -63,38 +63,11 @@ type EventParams = {
  */
 export async function logEvent(eventName: string, params?: EventParams): Promise<void> {
   try {
-    // Import debugger dynamically to avoid circular dependencies
-    if (typeof window !== 'undefined') {
-      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
-        analyticsDebugger.log(eventName, params, 'pending');
-      });
-    }
-
     const analytics = await getAnalytics();
-
-    if (!analytics) {
-      if (typeof window !== 'undefined') {
-        import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
-          analyticsDebugger.log(eventName, params, 'error', 'Analytics not available');
-        });
-      }
-      return;
-    }
-
+    if (!analytics) return;
     firebaseLogEvent(analytics, eventName, params);
-
-    if (typeof window !== 'undefined') {
-      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
-        analyticsDebugger.log(eventName, params, 'success');
-      });
-    }
-  } catch (error) {
-    console.error('[Analytics] Error logging event:', error);
-    if (typeof window !== 'undefined') {
-      import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
-        analyticsDebugger.log(eventName, params, 'error', String(error));
-      });
-    }
+  } catch {
+    // Silent fail for analytics
   }
 }
 
