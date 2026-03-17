@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Footer() {
@@ -25,13 +25,7 @@ export default function Footer() {
             <h4 className="font-bold text-lg font-headline">Síguenos</h4>
             <div className="flex justify-center md:justify-start gap-2 mt-2">
               <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10 hover:text-white" asChild>
-                <a href="https://linkedin.com/company/metrica-dip" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin className="h-5 w-5" /></a>
-              </Button>
-              <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10 hover:text-white" asChild>
-                <a href="https://twitter.com/metrica_dip" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><Twitter className="h-5 w-5" /></a>
-              </Button>
-              <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10 hover:text-white" asChild>
-                <a href="https://facebook.com/metrica.dip" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook className="h-5 w-5" /></a>
+                <a href="https://www.linkedin.com/company/metricafm" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin className="h-5 w-5" /></a>
               </Button>
             </div>
           </div>
