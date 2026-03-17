@@ -3,6 +3,7 @@
 import React from 'react';
 import { Search, Briefcase, MapPin, Users } from 'lucide-react';
 import { CareersData } from '@/hooks/useCareersData';
+import { useDynamicCareersContent } from '@/hooks/useDynamicCareersContent';
 import { cn } from '@/lib/utils';
 
 interface CareerFiltersProps {
@@ -11,14 +12,19 @@ interface CareerFiltersProps {
 }
 
 export default function CareerFilters({ jobOpportunitiesData, className }: CareerFiltersProps) {
+  const { data: dynamicContent } = useDynamicCareersContent();
+
   // Provide fallback values if data is undefined
-  const title = jobOpportunitiesData?.title || 'Oportunidades de Carrera';
-  const subtitle = jobOpportunitiesData?.subtitle || 'Únete a nuestro equipo y desarrolla tu carrera profesional con nosotros';
-  const stats = jobOpportunitiesData?.stats || {
-    total_positions: 0,
-    departments: 0,
-    locations: 0,
-    remote_positions: 0
+  const title = jobOpportunitiesData?.title || '';
+  const subtitle = jobOpportunitiesData?.subtitle || '';
+
+  // Calculate stats from dynamic data (live count instead of static JSON values)
+  const jobs = dynamicContent?.job_postings || [];
+  const stats = {
+    total_positions: jobs.length,
+    departments: new Set(jobs.map(job => job.department)).size,
+    locations: new Set(jobs.map(job => job.location?.city).filter(Boolean)).size,
+    remote_positions: jobs.filter(job => job.location?.remote || job.location?.hybrid).length
   };
 
   return (

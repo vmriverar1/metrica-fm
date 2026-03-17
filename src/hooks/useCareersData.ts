@@ -35,7 +35,15 @@ export function useCareersData() {
         const pageData = result.data?.content || result.data;
         setData(pageData);
       } catch (err) {
-        console.error('Error loading careers data:', err);
+        // Fallback to static JSON
+        try {
+          const fallbackResponse = await fetch('/json/pages/careers.json');
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            setData(fallbackData);
+            return;
+          }
+        } catch { /* ignore fallback error */ }
         setError(err instanceof Error ? err.message : 'Failed to load careers data');
       } finally {
         setLoading(false);

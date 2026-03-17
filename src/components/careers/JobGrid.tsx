@@ -25,8 +25,7 @@ export default function JobGrid({ jobOpportunitiesData, className }: JobGridProp
   const gridRef = useRef<HTMLDivElement>(null);
   
   const handleLoadMore = () => {
-    // Por ahora, simplemente mostrar un mensaje ya que es una funcionalidad futura
-    alert('Esta función estará disponible próximamente. ¡Mantente atento para ver más oportunidades!');
+    // Funcionalidad futura - placeholder
   };
 
   const clearFilters = () => {
@@ -138,7 +137,7 @@ export default function JobGrid({ jobOpportunitiesData, className }: JobGridProp
   }
 
   // Get jobs from dynamic content, with fallback to empty array
-  const filteredJobs = dynamicContent?.jobs || [];
+  const filteredJobs = dynamicContent?.job_postings || [];
 
   if (!filteredJobs.length) {
     return (
@@ -280,44 +279,6 @@ export default function JobGrid({ jobOpportunitiesData, className }: JobGridProp
           </div>
         </div>
       )}
-
-      {/* Statistics */}
-      <div className="bg-muted/30 rounded-xl p-6 mt-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-primary mb-1">
-              {filteredJobs.length}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Posiciones Abiertas
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-primary mb-1">
-              {new Set(filteredJobs.map(job => job.department)).size}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Departamentos
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-primary mb-1">
-              {new Set(filteredJobs.map(job => job.location.city)).size}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Ciudades
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-primary mb-1">
-              {filteredJobs.filter(job => job.location.remote || job.location.hybrid).length}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Trabajo Flexible
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* CSS for animations */}
       <style jsx>{`

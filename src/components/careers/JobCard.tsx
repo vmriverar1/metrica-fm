@@ -163,7 +163,7 @@ export default function JobCard({
                     Destacado
                   </Badge>
                 )}
-                {(job.location.remote || job.location.hybrid) && (
+                {(job.location?.remote || job.location?.hybrid) && (
                   <Badge variant="outline" className="text-xs">
                     {job.location.remote ? 'Remoto' : 'Híbrido'}
                   </Badge>
@@ -266,9 +266,11 @@ export default function JobCard({
       <div className="p-6 space-y-4 flex-shrink-0">
         {/* Badges */}
         <div className="flex items-center justify-between">
-          <Badge className={getCategoryBgColor(job.category)}>
-            {getJobCategoryLabel(job.category)}
-          </Badge>
+          {job.category ? (
+            <Badge className={getCategoryBgColor(job.category)}>
+              {getJobCategoryLabel(job.category)}
+            </Badge>
+          ) : <span />}
           <div className="flex items-center gap-2">
             {job.featured && (
               <Star className="w-4 h-4 text-yellow-500 fill-current" />

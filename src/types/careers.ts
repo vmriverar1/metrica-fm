@@ -91,6 +91,70 @@ export interface JobPostingWithRelations extends JobPosting {
   };
 }
 
+// Tipo para datos de la página de careers (estructura del JSON pages/careers.json)
+export interface CareersPageData {
+  page: {
+    title: string;
+    description: string;
+    keywords?: string[];
+    url?: string;
+  };
+  hero: {
+    background?: {
+      type?: string;
+      image?: string;
+      video_url?: string;
+      image_fallback?: string;
+    };
+    badge?: {
+      text: string;
+      icon: string;
+    };
+    title: string;
+    subtitle: string;
+    typing_effect?: {
+      prefix: string;
+      words: string[];
+    };
+    stats?: Array<{
+      icon: string;
+      value: string;
+      label: string;
+    }>;
+    cta?: {
+      primary: { text: string; href: string; icon: string };
+      secondary?: { text: string; href: string; icon: string };
+    };
+  };
+  company_benefits: {
+    title: string;
+    subtitle: string;
+    description: string;
+    categories?: string[];
+    benefits: Array<{
+      icon: string;
+      title: string;
+      description: string;
+      highlight?: string;
+      category?: string;
+    }>;
+    cta?: {
+      text: string;
+      description: string;
+    };
+  };
+  job_opportunities: {
+    title: string;
+    subtitle: string;
+    description: string;
+    filters?: any;
+    empty_state?: any;
+  };
+  culture_preview?: any;
+  application_process?: any;
+  final_cta?: any;
+}
+
 // Helper functions básicas
 export function getJobCategoryLabel(category: JobCategory): string {
   const labels: Record<JobCategory, string> = {

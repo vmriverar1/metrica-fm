@@ -101,11 +101,22 @@ export const useDynamicCareersContent = () => {
         setLoading(true);
         setError(null);
         
-        const response = await fetch('/json/dynamic-content/careers/content.json');
+        // Try Firestore API first, fallback to static JSON
+        let response = await fetch('/api/careers/dynamic');
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data) {
+            setData(result.data);
+            return;
+          }
+        }
+
+        // Fallback to static JSON
+        response = await fetch('/json/dynamic-content/careers/content.json');
         if (!response.ok) {
           throw new Error(`Failed to load careers content: ${response.status}`);
         }
-        
         const contentData = await response.json();
         setData(contentData);
       } catch (err) {

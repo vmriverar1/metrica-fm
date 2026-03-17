@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  MapPin, 
-  Clock, 
-  Users, 
-  Briefcase, 
+import {
+  MapPin,
+  Clock,
+  Users,
+  Briefcase,
   Star,
   DollarSign,
   Calendar,
@@ -15,19 +15,24 @@ import {
   Mail,
   FileText,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  X
 } from 'lucide-react';
 import { JobPosting } from '@/hooks/useDynamicCareersContent';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import ApplicationForm from '@/components/careers/ApplicationForm';
 
 interface JobDetailProps {
   job: JobPosting;
 }
 
 export default function JobDetail({ job }: JobDetailProps) {
+  const [showApplicationModal, setShowApplicationModal] = useState(false);
+
   // Helper functions
   const getJobCategoryLabel = (category: string) => {
     const categoryMap: { [key: string]: string } = {
@@ -52,7 +57,7 @@ export default function JobDetail({ job }: JobDetailProps) {
 
   const getCategoryBgColor = (category: string) => {
     const colorMap: { [key: string]: string } = {
-      'gestion-direccion': 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
+      'gestion-direccion': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
       'ingenieria-tecnica': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
       'arquitectura-diseño': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
       'operaciones-control': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
@@ -177,10 +182,10 @@ export default function JobDetail({ job }: JobDetailProps) {
                   </div>
 
                   {/* Apply Button */}
-                  <Button 
-                    className="w-full" 
+                  <Button
+                    className="w-full"
                     size="lg"
-                    onClick={() => window.open(`mailto:${job.application_process.contact_email}?subject=Postulación: ${job.title}`, '_blank')}
+                    onClick={() => setShowApplicationModal(true)}
                   >
                     <Mail className="w-4 h-4 mr-2" />
                     Postular Ahora
@@ -318,9 +323,9 @@ export default function JobDetail({ job }: JobDetailProps) {
                   </div>
 
                   <div className="pt-4 border-t">
-                    <Button 
-                      className="w-full" 
-                      onClick={() => window.open(`mailto:${job.application_process.contact_email}?subject=Postulación: ${job.title}`, '_blank')}
+                    <Button
+                      className="w-full"
+                      onClick={() => setShowApplicationModal(true)}
                     >
                       <Mail className="w-4 h-4 mr-2" />
                       Enviar Postulación
@@ -341,9 +346,9 @@ export default function JobDetail({ job }: JobDetailProps) {
             Únete a nuestro equipo y sé parte de los proyectos de infraestructura más importantes del Perú.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
+            <Button
               size="lg"
-              onClick={() => window.open(`mailto:${job.application_process.contact_email}?subject=Postulación: ${job.title}`, '_blank')}
+              onClick={() => setShowApplicationModal(true)}
             >
               <Mail className="w-4 h-4 mr-2" />
               Postular a este puesto
@@ -357,6 +362,28 @@ export default function JobDetail({ job }: JobDetailProps) {
           </div>
         </div>
       </div>
+
+      {/* Application Modal */}
+      <Dialog open={showApplicationModal} onOpenChange={setShowApplicationModal}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-between">
+              <span>Aplicar a {job.title}</span>
+              <button
+                onClick={() => setShowApplicationModal(false)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </DialogTitle>
+          </DialogHeader>
+          <ApplicationForm
+            job={job}
+            onSubmit={() => setShowApplicationModal(false)}
+            onCancel={() => setShowApplicationModal(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

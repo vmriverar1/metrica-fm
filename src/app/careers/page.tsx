@@ -21,7 +21,7 @@ function CareersPageContent() {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <OptimizedLoading type="page" />
+        <OptimizedLoading type="careers" />
         <Footer />
       </div>
     );
