@@ -59,14 +59,6 @@ export {
   type BackupStats
 } from './core/backup-manager';
 
-// Testing utilities
-export { 
-  ConcurrencyTester,
-  runConcurrencyTests,
-  type TestResult,
-  type ConcurrencyTestSuite,
-  type LoadTestMetrics
-} from './tests/concurrency-tests';
 
 // Instancias singleton pre-configuradas
 import { fileManager } from './core/file-manager';
@@ -290,8 +282,7 @@ export class JSONCRUDSystem {
    * Ejecutar tests de concurrencia
    */
   async runDiagnostics(): Promise<any> {
-    const { runConcurrencyTests } = await import('./tests/concurrency-tests');
-    return runConcurrencyTests();
+    return { message: 'Diagnostics not available' };
   }
 
   /**

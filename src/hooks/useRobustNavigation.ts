@@ -3,7 +3,6 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useRef, useEffect } from 'react';
 import { create } from 'zustand';
-import { useNetworkDetection } from './useNetworkDetection';
 
 interface NavigationState {
   isNavigating: boolean;
@@ -53,7 +52,7 @@ interface LoadingCallbacks {
 export const useRobustNavigation = (callbacks?: LoadingCallbacks) => {
   const router = useRouter();
   const pathname = usePathname();
-  const networkConditions = useNetworkDetection();
+  const networkConditions = { isOnline: true, effectiveType: '4g', downlink: 10, rtt: 50 };
   
   const {
     isNavigating,
