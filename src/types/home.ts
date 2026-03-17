@@ -26,15 +26,7 @@ export interface HomePageData {
     };
   };
   stats: {
-    statistics: Array<{
-      id: string;
-      icon: string;
-      value: number;
-      suffix: string;
-      prefix?: string;
-      label: string;
-      description?: string;
-    }>;
+    description_text: string;
   };
   services: {
     section: {

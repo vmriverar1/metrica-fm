@@ -25,10 +25,10 @@ export const homeSchema = {
     },
     {
         name: 'statistics_section',
-        label: 'Estadísticas (4 items)',
-        description: 'Números, iconos y métricas principales',
+        label: 'Texto Descriptivo',
+        description: 'Párrafo descriptivo que aparece debajo del hero',
         collapsible: true,
-        defaultExpanded: false
+        defaultExpanded: true
     },
     {
         name: 'services_section',
@@ -228,19 +228,14 @@ export const homeSchema = {
         description: 'Texto que aparece después de las palabras rotatorias'
     },
 
-    // ===== STATISTICS SECTION GROUP =====
+    // ===== TEXTO DESCRIPTIVO =====
     {
-        key: 'stats.statistics',
-        label: 'Estadísticas Principales',
-        type: 'custom' as const,
-        component: 'statistics-grid',
+        key: 'stats.description_text',
+        label: 'Texto Descriptivo',
+        type: 'textarea' as const,
         required: false,
         group: 'statistics_section',
-        description: 'Editor visual para las 4 estadísticas principales del hero',
-        customProps: {
-        iconPicker: true,
-        numberAnimation: true
-        }
+        description: 'Párrafo que aparece debajo del hero en una tarjeta blanca centrada'
     },
 
     // ===== SERVICES SECTION GROUP =====

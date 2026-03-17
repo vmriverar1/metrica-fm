@@ -42,7 +42,9 @@ function mergeWithFallback(data: Partial<HomePageData> | null | undefined): Home
       description: data.page?.description || HOME_PAGE_FALLBACK.page.description
     },
     hero: mergedHero,
-    stats: data.stats || HOME_PAGE_FALLBACK.stats,
+    stats: {
+      description_text: data.stats?.description_text || HOME_PAGE_FALLBACK.stats.description_text
+    },
     services: data.services || HOME_PAGE_FALLBACK.services,
     portfolio: data.portfolio || HOME_PAGE_FALLBACK.portfolio,
     pillars: data.pillars || HOME_PAGE_FALLBACK.pillars,

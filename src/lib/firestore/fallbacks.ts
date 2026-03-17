@@ -39,32 +39,7 @@ export const HOME_PAGE_FALLBACK: HomePageData = {
     }
   },
   stats: {
-    statistics: [
-      {
-        id: 'stat-1',
-        icon: 'Briefcase',
-        value: 0,
-        suffix: '+',
-        label: '📊 Proyectos (agregar desde Firestore)',
-        description: ''
-      },
-      {
-        id: 'stat-2',
-        icon: 'Users',
-        value: 0,
-        suffix: '+',
-        label: '📊 Clientes (agregar desde Firestore)',
-        description: ''
-      },
-      {
-        id: 'stat-3',
-        icon: 'Award',
-        value: 0,
-        suffix: '%',
-        label: '📊 Satisfacción (agregar desde Firestore)',
-        description: ''
-      }
-    ]
+    description_text: 'En Métrica FM nos especializamos en brindar soluciones integrales de gestión de instalaciones para empresas de todos los tamaños y sectores. Nuestro objetivo principal es ayudar a nuestros clientes a optimizar sus operaciones y maximizar la eficiencia de sus instalaciones.'
   },
   services: {
     section: {
