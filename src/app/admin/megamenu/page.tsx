@@ -121,7 +121,6 @@ export default function MegaMenuAdminPage() {
 
   const fetchMegaMenuData = async (showLoading = true) => {
     try {
-      console.log('🔍 [MegaMenu Admin] Cargando datos desde Firestore...');
       if (showLoading) setLoading(true);
       else setRefreshing(true);
 
@@ -130,7 +129,6 @@ export default function MegaMenuAdminPage() {
 
       if (result.success && result.data) {
         const firestoreData = result.data as any;
-        console.log('📊 [MegaMenu Admin] Datos obtenidos:', firestoreData);
 
         // Crear estructura compatible con el admin
         const megaMenuData: MegaMenuData = {
@@ -162,7 +160,6 @@ export default function MegaMenuAdminPage() {
           });
         }
 
-        console.log('✅ [MegaMenu Admin] Datos cargados exitosamente');
       } else {
         console.error('❌ [MegaMenu Admin] Error obteniendo documento:', result.message);
         toast({
@@ -272,7 +269,6 @@ export default function MegaMenuAdminPage() {
   // Funciones de manejo de acciones
   const handleReorder = async (newOrder: string[]) => {
     try {
-      console.log('🔄 [MegaMenu Admin] Reordenando items:', newOrder);
 
       // Obtener documento actual
       const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
@@ -317,7 +313,6 @@ export default function MegaMenuAdminPage() {
           title: "Orden actualizado",
           description: "El orden del megamenu se ha actualizado correctamente"
         });
-        console.log('✅ [MegaMenu Admin] Orden actualizado exitosamente');
       } else {
         throw new Error(updateResult.message || 'Error actualizando el orden');
       }
@@ -343,7 +338,6 @@ export default function MegaMenuAdminPage() {
   
   const handleEditorSave = async (item: MegaMenuItem) => {
     try {
-      console.log('💾 [MegaMenu Admin] Guardando item:', item);
       const isNew = !editingItem;
 
       // Obtener documento actual
@@ -360,13 +354,11 @@ export default function MegaMenuAdminPage() {
       if (isNew) {
         // Agregar nuevo item
         updatedItems = [...currentItems, item];
-        console.log('➕ [MegaMenu Admin] Agregando nuevo item');
       } else {
         // Actualizar item existente
         updatedItems = currentItems.map((existingItem: any) =>
           existingItem.id === item.id ? item : existingItem
         );
-        console.log('✏️ [MegaMenu Admin] Actualizando item existente');
       }
 
       // Actualizar documento en Firestore (upsert con merge: true)
@@ -388,8 +380,6 @@ export default function MegaMenuAdminPage() {
           title: isNew ? "Menú creado" : "Menú actualizado",
           description: `El menú "${item.label}" se ha ${isNew ? 'creado' : 'actualizado'} correctamente`
         });
-
-        console.log('✅ [MegaMenu Admin] Item guardado exitosamente');
       } else {
         throw new Error(updateResult.message || 'Error actualizando el documento');
       }
@@ -406,7 +396,6 @@ export default function MegaMenuAdminPage() {
   
   const handleDelete = async (itemId: string) => {
     try {
-      console.log('🗑️ [MegaMenu Admin] Eliminando item:', itemId);
 
       // Obtener documento actual
       const currentResult = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
@@ -437,7 +426,6 @@ export default function MegaMenuAdminPage() {
           title: "Menú eliminado",
           description: "El menú se ha eliminado correctamente"
         });
-        console.log('✅ [MegaMenu Admin] Item eliminado exitosamente');
       } else {
         throw new Error(updateResult.message || 'Error eliminando el item');
       }
@@ -471,7 +459,6 @@ export default function MegaMenuAdminPage() {
   
   const handleToggleEnabled = async (itemId: string) => {
     try {
-      console.log('🔄 [MegaMenu Admin] Cambiando estado de item:', itemId);
 
       const item = menuData?.items.find(i => i.id === itemId);
       if (!item) return;
@@ -509,7 +496,6 @@ export default function MegaMenuAdminPage() {
           title: "Estado actualizado",
           description: `El menú "${item.label}" se ha ${!item.enabled ? 'activado' : 'desactivado'} correctamente`
         });
-        console.log('✅ [MegaMenu Admin] Estado cambiado exitosamente');
       } else {
         throw new Error(updateResult.message || 'Error cambiando el estado');
       }

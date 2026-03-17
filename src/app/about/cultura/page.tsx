@@ -2,9 +2,8 @@ import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 
-// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: revalidar cada hora
+export const revalidate = 3600;
 // import HeroEquipo from '@/components/cultura/HeroEquipo'; // Comentado temporalmente
 import UniversalHero from '@/components/ui/universal-hero';
 import MissionVision from '@/components/historia/MissionVision';
@@ -92,11 +91,9 @@ async function getCulturaData(): Promise<CulturaData> {
       } as CulturaData;
     }
 
-    console.warn('⚠️ [FALLBACK] Cultura Page: Sin datos en Firestore, usando fallback');
     return CULTURA_FALLBACK;
   } catch (error) {
     console.error('Error loading cultura data:', error);
-    console.warn('⚠️ [FALLBACK] Cultura Page: Error detectado, usando fallback');
     return CULTURA_FALLBACK;
   }
 }

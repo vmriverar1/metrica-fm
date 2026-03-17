@@ -246,7 +246,7 @@ export default function MasterAdminPanel() {
       icon: RefreshCw,
       category: 'system',
       enabled: true,
-      action: () => console.log('Restarting services...')
+      action: () => {}
     },
     {
       id: 'maintenance-mode',
@@ -255,7 +255,7 @@ export default function MasterAdminPanel() {
       icon: Settings,
       category: 'maintenance',
       enabled: true,
-      action: () => console.log('Enabling maintenance mode...')
+      action: () => {}
     },
     {
       id: 'security-scan',
@@ -264,7 +264,7 @@ export default function MasterAdminPanel() {
       icon: Shield,
       category: 'security',
       enabled: true,
-      action: () => console.log('Starting security scan...')
+      action: () => {}
     },
     {
       id: 'backup-system',
@@ -273,7 +273,7 @@ export default function MasterAdminPanel() {
       icon: Database,
       category: 'maintenance',
       enabled: true,
-      action: () => console.log('Starting system backup...')
+      action: () => {}
     },
     {
       id: 'clear-cache',
@@ -282,7 +282,7 @@ export default function MasterAdminPanel() {
       icon: Trash2,
       category: 'system',
       enabled: true,
-      action: () => console.log('Clearing caches...')
+      action: () => {}
     },
     {
       id: 'user-cleanup',
@@ -291,7 +291,7 @@ export default function MasterAdminPanel() {
       icon: Users,
       category: 'users',
       enabled: true,
-      action: () => console.log('Cleaning up users...')
+      action: () => {}
     }
   ]
 

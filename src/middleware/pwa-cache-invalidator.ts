@@ -36,10 +36,6 @@ export class PWACacheInvalidator {
     
     const timestamp = Date.now();
     
-    if (this.DEBUG && logActivity) {
-      console.log(`[PWACacheInvalidator] Invalidating cache for ${jsonPath}`);
-    }
-    
     try {
       // 1. Invalidar cache del JSON
       await PWAJsonReader.invalidateOnEdit(jsonPath);
@@ -48,12 +44,8 @@ export class PWACacheInvalidator {
       if (preloadAfterInvalidation) {
         try {
           await PWAJsonReader.refreshCache(jsonPath);
-          if (this.DEBUG) {
-            console.log(`[PWACacheInvalidator] Preloaded fresh data for ${jsonPath}`);
-          }
-        } catch (preloadError) {
-          console.warn(`[PWACacheInvalidator] Failed to preload ${jsonPath}:`, preloadError);
-          // No es crítico, continuamos
+        } catch {
+          // Non-critical: preload after invalidation failed
         }
       }
       
@@ -197,10 +189,6 @@ export class PWACacheInvalidator {
     
     const paths = pathsByPattern[pattern] || [];
     
-    if (this.DEBUG) {
-      console.log(`[PWACacheInvalidator] Invalidating pattern '${pattern}': ${paths.length} files`);
-    }
-    
     return await this.invalidateMultiple(paths, options);
   }
   
@@ -212,9 +200,7 @@ export class PWACacheInvalidator {
     action: 'invalidated' | 'refreshed' | 'preloaded',
     timestamp: number
   ): Promise<void> {
-    // En desarrollo, solo log a consola
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[PWACacheInvalidator] ${action} ${jsonPath} at ${new Date(timestamp).toISOString()}`);
       return;
     }
     

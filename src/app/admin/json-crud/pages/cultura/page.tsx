@@ -19,7 +19,7 @@ export default function CulturaAdminPage() {
       const response = await fetch('/api/admin/pages/cultura');
       if (response.ok) {
         const data = await response.json();
-        console.log('Admin cultura page - loaded data:', data);
+
         setCulturaData(data);
       } else if (response.status === 404) {
         // No data exists yet, use defaults
@@ -53,7 +53,7 @@ export default function CulturaAdminPage() {
       setCulturaData(data);
       
       // Mostrar notificación de éxito (puedes implementar un toast aquí)
-      console.log('Cultura guardado exitosamente');
+
       
     } catch (error) {
       console.error('Error saving cultura:', error);

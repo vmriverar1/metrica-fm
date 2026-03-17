@@ -69,15 +69,11 @@ export function useProjects() {
   // Obtener proyecto por ID
   const getById = useCallback(async (id: string): Promise<Project | null> => {
     try {
-      console.log('🔍 [usePortfolioAdmin] Buscando proyecto con ID:', id);
       const response = await apiClient.get(`/api/admin/portfolio/projects/${id}`);
-      console.log('📡 [usePortfolioAdmin] Respuesta de API:', response);
 
       if (response.success) {
-        console.log('✅ [usePortfolioAdmin] Proyecto encontrado:', response.data);
         return response.data;
       }
-      console.warn('⚠️ [usePortfolioAdmin] Respuesta sin success:', response);
       return null;
     } catch (err) {
       console.error('Error loading project:', err);
@@ -169,13 +165,10 @@ export function useCategories() {
   const loadCategories = useCallback(async () => {
     try {
       setLoading(true);
-      console.log('🔍 [Categories] Cargando categorías desde Firestore...');
 
-      // Cargar directamente desde la colección portfolio_categories
       const result = await FirestoreCore.getDocuments('portfolio_categories');
 
       if (result.success && result.data) {
-        console.log('✅ [Categories] Categorías cargadas desde Firestore:', result.data);
         setCategories(result.data);
         setError(null);
       } else {
@@ -195,15 +188,12 @@ export function useCategories() {
   // Obtener categoría por ID desde Firestore
   const getById = useCallback(async (id: string): Promise<Category | null> => {
     try {
-      console.log('🔍 [Categories] Buscando categoría por ID:', id);
       const result = await FirestoreCore.getDocumentById('portfolio_categories', id);
 
       if (result.success && result.data) {
-        console.log('✅ [Categories] Categoría encontrada:', result.data);
         return result.data as Category;
       }
 
-      console.warn('⚠️ [Categories] Categoría no encontrada:', id);
       return null;
     } catch (err) {
       console.error('❌ [Categories] Error loading category:', err);

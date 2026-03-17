@@ -31,37 +31,33 @@ export default function PWAPreloader({
       await new Promise(resolve => setTimeout(resolve, preloadDelay));
       
       try {
-        console.log('[PWAPreloader] Initializing performance optimization systems...');
-
         // Initialize intelligent preloading with error handling
         try {
           await pwaOptimizer.smartPreload();
-        } catch (error) {
-          console.warn('[PWAPreloader] Smart preload failed, continuing...', error);
+        } catch {
+          // Non-critical: smart preload failed
         }
 
         // Set up lazy loading for interactive elements
         try {
           pwaOptimizer.setupIntelligentLazyLoading();
-        } catch (error) {
-          console.warn('[PWAPreloader] Lazy loading setup failed, continuing...', error);
+        } catch {
+          // Non-critical: lazy loading setup failed
         }
 
         // Track the preload completion
         try {
           pwaAnalytics.trackPWAEvent('preloader_initialized');
-        } catch (error) {
-          console.warn('[PWAPreloader] Analytics tracking failed, continuing...', error);
+        } catch {
+          // Non-critical: analytics tracking failed
         }
 
         // Apply usage-based optimizations
         try {
           pwaUsageOptimizer.applyOptimizations();
-        } catch (error) {
-          console.warn('[PWAPreloader] Usage optimizations failed, continuing...', error);
+        } catch {
+          // Non-critical: usage optimizations failed
         }
-
-        console.log('[PWAPreloader] Performance systems initialized (with fallbacks)');
 
         // Broadcast completion with enhanced data
         try {
@@ -73,8 +69,8 @@ export default function PWAPreloader({
             performanceMode: 'safe'
           });
           channel.close();
-        } catch (error) {
-          console.warn('[PWAPreloader] Broadcast failed, continuing...', error);
+        } catch {
+          // Non-critical: broadcast failed
         }
 
       } catch (error) {
@@ -86,8 +82,6 @@ export default function PWAPreloader({
     };
 
     const basicPreload = async (paths: string[]) => {
-      console.log('[PWAPreloader] Falling back to basic preload...');
-
       const BATCH_SIZE = 3;
       const batches: string[][] = [];
 
@@ -106,13 +100,9 @@ export default function PWAPreloader({
 
             if (response.ok) {
               await response.json(); // Consume the response to complete the preload
-              console.log(`[PWAPreloader] ✓ Preloaded ${path}`);
-            } else {
-              console.warn(`[PWAPreloader] ✗ HTTP ${response.status} for ${path}`);
             }
             return path;
-          } catch (error) {
-            console.warn(`[PWAPreloader] ✗ Failed to preload ${path}:`, error);
+          } catch {
             return null;
           }
         });

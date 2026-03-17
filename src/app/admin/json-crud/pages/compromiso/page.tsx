@@ -9,7 +9,6 @@ const CompromisoAdminPage = () => {
       <CompromisoPageEditor 
         slug="compromiso"
         onSave={async (data) => {
-          console.log('Saving compromiso data:', data);
           // TODO: Implementar llamada a API
           // const response = await fetch('/api/admin/pages/compromiso', {
           //   method: 'PUT',
@@ -19,7 +18,6 @@ const CompromisoAdminPage = () => {
           // if (!response.ok) throw new Error('Error al guardar');
         }}
         onPreview={(data) => {
-          console.log('Previewing compromiso data:', data);
           // TODO: Abrir preview en nueva ventana
           // window.open(`/compromiso?preview=true`, '_blank');
         }}

@@ -9,7 +9,6 @@ const BlogAdminPage = () => {
       <BlogConfigEditor 
         slug="blog"
         onSave={async (data) => {
-          console.log('Saving blog data:', data);
           // TODO: Implementar llamada a API
           // const response = await fetch('/api/admin/pages/blog', {
           //   method: 'PUT',
@@ -19,7 +18,6 @@ const BlogAdminPage = () => {
           // if (!response.ok) throw new Error('Error al guardar');
         }}
         onPreview={(data) => {
-          console.log('Previewing blog data:', data);
           // TODO: Abrir preview en nueva ventana
           // window.open(`/blog?preview=true`, '_blank');
         }}

@@ -438,12 +438,8 @@ export class APIMiddleware {
   /**
    * Log request
    */
-  static logRequest(request: Request, system: string): void {
-    const { method, url } = request;
-    const timestamp = new Date().toISOString();
-    const ip = request.headers.get('x-forwarded-for') || 'unknown';
-
-    console.log(`[${timestamp}] ${system.toUpperCase()} API: ${method} ${url} from ${ip}`);
+  static logRequest(_request: Request, _system: string): void {
+    // Intentionally empty — request logging removed from production
   }
 }
 

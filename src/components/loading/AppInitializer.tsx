@@ -13,13 +13,11 @@ export default function AppInitializer({ children }: AppInitializerProps) {
   useEffect(() => {
     // Forzar que se oculte después de máximo 2 segundos
     const timer = setTimeout(() => {
-      console.log('AppInitializer: Ocultando loading después de 2 segundos');
       setIsLoading(false);
     }, 2000);
 
     // Fallback de emergencia más agresivo
     const emergencyTimer = setTimeout(() => {
-      console.log('AppInitializer: EMERGENCY - Forzando ocultar loading');
       setIsLoading(false);
     }, 2500);
 

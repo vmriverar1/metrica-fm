@@ -9,8 +9,6 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log(`[${new Date().toISOString()}] BLOG CATEGORIES API: GET ${request.url} from ${request.ip || 'unknown'}`);
-
     // Obtener categorías usando Firestore client SDK (público)
     const categoriesRef = collection(db, 'blog_categories');
     const categoriesQuery = query(categoriesRef, orderBy('name'));
@@ -20,8 +18,6 @@ export async function GET(request: NextRequest) {
       id: doc.id,
       ...doc.data()
     }));
-
-    console.log(`📂 Blog categories found: ${categories.length}`);
 
     return NextResponse.json({
       success: true,

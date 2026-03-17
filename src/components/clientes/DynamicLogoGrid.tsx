@@ -97,10 +97,6 @@ export default function DynamicLogoGrid({ logos, title, subtitle }: DynamicLogoG
     };
   }, []);
 
-  // Recalcular cuando hiddenIndices cambie
-  useEffect(() => {
-    console.log('[DynamicLogoGrid] Hidden logos:', hiddenIndices.size, 'indices:', [...hiddenIndices]);
-  }, [hiddenIndices]);
 
   // Función para generar índices en patrón espiral (horario desde esquina superior izquierda)
   const generateSpiralIndices = (rows: number, cols: number): number[] => {

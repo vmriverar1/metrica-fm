@@ -108,25 +108,14 @@ export default function ProjectShowcase() {
     const loadFeaturedProjects = async () => {
       setLoading(true);
       try {
-        console.log('🔍 [ProjectShowcase] Loading all projects from Firestore...');
-        console.log('🔍 [ProjectShowcase] Collection: portfolio_projects');
-
         // Get ALL projects and filter locally since the where query is not working correctly
         const allResult = await FirestoreCore.getDocuments<Project>('portfolio_projects');
 
         if (allResult.success && allResult.data) {
-          console.log(`📋 [ProjectShowcase] Found ${allResult.data.length} total projects`);
-
           // Filter for featured projects
           const featuredProjects = allResult.data.filter(p => p.featured === true);
-          console.log(`⭐ [ProjectShowcase] Found ${featuredProjects.length} featured projects`);
 
           if (featuredProjects.length > 0) {
-            console.log('📝 [ProjectShowcase] Featured project titles:');
-            featuredProjects.forEach((p, index) => {
-              console.log(`  ${index + 1}. ${p.title} (${p.category})`);
-            });
-
             // Transform all featured projects to display format
             const transformedProjects = featuredProjects.map(transformToFeaturedProject);
 
@@ -144,24 +133,8 @@ export default function ProjectShowcase() {
               return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' });
             });
 
-            // Verificación adicional con orden
-            console.log('🔍 [ProjectShowcase] Verificando transformación y ordenamiento:');
-            console.log(`  - Proyectos destacados originales: ${featuredProjects.length}`);
-            console.log(`  - Proyectos transformados: ${transformedProjects.length}`);
-            console.log('📊 [ProjectShowcase] Orden final de proyectos:');
-            sortedProjects.forEach((p, index) => {
-              const orderInfo = p.featured_order !== undefined && p.featured_order < 999
-                ? ` (orden: ${p.featured_order})`
-                : ' (sin orden específico)';
-              console.log(`  ${index + 1}. ${p.title}${orderInfo}`);
-            });
-
             setFeaturedProjects(sortedProjects);
-
-            console.log(`✅ [ProjectShowcase] Successfully loaded and sorted ${sortedProjects.length} featured projects`);
           } else {
-            console.warn('⚠️ [ProjectShowcase] No projects have featured: true');
-            console.log('🔄 [ProjectShowcase] Using first 6 projects as fallback...');
 
             // Use first 6 projects as fallback if no featured projects
             const fallbackProjects = allResult.data.slice(0, 6);
@@ -169,7 +142,6 @@ export default function ProjectShowcase() {
             setFeaturedProjects(transformedFallback);
           }
         } else {
-          console.error('❌ [ProjectShowcase] Failed to load projects:', allResult.error);
           setFeaturedProjects([]);
         }
       } catch (error) {

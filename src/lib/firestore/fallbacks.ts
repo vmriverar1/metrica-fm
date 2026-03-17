@@ -560,13 +560,9 @@ export const DEFAULT_LOGO = '/images/proyectos/hero-background.jpg';
  */
 export function getFallbackWithMessage<T>(
   fallback: T,
-  collection: string,
-  additionalInfo?: string
+  _collection: string,
+  _additionalInfo?: string
 ): T {
-  console.warn(
-    `⚠️ [FALLBACK] Usando datos de ejemplo para ${collection}. ` +
-    `Configura datos reales en Firestore${additionalInfo ? `: ${additionalInfo}` : ''}`
-  );
   return fallback;
 }
 
@@ -586,18 +582,15 @@ export function getValidImageUrl(imageUrl: string | undefined | null, defaultIma
 export async function withFallback<T>(
   operation: () => Promise<T>,
   fallback: T,
-  context: string
+  _context: string
 ): Promise<T> {
   try {
     const result = await operation();
     if (!result || (Array.isArray(result) && result.length === 0)) {
-      console.warn(`⚠️ [FALLBACK] ${context}: Sin datos, usando fallback`);
       return fallback;
     }
     return result;
   } catch (error) {
-    console.error(`❌ [ERROR] ${context}:`, error);
-    console.warn(`⚠️ [FALLBACK] ${context}: Error detectado, usando fallback`);
     return fallback;
   }
 }

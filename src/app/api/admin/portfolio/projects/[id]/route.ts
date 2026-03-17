@@ -22,13 +22,10 @@ export const GET = withAuth(
     const url = new URL(request.url);
     const pathParts = url.pathname.split('/');
     const id = pathParts[pathParts.length - 1];
-    console.log(`🔍 [ProjectAPI] Getting project: ${id}`);
-
     // Buscar proyecto en Firestore usando FirestoreCore
     const projectResult = await FirestoreCore.getDocumentById(COLLECTIONS.PORTFOLIO_PROJECTS, id);
 
     if (!projectResult.success || !projectResult.data) {
-      console.warn(`⚠️ [ProjectAPI] Project not found: ${id}`);
       return NextResponse.json(
         {
           success: false,
@@ -62,8 +59,8 @@ export const GET = withAuth(
           };
         }
       }
-    } catch (error) {
-      console.warn('Warning: Could not fetch category info:', error);
+    } catch {
+      // Non-critical: category enrichment failed
     }
 
     // Proyectos relacionados (misma categoría, excluyendo el actual)
@@ -89,11 +86,9 @@ export const GET = withAuth(
             }));
         }
       }
-    } catch (error) {
-      console.warn('Warning: Could not fetch related projects:', error);
+    } catch {
+      // Non-critical: related projects fetch failed
     }
-
-    console.log(`✅ [ProjectAPI] Project retrieved: ${project.title}`);
 
     return NextResponse.json({
       success: true,
@@ -129,10 +124,6 @@ export const PUT = withAuth(
     const pathParts = url.pathname.split('/');
     const id = pathParts[pathParts.length - 1];
     const body = await request.json();
-
-    console.log(`📝 [ProjectAPI] Updating project: ${id}`);
-    console.log(`📋 [ProjectAPI] Update data:`, Object.keys(body));
-    console.log(`⭐ [ProjectAPI] Featured order value:`, body.featured_order, 'Type:', typeof body.featured_order);
 
     const {
       title,
@@ -265,17 +256,10 @@ export const PUT = withAuth(
       Object.entries(updateData).filter(([_, value]) => value !== undefined)
     );
 
-    // Log detallado antes de la actualización
-    console.log(`📋 [ProjectAPI] About to update with data:`, JSON.stringify(cleanUpdateData, null, 2));
-
     // Actualizar en Firestore usando FirestoreCore
     const updateResult = await FirestoreCore.updateDocument(COLLECTIONS.PORTFOLIO_PROJECTS, id, cleanUpdateData);
 
-    console.log(`🔍 [ProjectAPI] Update result:`, updateResult);
-
     if (!updateResult.success) {
-      console.error(`❌ [ProjectAPI] Failed to update project in Firestore:`, updateResult.error);
-      console.error(`❌ [ProjectAPI] Update data that failed:`, JSON.stringify(cleanUpdateData, null, 2));
       return NextResponse.json(
         {
           success: false,
@@ -289,8 +273,6 @@ export const PUT = withAuth(
 
     // Actualizar contadores de categorías si cambió la categoría
     if (currentProject.category !== category) {
-      console.log(`🔄 [ProjectAPI] Category changed from ${currentProject.category} to ${category}`);
-
       // Decrementar contador de categoría anterior
       try {
         const oldCategoryResult = await FirestoreCore.getDocumentById(COLLECTIONS.PORTFOLIO_CATEGORIES, currentProject.category);
@@ -300,8 +282,8 @@ export const PUT = withAuth(
             projectCount: Math.max(0, (oldCategoryData.projectCount || 1) - 1)
           });
         }
-      } catch (error) {
-        console.warn('Warning: Could not update old category counter:', error);
+      } catch {
+        // Non-critical: old category counter update failed
       }
 
       // Incrementar contador de nueva categoría
@@ -313,12 +295,10 @@ export const PUT = withAuth(
             projectCount: (newCategoryData.projectCount || 0) + 1
           });
         }
-      } catch (error) {
-        console.warn('Warning: Could not update new category counter:', error);
+      } catch {
+        // Non-critical: new category counter update failed
       }
     }
-
-    console.log(`✅ [ProjectAPI] Project '${title}' updated successfully`);
 
     return NextResponse.json({
       success: true,
@@ -356,8 +336,6 @@ export const DELETE = withAuth(
     const url = new URL(request.url);
     const pathParts = url.pathname.split('/');
     const id = pathParts[pathParts.length - 1];
-    console.log(`🗑️ [ProjectAPI] Deleting project: ${id}`);
-
     // Buscar proyecto
     const projectResult = await FirestoreCore.getDocumentById(COLLECTIONS.PORTFOLIO_PROJECTS, id);
     if (!projectResult.success || !projectResult.data) {
@@ -396,11 +374,9 @@ export const DELETE = withAuth(
           projectCount: Math.max(0, (categoryData.projectCount || 1) - 1)
         });
       }
-    } catch (error) {
-      console.warn('Warning: Could not update category counter:', error);
+    } catch {
+      // Non-critical: category counter update failed
     }
-
-    console.log(`✅ [ProjectAPI] Project '${project.title}' deleted successfully`);
 
     return NextResponse.json({
       success: true,

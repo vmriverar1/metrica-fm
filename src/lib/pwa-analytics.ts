@@ -165,8 +165,8 @@ class PWAAnalytics {
     
     try {
       observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] });
-    } catch (error) {
-      console.log('[PWAAnalytics] Performance observer not supported');
+    } catch {
+      // Non-critical: observer not supported in this environment
     }
 
     // Cumulative Layout Shift
@@ -182,8 +182,8 @@ class PWAAnalytics {
     
     try {
       clsObserver.observe({ entryTypes: ['layout-shift'] });
-    } catch (error) {
-      console.log('[PWAAnalytics] Layout shift observer not supported');
+    } catch {
+      // Non-critical: observer not supported in this environment
     }
   }
 
@@ -201,8 +201,8 @@ class PWAAnalytics {
         const estimate = await navigator.storage.estimate();
         this.trackMetric('storage_quota', estimate.quota || 0);
         this.trackMetric('storage_usage', estimate.usage || 0);
-      } catch (error) {
-        console.log('[PWAAnalytics] Storage estimate not available');
+      } catch {
+        // Non-critical: storage estimate not available
       }
     }
   }
@@ -368,7 +368,6 @@ class PWAAnalytics {
       }
       
       localStorage.setItem('pwa-analytics', JSON.stringify(reports));
-      console.log('[PWAAnalytics] Report saved to localStorage:', report);
     } else {
       // Send to analytics server
       try {
@@ -379,8 +378,8 @@ class PWAAnalytics {
           },
           body: JSON.stringify(report)
         });
-      } catch (error) {
-        console.log('[PWAAnalytics] Failed to send analytics:', error);
+      } catch {
+        // Non-critical: analytics send failed silently
       }
     }
 

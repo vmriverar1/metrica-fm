@@ -40,8 +40,6 @@ export async function GET(request: NextRequest) {
       ...doc.data()
     }));
 
-    console.log(`✅ Found ${categories.length} portfolio categories in Firestore`);
-
     return NextResponse.json({
       success: true,
       data: categories,

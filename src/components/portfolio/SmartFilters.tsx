@@ -181,8 +181,7 @@ export default function SmartFilters({ showOnlyButtons = false }: SmartFiltersPr
     });
 
     // This would need integration with the PortfolioContext
-    // For now, we'll just log the results
-    console.log('Smart filtered projects:', filtered);
+    void filtered;
   }, [activeSmartFilters, allProjects]);
 
   const toggleSmartFilter = (filterId: string) => {

@@ -69,8 +69,6 @@ function EmailModal({ isOpen, onClose, recipientEmail }: EmailModalProps) {
         throw new Error(result.error || 'Error al enviar el mensaje');
       }
 
-      console.log('Contact form submitted successfully:', result);
-
       // Mostrar estado de éxito
       setIsSuccess(true);
 

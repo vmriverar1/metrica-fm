@@ -83,7 +83,6 @@ const VideoField: React.FC<VideoFieldProps> = ({
       return;
     }
 
-    console.log('VideoField: URL cambió de', previousUrlRef.current, 'a', value);
     previousUrlRef.current = value;
 
     if (value) {
@@ -130,12 +129,6 @@ const VideoField: React.FC<VideoFieldProps> = ({
       ''                    // Algunos navegadores no detectan el tipo
     ];
 
-    console.log('[VideoField] Validando archivo:', {
-      name: file.name,
-      type: file.type,
-      size: `${(file.size / 1024 / 1024).toFixed(2)}MB`
-    });
-
     // Si el tipo está vacío pero la extensión es de video, permitir
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.m4v', '.3gp', '.wmv', '.mpeg'];
     const hasVideoExtension = videoExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
@@ -174,23 +167,17 @@ const VideoField: React.FC<VideoFieldProps> = ({
 
   // Handle file selection
   const handleFileSelect = useCallback(async (file: File) => {
-    console.log('[VideoField] handleFileSelect llamado con:', file.name);
-
     const validationError = validateVideo(file);
     if (validationError) {
-      console.error('[VideoField] Error de validación:', validationError);
       setUploadError(validationError);
       return;
     }
 
-    console.log('[VideoField] Validación pasada, iniciando subida...');
     setUploading(true);
     setUploadError(null);
 
     try {
-      console.log('[VideoField] Llamando uploadVideo...');
       const url = await uploadVideo(file);
-      console.log('[VideoField] Video subido exitosamente:', url);
       onChange(url);
       
       // Get video metadata
@@ -238,13 +225,9 @@ const VideoField: React.FC<VideoFieldProps> = ({
 
   // Handle file input change
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('[VideoField] Input change event triggered');
     const file = e.target.files?.[0];
-    console.log('[VideoField] Archivo seleccionado:', file ? file.name : 'ninguno');
     if (file) {
       handleFileSelect(file);
-    } else {
-      console.log('[VideoField] No se seleccionó ningún archivo');
     }
   };
 

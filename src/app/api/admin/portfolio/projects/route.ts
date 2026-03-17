@@ -24,8 +24,6 @@ interface ProjectQuery {
 // Helper function to read portfolio data from Firestore using FirestoreCore
 async function readPortfolioData() {
   try {
-    console.log('🔍 [Portfolio API] Fetching portfolio data from Firestore...');
-
     // Obtener proyectos y categorías en paralelo usando FirestoreCore
     const [projectsResult, categoriesResult] = await Promise.all([
       FirestoreCore.getDocuments(COLLECTIONS.PORTFOLIO_PROJECTS),
@@ -34,9 +32,6 @@ async function readPortfolioData() {
 
     const projects = projectsResult.success ? projectsResult.data : [];
     const categories = categoriesResult.success ? categoriesResult.data : [];
-
-    console.log(`✅ [Portfolio API] Found ${projects?.length || 0} projects and ${categories?.length || 0} categories in Firestore`);
-    console.log('📊 [Portfolio API] Projects sample:', projects?.slice(0, 2).map(p => ({ id: p.id, title: p.title })));
 
     if (!projectsResult.success) {
       console.error('❌ [Portfolio API] Error fetching projects:', projectsResult.error);
@@ -66,8 +61,6 @@ async function readPortfolioData() {
 export const GET = withAuth(
   async (request: NextRequest, context) => {
     try {
-      console.log('🚀 [Portfolio API] Starting GET request for projects...');
-
       const { searchParams } = new URL(request.url);
 
       const query: ProjectQuery = {
@@ -81,28 +74,11 @@ export const GET = withAuth(
         featured: searchParams.get('featured') || undefined
       };
 
-      console.log('📋 [Portfolio API] Query parameters:', query);
-
       // Leer datos del portfolio
       const portfolioData = await readPortfolioData();
       let projects = portfolioData.projects || [];
       const categories = portfolioData.categories || [];
 
-      console.log('📊 [Portfolio API] Raw data loaded:', {
-        projectsCount: projects.length,
-        categoriesCount: categories.length,
-        projectsError: portfolioData.projectsError,
-        categoriesError: portfolioData.categoriesError
-      });
-
-      // Si no hay datos, mostrar información de debug
-      if (projects.length === 0) {
-        console.warn('⚠️ [Portfolio API] No projects found in Firestore');
-        console.warn('💡 [Portfolio API] Collections being queried:', {
-          projects: COLLECTIONS.PORTFOLIO_PROJECTS,
-          categories: COLLECTIONS.PORTFOLIO_CATEGORIES
-        });
-      }
 
       // Filtrar por búsqueda
       if (query.search) {
@@ -114,26 +90,22 @@ export const GET = withAuth(
           project.client?.toLowerCase().includes(searchLower) ||
           project.tags?.some((tag: string) => tag.toLowerCase().includes(searchLower))
         );
-        console.log(`🔍 [Portfolio API] Filtered by search: ${projects.length} projects match "${query.search}"`);
       }
 
       // Filtrar por categoría
       if (query.category) {
         projects = projects.filter((project: any) => project.category === query.category);
-        console.log(`🏷️ [Portfolio API] Filtered by category: ${projects.length} projects match "${query.category}"`);
       }
 
       // Filtrar por estado
       if (query.status) {
         projects = projects.filter((project: any) => project.status === query.status);
-        console.log(`📊 [Portfolio API] Filtered by status: ${projects.length} projects match "${query.status}"`);
       }
 
       // Filtrar por featured
       if (query.featured !== undefined) {
         const isFeatured = query.featured === 'true';
         projects = projects.filter((project: any) => !!project.featured === isFeatured);
-        console.log(`⭐ [Portfolio API] Filtered by featured: ${projects.length} projects match featured=${isFeatured}`);
       }
 
       // Ordenar
@@ -162,15 +134,6 @@ export const GET = withAuth(
       const totalPages = Math.ceil(total / query.limit!);
       const offset = (query.page! - 1) * query.limit!;
       const paginatedProjects = projects.slice(offset, offset + query.limit!);
-
-      console.log('📄 [Portfolio API] Pagination info:', {
-        total,
-        totalPages,
-        currentPage: query.page,
-        limit: query.limit,
-        offset,
-        paginatedCount: paginatedProjects.length
-      });
 
       // Enriquecer con información de categoría
       const enrichedProjects = paginatedProjects.map((project: any) => {
@@ -230,8 +193,6 @@ export const GET = withAuth(
         }
       };
 
-      console.log('✅ [Portfolio API] Sending response with', enrichedProjects.length, 'projects');
-
       return NextResponse.json(response);
 
     } catch (error) {
@@ -258,8 +219,6 @@ export const GET = withAuth(
 export const POST = withAuth(
   async (request: NextRequest, context) => {
     try {
-      console.log('🚀 [Portfolio API] Starting POST request to create project...');
-
       const body = await request.json();
       const {
         title,
@@ -291,8 +250,6 @@ export const POST = withAuth(
         year
       } = body;
 
-      console.log('📋 [Portfolio API] Creating project with data:', { title, category, status });
-
       // Validar campos requeridos
       if (!title || !category) {
         return NextResponse.json(
@@ -313,9 +270,6 @@ export const POST = withAuth(
       // Verificar que la categoría existe
       const categoryExists = categories.find((cat: any) => cat.id === category);
       if (!categoryExists) {
-        console.error('❌ [Portfolio API] Invalid category:', category);
-        console.log('📋 [Portfolio API] Available categories:', categories.map(c => ({ id: c.id, name: c.name })));
-
         return NextResponse.json(
           {
             success: false,
@@ -393,8 +347,6 @@ export const POST = withAuth(
       // Generar ID único
       const projectId = `proj_${crypto.randomBytes(8).toString('hex')}`;
 
-      console.log('💾 [Portfolio API] Saving project to Firestore with ID:', projectId);
-
       // Guardar el nuevo proyecto en Firestore usando FirestoreCore
       const createResult = await FirestoreCore.createDocumentWithId(
         COLLECTIONS.PORTFOLIO_PROJECTS,
@@ -429,15 +381,9 @@ export const POST = withAuth(
           }
         );
 
-        if (!categoryUpdateResult.success) {
-          console.warn('⚠️ [Portfolio API] Could not update category counter:', categoryUpdateResult.error);
-        }
-      } catch (error) {
-        console.warn('⚠️ [Portfolio API] Warning: Could not update category counter:', error);
+      } catch {
+        // Non-critical: category counter update failed
       }
-
-      // Log de auditoría
-      console.log(`✅ [Portfolio API] Project '${title}' created successfully by user ${context.user.id}`);
 
       return NextResponse.json({
         success: true,

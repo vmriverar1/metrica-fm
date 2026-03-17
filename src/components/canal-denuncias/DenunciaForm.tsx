@@ -30,18 +30,19 @@ export default function DenunciaForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
 
     // Validar campos según modo anónimo o no
     if (!anonimo) {
-      // Si no es anónimo, validar nombre y email
       const nombreValid = formValidation.validateFieldImmediate('nombre', formValidation.getFieldState('nombre').value);
       const emailValid = formValidation.validateFieldImmediate('email', formValidation.getFieldState('email').value);
 
       if (!nombreValid || !emailValid) {
-        alert('Por favor completa correctamente tu nombre y email');
+        setFormError('Por favor completa correctamente tu nombre y email');
         return;
       }
     }
@@ -49,39 +50,33 @@ export default function DenunciaForm() {
     // Validar descripción siempre
     const descripcionValid = formValidation.validateFieldImmediate('descripcion', formValidation.getFieldState('descripcion').value);
     if (!descripcionValid) {
-      alert('Por favor completa correctamente la descripción del incidente');
+      setFormError('Por favor completa correctamente la descripción del incidente');
       return;
     }
 
     // Validar tipo de denuncia
     if (!tipoDenuncia) {
-      alert('Por favor selecciona el tipo de denuncia');
+      setFormError('Por favor selecciona el tipo de denuncia');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Obtener token de reCAPTCHA
       if (!executeRecaptcha) {
         throw new Error('reCAPTCHA no está disponible');
       }
 
       const recaptchaToken = await executeRecaptcha('denuncia_form_submit');
-
-      // Obtener valores validados
       const formValues = formValidation.getFormValues();
 
-      // Determinar campos requeridos según si es anónimo o no
       const requiredFields = anonimo
         ? ['tipo_denuncia', 'descripcion']
         : ['tipo_denuncia', 'descripcion', 'nombre', 'email'];
 
       const response = await fetch('/api/contact/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           formData: {
             tipo_denuncia: tipoDenuncia,
@@ -95,7 +90,6 @@ export default function DenunciaForm() {
             email: anonimo ? '' : formValues.email,
             telefono: anonimo ? '' : formValues.telefono,
             contacto_preferido: contactoPreferido,
-            // Campos ocultos de tracking
             form_name: 'Formulario de Canal de Denuncias',
             page_url: '/canal-denuncias',
             form_location: 'canal_denuncias_page'
@@ -112,8 +106,8 @@ export default function DenunciaForm() {
         throw new Error(result.error || 'Error al enviar la denuncia');
       }
 
-      console.log('Denuncia submitted successfully:', result);
       setSubmitted(true);
+      setIsSubmitting(false);
 
       // Reset form after 5 seconds
       setTimeout(() => {
@@ -128,8 +122,7 @@ export default function DenunciaForm() {
         setAnonimo(true);
       }, 5000);
     } catch (error: any) {
-      console.error('Error submitting denuncia:', error);
-      alert(error.message || 'Error al enviar la denuncia. Por favor intenta de nuevo.');
+      setFormError(error.message || 'Error al enviar la denuncia. Por favor intenta de nuevo.');
       setIsSubmitting(false);
     }
   };
@@ -448,6 +441,14 @@ export default function DenunciaForm() {
                   />
                 </div>
               </div>
+
+              {/* Error Message */}
+              {formError && (
+                <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-red-700 text-sm">{formError}</p>
+                </div>
+              )}
 
               {/* Submit Button */}
               <div className="mt-8 pt-6 border-t border-slate-200">

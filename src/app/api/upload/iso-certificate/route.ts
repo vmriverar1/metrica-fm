@@ -19,8 +19,6 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('[ISO-UPLOAD] Starting ISO certificate upload...');
-
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
@@ -54,7 +52,6 @@ export async function POST(request: NextRequest) {
     if (!existsSync(ISO_CERT_DIR)) {
       const { mkdir } = await import('fs/promises');
       await mkdir(ISO_CERT_DIR, { recursive: true });
-      console.log(`[ISO-UPLOAD] Created directory: ${ISO_CERT_DIR}`);
     }
 
     const fullPath = path.join(ISO_CERT_DIR, ISO_CERT_FILENAME);
@@ -63,9 +60,8 @@ export async function POST(request: NextRequest) {
     if (existsSync(fullPath)) {
       try {
         await unlink(fullPath);
-        console.log('[ISO-UPLOAD] Deleted previous certificate');
-      } catch (error) {
-        console.warn('[ISO-UPLOAD] Warning: Could not delete previous certificate:', error);
+      } catch {
+        // Non-critical: could not delete previous certificate
       }
     }
 
@@ -86,14 +82,10 @@ export async function POST(request: NextRequest) {
           'hero.certificate_details.pdf_url': publicUrl,
           'hero.certificate_details.updated_at': new Date().toISOString()
         });
-        console.log('[ISO-UPLOAD] Updated Firestore reference');
       }
-    } catch (firestoreError) {
-      console.error('[ISO-UPLOAD] Error updating Firestore:', firestoreError);
-      // No fallar si Firestore falla, el archivo ya está subido
+    } catch {
+      // Non-critical: Firestore reference update failed, file is already uploaded
     }
-
-    console.log(`[ISO-UPLOAD] Certificate uploaded successfully: ${publicUrl}`);
 
     return NextResponse.json({
       success: true,

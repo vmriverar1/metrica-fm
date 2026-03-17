@@ -177,7 +177,6 @@ export async function uploadJobApplicationFile(
             });
           }
 
-          console.log(`Upload ${fileType}: ${progress.toFixed(2)}%`);
         },
         (error) => {
           // Error durante la subida
@@ -191,12 +190,6 @@ export async function uploadJobApplicationFile(
           // Subida completada exitosamente
           // Usar URL segura a través de nuestro proxy API
           const secureUrl = generateSecureDownloadUrl(filePath);
-
-          console.log('✅ File uploaded successfully:', {
-            fileName: uniqueFileName,
-            url: secureUrl,
-            path: filePath
-          });
 
           resolve({
             success: true,
@@ -223,7 +216,6 @@ export async function deleteFile(filePath: string): Promise<boolean> {
   try {
     const fileRef = ref(storage, filePath);
     await deleteObject(fileRef);
-    console.log('✅ File deleted successfully:', filePath);
     return true;
   } catch (error) {
     console.error('Error deleting file:', error);

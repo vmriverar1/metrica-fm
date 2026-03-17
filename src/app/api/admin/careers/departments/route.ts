@@ -222,8 +222,6 @@ export const POST = withAuth(
 
       await fs.writeFile(CAREERS_FILE_PATH, JSON.stringify(updatedData, null, 2), 'utf-8');
 
-      // Log de auditoría (simplified)
-      console.log(`Career department '${name}' created by user ${context.user.id}`);
 
       return NextResponse.json({
         success: true,

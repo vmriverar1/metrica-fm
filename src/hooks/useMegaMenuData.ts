@@ -100,7 +100,6 @@ export function useMegaMenuData() {
 
   const loadMegaMenuData = useCallback(async () => {
     try {
-      console.log('🔍 [MegaMenu] Cargando datos desde Firestore...');
       setIsLoading(true);
       setError(null);
 
@@ -110,12 +109,10 @@ export function useMegaMenuData() {
       let megaMenuConfig: MegaMenuData;
 
       if (!result.success || !result.data) {
-        console.warn('⚠️ [FALLBACK] MegaMenu: Sin datos en Firestore, usando fallback descriptivo');
         // Usar fallback en lugar de lanzar error
         megaMenuConfig = MEGAMENU_FALLBACK as MegaMenuData;
       } else {
         const firestoreData = result.data as any;
-        console.log('📊 [MegaMenu] Datos obtenidos desde Firestore:', firestoreData);
 
         // Crear estructura compatible con el formato esperado
         megaMenuConfig = {
@@ -136,18 +133,14 @@ export function useMegaMenuData() {
 
       // Verificar que esté habilitado
       if (!megaMenuConfig.settings?.enabled) {
-        console.log('🚫 [MegaMenu] Mega menú deshabilitado en configuración');
         setMenuData([]);
         return;
       }
 
       const transformedItems = transformJsonToMenuItems(megaMenuConfig);
-      console.log('✅ [MegaMenu] Datos transformados exitosamente:', transformedItems.length, 'items');
       setMenuData(transformedItems);
 
-    } catch (err) {
-      console.error('❌ [FIRESTORE] MegaMenu error:', err);
-      console.warn('⚠️ [FALLBACK] MegaMenu: Error detectado, usando fallback descriptivo');
+    } catch {
       // Usar fallback en caso de error
       const transformedItems = transformJsonToMenuItems(MEGAMENU_FALLBACK as MegaMenuData);
       setMenuData(transformedItems);
@@ -159,13 +152,10 @@ export function useMegaMenuData() {
 
   const trackItemClick = useCallback(async (itemId: string) => {
     try {
-      console.log('📊 [MegaMenu] Registrando click en:', itemId);
-
       // Obtener documento actual
       const result = await FirestoreCore.getDocumentById(COLLECTIONS.MEGAMENU, 'main');
 
       if (!result.success || !result.data) {
-        console.warn('⚠️ [MegaMenu] No se pudo obtener documento para tracking');
         return;
       }
 
@@ -195,9 +185,8 @@ export function useMegaMenuData() {
         analytics: updatedAnalytics
       });
 
-      console.log('✅ [MegaMenu] Click registrado exitosamente');
-    } catch (error) {
-      console.error('❌ [MegaMenu] Error registrando click:', error);
+    } catch {
+
     }
   }, []);
 

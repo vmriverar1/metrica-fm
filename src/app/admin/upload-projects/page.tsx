@@ -29,7 +29,7 @@ const UploadProjectsPage = () => {
       setLoading(true);
       setResult(null);
 
-      console.log('🚀 Iniciando carga de proyectos...');
+
 
       const response = await fetch('/api/admin/portfolio/upload-projects', {
         method: 'POST',
@@ -42,7 +42,7 @@ const UploadProjectsPage = () => {
 
       if (data.success) {
         setResult(data.data);
-        console.log('✅ Carga completada:', data.data);
+
       } else {
         console.error('❌ Error en la carga:', data.error);
         alert(`Error: ${data.message}`);

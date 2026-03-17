@@ -23,9 +23,8 @@ import { PagesService } from '@/lib/firestore/pages-service';
 import ClientStatistics from '@/components/clientes/ClientStatistics';
 import DynamicLogoGrid from '@/components/clientes/DynamicLogoGrid';
 
-// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: revalidar cada hora
+export const revalidate = 3600;
 
 interface ClientesData {
   page: {
@@ -180,11 +179,9 @@ async function getClientesData(): Promise<ClientesData> {
       } as ClientesData;
     }
 
-    console.warn('⚠️ [FALLBACK] Clientes Page: Sin datos en Firestore, usando fallback');
     return CLIENTES_FALLBACK;
   } catch (error) {
     console.error('Error loading clientes data:', error);
-    console.warn('⚠️ [FALLBACK] Clientes Page: Error detectado, usando fallback');
     return CLIENTES_FALLBACK;
   }
 }

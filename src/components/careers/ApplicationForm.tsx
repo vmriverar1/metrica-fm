@@ -259,8 +259,6 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
         throw new Error(result.error || 'Error al enviar la aplicación');
       }
 
-      console.log('Application submitted successfully:', result);
-
       // Call onSubmit callback with the data
       if (onSubmit) {
         const callbackData: ApplicationFormData = {
@@ -324,7 +322,6 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
 
         if (result.success && result.url) {
           setResumeURL(result.url);
-          console.log('✅ Resume uploaded:', result.url);
         } else {
           throw new Error(result.error || 'Error al subir CV');
         }
@@ -341,7 +338,6 @@ export default function ApplicationForm({ job, onSubmit, onCancel, className }: 
 
         if (result.success && result.url) {
           setCoverLetterURL(result.url);
-          console.log('✅ Cover letter uploaded:', result.url);
         } else {
           throw new Error(result.error || 'Error al subir carta de presentación');
         }

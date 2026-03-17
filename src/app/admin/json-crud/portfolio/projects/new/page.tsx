@@ -125,39 +125,22 @@ export default function NewProjectPage() {
 
   // Cargar datos si estamos editando
   useEffect(() => {
-    console.log('🎯 [PORTFOLIO] useEffect de carga - isEditing:', isEditing, 'projectId:', projectId, 'loading:', projectsHook.loading, 'hasInitialized:', hasInitialized);
-
     if (isEditing && projectId && !projectsHook.loading && !hasInitialized) {
-      console.log('✅ [PORTFOLIO] Condiciones de carga cumplidas, iniciando loadData...');
       setIsLoadingData(true);
       setHasInitialized(true);
 
       // Función async para cargar datos
       const loadData = async () => {
         try {
-          console.log('🔄 [PORTFOLIO] Llamando projectsHook.getById con ID:', projectId);
           const project = await projectsHook.getById(projectId);
 
           if (project) {
-            console.log('📦 [PORTFOLIO] Datos recibidos de Firestore:', project);
-            console.log('📦 [PORTFOLIO] Claves del objeto:', Object.keys(project));
-
             // Los datos vienen anidados en project.project
             const projectData = project.project || project;
-
-            console.log('📦 [PORTFOLIO] Datos del proyecto:', projectData);
-            console.log('📦 [PORTFOLIO] Category:', projectData.category);
-            console.log('📦 [PORTFOLIO] Category ID:', projectData.category_id);
-            console.log('📦 [PORTFOLIO] Gallery:', projectData.gallery);
-            console.log('📦 [PORTFOLIO] Full Description:', projectData.full_description);
-            console.log('📦 [PORTFOLIO] Technical Details:', projectData.technical_details);
-            console.log('📦 [PORTFOLIO] Tags:', projectData.tags);
-            console.log('💾 [PORTFOLIO] Guardando proyecto en loadedProject...');
 
             // Guardar los datos del proyecto directamente, no el objeto envolvente
             setLoadedProject(projectData);
             setIsLoadingData(false);
-            console.log('✅ [PORTFOLIO] loadedProject actualizado y isLoadingData = false');
           } else {
             console.error('❌ [ProjectForm] Proyecto no encontrado o nulo');
             setIsLoadingData(false);
@@ -170,33 +153,17 @@ export default function NewProjectPage() {
 
       // Cargar inmediatamente, sin timeout
       loadData();
-    } else {
     }
   }, [isEditing, projectId, projectsHook.loading, hasInitialized]);
 
   // Actualizar formulario cuando el proyecto se carga
   useEffect(() => {
-    console.log('📊 [PORTFOLIO] useEffect check - loadedProject:', !!loadedProject, 'isLoadingData:', isLoadingData);
-    console.log('📊 [PORTFOLIO] loadedProject actual:', loadedProject);
-
     if (loadedProject && !isLoadingData) {
-      console.log('✅ [PORTFOLIO] Condiciones cumplidas, actualizando formulario...');
-      console.log('📋 [PORTFOLIO] Datos del proyecto a cargar:', {
-        title: loadedProject.title,
-        slug: loadedProject.slug,
-        description: loadedProject.description,
-        gallery: loadedProject.gallery,
-        keys: Object.keys(loadedProject)
-      });
-
       // Usar requestAnimationFrame para asegurar que el DOM esté listo
       requestAnimationFrame(() => {
-        console.log('🔄 [PORTFOLIO] Actualizando formulario con datos cargados...');
-
         // Campos básicos
         const titleValue = loadedProject.title || '';
         const slugValue = loadedProject.slug || '';
-        console.log('📝 Title:', titleValue, 'Slug:', slugValue);
         setTitle(titleValue);
         setSlug(slugValue);
 
@@ -217,29 +184,23 @@ export default function NewProjectPage() {
         // Manejar descripciones - pueden venir con diferentes nombres
         const descValue = loadedProject.description || loadedProject.short_description || '';
         const fullDescValue = loadedProject.full_description || loadedProject.fullDescription || loadedProject.description || '';
-        console.log('📝 Description:', descValue);
-        console.log('📝 Full Description:', fullDescValue);
         setDescription(descValue);
         setFullDescription(fullDescValue);
         setTechnicalDetails(loadedProject.technical_details || loadedProject.technicalDetails || '');
 
         const featuredImageValue = loadedProject.featured_image || loadedProject.featuredImage || '';
-        console.log('🖼️ Featured Image:', featuredImageValue);
         setFeaturedImage(featuredImageValue);
 
         // Procesar gallery - es un array simple de strings con las rutas
         if (Array.isArray(loadedProject.gallery)) {
-          console.log('📸 [PORTFOLIO] Gallery cargada:', loadedProject.gallery);
           // Gallery es un array de strings simples con las rutas
           setGallery(loadedProject.gallery.filter(item => typeof item === 'string' && item.length > 0));
         } else if (Array.isArray(loadedProject.images)) {
           // Fallback: Si no hay gallery pero sí images, usar images
-          console.log('📸 [PORTFOLIO] Usando images en lugar de gallery:', loadedProject.images);
           setGallery(loadedProject.images.map((img: any) =>
             typeof img === 'object' && img.url ? String(img.url) : ''
           ).filter(Boolean));
         } else {
-          console.log('⚠️ [PORTFOLIO] No se encontró gallery ni images');
           setGallery([]);
         }
 
@@ -248,8 +209,6 @@ export default function NewProjectPage() {
 
         // Cargar el campo hide_dates si existe
         const shouldHideDates = loadedProject.hide_dates || false;
-        console.log('📖 [ProjectForm] Cargando hide_dates desde Firestore:', loadedProject.hide_dates);
-        console.log('📖 [ProjectForm] shouldHideDates calculado:', shouldHideDates);
         setHideDates(shouldHideDates);
 
         // Manejar fechas - pueden venir como timestamps de Firestore
@@ -295,11 +254,7 @@ export default function NewProjectPage() {
         setTags(Array.isArray(loadedProject.tags) ? loadedProject.tags.join(', ') : loadedProject.tags || '');
         setMetaDescription(loadedProject.meta_description || loadedProject.metaDescription || loadedProject.short_description || '');
         setOrder(loadedProject.order?.toString() || '0');
-
-        console.log('✅ [PORTFOLIO] Formulario actualizado completamente');
       });
-    } else {
-      console.log('⏳ [PORTFOLIO] Esperando datos... loadedProject:', !!loadedProject, 'isLoadingData:', isLoadingData);
     }
   }, [loadedProject, isLoadingData]);
 
@@ -379,11 +334,6 @@ export default function NewProjectPage() {
         order: parseInt(order),
         updated_at: new Date()
       };
-
-      console.log('💾 [ProjectForm] Guardando proyecto con hideDates:', hideDates);
-      console.log('💾 [ProjectForm] projectData.hide_dates:', projectData.hide_dates);
-      console.log('📦 [ProjectForm] Datos completos a enviar:', projectData);
-      console.log('📋 [ProjectForm] Verificación: title =', projectData.title, 'category =', projectData.category);
 
       let response;
       if (isEditing) {

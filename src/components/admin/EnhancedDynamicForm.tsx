@@ -48,7 +48,6 @@ const EnhancedDynamicFormCore: React.FC<EnhancedDynamicFormProps> = ({
           <LazyLoadingMonitor
             sections={HOME_LAZY_SECTIONS}
             onStatsUpdate={(stats) => {
-                console.log('📊 Lazy Loading Stats:', stats);
               }}
             
           />

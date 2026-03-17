@@ -961,7 +961,6 @@ export default function SecurityCenterManager() {
   }
 
   const handleRunScan = (scanId: string) => {
-    console.log(`Starting security scan: ${scanId}`)
   }
 
   const handleResolveEvent = (eventId: string) => {

@@ -525,7 +525,6 @@ export class PagesService {
   private static async getPageWithFallback(pageId: string): Promise<any> {
     // Si no hay credenciales válidas, devolver datos por defecto inmediatamente
     if (!hasValidFirestoreCredentials) {
-      console.warn(`⚠️ Firebase credentials not available, returning default data for ${pageId}`);
       return createDefaultPageData(pageId);
     }
 
@@ -534,15 +533,11 @@ export class PagesService {
       const docSnap = await getDoc(pageDocRef);
 
       if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log(`📖 [PagesService] Datos leídos de Firestore para ${pageId}:`, data);
-        return data;
+        return docSnap.data();
       }
 
-      console.warn(`⚠️ Page ${pageId} not found in Firestore, returning default data`);
       return createDefaultPageData(pageId);
     } catch (error) {
-      console.warn(`⚠️ Error fetching ${pageId} page from Firestore, returning default data:`, error);
       return createDefaultPageData(pageId);
     }
   }
@@ -560,18 +555,14 @@ export class PagesService {
    */
   static async updateHomePage(data: any): Promise<void> {
     if (!hasValidFirestoreCredentials) {
-      console.warn('No se pueden actualizar datos en Firestore sin credenciales válidas');
       return;
     }
 
     try {
       const docRef = doc(db, 'pages', 'home');
-      console.log('💾 [PagesService] Guardando en Firestore:', data);
-      console.log('📊 [PagesService] Estadísticas en los datos:', data.stats?.statistics);
       await setDoc(docRef, data, { merge: true });
-      console.log('✅ Página home actualizada exitosamente');
     } catch (error) {
-      console.error('❌ Error al actualizar página home:', error);
+      console.error('Error al actualizar página home:', error);
       throw new Error('Error al actualizar la página home');
     }
   }
@@ -667,7 +658,6 @@ export class PagesService {
 
       return null;
     } catch (error) {
-      console.error(`Error fetching page ${pageId} from Firestore:`, error);
       throw new Error(`Error al cargar página ${pageId} desde Firestore`);
     }
   }

@@ -4,16 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Log PWA analytics data for development/debugging
-    console.log('[PWA Analytics] Received data:', {
-      timestamp: new Date().toISOString(),
-      userAgent: request.headers.get('user-agent'),
-      data: body
-    });
-
-    // In a real application, you would save this to a database
-    // For now, we'll just acknowledge receipt
-
     return NextResponse.json({
       success: true,
       message: 'PWA analytics data received',

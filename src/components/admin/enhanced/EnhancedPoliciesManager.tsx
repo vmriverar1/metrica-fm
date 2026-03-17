@@ -197,7 +197,7 @@ export default function EnhancedPoliciesManager({
     } else if (!availableIcons[policy.icon as keyof typeof availableIcons]) {
       // Icono no está en la lista de disponibles, pero permitirlo si no está vacío
       // Solo agregamos warning si es necesario, no error
-      console.warn(`Icono '${policy.icon}' no está en la lista de iconos disponibles para políticas empresariales`);
+
     }
     
     if (policy.image && !isValidUrl(policy.image)) {

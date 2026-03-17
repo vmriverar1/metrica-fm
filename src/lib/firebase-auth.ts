@@ -55,10 +55,8 @@ async function getAuth(): Promise<Auth | null> {
       prompt: 'select_account' // Always show account selection
     });
 
-    console.log('[Auth] Firebase Auth initialized successfully');
     return authInstance;
   } catch (error) {
-    console.error('[Auth] Init error:', error);
     return null;
   }
 }
@@ -80,12 +78,9 @@ export interface AuthUser {
  */
 async function checkUserAuthorization(email: string | null): Promise<boolean> {
   if (!email) {
-    console.warn('[Auth] No email provided');
     return false;
   }
 
-  // Si el usuario tiene un email válido de Firebase Auth, está autorizado
-  console.log('[Auth] User authenticated via Firebase:', email);
   return true;
 }
 
@@ -102,27 +97,20 @@ export async function signInWithGoogle(): Promise<{
     const auth = await getAuth();
 
     if (!auth || !googleProvider) {
-      console.error('[Auth] Auth not available');
       return {
         success: false,
         error: 'Servicio de autenticación no disponible'
       };
     }
 
-    // Show Google Sign-In popup
-    console.log('[Auth] Opening Google Sign-In popup...');
     const result = await signInWithPopup(auth, googleProvider);
     const firebaseUser = result.user;
-
-    console.log('[Auth] Google Sign-In successful:', firebaseUser.email);
 
     // Check if user is authorized
     const isAuthorized = await checkUserAuthorization(firebaseUser.email);
 
     if (!isAuthorized) {
-      // Este caso no debería ocurrir, pero por seguridad
       await firebaseSignOut(auth);
-      console.warn('[Auth] Authentication failed for:', firebaseUser.email);
       return {
         success: false,
         error: 'Error de autenticación. Por favor intenta de nuevo.'
@@ -137,14 +125,11 @@ export async function signInWithGoogle(): Promise<{
       isAuthorized: true
     };
 
-    console.log('[Auth] User authorized and signed in:', user.email);
-
     return {
       success: true,
       user
     };
   } catch (error: any) {
-    console.error('[Auth] Sign in error:', error);
 
     // Handle specific error codes
     let errorMessage = 'Error al iniciar sesión';
@@ -172,12 +157,10 @@ export async function signOut(): Promise<void> {
     const auth = await getAuth();
 
     if (!auth) {
-      console.log('[Auth] Auth not available, skipping sign out');
       return;
     }
 
     await firebaseSignOut(auth);
-    console.log('[Auth] User signed out successfully');
   } catch (error) {
     console.error('[Auth] Sign out error:', error);
     throw error;
@@ -218,7 +201,6 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       isAuthorized: true
     };
   } catch (error) {
-    console.error('[Auth] Error getting current user:', error);
     return null;
   }
 }
@@ -233,24 +215,19 @@ export async function onAuthStateChange(
     const auth = await getAuth();
 
     if (!auth) {
-      console.log('[Auth] Auth not available for state listener');
       return null;
     }
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (!firebaseUser) {
-        console.log('[Auth] State changed: User signed out');
         callback(null);
         return;
       }
-
-      console.log('[Auth] State changed: User detected:', firebaseUser.email);
 
       // Verify authorization
       const isAuthorized = await checkUserAuthorization(firebaseUser.email);
 
       if (!isAuthorized) {
-        console.warn('[Auth] State changed: Authentication verification failed, signing out');
         await firebaseSignOut(auth);
         callback(null);
         return;
@@ -269,7 +246,6 @@ export async function onAuthStateChange(
 
     return unsubscribe;
   } catch (error) {
-    console.error('[Auth] Error setting up auth listener:', error);
     return null;
   }
 }

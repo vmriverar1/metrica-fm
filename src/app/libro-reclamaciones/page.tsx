@@ -11,6 +11,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { BookOpen, AlertCircle, CheckCircle } from 'lucide-react';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useEnhancedFormValidation } from '@/hooks/useEnhancedFormValidation';
 
 interface ComplaintForm {
   // Datos del cliente
@@ -54,6 +56,9 @@ export default function LibroReclamaciones() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [formError, setFormError] = useState<string | null>(null);
+  const [trackingNumber, setTrackingNumber] = useState<string>('');
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleInputChange = (field: keyof ComplaintForm, value: string) => {
     setFormData(prev => ({
@@ -65,14 +70,39 @@ export default function LibroReclamaciones() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setFormError(null);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      if (!executeRecaptcha) {
+        throw new Error('reCAPTCHA no está disponible');
+      }
 
-      // Here you would send the data to your API
-      console.log('Complaint submitted:', formData);
+      const recaptchaToken = await executeRecaptcha('reclamacion_form_submit');
 
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formData: {
+            ...formData,
+            form_name: 'Libro de Reclamaciones',
+            page_url: '/libro-reclamaciones',
+            form_location: 'libro_reclamaciones_page'
+          },
+          formType: 'reclamacion',
+          requiredFields: ['nombres', 'apellidos', 'email', 'telefono', 'descripcionBien', 'detalleReclamo', 'pedidoCliente'],
+          recaptchaToken
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Error al enviar la reclamación');
+      }
+
+      const recNumber = `REC-${Date.now().toString().slice(-8)}`;
+      setTrackingNumber(recNumber);
       setSubmitStatus('success');
 
       // Reset form after successful submission
@@ -94,10 +124,10 @@ export default function LibroReclamaciones() {
           numeroOrden: ''
         });
         setSubmitStatus('idle');
-      }, 3000);
+      }, 5000);
 
-    } catch (error) {
-      console.error('Error submitting complaint:', error);
+    } catch (error: any) {
+      setFormError(error.message || 'Error al enviar la reclamación. Por favor intenta de nuevo.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -418,8 +448,8 @@ export default function LibroReclamaciones() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Métrica FM SAC</h4>
-                <p className="text-sm text-gray-600 mb-1">RUC: 20123456789</p>
-                <p className="text-sm text-gray-600 mb-1">Dirección: Lima, Perú</p>
+                <p className="text-sm text-gray-600 mb-1">RUC: 20610881881</p>
+                <p className="text-sm text-gray-600 mb-1">Dirección: Av. La Encalada 1388, Santiago de Surco, Lima</p>
                 <p className="text-sm text-gray-600 mb-1">Teléfono: +51 989 742 678</p>
                 <p className="text-sm text-gray-600">Email: info@metricadip.com</p>
               </div>

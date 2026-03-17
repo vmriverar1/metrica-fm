@@ -295,7 +295,6 @@ export default function SmartContactForm() {
         throw new Error(result.error || 'Error al enviar el formulario');
       }
 
-      console.log('Form submitted successfully:', result);
       setIsSubmitted(true);
 
       // Reset form after 4 seconds

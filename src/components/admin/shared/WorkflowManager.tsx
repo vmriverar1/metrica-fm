@@ -310,7 +310,7 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({
     
     try {
       const execution = await onWorkflowExecute(workflowId);
-      console.log('Workflow executed:', execution);
+
     } catch (error) {
       console.error('Error executing workflow:', error);
     } finally {

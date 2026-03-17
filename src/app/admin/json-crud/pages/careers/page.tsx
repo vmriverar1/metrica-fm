@@ -52,7 +52,7 @@ export default function CareersAdminPage() {
       setCareersData(data);
       
       // Mostrar notificación de éxito (puedes implementar un toast aquí)
-      console.log('Carreras guardado exitosamente');
+
       
     } catch (error) {
       console.error('Error saving careers:', error);

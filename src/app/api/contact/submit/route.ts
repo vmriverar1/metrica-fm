@@ -139,6 +139,38 @@ function validateFormFields(formData: any, formType: string): { valid: boolean; 
       }
       break;
 
+    case 'reclamacion':
+      // LibroReclamaciones: nombres, apellidos, email, telefono, descripcionBien, detalleReclamo, pedidoCliente
+      if (formData.nombres) {
+        const result = validateName(formData.nombres);
+        if (!result.valid && result.error) errors.nombres = result.error;
+      }
+      if (formData.apellidos) {
+        const result = validateName(formData.apellidos);
+        if (!result.valid && result.error) errors.apellidos = result.error;
+      }
+      if (formData.email) {
+        const result = validateEmail(formData.email);
+        if (!result.valid && result.error) errors.email = result.error;
+      }
+      if (formData.telefono) {
+        const result = validatePhone(formData.telefono);
+        if (!result.valid && result.error) errors.telefono = result.error;
+      }
+      if (formData.descripcionBien) {
+        const result = validateMessage(formData.descripcionBien, 10, 1000);
+        if (!result.valid && result.error) errors.descripcionBien = result.error;
+      }
+      if (formData.detalleReclamo) {
+        const result = validateMessage(formData.detalleReclamo, 20, 2000);
+        if (!result.valid && result.error) errors.detalleReclamo = result.error;
+      }
+      if (formData.pedidoCliente) {
+        const result = validateMessage(formData.pedidoCliente, 10, 1000);
+        if (!result.valid && result.error) errors.pedidoCliente = result.error;
+      }
+      break;
+
     case 'application':
       // ApplicationForm: firstName, lastName, email, phone, location, linkedin, portfolio, motivationLetter
       if (formData.firstName) {
@@ -221,7 +253,6 @@ export async function POST(request: NextRequest) {
     const recaptchaResult = await verifyRecaptcha(recaptchaToken);
 
     if (!recaptchaResult.success) {
-      console.warn('Verificación de reCAPTCHA fallida:', recaptchaResult.error);
       return NextResponse.json({
         success: false,
         error: 'Verificación de seguridad fallida. Por favor intenta de nuevo.',
@@ -229,22 +260,12 @@ export async function POST(request: NextRequest) {
       }, { status: 403 });
     }
 
-    console.log('reCAPTCHA verificado exitosamente. Score:', recaptchaResult.score);
 
     // FASE 4: Validación anti-spam de campos usando validadores de Fase 1
     const validationResult = validateFormFields(formData, formType);
 
     if (!validationResult.valid) {
       // Logging de intento con datos inválidos
-      console.warn('⚠️ Intento de envío con datos inválidos detectado:', {
-        formType,
-        errors: validationResult.errors,
-        timestamp: new Date().toISOString(),
-        recaptchaScore: recaptchaResult.score,
-        // No logear datos sensibles completos, solo los campos con error
-        invalidFields: Object.keys(validationResult.errors)
-      });
-
       return NextResponse.json({
         success: false,
         error: 'Los datos del formulario contienen información inválida o sospechosa',
@@ -252,7 +273,6 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log('✅ Validación anti-spam exitosa');
 
     // Sanitizar y validar datos
     const sanitizationResult = DataSanitizer.prepareForStorage(formData, requiredFields);
@@ -273,7 +293,10 @@ export async function POST(request: NextRequest) {
                   sanitizedData.mail ||
                   sanitizedData.user_email;
 
-    if (!email || !DataSanitizer.isValidEmail(email)) {
+    const isAnonymous = formData.anonimo === true;
+
+    // No exigir email en denuncias anónimas
+    if (!isAnonymous && (!email || !DataSanitizer.isValidEmail(email))) {
       return NextResponse.json({
         success: false,
         error: 'Email inválido o no proporcionado'
@@ -281,51 +304,50 @@ export async function POST(request: NextRequest) {
     }
 
     // Extraer nombre (puede tener diferentes formatos)
-    const name = sanitizedData.name ||
+    const name = isAnonymous ? 'Anónimo' : (
+                 sanitizedData.name ||
                  sanitizedData.nombre ||
                  `${sanitizedData.firstName || ''} ${sanitizedData.lastName || ''}`.trim() ||
                  sanitizedData.company ||
-                 'Contacto';
+                 'Contacto');
 
-    // 1. Guardar en la colección de suscriptores
-    try {
-      // Verificar si ya existe el suscriptor
-      const existingSubscriber = await SubscribersService.getByEmail(email);
+    // 1. Guardar en la colección de suscriptores (skip si es anónimo)
+    if (!isAnonymous && email) {
+      try {
+        const existingSubscriber = await SubscribersService.getByEmail(email);
 
-      if (!existingSubscriber) {
-        // Crear nuevo suscriptor
-        await SubscribersService.add({
-          email: email,
-          name: name,
-          status: 'active',
-          source: formType,
-          tags: [formType],
-          metadata: {
-            ...sanitizedData,
-            form_type: formType,
-            submitted_at: new Date().toISOString()
-          }
-        });
-      } else {
-        // Actualizar metadata del suscriptor existente
-        const currentTags = existingSubscriber.tags || [];
-        const newTags = Array.from(new Set([...currentTags, formType]));
-
-        await SubscribersService.update(existingSubscriber.id, {
-          tags: newTags,
-          metadata: {
-            ...(existingSubscriber.metadata || {}),
-            [`${formType}_${Date.now()}`]: {
+        if (!existingSubscriber) {
+          await SubscribersService.add({
+            email: email,
+            name: name,
+            status: 'active',
+            source: formType,
+            tags: [formType],
+            metadata: {
               ...sanitizedData,
               form_type: formType,
               submitted_at: new Date().toISOString()
             }
-          }
-        });
+          });
+        } else {
+          const currentTags = existingSubscriber.tags || [];
+          const newTags = Array.from(new Set([...currentTags, formType]));
+
+          await SubscribersService.update(existingSubscriber.id, {
+            tags: newTags,
+            metadata: {
+              ...(existingSubscriber.metadata || {}),
+              [`${formType}_${Date.now()}`]: {
+                ...sanitizedData,
+                form_type: formType,
+                submitted_at: new Date().toISOString()
+              }
+            }
+          });
+        }
+      } catch {
+        // Continuar aunque falle el guardado en DB
       }
-    } catch (error) {
-      console.error('Error guardando suscriptor:', error);
-      // Continuar aunque falle el guardado en DB
     }
 
     // 2. Preparar y enviar email
@@ -334,8 +356,6 @@ export async function POST(request: NextRequest) {
       const config = await SubscribersService.getEmailConfig();
 
       if (!config || config.recipients.length === 0) {
-        console.warn('No hay destinatarios configurados para enviar el email');
-        // Continuar aunque no haya destinatarios
         return NextResponse.json({
           success: true,
           message: 'Formulario recibido correctamente',
@@ -343,11 +363,17 @@ export async function POST(request: NextRequest) {
         });
       }
 
+      // Determinar destinatarios según tipo de formulario
+      const isEthicsForm = formType === 'denuncia' || formType === 'reclamacion';
+      const recipients = isEthicsForm && (config as any).ethics_recipients?.length > 0
+        ? (config as any).ethics_recipients
+        : config.recipients;
+
       // Configuración del email
       const emailConfig = {
-        to: config.recipients,
+        to: recipients,
         subject: `Nuevo ${getFormTypeLabel(formType)} - ${name}`,
-        replyTo: email
+        ...(isAnonymous ? {} : { replyTo: email })
       };
 
       // Convertir campos del formulario a formato de email
@@ -416,6 +442,7 @@ function getFormTypeLabel(formType: string): string {
     'quote': 'Solicitud de Cotización',
     'application': 'Aplicación Laboral',
     'denuncia': 'Denuncia Ética',
+    'reclamacion': 'Reclamación - Libro de Reclamaciones',
     'support': 'Soporte',
     'smart-contact': 'Contacto Inteligente'
   };
@@ -453,7 +480,20 @@ function formatFieldLabel(key: string): string {
     'Education': 'Educación',
     'Motivation Letter': 'Carta de Motivación',
     'Availability': 'Disponibilidad',
-    'Salary Expectation': 'Expectativa Salarial'
+    'Salary Expectation': 'Expectativa Salarial',
+    'Tipo Documento': 'Tipo de Documento',
+    'Numero Documento': 'Número de Documento',
+    'Tipo Reclamo': 'Tipo de Reclamo',
+    'Monto Reclamado': 'Monto Reclamado',
+    'Descripcion Bien': 'Descripción del Bien',
+    'Detalle Reclamo': 'Detalle del Reclamo',
+    'Pedido Cliente': 'Pedido del Cliente',
+    'Fecha Incidente': 'Fecha del Incidente',
+    'Numero Orden': 'Número de Orden',
+    'Tipo Denuncia': 'Tipo de Denuncia',
+    'Proyecto Relacionado': 'Proyecto Relacionado',
+    'Personas Involucradas': 'Personas Involucradas',
+    'Contacto Preferido': 'Método de Contacto Preferido'
   };
 
   return translations[formatted] || formatted;

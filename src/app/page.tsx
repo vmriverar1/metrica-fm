@@ -56,17 +56,14 @@ async function getHomeData(): Promise<HomePageData> {
     const result = await FirestoreCore.getDocumentById<HomePageData>('pages', 'home');
 
     if (!result.success || !result.data) {
-      console.warn('⚠️ [FALLBACK] Home Page: Sin datos en Firestore, usando fallback descriptivo');
       return HOME_PAGE_FALLBACK;
     }
 
     // Merge los datos de Firestore con el fallback para cubrir campos faltantes
     const mergedData = mergeWithFallback(result.data);
-    console.log('🔥 [FIRESTORE] Home data loaded and merged successfully');
     return mergedData;
   } catch (error) {
     console.error('❌ [FIRESTORE] Failed to load home data:', error);
-    console.warn('⚠️ [FALLBACK] Home Page: Error detectado, usando fallback descriptivo');
     return HOME_PAGE_FALLBACK;
   }
 }
@@ -105,9 +102,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-// Forzar contenido dinámico para que los cambios del admin se reflejen inmediatamente
-export const dynamic = 'force-dynamic';
-export const revalidate = 0; // Sin caché
+// ISR: revalidar cada hora para reflejar cambios del admin
+export const revalidate = 3600;
 
 export default async function Home() {
   const data = await getHomeData();

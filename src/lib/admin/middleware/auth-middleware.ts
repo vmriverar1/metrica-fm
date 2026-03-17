@@ -232,9 +232,8 @@ export class AuthMiddleware {
         };
       }
 
-      // TEMPORARY FIX: Accept mock-token for development
-      if (token === 'mock-token') {
-        // Mock user for development
+      // Mock token only allowed in development
+      if (token === 'mock-token' && process.env.NODE_ENV === 'development') {
         const user = {
           id: '1',
           email: 'admin@metrica.pe',
@@ -256,14 +255,11 @@ export class AuthMiddleware {
           expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         };
 
-        // Log successful mock authentication without using the problematic logger
-        console.log('[AUTH] Mock token authentication successful for:', user.email);
-
         return {
           context: {
             user,
             session,
-            permissions: [{ resource: '*', action: '*' }], // Admin has all permissions
+            permissions: [{ resource: '*', action: '*' }],
             isAuthenticated: true
           }
         };
@@ -401,7 +397,6 @@ export class AuthMiddleware {
       if (permission) {
         // Skip permission check for mock user (admin has all permissions)
         if (context.user.role === 'admin' && context.session.sessionId === 'mock-session') {
-          console.log(`[AUTH] Skipping permission check for mock admin user - ${permission.resource}:${permission.action}`);
           return null; // Allow access
         }
 

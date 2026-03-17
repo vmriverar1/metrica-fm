@@ -367,7 +367,7 @@ export default function DataTable({
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log('Action clicked:', action.label, 'Row:', row);
+
                                 action.onClick(row);
                               }}
                               className={`${getActionVariantClass(action.variant)} hover:bg-gray-100 p-1.5 rounded transition-colors`}

@@ -107,13 +107,11 @@ export async function getPageData<T>(
         const rawData = readPublicJSON(`json/pages/${pageName}.json`);
         return processJsonData(rawData, schema, cacheKey, now, enableValidation, enableFallback, pageName, startTime);
       } catch (error) {
-        console.warn(`Server-side read failed, using fallback:`, error);
         throw error; // Let the outer catch handle it with fallback
       }
     }
 
   } catch (error) {
-    console.warn(`Failed to load ${pageName}.json:`, error);
     
     if (enableFallback) {
       const fallbackData = getDefaultPageData(pageName, schema);
@@ -154,7 +152,6 @@ function processJsonData<T>(
     const validation = validatePageData(rawData, schema);
     
     if (!validation.success) {
-      console.warn(`Validation failed for ${pageName}:`, validation.error);
       
       if (enableFallback) {
         const fallbackData = getDefaultPageData(pageName, schema);
@@ -254,7 +251,6 @@ export async function getDynamicContent<T>(
       try {
         rawData = readPublicJSON(`json/dynamic-content/${contentType}.json`);
       } catch (error) {
-        console.warn(`Server-side read failed for dynamic content:`, error);
         throw error; // Let the outer catch handle it with fallback
       }
     }
@@ -263,7 +259,6 @@ export async function getDynamicContent<T>(
       const validation = validatePageData(rawData, schema);
       
       if (!validation.success) {
-        console.warn(`Validation failed for ${contentType}:`, validation.error);
         
         if (enableFallback) {
           // For dynamic content, return empty structure
@@ -309,7 +304,6 @@ export async function getDynamicContent<T>(
     }
 
   } catch (error) {
-    console.warn(`Failed to load dynamic content ${contentType}:`, error);
     
     if (enableFallback) {
       const fallbackData = schema.parse({});
@@ -389,7 +383,6 @@ export async function preloadCriticalPages(): Promise<void> {
       
       await getPageData(pageName, schema, { enableFallback: true, cacheTime: 30 });
     } catch (error) {
-      console.warn(`Failed to preload ${pageName}:`, error);
     }
   });
   

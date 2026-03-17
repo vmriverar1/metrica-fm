@@ -60,7 +60,7 @@ const NewsletterMigrationPage = () => {
     setCurrentStep(0);
 
     try {
-      console.log('🚀 Iniciando migración Newsletter → Firestore...');
+
       
       // Simular progreso por pasos
       const stepDuration = 2000; // 2 segundos por paso
@@ -93,7 +93,7 @@ const NewsletterMigrationPage = () => {
       setMigrationResult(result);
       setMigrationStatus(result.success ? 'completed' : 'error');
       
-      console.log('✅ Migración completada:', result);
+
 
     } catch (error) {
       console.error('❌ Error en migración:', error);

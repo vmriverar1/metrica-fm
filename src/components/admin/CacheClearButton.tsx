@@ -19,7 +19,7 @@ export default function CacheClearButton() {
 
       if (result.success) {
         setStatus('success');
-        console.log('✅ Cache limpiado:', result.message);
+
 
         // Mostrar éxito por 3 segundos
         setTimeout(() => {

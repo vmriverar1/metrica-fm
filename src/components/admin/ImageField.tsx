@@ -113,7 +113,6 @@ const ImageField: React.FC<ImageFieldProps> = ({
 
     // Prevenir uploads simultáneos
     if (uploading) {
-      console.log('⚠️ [IMAGE FIELD] Upload ya en progreso, ignorando nueva solicitud');
       return;
     }
 
@@ -129,7 +128,6 @@ const ImageField: React.FC<ImageFieldProps> = ({
       return;
     }
 
-    console.log('📤 [IMAGE FIELD] Iniciando upload de:', file.name);
     setUploading(true);
     setUploadError(null);
 
@@ -146,7 +144,6 @@ const ImageField: React.FC<ImageFieldProps> = ({
       formData.append('file', file);
       formData.append('category', 'images');
 
-      console.log('🔄 [IMAGE FIELD] Enviando archivo al servidor...');
       const response = await fetch('/api/admin/media/upload', {
         method: 'POST',
         body: formData,
@@ -162,10 +159,8 @@ const ImageField: React.FC<ImageFieldProps> = ({
       }
 
       const data = await response.json();
-      console.log('📥 [IMAGE FIELD] Respuesta del servidor:', data);
 
       if (data.success && data.url) {
-        console.log('✅ [IMAGE FIELD] File uploaded successfully:', data.url);
 
         // Actualizar el valor dependiendo del modo
         if (multiple) {
@@ -202,8 +197,6 @@ const ImageField: React.FC<ImageFieldProps> = ({
       }
       setDragActive(false);
     } finally {
-      // Asegurar que siempre se resetea el estado uploading
-      console.log('🔄 [IMAGE FIELD] Finalizando upload, reseteando estados');
       setUploading(false);
     }
   };

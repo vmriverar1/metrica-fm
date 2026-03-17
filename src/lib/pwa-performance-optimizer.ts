@@ -40,8 +40,6 @@ class PWAPerformanceOptimizer {
     const networkInfo = this.getNetworkInfo();
     const loadOrder = this.calculateLoadOrder(networkInfo);
     
-    console.log('[PWAOptimizer] Starting smart preload with network:', networkInfo);
-    
     // Load critical content immediately
     await this.loadBatch(loadOrder.filter(item => item.priority === 'critical'));
     
@@ -162,11 +160,9 @@ class PWAPerformanceOptimizer {
         this.performanceMetrics.set(path, loadTime);
         this.loadedPaths.add(path);
 
-        console.log(`[PWAOptimizer] Loaded ${path} in ${loadTime.toFixed(2)}ms`);
         return data;
       })
-      .catch(error => {
-        console.warn(`[PWAOptimizer] Failed to load ${path}:`, error);
+      .catch(() => {
         // Return empty object instead of throwing to prevent cascade failures
         return {};
       })

@@ -95,20 +95,12 @@ export class DepartmentsService {
   async getAll(): Promise<Department[]> {
     return withFallback(
       async () => {
-        console.log('🔍 [DepartmentsService] Cargando departamentos desde colección:', COLLECTIONS.CAREER_DEPARTMENTS);
-
         const querySnapshot = await getDocs(this.collectionRef);
-        console.log('📊 [DepartmentsService] Documentos encontrados:', querySnapshot.size);
 
-        const departments = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          console.log(`📄 [DepartmentsService] Documento ${doc.id}:`, data);
-
-          return {
-            id: doc.id,
-            ...data
-          } as Department;
-        });
+        const departments = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        } as Department));
 
         return departments.length > 0 ? departments : CAREERS_FALLBACK.departments;
       },
@@ -164,7 +156,6 @@ export class DepartmentsService {
         message: 'Departamento creado exitosamente'
       };
     } catch (error) {
-      console.error('Error creating department:', error);
       return {
         success: false,
         message: 'Error al crear departamento'
@@ -188,7 +179,6 @@ export class DepartmentsService {
 
       return null;
     } catch (error) {
-      console.error('Error fetching department by ID:', error);
       throw new Error('Error al cargar departamento');
     }
   }
@@ -206,7 +196,6 @@ export class DepartmentsService {
         message: 'Departamento actualizado exitosamente'
       };
     } catch (error) {
-      console.error('Error updating department:', error);
       return {
         success: false,
         message: 'Error al actualizar departamento'
@@ -224,7 +213,6 @@ export class DepartmentsService {
         message: 'Departamento eliminado exitosamente'
       };
     } catch (error) {
-      console.error('Error deleting department:', error);
       return {
         success: false,
         message: 'Error al eliminar departamento'
@@ -249,7 +237,6 @@ export class DepartmentsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as Department));
     } catch (error) {
-      console.error('Error fetching active departments:', error);
       throw new Error('Error al cargar departamentos activos');
     }
   }
@@ -271,7 +258,6 @@ export class DepartmentsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as Department;
     } catch (error) {
-      console.error('Error fetching department by slug:', error);
       throw new Error('Error al cargar departamento por slug');
     }
   }
@@ -287,20 +273,12 @@ export class JobsService {
   async getAll(): Promise<JobPosting[]> {
     return withFallback(
       async () => {
-        console.log('🔍 [JobsService] Cargando trabajos desde colección:', COLLECTIONS.CAREER_POSITIONS);
-
         const querySnapshot = await getDocs(this.collectionRef);
-        console.log('📊 [JobsService] Documentos encontrados:', querySnapshot.size);
 
-        const jobs = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          console.log(`📄 [JobsService] Documento ${doc.id}:`, data);
-
-          return {
-            id: doc.id,
-            ...data
-          } as JobPosting;
-        });
+        const jobs = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        } as JobPosting));
 
         return jobs.length > 0 ? jobs : CAREERS_FALLBACK.positions;
       },
@@ -362,7 +340,6 @@ export class JobsService {
         message: 'Trabajo creado exitosamente'
       };
     } catch (error) {
-      console.error('Error creating job:', error);
       return {
         success: false,
         message: 'Error al crear trabajo'
@@ -388,7 +365,6 @@ export class JobsService {
 
       return null;
     } catch (error) {
-      console.error('Error fetching job by ID:', error);
       throw new Error('Error al cargar trabajo');
     }
   }
@@ -416,7 +392,6 @@ export class JobsService {
         message: 'Trabajo actualizado exitosamente'
       };
     } catch (error) {
-      console.error('Error updating job:', error);
       return {
         success: false,
         message: 'Error al actualizar trabajo'
@@ -434,7 +409,6 @@ export class JobsService {
         message: 'Trabajo eliminado exitosamente'
       };
     } catch (error) {
-      console.error('Error deleting job:', error);
       return {
         success: false,
         message: 'Error al eliminar trabajo'
@@ -465,7 +439,6 @@ export class JobsService {
         author
       };
     } catch (error) {
-      console.error('Error fetching job with relations:', error);
       throw new Error('Error al cargar trabajo con relaciones');
     }
   }
@@ -489,7 +462,6 @@ export class JobsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as JobPosting;
     } catch (error) {
-      console.error('Error fetching job by slug:', error);
       throw new Error('Error al cargar trabajo por slug');
     }
   }
@@ -512,7 +484,6 @@ export class JobsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as JobPosting));
     } catch (error) {
-      console.error('Error fetching jobs by status:', error);
       throw new Error('Error al cargar trabajos por estado');
     }
   }
@@ -540,7 +511,6 @@ export class JobsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as JobPosting));
     } catch (error) {
-      console.error('Error fetching featured jobs:', error);
       throw new Error('Error al cargar trabajos destacados');
     }
   }
@@ -564,7 +534,6 @@ export class JobsService {
         updatedAt: doc.data().updatedAt?.toDate()
       } as JobPosting));
     } catch (error) {
-      console.error('Error fetching jobs by category:', error);
       throw new Error('Error al cargar trabajos por categoría');
     }
   }

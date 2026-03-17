@@ -117,18 +117,8 @@ export function usePublicArticulos(options: UsePublicArticulosOptions = {}): Use
         throw new Error(result.error || 'Failed to load articles');
       }
 
-      console.log('📰 usePublicBlog Articles loaded:', {
-        count: result.data?.length || 0,
-        articles: result.data?.slice(0, 2)?.map((a: any) => ({ id: a.id, title: a.title })) || []
-      });
-
       // Convert API data to compatible format
       const convertedArticles = convertToCompatibleFormat(result.data || []);
-      console.log('📰 Converted articles:', {
-        count: convertedArticles.length,
-        sample: convertedArticles.slice(0, 1)
-      });
-
       setArticulos(convertedArticles);
 
       // Guardar en cache
@@ -257,11 +247,6 @@ export function usePublicCategorias(): UsePublicCategoriasResult {
         throw new Error(result.error || 'Failed to load categories');
       }
 
-      console.log('📂 usePublicBlog Categories loaded:', {
-        count: result.data?.length || 0,
-        categories: result.data?.slice(0, 2)?.map((c: any) => ({ id: c.id, name: c.name, slug: c.slug })) || []
-      });
-
       setCategorias(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error loading categories');
@@ -327,11 +312,6 @@ export function usePublicAutores(): UsePublicAutoresResult {
       if (!result.success) {
         throw new Error(result.error || 'Failed to load authors');
       }
-
-      console.log('👥 usePublicBlog Authors loaded:', {
-        count: result.data?.length || 0,
-        authors: result.data?.slice(0, 2)?.map((a: any) => ({ id: a.id, name: a.name, email: a.email })) || []
-      });
 
       setAutores(result.data || []);
     } catch (err) {

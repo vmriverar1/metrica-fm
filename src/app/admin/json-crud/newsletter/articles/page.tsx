@@ -56,9 +56,6 @@ export default function ArticlesPage() {
   // Mapear datos de Firestore a formato esperado
   const articles = articulosHook.articulos;
 
-  // Debug: verificar que los artículos tienen ID
-  console.log('Articles loaded:', articles.length, 'articles');
-  console.log('First article:', articles[0]);
   const authors: Author[] = autoresHook.autores.map(autor => ({
     id: autor.id,
     name: autor.name,
@@ -109,8 +106,6 @@ export default function ArticlesPage() {
   };
 
   const handleEditArticle = (article: Article) => {
-    console.log('handleEditArticle called with:', article);
-    console.log('Article ID:', article.id);
     router.push(`/admin/json-crud/newsletter/articles/new?id=${article.id}`);
   };
 
@@ -202,7 +197,6 @@ export default function ArticlesPage() {
       label: 'Eliminar',
       icon: Trash2,
       onClick: (article: Article) => {
-        console.log('Delete action clicked for article:', article.title, article.id);
         setDeleteConfirm(article);
       },
       variant: 'danger'

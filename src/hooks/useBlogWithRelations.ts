@@ -137,15 +137,6 @@ export function useBlogWithRelations(): UseBlogWithRelationsResult {
         throw new Error(result.error || 'Failed to load articles');
       }
 
-      console.log('📰 Blog articles with relations loaded:', {
-        count: result.data?.length || 0,
-        samples: result.data?.slice(0, 2)?.map((a: BlogArticle) => ({
-          title: a.title,
-          author: a.author?.name,
-          category: a.category?.name
-        })) || []
-      });
-
       setArticles(result.data || []);
 
     } catch (err) {
@@ -172,7 +163,6 @@ export function useBlogWithRelations(): UseBlogWithRelationsResult {
         throw new Error(result.error || 'Failed to load categories');
       }
 
-      console.log('📂 Blog categories loaded:', { count: result.data?.length || 0 });
       setCategories(result.data || []);
 
     } catch (err) {
@@ -199,7 +189,6 @@ export function useBlogWithRelations(): UseBlogWithRelationsResult {
         throw new Error(result.error || 'Failed to load authors');
       }
 
-      console.log('👥 Blog authors loaded:', { count: result.data?.length || 0 });
       setAuthors(result.data || []);
 
     } catch (err) {

@@ -317,15 +317,7 @@ export const LazyLoadingMonitor: React.FC<{
     const stats = getLoadingStats();
     onStatsUpdate?.(stats);
     
-    // Log performance metrics
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🚀 Lazy Loading Stats:', {
-        total: stats.total,
-        loaded: stats.loaded,
-        percentage: `${stats.percentage.toFixed(1)}%`,
-        loadedSections
-      });
-    }
+
   }, [loadedSections, onStatsUpdate]);
   
   if (!isVisible) {

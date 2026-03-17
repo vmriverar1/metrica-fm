@@ -9,10 +9,8 @@ const ContactAdminPage = () => {
       <ContactPageEditor 
         slug="contact"
         onSave={async (data) => {
-          console.log('Saving contact data:', data);
         }}
         onPreview={(data) => {
-          console.log('Previewing contact data:', data);
         }}
       />
     </div>

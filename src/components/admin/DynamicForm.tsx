@@ -237,13 +237,10 @@ export default function DynamicForm({
       }
     },
     onSaveStart: () => {
-      console.log('🔄 Auto-save iniciado...');
     },
     onSaveSuccess: () => {
-      console.log('✅ Auto-save exitoso');
     },
-    onSaveError: (error) => {
-      console.error('❌ Auto-save falló:', error);
+    onSaveError: (_error) => {
     }
   });
 
@@ -264,11 +261,6 @@ export default function DynamicForm({
     const hasChanged = JSON.stringify(initialValuesRef.current) !== JSON.stringify(initialValues);
     if (hasChanged) {
       initialValuesRef.current = { ...initialValues };
-      console.log('📝 [DYNAMIC FORM] Valores iniciales han cambiado:', {
-        hasInitialValues: !!initialValues,
-        initialValuesKeys: Object.keys(initialValues || {}),
-        fieldsCount: fields?.length || 0
-      });
     }
     return initialValuesRef.current;
   }, [initialValues, fields?.length]);
@@ -354,20 +346,6 @@ export default function DynamicForm({
     if (!activeTab && groups.length > 0) {
       setActiveTab(groups[0].name);
     }
-    
-    console.log('🔧 [DYNAMIC FORM] Inicializando grupos:', {
-      groupsCount: groups.length,
-      groupNames: groups.map(g => g.name),
-      groupsDetails: groups.map(g => ({ 
-        name: g.name, 
-        label: g.label, 
-        collapsible: g.collapsible,
-        defaultExpanded: g.defaultExpanded 
-      })),
-      initialExpanded,
-      isMobile,
-      activeTab
-    });
     
     setExpandedGroups(initialExpanded);
   }, [groups.length, activeTab, isMobile]); // Only depend on groups length, not the entire groups array
@@ -536,8 +514,6 @@ export default function DynamicForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('📝 [DynamicForm] handleSubmit called');
-    console.log('📝 [DynamicForm] Current values:', values);
 
     // Validate all fields
     const newErrors: Record<string, string> = {};
@@ -546,7 +522,6 @@ export default function DynamicForm({
         const error = validateField(field, getNestedValue(values, field.key));
         if (error) {
           newErrors[field.key] = error;
-          console.log('❌ [DynamicForm] Validation error:', field.key, error);
         }
       }
     });
@@ -554,19 +529,12 @@ export default function DynamicForm({
     setErrors(newErrors);
     setTouched((fields || []).reduce((acc, field) => ({ ...acc, [field.key]: true }), {}));
 
-    console.log('📝 [DynamicForm] Validation errors count:', Object.keys(newErrors).length);
-
     if (Object.keys(newErrors).length === 0) {
       try {
-        console.log('📝 [DynamicForm] Calling onSubmit with values:', values);
         await onSubmit(values);
-        console.log('✅ [DynamicForm] onSubmit completed successfully');
       } catch (error) {
         console.error('❌ [DynamicForm] Form submission error:', error);
       }
-    } else {
-      console.log('❌ [DynamicForm] Form has validation errors, not submitting');
-      console.log('❌ [DynamicForm] Errors:', newErrors);
     }
   };
 
@@ -587,12 +555,6 @@ export default function DynamicForm({
   };
 
   const toggleGroup = (groupName: string) => {
-    console.log('🔄 [DYNAMIC FORM] Toggle grupo:', {
-      groupName,
-      currentState: expandedGroups[groupName],
-      willBe: !expandedGroups[groupName]
-    });
-    
     setExpandedGroups(prev => ({
       ...prev,
       [groupName]: !prev[groupName]
@@ -1037,36 +999,19 @@ export default function DynamicForm({
         
         {field.type === 'custom' && field.component === 'statistics-builder' && (
           <>
-            {(() => {
-              console.log('🔍 [DYNAMIC FORM] statistics-builder value:', value);
-              console.log('🔍 [DYNAMIC FORM] field.key:', field.key);
-              console.log('🔍 [DYNAMIC FORM] value type:', typeof value, Array.isArray(value));
-
-              if (Array.isArray(value)) {
-                console.log('🔍 [DYNAMIC FORM] Array contents:', value);
-                value.forEach((item, index) => {
-                  console.log(`🔍 [DYNAMIC FORM] Item ${index}:`, item);
-                });
-              }
-
-              return null;
-            })()}
             <EnhancedStatisticsManager
               statistics={(() => {
                 const rawValue = Array.isArray(value) ? value : [];
-                console.log('🔄 [TRANSFORM] Raw value:', rawValue);
 
                 // Transformar del formato Firestore al formato EnhancedStatisticsManager
                 const transformedStats = rawValue.map((metric: any, index: number) => {
                   // Si ya está en formato transformado (tiene 'id'), devolverlo tal como está
                   if (metric && metric.id) {
-                    console.log('🔄 [TRANSFORM] Ya transformado:', metric);
                     return metric;
                   }
 
                   // NUEVO FORMATO: Si tiene campos separados (prefix, suffix, value), usarlos directamente
                   if (metric && (metric.prefix !== undefined || metric.suffix !== undefined || typeof metric.value === 'number')) {
-                    console.log('🔄 [TRANSFORM] Formato nuevo con campos separados:', metric);
                     const transformed = {
                       id: `metric-${metric.index ?? index}`,
                       icon: metric.icon || 'Award',
@@ -1076,13 +1021,11 @@ export default function DynamicForm({
                       label: metric.label || 'Sin etiqueta',
                       description: metric.description || ''
                     };
-                    console.log('🔄 [TRANSFORM] Transformado desde formato nuevo:', transformed);
                     return transformed;
                   }
 
                   // FORMATO VIEJO: Si está en formato Firestore antiguo (solo tiene 'number'), parsearlo
                   if (metric && metric.number !== undefined) {
-                    console.log('🔄 [TRANSFORM] Formato Firestore antiguo:', metric);
 
                     // Extraer número y sufijo del campo "number"
                     const numberStr = metric.number || '0';
@@ -1114,12 +1057,10 @@ export default function DynamicForm({
                       description: metric.description || ''
                     };
 
-                    console.log('🔄 [TRANSFORM] Transformado desde formato antiguo:', transformed);
                     return transformed;
                   }
 
                   // Fallback para datos incompletos
-                  console.log('🔄 [TRANSFORM] Datos incompletos, creando vacío:', metric);
                   return {
                     id: `metric-fallback-${index}`,
                     icon: 'Award',
@@ -1131,12 +1072,9 @@ export default function DynamicForm({
                   };
                 });
 
-                console.log('🔄 [TRANSFORM] Resultado final:', transformedStats);
                 return transformedStats;
               })()}
               onChange={(statistics) => {
-                console.log('🔄 [SAVE TRANSFORM] Recibiendo para guardar:', statistics);
-
                 // Transformar de vuelta al formato Firestore para guardar
                 // NUEVO: Guardar prefix, suffix, value como campos separados
                 const backTransformed = statistics.map((stat: any, index: number) => {
@@ -1161,11 +1099,9 @@ export default function DynamicForm({
                     number: numberStr || '0'
                   };
 
-                  console.log('🔄 [SAVE TRANSFORM] Item transformado:', result);
                   return result;
                 });
 
-                console.log('🔄 [SAVE TRANSFORM] Resultado final para guardar:', backTransformed);
                 handleChange(field, backTransformed);
               }}
               title={field.label}
@@ -1808,17 +1744,7 @@ export default function DynamicForm({
     const group = groups.find(g => g.name === groupName);
     const isExpanded = expandedGroups[groupName];
 
-    console.log('🎨 [DYNAMIC FORM] Renderizando grupo:', {
-      groupName,
-      hasGroup: !!group,
-      groupLabel: group?.label,
-      isCollapsible: group?.collapsible,
-      isExpanded,
-      fieldsCount: groupFields.length
-    });
-
     if (!group) {
-      console.log('⚠️ [DYNAMIC FORM] Grupo no encontrado, renderizando sin header:', groupName);
       return (
         <div key={groupName} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {groupFields.map(renderField)}

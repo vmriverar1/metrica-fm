@@ -238,8 +238,6 @@ export async function POST(request: NextRequest) {
       timeInStage: 0
     };
 
-    console.log('📝 Nueva aplicación creada via API:', newApplication.id);
-
     return NextResponse.json({
       success: true,
       data: newApplication,

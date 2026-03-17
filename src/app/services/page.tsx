@@ -47,11 +47,9 @@ async function getServicesData(): Promise<any | null> {
     const result = await FirestoreCore.getDocumentById('pages', 'services');
 
     if (!result.success || !result.data) {
-      console.warn('⚠️ [FIRESTORE] No services data found, using fallback');
       return null;
     }
 
-    console.log('🔥 [FIRESTORE] Services data loaded successfully:', result.data);
     return result.data;
   } catch (error) {
     console.error('❌ [FIRESTORE] Failed to load services data:', error);
@@ -101,7 +99,6 @@ function ServicesPageContent({ servicesData }: { servicesData: any | null }) {
 export default async function ServicesPage() {
   try {
     const servicesData = await getServicesData();
-    console.log('🔍 Services data:', servicesData);
 
     return <ServicesPageContent servicesData={servicesData} />;
   } catch (error) {

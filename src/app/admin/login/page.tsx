@@ -32,7 +32,7 @@ export default function LoginPage() {
 
     if (result.success) {
       // Redirección manejada por el useEffect
-      console.log('Login exitoso');
+
     }
   };
 

@@ -217,7 +217,6 @@ function SettingsPage() {
       setError(null);
       
       // Toast notification
-      console.log('Toast: Configuraciones guardadas correctamente');
     } catch (err) {
       console.error('Error guardando configuraciones:', err);
       setError(err instanceof Error ? err.message : 'Error al guardar');

@@ -49,8 +49,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         readFileSync(join(process.cwd(), 'package.json'), 'utf8')
       );
       version = packageJson.version || '1.0.0';
-    } catch (error) {
-      console.warn('Could not read package.json for version');
+    } catch {
+      // Use default version
     }
     
     // Verificar servicios

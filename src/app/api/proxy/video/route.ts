@@ -58,20 +58,15 @@ export async function GET(request: NextRequest) {
     );
 
     if (!isDomainAllowed) {
-      console.log(`Domain not allowed in production: ${parsedUrl.hostname}`);
       return NextResponse.json({ 
         error: 'Domain not allowed',
         domain: parsedUrl.hostname,
         allowedDomains: allowedDomains 
       }, { status: 403 });
     }
-  } else {
-    console.log(`Development mode: allowing domain ${parsedUrl.hostname}`);
   }
 
   try {
-    console.log(`Proxying video from: ${videoUrl}`);
-    
     // Preparar headers para el fetch basado en si hay range request
     const range = request.headers.get('range');
     const fetchHeaders: Record<string, string> = {
@@ -92,7 +87,6 @@ export async function GET(request: NextRequest) {
     });
 
     if (!videoResponse.ok) {
-      console.error(`Failed to fetch video: ${videoResponse.status} ${videoResponse.statusText}`);
       return NextResponse.json(
         { error: `Failed to fetch video: ${videoResponse.statusText}` },
         { status: videoResponse.status }

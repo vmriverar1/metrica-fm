@@ -29,14 +29,9 @@ export const DynamicIcon: React.FC<DynamicIconProps> = ({
   // Si no existe, usar el icono de fallback
   const FinalIcon = IconComponent || (LucideIcons as any)[fallbackIcon];
   
-  // Log warning si el icono no existe (solo en desarrollo)
-  if (!IconComponent && process.env.NODE_ENV === 'development') {
-    console.warn(`Icono "${name}" no encontrado en Lucide, usando "${fallbackIcon}" como fallback`);
-  }
   
   // Si tampoco existe el fallback, usar HelpCircle
   if (!FinalIcon) {
-    console.error(`Ni el icono "${name}" ni el fallback "${fallbackIcon}" existen`);
     return <LucideIcons.HelpCircle className={cn('h-4 w-4', className)} size={size} {...props} />;
   }
   
@@ -49,10 +44,6 @@ export const DynamicIcon: React.FC<DynamicIconProps> = ({
 export const useIcon = (name: string, fallbackIcon: keyof typeof LucideIcons = 'HelpCircle') => {
   const IconComponent = (LucideIcons as any)[name];
   const FallbackIcon = (LucideIcons as any)[fallbackIcon];
-  
-  if (!IconComponent && process.env.NODE_ENV === 'development') {
-    console.warn(`Icono "${name}" no encontrado en Lucide, usando "${fallbackIcon}" como fallback`);
-  }
   
   return IconComponent || FallbackIcon || LucideIcons.HelpCircle;
 };

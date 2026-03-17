@@ -107,7 +107,6 @@ export function BlogProvider({ children }: BlogProviderProps) {
       }
 
       setAllPosts(result.data || []);
-      console.log(`📰 Articles loaded with relations: ${result.data?.length || 0}`);
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error loading articles');
@@ -130,7 +129,6 @@ export function BlogProvider({ children }: BlogProviderProps) {
         throw new Error(result.error || 'Failed to load categories');
       }
       setCategories(result.data || []);
-      console.log(`📂 Blog categories loaded: ${result.data?.length || 0}`);
     } catch (err) {
       console.error('Error loading categories:', err);
     } finally {
@@ -151,7 +149,6 @@ export function BlogProvider({ children }: BlogProviderProps) {
         throw new Error(result.error || 'Failed to load authors');
       }
       setAuthors(result.data || []);
-      console.log(`👥 Blog authors loaded: ${result.data?.length || 0}`);
     } catch (err) {
       console.error('Error loading authors:', err);
     } finally {

@@ -11,9 +11,8 @@ import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import { BlogContentData } from '@/types/blog-page';
 
-// Contenido dinámico para que los cambios del admin se reflejen inmediatamente
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: revalidar cada hora
+export const revalidate = 3600;
 
 interface ArticlePageProps {
   params: {
@@ -51,7 +50,6 @@ export async function generateStaticParams() {
     const articles = result.data;
 
     if (!articles || articles.length === 0) {
-      console.warn('No articles found in Firestore');
       return [];
     }
 
@@ -59,8 +57,6 @@ export async function generateStaticParams() {
     const categoriasService = new services.CategoriasService();
     const categoriasResult = await categoriasService.getAll();
     const categorias = categoriasResult?.data || [];
-
-    console.log('Categories loaded:', categorias.length);
 
     const params = [];
     for (const article of articles) {
@@ -75,7 +71,6 @@ export async function generateStaticParams() {
       }
     }
 
-    console.log(`Generated ${params.length} static params for blog articles from Firestore`);
     return params;
   } catch (error) {
     console.error('Error generating static params for blog articles:', error);

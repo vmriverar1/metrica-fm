@@ -1118,11 +1118,9 @@ export default function APIGatewayManager() {
   }
 
   const handleCreateEndpoint = () => {
-    console.log('Creating new API endpoint')
   }
 
   const handleTestEndpoint = (endpointId: string) => {
-    console.log(`Testing endpoint: ${endpointId}`)
   }
 
   const handleRevokeApiKey = (keyId: string) => {

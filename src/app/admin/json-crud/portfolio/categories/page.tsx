@@ -67,7 +67,6 @@ const PortfolioCategoriesPage = () => {
 
         if (result.success && result.data) {
           setCategories(result.data);
-          console.log(`✅ Loaded ${result.data.length} categories from Firestore`);
         } else {
           console.error('❌ Error loading categories:', result.error);
         }
@@ -131,7 +130,6 @@ const PortfolioCategoriesPage = () => {
         const createdCategory = { ...newCategory, id: result.data?.id };
         setCategories(prev => [...prev, createdCategory]);
         setActiveTab('list');
-        console.log('✅ Category created successfully');
       } else {
         console.error('❌ Error creating category:', result.error);
         alert('Error al crear la categoría: ' + result.error);
@@ -160,7 +158,6 @@ const PortfolioCategoriesPage = () => {
         ));
         setActiveTab('list');
         setSelectedCategory(null);
-        console.log('✅ Category updated successfully');
       } else {
         console.error('❌ Error updating category:', result.error);
         alert('Error al actualizar la categoría: ' + result.error);
@@ -187,7 +184,6 @@ const PortfolioCategoriesPage = () => {
 
       if (result.success) {
         setCategories(prev => prev.filter(c => c.id !== categoryId));
-        console.log('✅ Category deleted successfully');
       } else {
         console.error('❌ Error deleting category:', result.error);
         alert('Error al eliminar la categoría: ' + result.error);
@@ -214,7 +210,6 @@ const PortfolioCategoriesPage = () => {
         setCategories(prev => prev.map(c =>
           c.id === categoryId ? { ...c, ...updatedData } : c
         ));
-        console.log('✅ Category status updated successfully');
       } else {
         console.error('❌ Error updating category status:', result.error);
         alert('Error al actualizar el estado: ' + result.error);

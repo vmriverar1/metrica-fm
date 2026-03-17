@@ -115,7 +115,6 @@ export default function Portfolio({ data }: PortfolioProps) {
       
       // Verificar si todos los refs están disponibles
       if (!carouselWrapperRef.current || !sectionRef.current || !titleRef.current || !subtitleRef.current) {
-        console.warn('Portfolio refs not ready');
         return;
       }
       

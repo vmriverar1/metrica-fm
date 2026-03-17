@@ -83,7 +83,6 @@ export class PortfolioBundlingService {
   static init(): void {
     if (!existsSync(this.BUNDLES_DIR)) {
       mkdirSync(this.BUNDLES_DIR, { recursive: true });
-      console.log('📦 Portfolio bundles directory created');
     }
   }
 
@@ -124,7 +123,6 @@ export class PortfolioBundlingService {
       // Guardar bundle
       await this.saveBundle('categories.json', bundle);
 
-      console.log(`✅ Categories bundle created: ${categories.length} categories`);
       return bundle;
 
     } catch (error) {
@@ -186,7 +184,6 @@ export class PortfolioBundlingService {
 
       await this.saveBundle('featured-projects.json', bundle);
 
-      console.log(`✅ Featured projects bundle created: ${featuredProjects.length} projects`);
       return bundle;
 
     } catch (error) {
@@ -232,7 +229,6 @@ export class PortfolioBundlingService {
 
       await this.saveBundle('homepage.json', bundle);
 
-      console.log('✅ Homepage bundle created - critical data cached');
       return bundle;
 
     } catch (error) {
@@ -292,7 +288,6 @@ export class PortfolioBundlingService {
 
       await this.saveBundle('metadata.json', bundle);
 
-      console.log('✅ Metadata bundle created - navigation data cached');
       return bundle;
 
     } catch (error) {
@@ -318,7 +313,6 @@ export class PortfolioBundlingService {
       // Verificar expiración
       const expiresAt = new Date(bundle.expires_at);
       if (new Date() > expiresAt) {
-        console.log(`📦 Bundle ${bundleId} expired, needs refresh`);
         return null;
       }
 
@@ -362,7 +356,6 @@ export class PortfolioBundlingService {
       if (existsSync(filePath)) {
         const fs = require('fs');
         fs.unlinkSync(filePath);
-        console.log(`🗑️  Bundle ${bundleId} invalidated`);
       }
 
     } catch (error) {
@@ -383,8 +376,6 @@ export class PortfolioBundlingService {
           fs.unlinkSync(join(this.BUNDLES_DIR, file));
         }
       }
-
-      console.log('🗑️  All portfolio bundles invalidated');
 
     } catch (error) {
       console.error('Error invalidating all bundles:', error);
@@ -463,8 +454,6 @@ export class PortfolioBundlingService {
 
       writeFileSync(filePath, content, 'utf-8');
 
-      console.log(`📦 Bundle saved: ${filename} (${Math.round(bundle.metadata.size_bytes / 1024)}KB)`);
-
     } catch (error) {
       console.error(`Error saving bundle ${filename}:`, error);
       throw error;
@@ -482,14 +471,9 @@ export class PortfolioBundleAutomation {
    */
   static async createAllBundles(): Promise<void> {
     try {
-      console.log('🚀 Creating all portfolio bundles...');
-
       // Aquí integraríamos con los servicios Firestore optimizados
       // const categories = await OptimizedPortfolioCategoriesService.obtenerTodas({ forceRefresh: true });
       // const projects = await OptimizedPortfolioProjectsService.obtenerTodos();
-
-      // Por ahora, simulamos los bundles
-      console.log('📦 Bundles creation scheduled');
 
       // TODO: Implementar Cloud Function que ejecute esto periódicamente
 
@@ -502,7 +486,6 @@ export class PortfolioBundleAutomation {
    * Programar creación automática de bundles
    */
   static scheduleAutomaticCreation(): void {
-    console.log('📅 Bundle automation scheduled');
     // TODO: Configurar con Cloud Scheduler
     // - Ejecutar cada 2 horas
     // - Invalidar cuando hay cambios en Firestore
@@ -517,8 +500,6 @@ export class PortfolioBundleAutomation {
     action: 'create' | 'update' | 'delete'
   ): void {
     try {
-      console.log(`🔄 Data change detected: ${changeType} ${action}`);
-
       // Invalidar bundles relacionados
       switch (changeType) {
         case 'category':
@@ -541,8 +522,6 @@ export class PortfolioBundleAutomation {
           // Solo afecta bundles que incluyan imágenes
           break;
       }
-
-      console.log('✅ Related bundles invalidated');
 
     } catch (error) {
       console.error('Error handling data change:', error);

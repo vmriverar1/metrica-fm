@@ -15,23 +15,16 @@ export default function ProyectosOficinaPage() {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        console.log('🏢 [OficinaPage] Fetching category data for oficina...');
-
         const result = await FirestoreCore.getDocumentById('portfolio_categories', 'oficina');
-
-        console.log('🏢 [OficinaPage] Firestore result:', result);
 
         if (result.success && result.data) {
           const category = result.data;
-          console.log('🏢 [OficinaPage] Category found:', category);
-
           setCategoryData({
             title: category.seoTitle || `Proyectos de ${category.name}`,
             subtitle: category.seoDescription || category.description,
             backgroundImage: category.backgroundImage || ""
           });
         } else {
-          console.warn('🏢 [OficinaPage] Category not found, using fallback');
           // Solo si no hay datos en Firestore, usar la imagen por defecto
           setCategoryData(prev => ({
             ...prev,

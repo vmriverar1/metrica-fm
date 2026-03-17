@@ -102,7 +102,7 @@ export default function EnhancedPillarsManager({
     } else if (!availableIcons[pillar.icon as keyof typeof availableIcons]) {
       // Icono no está en la lista de disponibles, pero permitirlo si no está vacío
       // Solo agregamos warning si es necesario, no error
-      console.warn(`Icono '${pillar.icon}' no está en la lista de iconos disponibles para pilares DIP`);
+
     }
     
     if (pillar.image && !isValidUrl(pillar.image)) {

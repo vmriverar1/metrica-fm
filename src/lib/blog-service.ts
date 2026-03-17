@@ -142,7 +142,7 @@ export class BlogService {
       await NewsletterStatsService.obtenerEstadisticas();
       return true;
     } catch (error) {
-      console.warn('Firestore no disponible, usando datos locales:', error);
+
       return false;
     }
   }
@@ -273,7 +273,7 @@ export class BlogService {
         return firestoreCategories;
       }
     } catch (error) {
-      console.warn('Error cargando categorías de Firestore:', error);
+
     }
 
     // Fallback: categorías locales basadas en posts
@@ -359,7 +359,7 @@ export class BlogService {
         return blogPosts;
       }
     } catch (error) {
-      console.warn('Error cargando posts de Firestore:', error);
+
     }
 
     // Fallback: datos locales con filtros
@@ -425,7 +425,7 @@ export class BlogService {
         }
       }
     } catch (error) {
-      console.warn('Error cargando post de Firestore:', error);
+
     }
 
     // Fallback: datos locales
@@ -456,7 +456,7 @@ export class BlogService {
         return authors;
       }
     } catch (error) {
-      console.warn('Error cargando autores de Firestore:', error);
+
     }
 
     // Fallback: datos locales
@@ -537,7 +537,7 @@ export class BlogService {
         return blogStats;
       }
     } catch (error) {
-      console.warn('Error cargando stats de Firestore:', error);
+
     }
 
     // Fallback: estadísticas locales
@@ -562,7 +562,7 @@ export class BlogService {
         dataSource = 'directus'; // Usamos 'directus' para mantener compatibilidad
       }
     } catch (error) {
-      console.warn('Error verificando Firestore:', error);
+
     }
 
     return {

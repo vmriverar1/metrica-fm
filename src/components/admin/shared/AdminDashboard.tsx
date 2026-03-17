@@ -548,7 +548,7 @@ export default function AdminDashboard() {
   }
 
   const handleExportData = (format: 'csv' | 'json' | 'pdf') => {
-    console.log(`Exporting data in ${format} format`)
+
   }
 
   const getStatusIcon = (status: string) => {

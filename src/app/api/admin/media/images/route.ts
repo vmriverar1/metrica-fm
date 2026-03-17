@@ -34,12 +34,10 @@ const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', 
 
 // Función para obtener imágenes de Firebase Storage
 async function getFirebaseImages(): Promise<ImageInfo[]> {
-  console.log('[getFirebaseImages] Attempting to fetch Firebase images...');
   try {
     const result = await listStorageFiles('images/proyectos');
 
     if (!result.success || !result.files) {
-      console.log('[getFirebaseImages] No files from Firebase or error:', result.error);
       return [];
     }
 
@@ -59,8 +57,7 @@ async function getFirebaseImages(): Promise<ImageInfo[]> {
         downloadURL: file.downloadURL
       };
     });
-  } catch (error) {
-    console.error('[getFirebaseImages] Error fetching from Firebase:', error);
+  } catch {
     return [];
   }
 }
@@ -100,18 +97,16 @@ async function scanDirectory(dirPath: string, basePath: string = ''): Promise<Im
         }
       }
     }
-  } catch (error) {
-    console.warn(`Warning: Could not scan directory ${dirPath}:`, error);
+  } catch {
+    // Non-critical: directory scan failed
   }
 
   return images;
 }
 
 // GET /api/admin/media/images - Listar todas las imágenes
-// Temporalmente sin auth para producción - TODO: Implementar auth correctamente
-export async function GET(request: NextRequest) {
-  // @ts-ignore - context not used when auth is disabled
-  const context = { user: { id: 'system' } };
+export const GET = withAuth(
+  async (request: NextRequest, context) => {
     try {
       const { searchParams } = new URL(request.url);
       const search = searchParams.get('search');
@@ -137,8 +132,6 @@ export async function GET(request: NextRequest) {
 
       // Combinar ambas fuentes
       let images = [...localImages, ...firebaseImages];
-
-      console.log(`[media-api] Found ${localImages.length} local images and ${firebaseImages.length} Firebase images`);
 
       // Filtrar por búsqueda
       if (search) {
@@ -236,7 +229,8 @@ export async function GET(request: NextRequest) {
         { status: 500 }
       );
     }
-}
+  }
+);
 
 // Función para obtener directorios
 async function scanDirectories(basePath: string, currentPath: string = ''): Promise<string[]> {
@@ -261,18 +255,16 @@ async function scanDirectories(basePath: string, currentPath: string = ''): Prom
         }
       }
     }
-  } catch (error) {
-    console.warn(`Warning: Could not scan directories in ${basePath}:`, error);
+  } catch {
+    // Non-critical: directory scan failed
   }
 
   return directories;
 }
 
 // DELETE /api/admin/media/images - Eliminar imagen
-// Temporalmente sin auth para producción - TODO: Implementar auth correctamente
-export async function DELETE(request: NextRequest) {
-  // @ts-ignore - context not used when auth is disabled
-  const context = { user: { id: 'system' } };
+export const DELETE = withAuth(
+  async (request: NextRequest, context) => {
     try {
       const { searchParams } = new URL(request.url);
       const imageId = searchParams.get('id');
@@ -324,8 +316,6 @@ export async function DELETE(request: NextRequest) {
           );
         }
 
-        console.log(`Firebase image deleted: ${targetPath} by user ${context.user.id}`);
-
         return NextResponse.json({
           success: true,
           message: 'Image deleted successfully from Firebase Storage.',
@@ -369,8 +359,6 @@ export async function DELETE(request: NextRequest) {
         // Eliminar archivo
         await unlink(fullPath);
 
-        console.log(`Local image deleted: ${targetPath} by user ${context.user.id}`);
-
         return NextResponse.json({
           success: true,
           message: 'Image deleted successfully from local storage.',
@@ -406,7 +394,8 @@ export async function DELETE(request: NextRequest) {
         { status: 500 }
       );
     }
-}
+  }
+);
 
 // Método OPTIONS para CORS
 export async function OPTIONS() {

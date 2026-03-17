@@ -560,7 +560,6 @@ const UserPermissionsManager: React.FC<UserPermissionsManagerProps> = ({
                           size="sm"
                           onClick={() => {
                             // View user details
-                            console.log('View user:', user.id);
                           }}
                         >
                           <Eye className="w-4 h-4" />

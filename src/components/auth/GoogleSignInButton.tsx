@@ -36,7 +36,6 @@ export default function GoogleSignInButton({
       const result = await signInWithGoogle();
 
       if (result.success && result.user) {
-        console.log('[GoogleSignInButton] Sign in successful:', result.user.email);
         onSuccess?.();
       } else {
         const errorMsg = result.error || 'Error al iniciar sesión';
@@ -60,7 +59,6 @@ export default function GoogleSignInButton({
 
     try {
       await signOut();
-      console.log('[GoogleSignInButton] Sign out successful');
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Error al cerrar sesión';
       setError(errorMsg);

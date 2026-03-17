@@ -87,8 +87,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`🔍 [FirestoreCore] Obteniendo documento: ${collectionName}/${documentId}`);
-
       const docRef = doc(db, collectionName, documentId);
       const docSnap = await getDoc(docRef);
 
@@ -102,7 +100,6 @@ export class FirestoreCore {
           updatedAt: docData.updatedAt?.toDate?.() || null
         } as T;
 
-        console.log(`✅ [FirestoreCore] Documento encontrado: ${documentId}`);
         return {
           success: true,
           message: 'Documento obtenido exitosamente',
@@ -110,14 +107,13 @@ export class FirestoreCore {
         };
       }
 
-      console.warn(`⚠️ [FirestoreCore] Documento no encontrado: ${documentId}`);
       return {
         success: false,
         message: 'Documento no encontrado',
         error: 'NOT_FOUND'
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error obteniendo documento:`, error);
+      console.error(`[FirestoreCore] Error obteniendo documento:`, error);
       return {
         success: false,
         message: 'Error al obtener documento',
@@ -142,8 +138,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`🔍 [FirestoreCore] Obteniendo documentos de: ${collectionName}`);
-
       const collectionRef = collection(db, collectionName);
       let queryRef: any = collectionRef;
 
@@ -183,14 +177,13 @@ export class FirestoreCore {
         } as T;
       });
 
-      console.log(`✅ [FirestoreCore] ${documents.length} documentos obtenidos de ${collectionName}`);
       return {
         success: true,
         message: `${documents.length} documentos obtenidos exitosamente`,
         data: documents
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error obteniendo documentos:`, error);
+      console.error(`[FirestoreCore] Error obteniendo documentos:`, error);
       return {
         success: false,
         message: 'Error al obtener documentos',
@@ -221,8 +214,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`📝 [FirestoreCore] Creando documento en: ${collectionName}`);
-
       const collectionRef = collection(db, collectionName);
       const documentData = {
         ...data,
@@ -232,14 +223,13 @@ export class FirestoreCore {
 
       const docRef = await addDoc(collectionRef, documentData);
 
-      console.log(`✅ [FirestoreCore] Documento creado con ID: ${docRef.id}`);
       return {
         success: true,
         message: 'Documento creado exitosamente',
         data: { id: docRef.id, ...documentData } as T
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error creando documento:`, error);
+      console.error(`[FirestoreCore] Error creando documento:`, error);
       return {
         success: false,
         message: 'Error al crear documento',
@@ -266,8 +256,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`📝 [FirestoreCore] Creando documento: ${collectionName}/${documentId}`);
-
       const docRef = doc(db, collectionName, documentId);
       const documentData = {
         ...data,
@@ -277,14 +265,13 @@ export class FirestoreCore {
 
       await setDoc(docRef, documentData, { merge });
 
-      console.log(`✅ [FirestoreCore] Documento creado: ${documentId}`);
       return {
         success: true,
         message: 'Documento creado exitosamente',
         data: { id: documentId, ...documentData } as T
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error creando documento:`, error);
+      console.error(`[FirestoreCore] Error creando documento:`, error);
       return {
         success: false,
         message: 'Error al crear documento',
@@ -316,8 +303,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`✏️ [FirestoreCore] Actualizando documento: ${collectionName}/${documentId}`);
-
       const docRef = doc(db, collectionName, documentId);
       const updateData = {
         ...data,
@@ -326,13 +311,12 @@ export class FirestoreCore {
 
       await updateDoc(docRef, updateData);
 
-      console.log(`✅ [FirestoreCore] Documento actualizado: ${documentId}`);
       return {
         success: true,
         message: 'Documento actualizado exitosamente'
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error actualizando documento:`, error);
+      console.error(`[FirestoreCore] Error actualizando documento:`, error);
       return {
         success: false,
         message: 'Error al actualizar documento',
@@ -359,8 +343,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`🔄 [FirestoreCore] Reemplazando documento: ${collectionName}/${documentId}`);
-
       const docRef = doc(db, collectionName, documentId);
 
       // Intentar obtener el documento actual para preservar createdAt
@@ -370,9 +352,8 @@ export class FirestoreCore {
         if (existingDoc.exists() && existingDoc.data()?.createdAt) {
           createdAt = existingDoc.data().createdAt;
         }
-      } catch (error) {
+      } catch {
         // Si no podemos obtener el documento actual, usamos timestamp nuevo
-        console.warn(`⚠️ [FirestoreCore] No se pudo obtener createdAt existente, usando nuevo timestamp`);
       }
 
       const documentData = {
@@ -383,14 +364,13 @@ export class FirestoreCore {
 
       await setDoc(docRef, documentData);
 
-      console.log(`✅ [FirestoreCore] Documento reemplazado: ${documentId}`);
       return {
         success: true,
         message: 'Documento reemplazado exitosamente',
         data: { id: documentId, ...documentData } as T
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error reemplazando documento:`, error);
+      console.error(`[FirestoreCore] Error reemplazando documento:`, error);
       return {
         success: false,
         message: 'Error al reemplazar documento',
@@ -421,18 +401,15 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`🗑️ [FirestoreCore] Eliminando documento: ${collectionName}/${documentId}`);
-
       const docRef = doc(db, collectionName, documentId);
       await deleteDoc(docRef);
 
-      console.log(`✅ [FirestoreCore] Documento eliminado: ${documentId}`);
       return {
         success: true,
         message: 'Documento eliminado exitosamente'
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error eliminando documento:`, error);
+      console.error(`[FirestoreCore] Error eliminando documento:`, error);
       return {
         success: false,
         message: 'Error al eliminar documento',
@@ -472,7 +449,7 @@ export class FirestoreCore {
         data: docSnap.exists()
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error verificando existencia:`, error);
+      console.error(`[FirestoreCore] Error verificando existencia:`, error);
       return {
         success: false,
         message: 'Error al verificar existencia del documento',
@@ -505,7 +482,7 @@ export class FirestoreCore {
         error: result.error
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error contando documentos:`, error);
+      console.error(`[FirestoreCore] Error contando documentos:`, error);
       return {
         success: false,
         message: 'Error al contar documentos',
@@ -534,8 +511,6 @@ export class FirestoreCore {
     }
 
     try {
-      console.log(`📦 [FirestoreCore] Ejecutando operación por lotes: ${operations.length} operaciones`);
-
       const batch = writeBatch(db);
 
       for (const operation of operations) {
@@ -572,13 +547,12 @@ export class FirestoreCore {
 
       await batch.commit();
 
-      console.log(`✅ [FirestoreCore] Operación por lotes completada`);
       return {
         success: true,
         message: `Operación por lotes completada: ${operations.length} operaciones`
       };
     } catch (error) {
-      console.error(`❌ [FirestoreCore] Error en operación por lotes:`, error);
+      console.error(`[FirestoreCore] Error en operación por lotes:`, error);
       return {
         success: false,
         message: 'Error en operación por lotes',

@@ -77,8 +77,8 @@ export default function OfflinePage() {
       
       // If successful, go back
       router.back();
-    } catch (error) {
-      console.log('Still offline');
+    } catch {
+      // still offline
     } finally {
       setIsRetrying(false);
     }

@@ -8,9 +8,8 @@ import { FirestoreCore } from '@/lib/firestore/firestore-core';
 import { Metadata } from 'next';
 
 
-// Forzar contenido dinámico - los cambios del admin se reflejan inmediatamente
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// ISR: revalidar cada hora
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -148,12 +147,9 @@ const CONTACT_FALLBACK: ContactPageData = {
 
 async function getContactData(): Promise<ContactPageData> {
   try {
-    console.log('📄 [ContactPage] Loading contact data from Firestore...');
-
     const result = await FirestoreCore.getDocumentById('pages', 'contact');
 
     if (result.success && result.data) {
-      console.log('✅ [ContactPage] Contact data loaded from Firestore');
       const serializedData = serializeFirestoreData(result.data);
 
       // Deep merge con fallback para asegurar que todos los campos existan
@@ -174,10 +170,8 @@ async function getContactData(): Promise<ContactPageData> {
       } as ContactPageData;
     }
 
-    console.warn('⚠️ [FALLBACK] Contact Page: Sin datos en Firestore, usando fallback');
   } catch (error) {
     console.error('❌ [FIRESTORE] Contact Page error:', error);
-    console.warn('⚠️ [FALLBACK] Contact Page: Error detectado, usando fallback');
   }
 
   return CONTACT_FALLBACK;

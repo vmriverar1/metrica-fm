@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
     }
 
     const projects = result.data || [];
-    console.log(`✅ Found ${projects.length} portfolio projects in Firestore via FirestoreCore`);
 
     return NextResponse.json({
       success: true,

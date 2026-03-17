@@ -15,23 +15,16 @@ export default function ProyectosViviendaPage() {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        console.log('🏠 [ViviendaPage] Fetching category data for vivienda...');
-
         const result = await FirestoreCore.getDocumentById('portfolio_categories', 'vivienda');
-
-        console.log('🏠 [ViviendaPage] Firestore result:', result);
 
         if (result.success && result.data) {
           const category = result.data;
-          console.log('🏠 [ViviendaPage] Category found:', category);
-
           setCategoryData({
             title: category.seoTitle || `Proyectos de ${category.name}`,
             subtitle: category.seoDescription || category.description,
             backgroundImage: category.backgroundImage || ""
           });
         } else {
-          console.warn('🏠 [ViviendaPage] Category not found, using fallback');
           // Solo si no hay datos en Firestore, usar la imagen por defecto
           setCategoryData(prev => ({
             ...prev,

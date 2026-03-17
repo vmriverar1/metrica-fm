@@ -43,15 +43,12 @@ export async function GET(request: NextRequest) {
       );
 
       if (!isDomainAllowed) {
-        console.log(`Domain not allowed in production: ${parsedUrl.hostname}`);
-        return NextResponse.json({ 
+          return NextResponse.json({ 
           error: 'Domain not allowed',
           domain: parsedUrl.hostname,
           allowedDomains: allowedDomains 
         }, { status: 403 });
       }
-    } else {
-      console.log(`Development mode: allowing domain ${parsedUrl.hostname}`);
     }
 
     // Permitir HTTPS y HTTP para desarrollo local

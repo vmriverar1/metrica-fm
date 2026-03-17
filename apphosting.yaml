@@ -67,28 +67,41 @@ env:
     availability:
       - RUNTIME
 
-  # Firebase Admin SDK (Backend) - Para APIs server-side
-  # NOTA: Las credenciales están hardcodeadas en firebase-admin-safe.ts como fallback
-  # Si estas variables NO están configuradas, usará el fallback automáticamente
-  # Descomentar solo si quieres sobreescribir las credenciales hardcodeadas:
+  # Firebase Admin SDK (Backend) - Required for server-side APIs
+  - variable: FIREBASE_PROJECT_ID
+    value: metrica-fm
+    availability:
+      - BUILD
+      - RUNTIME
 
-  # - variable: FIREBASE_PROJECT_ID
-  #   value: metrica-fm
-  #   availability:
-  #     - BUILD
-  #     - RUNTIME
+  - variable: FIREBASE_CLIENT_EMAIL
+    value: firebase-adminsdk-fbsvc@metrica-fm.iam.gserviceaccount.com
+    availability:
+      - BUILD
+      - RUNTIME
 
-  # - variable: FIREBASE_CLIENT_EMAIL
-  #   value: firebase-adminsdk-fbsvc@metrica-fm.iam.gserviceaccount.com
-  #   availability:
-  #     - BUILD
-  #     - RUNTIME
+  - variable: FIREBASE_PRIVATE_KEY
+    secret: PRIVATE_KEY
+    availability:
+      - BUILD
+      - RUNTIME
 
-  # - variable: FIREBASE_PRIVATE_KEY
-  #   secret: PRIVATE_KEY
-  #   availability:
-  #     - BUILD
-  #     - RUNTIME
+  - variable: FIREBASE_STORAGE_BUCKET
+    value: metrica-fm.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Gmail SMTP credentials
+  - variable: GMAIL_USER
+    value: jmorales@metrica-dip.com
+    availability:
+      - RUNTIME
+
+  - variable: GMAIL_APP_PASSWORD
+    value: chsb ofcu qlrq lhwf
+    availability:
+      - RUNTIME
 
   # Otras variables de entorno
   - variable: NODE_ENV
@@ -103,8 +116,3 @@ env:
       - BUILD
       - RUNTIME
 
-  - variable: PRIVATE_KEY
-    secret: PRIVATE_KEY
-    availability:
-      - BUILD
-      - RUNTIME

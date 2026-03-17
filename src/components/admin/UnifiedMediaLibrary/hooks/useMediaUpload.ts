@@ -23,14 +23,13 @@ export function useMediaUpload(options: UseMediaUploadOptions): UseMediaUploadRe
     const filesToUpload = files || uploadFiles;
 
     if (filesToUpload.length === 0) {
-      console.warn('[useMediaUpload] No files to upload');
       return;
     }
 
     setUploading(true);
 
     try {
-      console.log(`[useMediaUpload] Starting upload of ${filesToUpload.length} files`);
+
 
       // TODO: Implement validation, resize, and WebP conversion
       // For now, simple upload
@@ -42,7 +41,7 @@ export function useMediaUpload(options: UseMediaUploadOptions): UseMediaUploadRe
       const response = await apiClient.upload('/api/admin/media/upload', formData);
 
       if (response.success) {
-        console.log('[useMediaUpload] Upload successful');
+
         setUploadFiles([]);
         if (onSuccess) {
           await onSuccess();

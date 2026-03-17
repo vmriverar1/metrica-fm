@@ -30,15 +30,14 @@ async function getPreviewData(previewId: string): Promise<PreviewData | null> {
       // Eliminar archivo expirado
       try {
         await fs.unlink(previewFile);
-      } catch (error) {
-        console.log('Error deleting expired preview:', error);
+      } catch {
+        // ignore cleanup errors
       }
       return null;
     }
 
     return previewData;
-  } catch (error) {
-    console.log('Preview not found or error reading:', error);
+  } catch {
     return null;
   }
 }

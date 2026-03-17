@@ -210,7 +210,6 @@ export class FileManager {
             await fs.unlink(lockPath);
           } catch (error) {
             // No es crítico si no se puede eliminar el lock
-            console.warn(`Warning: Could not remove lock file ${lockPath}:`, error.message);
           }
         };
       } catch (error) {
@@ -471,7 +470,6 @@ export class FileManager {
       
       return cleaned;
     } catch (error) {
-      console.warn('Warning: Could not cleanup expired locks:', error.message);
       return 0;
     }
   }

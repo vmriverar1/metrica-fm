@@ -702,27 +702,19 @@ export default function SystemConfigurationManager() {
     setHasUnsavedChanges(true)
   }
 
-  const handleExportConfiguration = (format: string) => {
-    console.log(`Exporting configuration in ${format} format`)
+  const handleExportConfiguration = (_format: string) => {
   }
 
   const handleImportConfiguration = () => {
-    console.log('Importing configuration')
   }
 
   const handleCreateBackup = () => {
-    console.log('Creating configuration backup')
   }
 
-  const handleRestoreBackup = (backupId: string) => {
-    console.log(`Restoring backup ${backupId}`)
+  const handleRestoreBackup = (_backupId: string) => {
   }
 
-  const handleApplyTemplate = (templateId: string) => {
-    const template = configTemplates.find(t => t.id === templateId)
-    if (template) {
-      console.log(`Applying template: ${template.name}`)
-    }
+  const handleApplyTemplate = (_templateId: string) => {
   }
 
   const toggleGroup = (groupName: string) => {

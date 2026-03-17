@@ -23,14 +23,6 @@ function ProjectPageContent({ params }: ProjectPageProps) {
   const { isLoading, allProjects } = usePortfolio();
   const project = useProject(resolvedParams.slug);
 
-  console.log('🔍 ProjectPageContent Debug:', {
-    resolvedParams,
-    isLoading,
-    totalProjects: allProjects.length,
-    project: project ? project.title : 'null',
-    searchingForSlug: resolvedParams.slug
-  });
-
   // Track project view (must be before any conditional returns to follow Rules of Hooks)
   useEffect(() => {
     if (project) {
@@ -68,7 +60,6 @@ function ProjectPageContent({ params }: ProjectPageProps) {
 
   // Solo llamar notFound si ya terminó de cargar y no hay proyecto
   if (!isLoading && !project) {
-    console.log('❌ No project found, calling notFound()');
     notFound();
   }
 
@@ -88,23 +79,9 @@ function ProjectPageContent({ params }: ProjectPageProps) {
 
   // Verificar que la categoría coincida (decodificar URL parameter)
   const decodedCategoria = decodeURIComponent(resolvedParams.categoria);
-  console.log('🔍 Category comparison:', {
-    projectCategory: project.category,
-    urlParameter: resolvedParams.categoria,
-    decodedCategoria: decodedCategoria,
-    match: project.category === decodedCategoria
-  });
 
-  // Check category match with better debugging
+  // Check category match
   if (project.category !== decodedCategoria) {
-    console.log('❌ Category mismatch, but allowing for debugging:', {
-      projectCategory: `"${project.category}"`,
-      decodedCategoria: `"${decodedCategoria}"`,
-      projectCategoryLength: project.category.length,
-      decodedCategoriaLength: decodedCategoria.length,
-      projectCategoryChars: [...project.category].map(c => c.charCodeAt(0)),
-      decodedCategoriaChars: [...decodedCategoria].map(c => c.charCodeAt(0))
-    });
     // Temporarily allow mismatch for debugging
     // notFound();
   }

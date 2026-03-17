@@ -154,20 +154,6 @@ class Logger {
     };
     const reset = '\x1b[0m';
     
-    console.log(
-      `${colors[entry.level]}[${entry.level.toUpperCase()}]${reset} ` +
-      `${entry.timestamp.toISOString()} ` +
-      `${entry.source}:${entry.category} - ${entry.message}`
-    );
-
-    if (entry.metadata) {
-      console.log('Metadata:', entry.metadata);
-    }
-
-    if (entry.stack) {
-      console.log('Stack trace:', entry.stack);
-    }
-
     // Send to external logging service
     this.sendToExternalLogger(entry);
   }
@@ -347,7 +333,6 @@ class MetricsCollector {
     const startTime = this.timers.get(key);
     
     if (!startTime) {
-      console.warn(`Timer '${name}' was not started`);
       return 0;
     }
 
@@ -661,14 +646,12 @@ class AlertManager {
            `Triggered at: ${alert.triggeredAt?.toISOString()}`;
   }
 
-  private async sendEmailNotification(email: string, subject: string, message: string): Promise<void> {
+  private async sendEmailNotification(_email: string, _subject: string, _message: string): Promise<void> {
     // In production, integrate with email service
-    console.log(`Email notification sent to ${email}: ${subject}`);
   }
 
-  private async sendSlackNotification(channel: string, message: string): Promise<void> {
+  private async sendSlackNotification(_channel: string, _message: string): Promise<void> {
     // In production, integrate with Slack API
-    console.log(`Slack notification sent to ${channel}: ${message}`);
   }
 
   private async sendWebhookNotification(url: string, alert: Alert): Promise<void> {
@@ -686,9 +669,8 @@ class AlertManager {
     });
   }
 
-  private async sendSMSNotification(phone: string, message: string): Promise<void> {
+  private async sendSMSNotification(_phone: string, _message: string): Promise<void> {
     // In production, integrate with SMS service (Twilio, etc.)
-    console.log(`SMS notification sent to ${phone}: ${message}`);
   }
 
   getAlerts(filters?: { status?: Alert['status']; severity?: Alert['severity'] }): Alert[] {

@@ -19,7 +19,6 @@ export async function GET(
     const workboxPath = join(process.cwd(), 'public', filename);
 
     if (!existsSync(workboxPath)) {
-      console.warn(`Workbox file not found: ${filename}`);
       return new NextResponse('Workbox file not found', { status: 404 });
     }
 

@@ -133,12 +133,6 @@ export const useFileValidation = (config: ValidationConfig = {}): UseFileValidat
 
   // Validar lista de archivos
   const validateFiles = useCallback((files: File[], existingImages: string[]) => {
-    console.log('🔍 [FileValidation] Validando archivos:', {
-      filesCount: files.length,
-      existingCount: existingImages.length,
-      config: { caseSensitive, checkSimilarNames, autoRename }
-    });
-
     // Extraer solo nombres de archivos de las URLs existentes
     const existingFileNames = existingImages.map(url => {
       const urlParts = url.split('/');
@@ -163,19 +157,8 @@ export const useFileValidation = (config: ValidationConfig = {}): UseFileValidat
         conflictType
       };
 
-      if (isDuplicate) {
-        console.log(`⚠️ [FileValidation] Conflicto detectado:`, {
-          original: file.name,
-          suggested: suggestedName,
-          type: conflictType
-        });
-      }
-
       return result;
     });
-
-    const duplicatesCount = results.filter(r => r.isDuplicate).length;
-    console.log(`✅ [FileValidation] Validación completada: ${duplicatesCount}/${files.length} duplicados`);
 
     return results;
   }, [caseSensitive, checkSimilarNames, autoRename, detectConflictType, generateUniqueName]);
@@ -190,11 +173,6 @@ export const useFileValidation = (config: ValidationConfig = {}): UseFileValidat
     conflicts: FileValidationResult[],
     resolutions: Record<string, DuplicateResolution>
   ) => {
-    console.log('🔧 [FileValidation] Resolviendo conflictos:', {
-      conflictsCount: conflicts.length,
-      resolutions: Object.keys(resolutions).length
-    });
-
     const validFiles: File[] = [];
     const renamedFiles: Record<string, string> = {};
 
@@ -202,14 +180,12 @@ export const useFileValidation = (config: ValidationConfig = {}): UseFileValidat
       const resolution = resolutions[conflict.originalName];
 
       if (!resolution) {
-        console.warn(`⚠️ [FileValidation] Sin resolución para: ${conflict.originalName}`);
         return;
       }
 
       switch (resolution.action) {
         case 'replace':
           validFiles.push(conflict.file);
-          console.log(`🔄 [FileValidation] Reemplazando: ${conflict.originalName}`);
           break;
 
         case 'rename':
@@ -223,20 +199,15 @@ export const useFileValidation = (config: ValidationConfig = {}): UseFileValidat
 
           validFiles.push(renamedFile);
           renamedFiles[conflict.originalName] = newName;
-          console.log(`📝 [FileValidation] Renombrando: ${conflict.originalName} → ${newName}`);
           break;
 
         case 'skip':
-          console.log(`⏭️ [FileValidation] Omitiendo: ${conflict.originalName}`);
           break;
 
         default:
-          console.warn(`⚠️ [FileValidation] Acción desconocida: ${resolution.action}`);
           break;
       }
     });
-
-    console.log(`✅ [FileValidation] Conflictos resueltos: ${validFiles.length} archivos válidos`);
 
     return { validFiles, renamedFiles };
   }, []);

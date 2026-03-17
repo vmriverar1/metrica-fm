@@ -849,12 +849,11 @@ export default function IntegrationManager() {
     setIsLoading(true)
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log(`Testing connection for integration: ${integrationId}`)
+    void integrationId;
     setIsLoading(false)
   }
 
   const handleCreateIntegration = () => {
-    console.log('Creating new integration')
   }
 
   const handleToggleIntegration = (integrationId: string, enabled: boolean) => {
@@ -865,16 +864,13 @@ export default function IntegrationManager() {
     ))
   }
 
-  const handleSyncNow = (integrationId: string) => {
-    console.log(`Starting sync for integration: ${integrationId}`)
+  const handleSyncNow = (_integrationId: string) => {
   }
 
-  const handleRetryJob = (jobId: string) => {
-    console.log(`Retrying job: ${jobId}`)
+  const handleRetryJob = (_jobId: string) => {
   }
 
-  const handleCancelJob = (jobId: string) => {
-    console.log(`Cancelling job: ${jobId}`)
+  const handleCancelJob = (_jobId: string) => {
   }
 
   const getStatusIcon = (status: string) => {

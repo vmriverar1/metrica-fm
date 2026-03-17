@@ -64,8 +64,7 @@ const validateImageDimensions = async (buffer: Buffer): Promise<{ width: number;
       width: metadata.width || 0,
       height: metadata.height || 0
     };
-  } catch (error) {
-    console.warn('[VALIDATION] Error getting image dimensions:', error);
+  } catch {
     return { width: 0, height: 0 };
   }
 };
@@ -103,7 +102,6 @@ const processImage = async (
         fit: 'inside' // Mantiene aspect ratio
       });
       wasResized = true;
-      console.log(`[PROCESSING] Resizing image: ${originalWidth}px width → ${config.maxWidth}px width (height auto)`);
     }
 
     // Convertir a WebP si está habilitado
@@ -115,7 +113,6 @@ const processImage = async (
       });
       finalType = 'image/webp';
       wasConverted = true;
-      console.log(`[PROCESSING] Converting to WebP: ${originalType} → ${finalType}`);
     } else if (!wasConverted) {
       // Si no se convierte a WebP, aplicar optimizaciones al formato original
       if (originalType === 'image/jpeg' || originalType === 'image/jpg') {
@@ -131,8 +128,6 @@ const processImage = async (
     const finalWidth = finalMetadata.width || 0;
     const finalHeight = finalMetadata.height || 0;
     const compressionRatio = processedBuffer.length / buffer.length;
-
-    console.log(`[PROCESSING] Complete: ${originalWidth}x${originalHeight} → ${finalWidth}x${finalHeight}, ${Math.round(buffer.length/1024)}KB → ${Math.round(processedBuffer.length/1024)}KB (${Math.round(compressionRatio * 100)}%)`);
 
     return {
       processedBuffer,
@@ -162,23 +157,9 @@ const processImage = async (
 // Funciones de metadata y duplicados eliminadas (Firebase Storage maneja esto automáticamente)
 
 export async function POST(request: NextRequest) {
-  console.log('[UPLOAD-FIREBASE] POST endpoint called at:', new Date().toISOString());
-  console.log('[UPLOAD-FIREBASE] Environment:', {
-    NODE_ENV: process.env.NODE_ENV,
-    NEXT_PHASE: process.env.NEXT_PHASE,
-    BUILDING: process.env.BUILDING,
-    hasFirebaseProjectId: !!process.env.FIREBASE_PROJECT_ID,
-    hasFirebaseConfig: !!process.env.FIREBASE_CONFIG,
-    hasGoogleApplicationCredentials: !!process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    hasK_SERVICE: !!process.env.K_SERVICE,
-    K_SERVICE: process.env.K_SERVICE
-  });
-
   const startTime = Date.now();
 
   try {
-    console.log('[UPLOAD-FIREBASE] Starting upload to Firebase Storage...');
-
     const formData = await request.formData();
 
     // Soportar tanto 'file' (singular) como 'files' (plural)
@@ -199,8 +180,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`[UPLOAD-FIREBASE] Processing ${files.length} files for Firebase Storage...`);
-
     const results = [];
     const errors = [];
 
@@ -209,8 +188,6 @@ export async function POST(request: NextRequest) {
       const fileId = uuidv4();
 
       try {
-        console.log(`[UPLOAD-FIREBASE] Processing file ${i + 1}/${files.length}: ${file.name}`);
-
         // Validaciones básicas
         if (!ALLOWED_TYPES.includes(file.type)) {
           errors.push({
@@ -236,7 +213,6 @@ export async function POST(request: NextRequest) {
         // Generar carpeta con fecha (formato: images/DD-MM-YYYY o videos/DD-MM-YYYY)
         const baseFolderPath = generateDateFolder();
         const folderPath = isVideo ? baseFolderPath.replace('images/', 'videos/') : baseFolderPath;
-        console.log(`[UPLOAD-FIREBASE] Using folder: ${folderPath} (${isVideo ? 'video' : 'image'})`);
 
         // Generar nombre único para el archivo
         let fileName = generateUniqueFileName(file.name);
@@ -256,10 +232,6 @@ export async function POST(request: NextRequest) {
           finalDimensions = originalDimensions;
 
           if (enableProcessing && file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
-            // Log para imágenes grandes (útil para debugging)
-            if (file.size > 10 * 1024 * 1024) {
-              console.log(`[UPLOAD-FIREBASE] Procesando imagen grande de cámara profesional: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB, ${originalDimensions.width}x${originalDimensions.height}px)`);
-            }
             const processed = await processImage(originalBuffer, file.type);
             finalBuffer = processed.processedBuffer;
             finalType = processed.finalType;
@@ -276,23 +248,18 @@ export async function POST(request: NextRequest) {
 
           // Validar tamaño del archivo PROCESADO (solo para imágenes)
           if (finalBuffer.length > MAX_PROCESSED_FILE_SIZE) {
-            console.error(`[UPLOAD-FIREBASE] Archivo procesado sigue siendo muy grande: ${Math.round(finalBuffer.length / 1024 / 1024)}MB`);
             errors.push({
               file: file.name,
               error: `El archivo procesado (${(finalBuffer.length / 1024 / 1024).toFixed(2)}MB) sigue excediendo el límite de ${MAX_PROCESSED_FILE_SIZE / 1024 / 1024}MB. Intente con una imagen de menor resolución.`
             });
             continue;
           }
-        } else {
-          // Para videos, simplemente log el tamaño
-          console.log(`[UPLOAD-FIREBASE] Subiendo video sin procesar: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
         }
 
         // Determinar content type
         const contentType = finalType;
 
         // Subir a Firebase Storage
-        console.log(`[UPLOAD-FIREBASE] Uploading ${fileName} to ${folderPath}...`);
         const uploadResult = await uploadToStorage(
           finalBuffer,
           fileName,
@@ -301,7 +268,6 @@ export async function POST(request: NextRequest) {
         );
 
         if (!uploadResult.success || !uploadResult.downloadURL) {
-          console.error(`[UPLOAD-FIREBASE] Upload failed:`, uploadResult.error);
           errors.push({
             file: file.name,
             error: uploadResult.error || 'Upload to Firebase failed'
@@ -311,7 +277,6 @@ export async function POST(request: NextRequest) {
 
         const downloadURL = uploadResult.downloadURL;
 
-        // Agregar a resultados
         results.push({
           id: `firebase-${Buffer.from(`${folderPath}/${fileName}`).toString('base64')}`,
           name: fileName,
@@ -333,8 +298,6 @@ export async function POST(request: NextRequest) {
           }
         });
 
-        console.log(`[UPLOAD-FIREBASE] File uploaded successfully: ${downloadURL} (${Math.round(finalBuffer.length / 1024)}KB)`);
-
       } catch (fileError) {
         console.error(`[UPLOAD] Error processing file ${file.name}:`, fileError);
         errors.push({
@@ -346,8 +309,6 @@ export async function POST(request: NextRequest) {
 
     const processingTime = Date.now() - startTime;
     const totalOptimizations = results.filter(r => r.optimizations?.wasResized || r.optimizations?.wasConverted).length;
-
-    console.log(`[UPLOAD-FIREBASE] Process completed in ${processingTime}ms. ${results.length}/${files.length} files uploaded to Firebase Storage. ${totalOptimizations} optimized.`);
 
     // Si es un solo archivo (probablemente desde ImageField), devolver respuesta simplificada
     if (files.length === 1 && results.length === 1) {

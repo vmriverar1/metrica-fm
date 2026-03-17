@@ -143,8 +143,7 @@ export async function PUT(
             await setDoc(docRef, processedData);
             firestoreSaved = true;
           }
-        } catch (firestoreError) {
-          console.warn(`Failed to save ${slug} to Firestore:`, firestoreError);
+        } catch {
           // Continuar con JSON como fallback
         }
 

@@ -38,17 +38,11 @@ export default function AuthProvider({
           setUser(authUser);
           setLoading(false);
 
-          if (authUser) {
-            console.log('[AuthProvider] User authenticated:', authUser.email);
-          } else {
-            console.log('[AuthProvider] No user authenticated');
-          }
         });
 
         // If initialization failed, set loading to false
         if (!unsubscribe) {
           setLoading(false);
-          console.warn('[AuthProvider] Failed to initialize auth listener');
         }
 
         // Cleanup on unmount

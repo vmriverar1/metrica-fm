@@ -94,11 +94,9 @@ async function getCompromisoData(): Promise<CompromisoPageData> {
       } as CompromisoPageData;
     }
 
-    console.warn('⚠️ [FALLBACK] Compromiso Page: Sin datos en Firestore, usando fallback');
     return COMPROMISO_FALLBACK;
   } catch (error) {
     console.error('Error loading compromiso data:', error);
-    console.warn('⚠️ [FALLBACK] Compromiso Page: Error detectado, usando fallback');
     return COMPROMISO_FALLBACK;
   }
 }

@@ -228,7 +228,6 @@ export function useOfflineQueue() {
         return await operation();
       } catch (error) {
         // If online operation fails, queue it
-        console.warn('Online operation failed, queuing for later:', error);
 
         // Import background sync dynamically to avoid SSR issues
         const { backgroundSync } = await import('../../lib/service-worker/background-sync');

@@ -56,7 +56,6 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
   
   // Usar SOLO datos del JSON - sin fallbacks hardcodeados
   const timelineEvents = historiaData?.timeline_events || [];
-  console.log('📅 TimelineHorizontal: Eventos recibidos:', timelineEvents.length, timelineEvents);
   
   // Generar datos extendidos dinámicamente
   const hitosExtendidos = timelineEvents.length > 0 
@@ -78,11 +77,6 @@ export default function TimelineHorizontal({ historiaData }: TimelineHorizontalP
       }))
     : [];
     
-  console.log('📊 TimelineHorizontal: Datos procesados:', { 
-    hitosData: hitosData.length, 
-    hitosExtendidos: Object.keys(hitosExtendidos).length 
-  });
-  
   // Referencias para funcionalidad auxiliar
   const isInSectionRef = useRef(false);
 

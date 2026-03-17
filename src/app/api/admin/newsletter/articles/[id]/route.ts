@@ -21,8 +21,7 @@ async function shouldUseFirestore(): Promise<boolean> {
   try {
     const { isDemoMode } = await import('@/lib/firebase/config');
     return !isDemoMode; // Usar Firestore si no estamos en modo demo
-  } catch (error) {
-    console.warn('Error verificando modo Firebase:', error);
+  } catch {
     return false; // Fallback a JSON
   }
 }

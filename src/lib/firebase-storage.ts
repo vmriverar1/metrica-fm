@@ -22,27 +22,13 @@ function getStorageBucket(app: any) {
   const isFirebaseAppHosting = !!process.env.K_SERVICE;
   const isProduction = process.env.NODE_ENV === 'production';
 
-  // Log para debugging
-  console.log('[getStorageBucket] Environment check:', {
-    isFirebaseAppHosting,
-    isProduction,
-    K_SERVICE: process.env.K_SERVICE
-  });
-
   if (isFirebaseAppHosting || isProduction) {
-    // En Firebase App Hosting o producción, intentar usar el bucket default primero
     try {
-      const bucket = getStorage(app).bucket();
-      console.log('[getStorageBucket] Using default bucket from app config:', bucket.name);
-      return bucket;
-    } catch (error) {
-      console.log('[getStorageBucket] Default bucket failed:', error);
-      console.log('[getStorageBucket] Falling back to explicit bucket:', STORAGE_BUCKET_NAME);
+      return getStorage(app).bucket();
+    } catch {
       return getStorage(app).bucket(STORAGE_BUCKET_NAME);
     }
   } else {
-    // En local, siempre usar bucket explícito
-    console.log('[getStorageBucket] Local - using explicit bucket:', STORAGE_BUCKET_NAME);
     return getStorage(app).bucket(STORAGE_BUCKET_NAME);
   }
 }
@@ -63,30 +49,22 @@ export async function uploadToStorage(
   contentType: string
 ): Promise<{ success: boolean; downloadURL?: string; error?: string }> {
   try {
-    console.log('[uploadToStorage] Starting upload:', { fileName, folder, contentType, size: file.length });
-
     const { app } = await getFirebaseAdmin();
 
     if (!app) {
-      console.error('[uploadToStorage] Firebase Admin not initialized');
       return {
         success: false,
         error: 'Firebase Admin not initialized'
       };
     }
 
-    // Obtener bucket usando el helper
     const bucket = getStorageBucket(app);
-    console.log('[uploadToStorage] Using bucket:', bucket.name);
 
     // Construct full path
     const filePath = `${folder}/${fileName}`;
-    console.log('[uploadToStorage] Full path:', filePath);
 
     const fileUpload = bucket.file(filePath);
 
-    // Upload file
-    console.log('[uploadToStorage] Saving file to bucket...');
     await fileUpload.save(file, {
       metadata: {
         contentType,
@@ -96,48 +74,23 @@ export async function uploadToStorage(
         }
       }
     });
-    console.log('[uploadToStorage] File saved successfully');
 
     // Make file publicly accessible
-    console.log('[uploadToStorage] Making file public...');
     try {
       await fileUpload.makePublic();
-      console.log('[uploadToStorage] File is now public');
-    } catch (publicError) {
-      console.error('[uploadToStorage] Error making file public:', publicError);
+    } catch {
       // Continuar de todos modos, tal vez las reglas ya lo hacen público
     }
 
-    // Verificar que el archivo existe
-    const [exists] = await fileUpload.exists();
-    console.log('[uploadToStorage] File exists after upload:', exists);
-
-    // Obtener metadata para verificar
-    if (exists) {
-      const [metadata] = await fileUpload.getMetadata();
-      console.log('[uploadToStorage] File metadata:', {
-        name: metadata.name,
-        bucket: metadata.bucket,
-        contentType: metadata.contentType,
-        size: metadata.size,
-        public: metadata.metadata
-      });
-    }
-
-    // Get public URL - usar el formato correcto
-    // IMPORTANTE: El bucket name en la URL debe ser el correcto
+    // Get public URL
     const publicBucketName = bucket.name.replace('gs://', '');
     const downloadURL = `https://storage.googleapis.com/${publicBucketName}/${filePath}`;
-    console.log('[uploadToStorage] Generated download URL:', downloadURL);
-    console.log('[uploadToStorage] Bucket name used:', publicBucketName);
-    console.log('[uploadToStorage] File path used:', filePath);
 
     return {
       success: true,
       downloadURL
     };
   } catch (error) {
-    console.error('[uploadToStorage] Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -164,34 +117,24 @@ export async function listStorageFiles(folder?: string): Promise<{
   }>;
   error?: string;
 }> {
-  console.log('[listStorageFiles] Starting with folder:', folder);
-
   try {
     const { app } = await getFirebaseAdmin();
 
     if (!app) {
-      console.error('[listStorageFiles] Firebase Admin not initialized');
       return {
         success: false,
         error: 'Firebase Admin not initialized'
       };
     }
 
-    // Obtener bucket usando el helper
     const bucket = getStorageBucket(app);
-    console.log('[listStorageFiles] Using bucket:', bucket.name);
-
-    // List files with optional prefix
-    console.log('[listStorageFiles] Listing files with prefix:', folder || 'images/');
 
     let files;
     try {
       [files] = await bucket.getFiles({
         prefix: folder || 'images/'
       });
-      console.log('[listStorageFiles] Found', files.length, 'files');
     } catch (listError) {
-      console.error('[listStorageFiles] Error listing files:', listError);
       throw listError;
     }
 
@@ -200,11 +143,8 @@ export async function listStorageFiles(folder?: string): Promise<{
       files.map(async (file) => {
         const [metadata] = await file.getMetadata();
 
-        // Get public URL - asegurar formato correcto
         const publicBucketName = bucket.name.replace('gs://', '');
         const downloadURL = `https://storage.googleapis.com/${publicBucketName}/${file.name}`;
-
-        console.log('[listStorageFiles] File:', file.name, '-> URL:', downloadURL);
 
         return {
           name: file.name.split('/').pop() || file.name,
@@ -223,7 +163,6 @@ export async function listStorageFiles(folder?: string): Promise<{
       files: fileList
     };
   } catch (error) {
-    console.error('[listStorageFiles] Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -272,7 +211,6 @@ export async function getDownloadURL(filePath: string): Promise<{
       downloadURL
     };
   } catch (error) {
-    console.error('[getDownloadURL] Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -319,7 +257,6 @@ export async function deleteFromStorage(filePath: string): Promise<{
       success: true
     };
   } catch (error) {
-    console.error('[deleteFromStorage] Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -380,7 +317,6 @@ export async function getFileMetadata(filePath: string): Promise<{
       }
     };
   } catch (error) {
-    console.error('[getFileMetadata] Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

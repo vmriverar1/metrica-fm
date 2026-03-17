@@ -78,10 +78,7 @@ export function InstallPrompt() {
       await deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
 
-      if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
+      if (outcome !== 'accepted') {
         localStorage.setItem('pwa-install-dismissed', Date.now().toString());
       }
     } catch (error) {

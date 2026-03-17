@@ -150,7 +150,6 @@ export class OptimizedPortfolioCategoriesService {
 
       return categories;
     } catch (error) {
-      console.error('Error obteniendo categorías optimizado:', error);
       throw new Error('Failed to fetch portfolio categories');
     }
   }
@@ -190,7 +189,6 @@ export class OptimizedPortfolioCategoriesService {
 
       return categoriesWithCounts;
     } catch (error) {
-      console.error('Error obteniendo categorías con contadores:', error);
       // Fallback a método original
       return this.obtenerTodas();
     }
@@ -223,7 +221,6 @@ export class OptimizedPortfolioCategoriesService {
 
       return categories;
     } catch (error) {
-      console.error('Error obteniendo categorías destacadas:', error);
       throw new Error('Failed to fetch featured categories');
     }
   }
@@ -297,7 +294,6 @@ export class OptimizedPortfolioProjectsService {
       };
 
     } catch (error) {
-      console.error('Error obteniendo proyectos paginados:', error);
       throw new Error('Failed to fetch paginated projects');
     }
   }
@@ -336,7 +332,6 @@ export class OptimizedPortfolioProjectsService {
 
       return projects;
     } catch (error) {
-      console.error('Error obteniendo proyectos por categoría:', error);
       throw new Error('Failed to fetch projects by category');
     }
   }
@@ -385,7 +380,6 @@ export class OptimizedPortfolioProjectsService {
 
       return metadata;
     } catch (error) {
-      console.error('Error obteniendo metadata de proyectos:', error);
       throw new Error('Failed to fetch projects metadata');
     }
   }
@@ -441,7 +435,6 @@ export class OptimizedPortfolioProjectsService {
 
       return complete;
     } catch (error) {
-      console.error('Error obteniendo proyecto completo por slug:', error);
       throw new Error('Failed to fetch complete project by slug');
     }
   }
@@ -494,7 +487,6 @@ export class OptimizedPortfolioImagesService {
 
       return images;
     } catch (error) {
-      console.error('Error obteniendo imágenes optimizado:', error);
       throw new Error('Failed to fetch project images');
     }
   }
@@ -532,7 +524,6 @@ export class OptimizedPortfolioImagesService {
 
       return image;
     } catch (error) {
-      console.error('Error obteniendo imagen featured:', error);
       return null;
     }
   }
@@ -595,7 +586,6 @@ export class OptimizedPortfolioStatsService {
 
       return stats;
     } catch (error) {
-      console.error('Error obteniendo estadísticas optimizadas:', error);
       throw new Error('Failed to fetch optimized portfolio statistics');
     }
   }
@@ -604,13 +594,8 @@ export class OptimizedPortfolioStatsService {
    * Crear documento agregado para dashboard (ejecutar periódicamente)
    */
   static async crearDocumentoAgregado(): Promise<void> {
-    try {
-      // TODO: Implementar Cloud Function que actualice un documento
-      // agregado con todas las estadísticas pre-calculadas
-      console.log('Agregated document creation scheduled');
-    } catch (error) {
-      console.error('Error creando documento agregado:', error);
-    }
+    // TODO: Implementar Cloud Function que actualice un documento
+    // agregado con todas las estadísticas pre-calculadas
   }
 }
 
@@ -648,7 +633,6 @@ export class OptimizedPortfolioBatchService {
 
       return projectIds;
     } catch (error) {
-      console.error('Error en batch creation:', error);
       throw new Error('Failed to create projects in batch');
     }
   }
@@ -687,7 +671,6 @@ export class OptimizedPortfolioBatchService {
       PortfolioCache.clear('portfolio:categories');
 
     } catch (error) {
-      console.error('Error actualizando contadores batch:', error);
       throw new Error('Failed to update counters in batch');
     }
   }

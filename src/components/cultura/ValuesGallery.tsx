@@ -117,8 +117,6 @@ function ValueModal({ value, onClose }: ValueModalProps) {
                 priority
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
-                  console.error('Modal image failed to load:', value.images[currentImageIndex]);
-
                   // Sistema de fallback para el modal
                   if (!target.dataset.modalFallbackTried) {
                     target.dataset.modalFallbackTried = "1";
@@ -301,15 +299,6 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
           {(values || []).map((value, index) => {
             const IconComponent = (iconMap as any)[value.icon] || Target;
 
-            // Debug: verificar qué imágenes están llegando
-            console.log(`Value ${index}:`, {
-              title: value.title,
-              hasImages: !!value.images,
-              imagesLength: value.images?.length,
-              firstImage: value.images?.[0],
-              allImages: value.images
-            });
-            
             return (
               <motion.div
                 key={value.id}
@@ -352,8 +341,6 @@ export default function ValuesGallery({ title, subtitle, values }: ValuesGallery
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
                           const parent = target.parentElement as HTMLDivElement;
-                          console.error('Image failed to load:', value.images[0]);
-
                           // Aplicar fallback al div padre
                           if (!parent.dataset.fallbackTried) {
                             parent.dataset.fallbackTried = "1";

@@ -41,31 +41,20 @@ const PagesManagement = () => {
 
   // Manejar edición de página
   const handleEditPage = async (page: PageData) => {
-    console.log('🔧 [EDIT PAGE] Preparando edición para:', page.name);
     setLoading(true);
 
     try {
       // Obtener el nombre correcto del documento en Firestore
       const firestoreDocName = getFirestoreDocumentName(page.name);
-      console.log('🔥 [FIRESTORE] Loading data for:', page.name, '→', firestoreDocName);
-
-      // Logging específico para cultura
-      if (page.name === 'cultura') {
-        console.log('🎨 [CULTURA] Intentando cargar documento cultura desde Firestore');
-      }
 
       const result = await FirestoreCore.getDocumentById('pages', firestoreDocName);
 
       if (result.success && result.data) {
-        console.log('🔥 [FIRESTORE] Data loaded successfully for', page.name, ':', result.data);
-        console.log('🔥 [FIRESTORE] Document keys:', Object.keys(result.data));
-
         // Mapeo especial para campos anidados según el tipo de página (memoizado)
         let mappedData = result.data;
 
         // Para home: transformar statistics para compatibilidad con statistics-grid
         if (page.name === 'home' && result.data.stats?.statistics) {
-          console.log('📋 [HOME] Transformando stats.statistics:', result.data.stats.statistics);
 
           // Transformar del formato Firestore al formato EnhancedStatisticsManager para home
           const transformedStats = result.data.stats.statistics.map((stat: any, index: number) => {
@@ -84,8 +73,6 @@ const PagesManagement = () => {
               label: stat.label || 'Sin etiqueta'
             };
           });
-
-          console.log('📋 [HOME] Estadísticas transformadas:', transformedStats);
 
           mappedData = {
             ...result.data,
@@ -117,22 +104,7 @@ const PagesManagement = () => {
         setSelectedPage(enrichedPage);
         setIsEditing(true);
         setActiveTab('edit');
-
-        console.log('🔥 [FIRESTORE] Page ready for editing with Firestore data:', enrichedPage);
       } else {
-        console.warn('⚠️ [FIRESTORE] No data found in Firestore for:', page.name);
-        console.log('📝 [FALLBACK] Resultado completo:', result);
-        console.log('📝 [FALLBACK] result.success:', result.success);
-        console.log('📝 [FALLBACK] result.data:', result.data);
-        console.log('📝 [FALLBACK] result.error:', result.error);
-
-        // Logging específico para cultura
-        if (page.name === 'cultura') {
-          console.log('🎨 [CULTURA] No se encontró documento en Firestore, creando datos básicos');
-        }
-
-        console.log('📝 [FALLBACK] Usando datos básicos de la tabla');
-
         // Fallback: usar datos básicos si no hay datos en Firestore
         const basicPage = {
           ...page,
@@ -147,8 +119,6 @@ const PagesManagement = () => {
         setSelectedPage(basicPage);
         setIsEditing(true);
         setActiveTab('edit');
-
-        console.log('🔥 [FIRESTORE] Page ready for editing (creation mode):', basicPage);
       }
     } catch (error) {
       console.error('❌ [FIRESTORE] Error loading page data:', error);
@@ -160,7 +130,6 @@ const PagesManagement = () => {
 
   // Manejar vista previa de página
   const handleViewPage = (page: PageData) => {
-    console.log('👁️ [VIEW PAGE] Cargando vista previa:', page.name);
     setSelectedPage(page);
     setActiveTab('view');
   };
@@ -193,18 +162,14 @@ const PagesManagement = () => {
     if (!selectedPage) return;
 
     try {
-      console.log('🔥 [FIRESTORE] Saving page data:', data);
-
       // Obtener el nombre correcto del documento en Firestore para guardar
       const firestoreDocName = getFirestoreDocumentName(selectedPage.name);
-      console.log('🔥 [FIRESTORE] Saving to document:', selectedPage.name, '→', firestoreDocName);
 
       // Mapeo especial al guardar para campos anidados
       let dataToSave = { ...data };
 
       // Para home: transformar de vuelta stats.statistics si es necesario
       if (selectedPage.name === 'home' && data.stats?.statistics) {
-        console.log('📋 [HOME SAVE] Transformando estadísticas de vuelta al formato Firestore');
 
         // Las estadísticas de home vienen ya en el formato correcto del statistics-grid
         // Solo asegurar que tengan la estructura esperada
@@ -225,22 +190,18 @@ const PagesManagement = () => {
           }
         };
 
-        console.log('📋 [HOME SAVE] Estadísticas de home preparadas:', homeStats);
       }
 
       // Para otras páginas (como historia), los datos ya vienen en formato correcto desde DynamicForm
 
       // Limpiar valores undefined antes de guardar
       const cleanedData = cleanUndefinedValues(dataToSave);
-      console.log('🔥 [FIRESTORE] Final data to save (cleaned):', cleanedData);
 
       // Guardar datos reales en Firestore usando createDocumentWithId con merge: true
       // Esto hace un "upsert": crea el documento si no existe, actualiza si existe
       const result = await FirestoreCore.createDocumentWithId('pages', firestoreDocName, cleanedData, true);
 
       if (result.success) {
-        console.log('🔥 [FIRESTORE] Data saved successfully to Firestore');
-
         // Actualizar la tabla local con la nueva fecha de modificación
         const updatedPages = pages.map(page =>
           page.id === selectedPage.id

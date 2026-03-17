@@ -115,7 +115,7 @@ const PortfolioDashboard = () => {
 
         return '';
       } catch (error) {
-        console.warn('Error formatting date:', dateValue, error);
+  
         return '';
       }
     };

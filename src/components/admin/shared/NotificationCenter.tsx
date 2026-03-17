@@ -550,7 +550,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
     
     const interval = setInterval(() => {
       // In a real implementation, this would connect to WebSocket or SSE
-      console.log('Checking for new notifications...');
+
     }, 30000);
     
     return () => clearInterval(interval);

@@ -97,7 +97,6 @@ class BackgroundSyncManager {
 
           // Remove if max retries reached
           if (taskInQueue.retryCount >= taskInQueue.maxRetries) {
-            console.warn(`Task ${task.id} exceeded max retries, removing`);
             queue.tasks = queue.tasks.filter(t => t.id !== task.id);
             await this.handleFailedTask(task);
           }
@@ -198,7 +197,6 @@ class BackgroundSyncManager {
   // Handle online/offline events
   private handleOnline(): void {
     this.isOnline = true;
-    console.log('Back online - processing queues');
 
     // Process all queues
     this.queues.forEach((_, queueName) => {
@@ -208,7 +206,6 @@ class BackgroundSyncManager {
 
   private handleOffline(): void {
     this.isOnline = false;
-    console.log('Gone offline - tasks will be queued');
   }
 
   // Handle failed tasks (could send to error reporting)

@@ -34,7 +34,7 @@ const PageEditor: React.FC<PageEditorProps> = ({
 }) => {
   // Esquemas de formulario por tipo de página
   const getFormSchema = (pageName: string) => {
-    console.log('🔍 [GET FORM SCHEMA] Buscando schema para:', pageName);
+
     switch (pageName) {
       case 'historia':
         return historiaSchema;
@@ -115,19 +115,6 @@ const PageEditor: React.FC<PageEditorProps> = ({
       </CardHeader>
       <CardContent>
         {/* Debug específico para historia */}
-        {selectedPage.name === 'historia' && (() => {
-          const schema = getFormSchema(selectedPage.name);
-          console.log('🔧 [DEBUG HISTORIA] Pre-render check:', {
-            pageName: selectedPage.name,
-            hasSchema: !!schema,
-            schemaTitle: schema?.title,
-            groupsCount: schema?.groups?.length || 0,
-            fieldsCount: schema?.fields?.length || 0,
-            groups: schema?.groups,
-            initialValues: selectedPage
-          });
-          return null;
-        })()}
 
         {/* Formulario para todas las páginas */}
         <DynamicForm

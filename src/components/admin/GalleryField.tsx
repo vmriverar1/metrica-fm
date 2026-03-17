@@ -327,7 +327,7 @@ const GalleryField: React.FC<GalleryFieldProps> = ({
         const updatedItems = [...galleryItems, ...newItems];
         setGalleryItems(updatedItems);
         updateParent(updatedItems);
-        console.log(`✅ [GALLERY FIELD] ${newItems.length} files uploaded successfully`);
+
       }
 
     } catch (error) {

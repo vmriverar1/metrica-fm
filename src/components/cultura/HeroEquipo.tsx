@@ -45,7 +45,6 @@ export default function HeroEquipo({ title, subtitle, backgroundImage, backgroun
     // Validate that each item in teamImages is an array
     const validatedColumns = teamImages.map((column, index) => {
       if (!Array.isArray(column)) {
-        console.warn(`Team images column ${index} is not an array, using default column`);
         return defaultTeamImages[index] || defaultTeamImages[0] || [];
       }
       return column;

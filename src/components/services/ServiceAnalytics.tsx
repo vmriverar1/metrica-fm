@@ -123,7 +123,7 @@ export function useServiceAnalytics() {
           session_id: getSessionId(),
           timestamp: Date.now()
         })
-      }).catch(err => console.warn('Analytics error:', err));
+      }).catch(() => {});
     }
   };
 

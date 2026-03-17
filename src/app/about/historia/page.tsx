@@ -91,11 +91,9 @@ async function getHistoriaData(): Promise<HistoriaPageData> {
       } as HistoriaPageData;
     }
 
-    console.warn('⚠️ [FALLBACK] Historia Page: Sin datos en Firestore, usando fallback');
     return HISTORIA_FALLBACK;
   } catch (error) {
     console.error('Error loading historia data:', error);
-    console.warn('⚠️ [FALLBACK] Historia Page: Error detectado, usando fallback');
     return HISTORIA_FALLBACK;
   }
 }

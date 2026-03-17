@@ -92,11 +92,11 @@ export const DuplicateFileModal = ({
     const missingResolutions = conflicts.filter(conflict => !resolutions[conflict.originalName]);
 
     if (missingResolutions.length > 0) {
-      console.warn('⚠️ [DuplicateModal] Faltan resoluciones para:', missingResolutions.map(c => c.originalName));
+
       return;
     }
 
-    console.log('✅ [DuplicateModal] Resolviendo conflictos:', resolutions);
+
     onResolve(resolutions);
     onClose();
   }, [conflicts, resolutions, onResolve, onClose]);

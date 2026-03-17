@@ -116,7 +116,6 @@ export class AutoresService {
       
       return null;
     } catch (error) {
-      console.error('Error fetching author by ID:', error);
       throw new Error('Error al cargar autor');
     }
   }
@@ -149,7 +148,6 @@ export class AutoresService {
         data: docRef.id
       };
     } catch (error) {
-      console.error('Error creating author:', error);
       return {
         success: false,
         message: 'Error al crear autor',
@@ -183,7 +181,6 @@ export class AutoresService {
         message: 'Autor actualizado exitosamente'
       };
     } catch (error) {
-      console.error('Error updating author:', error);
       return {
         success: false,
         message: 'Error al actualizar autor',
@@ -216,7 +213,6 @@ export class AutoresService {
         message: 'Autor eliminado exitosamente'
       };
     } catch (error) {
-      console.error('Error deleting author:', error);
       return {
         success: false,
         message: 'Error al eliminar autor',
@@ -296,7 +292,6 @@ export class CategoriasService {
       
       return null;
     } catch (error) {
-      console.error('Error fetching category by ID:', error);
       throw new Error('Error al cargar categoría');
     }
   }
@@ -305,15 +300,14 @@ export class CategoriasService {
     try {
       const q = query(this.collectionRef, where('slug', '==', slug));
       const querySnapshot = await getDocs(q);
-      
+
       if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0];
         return { id: doc.id, ...doc.data() } as Categoria;
       }
-      
+
       return null;
     } catch (error) {
-      console.error('Error fetching category by slug:', error);
       throw new Error('Error al cargar categoría');
     }
   }
@@ -355,7 +349,6 @@ export class CategoriasService {
         data: docRef.id
       };
     } catch (error) {
-      console.error('Error creating category:', error);
       return {
         success: false,
         message: 'Error al crear categoría',
@@ -389,7 +382,6 @@ export class CategoriasService {
         message: 'Categoría actualizada exitosamente'
       };
     } catch (error) {
-      console.error('Error updating category:', error);
       return {
         success: false,
         message: 'Error al actualizar categoría',
@@ -422,7 +414,6 @@ export class CategoriasService {
         message: 'Categoría eliminada exitosamente'
       };
     } catch (error) {
-      console.error('Error deleting category:', error);
       return {
         success: false,
         message: 'Error al eliminar categoría',
@@ -493,7 +484,6 @@ export class ArticulosService {
         ...doc.data()
       } as Autor));
     } catch (error) {
-      console.error('Error loading authors:', error);
       return [];
     }
   }
@@ -512,7 +502,6 @@ export class ArticulosService {
         ...doc.data()
       } as Categoria));
     } catch (error) {
-      console.error('Error loading categories:', error);
       return [];
     }
   }
@@ -598,7 +587,6 @@ export class ArticulosService {
 
       // Si no hay artículos, usar fallback
       if (filteredArticles.length === 0 && !filters?.searchQuery) {
-        console.warn('⚠️ [FALLBACK] Blog Articles: Sin datos, usando fallback');
         return {
           data: BLOG_ARTICLES_FALLBACK,
           total: BLOG_ARTICLES_FALLBACK.length,
@@ -612,8 +600,6 @@ export class ArticulosService {
         hasMore: hasMore && !filters?.searchQuery
       };
     } catch (error) {
-      console.error('❌ [ERROR] Blog Articles:', error);
-      console.warn('⚠️ [FALLBACK] Blog Articles: Error detectado, usando fallback');
       return {
         data: BLOG_ARTICLES_FALLBACK,
         total: BLOG_ARTICLES_FALLBACK.length,
@@ -633,7 +619,6 @@ export class ArticulosService {
       
       return null;
     } catch (error) {
-      console.error('Error fetching article by ID:', error);
       throw new Error('Error al cargar artículo');
     }
   }
@@ -650,40 +635,29 @@ export class ArticulosService {
       
       return null;
     } catch (error) {
-      console.error('Error fetching article by slug:', error);
       throw new Error('Error al cargar artículo');
     }
   }
 
   async getConRelaciones(id: string): Promise<ArticuloConRelaciones | null> {
     try {
-      console.log('getConRelaciones: Loading article with ID:', id);
       const articulo = await this.getById(id);
-      console.log('getConRelaciones: Article loaded:', !!articulo, articulo?.title);
 
       if (!articulo) {
-        console.log('getConRelaciones: Article not found');
         return null;
       }
 
-      console.log('getConRelaciones: Loading relations for author_id:', articulo.author_id, 'category_id:', articulo.category_id);
       const [autor, categoria] = await Promise.all([
         autoresService.getById(articulo.author_id),
         categoriasService.getById(articulo.category_id)
       ]);
 
-      console.log('getConRelaciones: Relations loaded - Author:', !!autor, autor?.name, 'Category:', !!categoria, categoria?.name);
-
-      const result = {
+      return {
         ...articulo,
         author: autor || undefined,
         category: categoria || undefined
       };
-
-      console.log('getConRelaciones: Final result prepared with title:', result.title);
-      return result;
     } catch (error) {
-      console.error('Error fetching article with relations:', error);
       throw new Error('Error al cargar artículo con relaciones');
     }
   }
@@ -703,7 +677,6 @@ export class ArticulosService {
         ...doc.data()
       } as Articulo));
     } catch (error) {
-      console.error('Error fetching featured articles:', error);
       throw new Error('Error al cargar artículos destacados');
     }
   }
@@ -736,12 +709,10 @@ export class ArticulosService {
       ]);
 
       if (!autor) {
-        console.log('Author not found:', data.author_id);
         return { exito: false, mensaje: `Autor no encontrado: ${data.author_id}` };
       }
 
       if (!categoria) {
-        console.log('Category not found:', data.category_id);
         return { exito: false, mensaje: `Categoría no encontrada: ${data.category_id}` };
       }
 
@@ -799,7 +770,6 @@ export class ArticulosService {
         data: articleRef.id
       };
     } catch (error) {
-      console.error('Error creating article:', error);
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       return {
         exito: false,
@@ -840,7 +810,6 @@ export class ArticulosService {
           // Si la fecha es inválida, no la actualizamos (mantener la existente)
         } catch (error) {
           // Si hay error, no actualizamos la fecha (mantener la existente)
-          console.warn('Error al procesar published_date:', error);
         }
       }
 
@@ -866,7 +835,6 @@ export class ArticulosService {
         mensaje: 'Artículo actualizado exitosamente'
       };
     } catch (error) {
-      console.error('Error updating article:', error);
       return {
         exito: false,
         mensaje: 'Error al actualizar artículo',
@@ -908,7 +876,6 @@ export class ArticulosService {
         mensaje: 'Artículo eliminado exitosamente'
       };
     } catch (error) {
-      console.error('Error deleting article:', error);
       return {
         exito: false,
         mensaje: 'Error al eliminar artículo',
@@ -999,7 +966,6 @@ export class NewsletterStatsService {
         articles_by_author: articlesByAuthor
       };
     } catch (error) {
-      console.error('Error fetching newsletter stats:', error);
       throw new Error('Error al cargar estadísticas');
     }
   }

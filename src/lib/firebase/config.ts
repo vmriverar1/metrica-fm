@@ -45,23 +45,14 @@ export const storage: Storage = getStorage(app);
 // Conectar al emulador si usamos credenciales de demo o si está en desarrollo
 if (false && typeof window !== 'undefined' && (!hasRealCredentials || process.env.NODE_ENV === 'development')) {
   try {
-    // Solo conectar si no estamos ya conectados al emulador
     const projectId = firebaseConfig.projectId;
     if (!projectId.includes('demo-') && !hasRealCredentials) {
       connectFirestoreEmulator(db, 'localhost', 8080);
-      console.log('🔥 Connected to Firestore Emulator (demo mode)');
     }
-  } catch (error) {
-    // El emulador ya está conectado, no está disponible, o estamos usando credenciales reales
-    console.log('Firestore emulator connection info:', error);
+  } catch {
+    // Emulator not available or already connected
   }
 }
-
-console.log('🔥 Firebase Config:', {
-  hasRealCredentials,
-  projectId: firebaseConfig.projectId,
-  usingEmulator: false
-});
 
 // Nombres de las colecciones
 export const COLLECTIONS = {

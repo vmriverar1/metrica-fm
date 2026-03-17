@@ -4,14 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Log analytics events
-    console.log('[Analytics Events] Received event:', {
-      timestamp: new Date().toISOString(),
-      userAgent: request.headers.get('user-agent'),
-      ip: request.headers.get('x-forwarded-for') || 'unknown',
-      event: body
-    });
-
     // In production, you would save this to your analytics system
     return NextResponse.json({
       success: true,

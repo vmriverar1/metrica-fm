@@ -264,7 +264,7 @@ const CulturaPageEditorNew: React.FC<CulturaPageEditorNewProps> = ({
 
   // Effect para cargar datos iniciales
   useEffect(() => {
-    console.log('CulturaPageEditorNew - initialData:', initialData);
+
     if (initialData && Object.keys(initialData).length > 0) {
       setConfig(prevConfig => {
         // Merge profundo recursivo

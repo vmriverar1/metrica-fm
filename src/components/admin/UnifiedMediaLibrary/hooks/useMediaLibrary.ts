@@ -44,9 +44,9 @@ export function useMediaLibrary(): UseMediaLibraryReturn {
         });
         setDirectories(Array.from(dirs).sort());
 
-        console.log(`[UnifiedMediaLibrary] Loaded ${sortedImages.length} images from API`);
+
       } else {
-        console.warn('[UnifiedMediaLibrary] No images found in API response');
+  
         setImages([]);
         setDirectories([]);
       }
@@ -62,7 +62,7 @@ export function useMediaLibrary(): UseMediaLibraryReturn {
   }, []);
 
   const refreshLibrary = useCallback(async () => {
-    console.log('[UnifiedMediaLibrary] Refreshing library...');
+
     await fetchImages();
   }, [fetchImages]);
 

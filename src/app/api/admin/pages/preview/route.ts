@@ -49,8 +49,8 @@ export async function POST(request: NextRequest) {
     setTimeout(async () => {
       try {
         await fs.unlink(previewFile);
-      } catch (error) {
-        console.log(`Preview file ${previewId} already cleaned up`);
+      } catch {
+        // Already cleaned up
       }
     }, 10 * 60 * 1000);
 

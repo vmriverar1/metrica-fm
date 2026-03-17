@@ -63,8 +63,6 @@ export default function AnalyticsProvider({
       try {
         const analytics = await getAnalytics();
         if (analytics) {
-          console.log('[Analytics] Provider initialized successfully');
-
           // Log initial session
           logEvent(analytics, 'session_start', {
             engagement_time_msec: Date.now(),
@@ -94,7 +92,6 @@ export default function AnalyticsProvider({
           page_title: document.title,
         });
 
-        console.log('[Analytics] Page view tracked:', pathname);
       } catch (error) {
         console.error('[Analytics] Error tracking page view:', error);
       }

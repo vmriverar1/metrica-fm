@@ -48,8 +48,8 @@ export default function PWAUpdateManager({
         }
         
         setLastUpdateCheck(Date.now());
-      } catch (error) {
-        console.log('[PWAUpdateManager] Update check failed:', error);
+      } catch {
+        // Non-critical: update check failed
       }
     };
 

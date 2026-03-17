@@ -34,16 +34,12 @@ export function useCategoryData(categorySlug: string): UseCategoryDataReturn {
         setLoading(true);
         setError(null);
 
-        console.log(`📂 [useCategoryData] Fetching data for category: ${categorySlug}`);
-
         const result = await FirestoreCore.getDocumentById('portfolio_categories', categorySlug);
 
         if (result.success && result.data) {
           setCategoryData(result.data);
-          console.log(`✅ [useCategoryData] Category data loaded:`, result.data);
         } else {
           setError(`No se encontró la categoría: ${categorySlug}`);
-          console.warn(`⚠️ [useCategoryData] Category not found: ${categorySlug}`, result.error);
         }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Error desconocido';

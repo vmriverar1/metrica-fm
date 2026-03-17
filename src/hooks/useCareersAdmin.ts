@@ -218,13 +218,10 @@ export function useJobs(): UseJobsResult {
   // Cargar todos los trabajos
   const loadJobs = useCallback(async () => {
     try {
-      console.log('🔄 [useJobs] Iniciando carga de trabajos...');
       setLoading(true);
       setError(null);
       await initializeServices();
-      console.log('📦 [useJobs] Servicios inicializados, llamando a listarTodos...');
       const data = await JobsService.listarTodos();
-      console.log('📋 [useJobs] Trabajos recibidos:', data);
       setJobs(data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error loading jobs';

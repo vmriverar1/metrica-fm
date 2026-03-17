@@ -38,36 +38,24 @@ function FlipCard({ policy, slug }: { policy: any, slug: string }) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
-    console.log('Mouse Enter - Current isFlipped:', isFlipped);
     // Clear any pending timeout
     if (timeoutRef.current) {
-      console.log('Clearing pending timeout');
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
-    console.log('Setting isFlipped to true');
     setIsFlipped(true);
   };
 
   const handleMouseLeave = () => {
-    console.log('Mouse Leave - Current isFlipped:', isFlipped);
     // Clear any existing timeout
     if (timeoutRef.current) {
-      console.log('Clearing existing timeout before setting new one');
       clearTimeout(timeoutRef.current);
     }
-    console.log('Setting timeout to flip back');
     timeoutRef.current = setTimeout(() => {
-      console.log('Timeout executed - Setting isFlipped to false');
       setIsFlipped(false);
       timeoutRef.current = null;
     }, 200);
   };
-
-  // Log when isFlipped changes
-  useEffect(() => {
-    console.log('isFlipped state changed to:', isFlipped);
-  }, [isFlipped]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -81,11 +69,9 @@ function FlipCard({ policy, slug }: { policy: any, slug: string }) {
   const handleClick = () => {
     // Si la política tiene PDF, abrirlo en nueva pestaña
     if (policy.pdf) {
-      console.log('Card clicked - opening PDF:', policy.pdf);
       window.open(policy.pdf, '_blank', 'noopener,noreferrer');
     } else {
       // Si no tiene PDF, navegar a la página de política
-      console.log('Card clicked - navigating to:', `/politicas/${slug}`);
       router.push(`/politicas/${slug}`);
     }
   };

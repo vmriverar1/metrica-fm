@@ -14,24 +14,13 @@ export default function TimelineTransformWrapper({ historiaData }: TimelineTrans
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    console.log('=== INICIANDO SETUP DE SCROLLTRIGGER ===');
-    
     // Buscar elementos por ID
     const timelineSection = document.getElementById('timeline-horizontal-section');
     const cierreSection = document.getElementById('cierre-transform-section');
-    
-    console.log('Timeline section:', timelineSection);
-    console.log('Cierre section:', cierreSection);
-    
+
     if (!timelineSection || !cierreSection) {
-      console.error('ERROR: No se encontraron las secciones necesarias');
       return;
     }
-
-    console.log('Elementos encontrados correctamente');
-
-    // Verificar el estado inicial
-    console.log('Width inicial del timeline:', window.getComputedStyle(timelineSection).width);
 
     // Crear la animación
     const tl = gsap.timeline({
@@ -40,23 +29,8 @@ export default function TimelineTransformWrapper({ historiaData }: TimelineTrans
         start: 'top 90%',     // Cuando el 10% superior de cierre es visible
         end: 'top 50%',       // Termina cuando llega a la mitad
         scrub: true,          // Sincronizado con scroll - true es más robusto que 1
-        markers: false,       // Desactivado para reducir ruido
+        markers: false,
         id: 'shrink-timeline',
-        onUpdate: (self) => {
-          console.log(`ScrollTrigger Progress: ${(self.progress * 100).toFixed(1)}%`);
-        },
-        onEnter: () => {
-          console.log('>>> onEnter: El trigger ha entrado al viewport');
-        },
-        onLeave: () => {
-          console.log('>>> onLeave: El trigger ha salido del viewport');
-        },
-        onEnterBack: () => {
-          console.log('>>> onEnterBack: Volviendo al trigger');
-        },
-        onLeaveBack: () => {
-          console.log('>>> onLeaveBack: Saliendo del trigger hacia arriba');
-        }
       }
     });
 
@@ -79,12 +53,6 @@ export default function TimelineTransformWrapper({ historiaData }: TimelineTrans
       scaleY: 0.45,
       duration: 1,
       ease: 'power2.inOut',
-      onStart: () => {
-        console.log('ANIMACIÓN INICIADA: Escalando timeline a 65% ancho y 45% alto');
-      },
-      onComplete: () => {
-        console.log('ANIMACIÓN COMPLETADA: Timeline transformado');
-      }
     });
     
     // Hacer desaparecer el progress indicator al mismo tiempo - con reversibilidad
@@ -103,44 +71,32 @@ export default function TimelineTransformWrapper({ historiaData }: TimelineTrans
       start: 'bottom bottom', // Cuando el bottom del timeline toca el bottom del viewport
       end: 'top top',         // Hasta que el top del timeline toca el top del viewport
       onEnter: () => {
-        console.log('>>> RESTORE TRIGGER: Entrando al timeline desde abajo');
         if (progressIndicator) {
-          gsap.to(progressIndicator, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.3, 
-            ease: 'power2.out' 
+          gsap.to(progressIndicator, {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: 'power2.out'
           });
         }
-      },
-      onLeave: () => {
-        console.log('>>> RESTORE TRIGGER: Saliendo del timeline hacia abajo');
       },
       onEnterBack: () => {
-        console.log('>>> RESTORE TRIGGER: Regresando al timeline desde arriba');
         if (progressIndicator) {
-          gsap.to(progressIndicator, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.3, 
-            ease: 'power2.out' 
+          gsap.to(progressIndicator, {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: 'power2.out'
           });
         }
-      },
-      onLeaveBack: () => {
-        console.log('>>> RESTORE TRIGGER: Saliendo del timeline hacia arriba');
       },
       markers: false,
       id: 'restore-progress-indicator'
     });
 
-    // Verificar que ScrollTrigger esté funcionando
-    console.log('ScrollTriggers activos:', ScrollTrigger.getAll().length);
-
     // Refresh después de un momento por si hay problemas de timing
     setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log('ScrollTrigger refreshed');
     }, 500);
 
   }, { scope: wrapperRef });

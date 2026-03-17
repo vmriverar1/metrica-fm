@@ -39,17 +39,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<SendEmailResp
       );
     }
 
-    console.log('📧 [API] Enviando email...');
-    console.log('   - Para:', body.config.to);
-    console.log('   - Asunto:', body.config.subject);
-    console.log('   - Tipo:', body.template.type);
-    console.log('   - Campos:', body.template.fields.length);
-
     // Enviar email
     const result = await EmailService.sendEmail(body.config, body.template);
 
     if (result.success) {
-      console.log('✅ [API] Email enviado exitosamente');
       return NextResponse.json({
         success: true,
         messageId: result.messageId

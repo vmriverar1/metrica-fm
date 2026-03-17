@@ -52,7 +52,7 @@ export default function PortfolioAdminPage() {
       setPortfolioData(data);
       
       // Mostrar notificación de éxito (puedes implementar un toast aquí)
-      console.log('Portfolio guardado exitosamente');
+
       
     } catch (error) {
       console.error('Error saving portfolio:', error);

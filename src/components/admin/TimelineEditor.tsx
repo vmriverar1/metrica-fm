@@ -709,7 +709,6 @@ export default function TimelineEditor({ events: propEvents, onChange: propOnCha
                   className="bg-blue-600 hover:bg-blue-700"
                   onClick={() => {
                     // Auto-guardar rápido
-                    console.log('✅ Timeline auto-guardado');
                   }}
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />

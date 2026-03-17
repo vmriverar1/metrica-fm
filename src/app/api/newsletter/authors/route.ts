@@ -13,13 +13,10 @@ export async function GET(request: NextRequest) {
 
   // Si no hay credenciales válidas o db no está inicializado, devolver datos vacíos
   if (!db) {
-    console.log('⚠️ Firebase credentials not available, returning empty authors data');
     return NextResponse.json(getFirebaseFallbackResponse('newsletter/authors'));
   }
 
   try {
-    console.log(`[${new Date().toISOString()}] NEWSLETTER AUTHORS API: GET ${request.url} from ${request.ip || 'unknown'}`);
-
     const { searchParams } = new URL(request.url);
     const featured = searchParams.get('featured');
     const limit = searchParams.get('limit');
@@ -45,8 +42,6 @@ export async function GET(request: NextRequest) {
         authors = authors.slice(0, limitNum);
       }
     }
-
-    console.log(`👥 Newsletter authors found: ${authors.length}`);
 
     return NextResponse.json({
       success: true,
@@ -78,7 +73,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   // Si no hay credenciales válidas o db no está inicializado, devolver error 501
   if (!hasValidCredentials || !db) {
-    console.log('⚠️ Firebase credentials not available for author creation');
     return NextResponse.json({
       success: false,
       error: 'Firebase credentials not configured for this environment',
@@ -87,8 +81,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    console.log(`[${new Date().toISOString()}] NEWSLETTER AUTHORS API: POST ${request.url} from ${request.ip || 'unknown'}`);
-
     const body = await request.json();
 
     // Validar datos
@@ -114,8 +106,6 @@ export async function POST(request: NextRequest) {
       id: authorRef.id,
       ...authorData
     };
-
-    console.log(`✅ Newsletter author created: ${authorRef.id}`);
 
     return NextResponse.json({
       success: true,

@@ -61,8 +61,6 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
 
         // Try to fetch from Firestore first, then fallback to JSON
         try {
-          console.log('🔥 Fetching portfolio data from Firestore...');
-
           // Fetch from Firestore using our unified API
           const [pageResponse, projectsResponse] = await Promise.all([
             fetch('/api/admin/pages/portfolio', { cache: 'no-store' }), // Load page data from Firestore
@@ -92,7 +90,6 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
             const firestoreData = await projectsResponse.json();
             if (firestoreData.success && firestoreData.data) {
               firestoreProjects = firestoreData.data;
-              console.log('✅ Found', firestoreProjects.length, 'projects in Firestore');
             }
           }
 
@@ -118,12 +115,6 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
             };
 
             const transformedProjects = firestoreProjects.map((project: any) => {
-              // Debug logging para fechas (solo usamos start_date ahora)
-              console.log('📅 [PortfolioContext] Transformando proyecto:', project.id);
-              console.log('📅 [PortfolioContext] hide_dates:', project.hide_dates);
-              console.log('📅 [PortfolioContext] start_date (ÚNICA USADA):', project.start_date);
-              console.log('📅 [PortfolioContext] year (fallback):', project.year);
-
               return {
               id: project.id,
               title: project.title,
@@ -190,26 +181,15 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
             });
 
             setAllProjects(transformedProjects);
-            console.log('✅ Transformed', transformedProjects.length, 'projects from Firestore');
-
-            // Debug: Log the hotel project specifically
-            const hotelProject = transformedProjects.find(p => p.id === 'hotel-hilton-bajada-balta');
-            console.log('🏨 Hotel Hilton project:', hotelProject ? {
-              id: hotelProject.id,
-              slug: hotelProject.slug,
-              category: hotelProject.category,
-              title: hotelProject.title
-            } : 'NOT FOUND');
 
             return; // Exit early if Firestore data was successful
           }
 
-        } catch (firestoreError) {
-          console.warn('⚠️ Firestore fetch failed, falling back to JSON:', firestoreError);
+        } catch {
+          // Falling back to API endpoints
         }
 
         // Fallback to API endpoints if direct Firestore fails
-        console.log('📄 Falling back to API endpoints...');
         const [pageResponse, projectsResponse] = await Promise.all([
           fetch('/api/admin/pages/portfolio', { cache: 'no-store' }),
           fetch('/api/portfolio/projects', { cache: 'no-store' })
@@ -256,7 +236,6 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
             }
           });
 
-          console.log('Raw projects from JSON categories:', allProjects.length);
           const transformedProjects = allProjects.map((project: any) => ({
             id: project.id,
             title: project.name,
@@ -436,12 +415,6 @@ export function usePortfolio() {
 export function useProject(slug: string): Project | null {
   const { allProjects } = usePortfolio();
   return useMemo(() => {
-    console.log('🔍 useProject Debug:', {
-      searchingForSlug: slug,
-      totalProjects: allProjects.length,
-      projectSlugs: allProjects.map(p => p.slug).slice(0, 5), // First 5 slugs
-      foundProject: allProjects.find(project => project.slug === slug)?.title || null
-    });
     return allProjects.find(project => project.slug === slug) || null;
   }, [allProjects, slug]);
 }

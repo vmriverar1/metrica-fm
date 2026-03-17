@@ -83,10 +83,9 @@ class FirestoreLiteConfig {
       try {
         if (!hasRealCredentials) {
           connectFirestoreEmulator(this.db, 'localhost', 8080);
-          console.log('🔥 Firestore Lite connected to emulator');
         }
-      } catch (error) {
-        console.log('Firestore Lite emulator connection info:', error);
+      } catch {
+        // emulator not available
       }
     }
 
@@ -129,7 +128,6 @@ export class PortfolioLiteService {
 
       return categories;
     } catch (error) {
-      console.error('Error obteniendo categorías (Lite):', error);
       throw new Error('Failed to fetch categories with Firestore Lite');
     }
   }
@@ -162,7 +160,6 @@ export class PortfolioLiteService {
 
       return categories;
     } catch (error) {
-      console.error('Error obteniendo categorías destacadas (Lite):', error);
       throw new Error('Failed to fetch featured categories with Firestore Lite');
     }
   }
@@ -229,7 +226,6 @@ export class PortfolioLiteService {
       };
 
     } catch (error) {
-      console.error('Error obteniendo proyectos paginados (Lite):', error);
       throw new Error('Failed to fetch paginated projects with Firestore Lite');
     }
   }
@@ -266,7 +262,6 @@ export class PortfolioLiteService {
 
       return projects;
     } catch (error) {
-      console.error('Error obteniendo proyectos por categoría (Lite):', error);
       throw new Error('Failed to fetch projects by category with Firestore Lite');
     }
   }
@@ -336,7 +331,6 @@ export class PortfolioLiteService {
       return complete;
 
     } catch (error) {
-      console.error('Error obteniendo proyecto completo (Lite):', error);
       throw new Error('Failed to fetch complete project with Firestore Lite');
     }
   }
@@ -370,7 +364,6 @@ export class PortfolioLiteService {
 
       return projects;
     } catch (error) {
-      console.error('Error obteniendo proyectos destacados (Lite):', error);
       throw new Error('Failed to fetch featured projects with Firestore Lite');
     }
   }
@@ -421,7 +414,6 @@ export class PortfolioLiteService {
 
       return counters;
     } catch (error) {
-      console.error('Error obteniendo contadores (Lite):', error);
       throw new Error('Failed to fetch counters with Firestore Lite');
     }
   }
@@ -463,7 +455,6 @@ export class PortfolioLiteService {
 
       return filtered;
     } catch (error) {
-      console.error('Error buscando proyectos (Lite):', error);
       throw new Error('Failed to search projects with Firestore Lite');
     }
   }
@@ -478,11 +469,8 @@ export class FirestoreBundleUtils {
    * Comparar tamaño del bundle con/sin Firestore Lite
    */
   static logBundleInfo(): void {
-    console.log('📦 Firestore Lite Bundle Info:');
-    console.log('   - Firestore SDK: ~2.5MB → Firestore Lite: ~750KB');
-    console.log('   - Reducción: ~70% del bundle Firestore');
-    console.log('   - Trade-off: Solo operaciones read-only');
-    console.log('   - Ideal para: Páginas públicas, landing pages, catálogos');
+    // Bundle info: Firestore SDK ~2.5MB → Firestore Lite ~750KB (~70% reduction)
+    // Trade-off: read-only operations. Ideal for public pages, landing pages, catalogs.
   }
 
   /**
@@ -508,8 +496,7 @@ export class FirestoreBundleUtils {
     if (this.canUseLite()) {
       try {
         return await liteOperation();
-      } catch (error) {
-        console.warn('Firestore Lite failed, falling back to full SDK:', error);
+      } catch {
         return await fullOperation();
       }
     } else {

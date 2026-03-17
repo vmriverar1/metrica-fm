@@ -106,7 +106,6 @@ export class PortfolioAggregationsService {
 
       if (!docSnap.exists()) {
         // Si no existe, crear las agregaciones
-        console.log('Dashboard aggregation not found, creating...');
         await this.crearDashboardAggregation();
         return this.obtenerDashboardStats();
       }
@@ -116,14 +115,12 @@ export class PortfolioAggregationsService {
       // Verificar si está expirado
       const cachedUntil = new Date(data.cached_until);
       if (new Date() > cachedUntil) {
-        console.log('Dashboard aggregation expired, refreshing...');
         // Actualizar en background
-        this.actualizarDashboardAggregation().catch(console.error);
+        this.actualizarDashboardAggregation().catch(() => {});
       }
 
       return data;
     } catch (error) {
-      console.error('Error obteniendo dashboard stats:', error);
       return null;
     }
   }
@@ -133,7 +130,6 @@ export class PortfolioAggregationsService {
    */
   static async crearDashboardAggregation(): Promise<void> {
     try {
-      console.log('🔄 Creando agregaciones del dashboard...');
 
       // Obtener datos base con aggregation queries
       const [
@@ -231,10 +227,7 @@ export class PortfolioAggregationsService {
       const docRef = doc(db, this.aggregationsCollection, 'portfolio_dashboard');
       await setDoc(docRef, dashboardData);
 
-      console.log('✅ Dashboard aggregation created successfully');
-
     } catch (error) {
-      console.error('Error creando dashboard aggregation:', error);
       throw error;
     }
   }
@@ -247,8 +240,8 @@ export class PortfolioAggregationsService {
       // Eliminar y recrear para simplicidad
       // En producción, sería mejor hacer actualizaciones incrementales
       await this.crearDashboardAggregation();
-    } catch (error) {
-      console.error('Error actualizando dashboard aggregation:', error);
+    } catch {
+      // Silently fail background refresh
     }
   }
 
@@ -260,7 +253,6 @@ export class PortfolioAggregationsService {
       const dashboardData = await this.obtenerDashboardStats();
       return dashboardData?.top_categories || [];
     } catch (error) {
-      console.error('Error obteniendo category aggregations:', error);
       return [];
     }
   }
@@ -270,18 +262,13 @@ export class PortfolioAggregationsService {
    */
   static async invalidarAgregaciones(): Promise<void> {
     try {
-      console.log('🔄 Invalidando agregaciones...');
-
-      // Marcar como expiradas actualizando cached_until
       const docRef = doc(db, this.aggregationsCollection, 'portfolio_dashboard');
       await updateDoc(docRef, {
-        cached_until: new Date().toISOString(), // Expira inmediatamente
+        cached_until: new Date().toISOString(),
         last_updated: new Date().toISOString()
       });
-
-      console.log('✅ Agregaciones invalidadas');
-    } catch (error) {
-      console.error('Error invalidando agregaciones:', error);
+    } catch {
+      // Silently fail invalidation
     }
   }
 
@@ -291,7 +278,6 @@ export class PortfolioAggregationsService {
   static async programarActualizacionAutomatica(): Promise<void> {
     // TODO: Implementar con Cloud Scheduler + Cloud Functions
     // Ejecutar cada 2 horas para mantener agregaciones frescas
-    console.log('📅 Programación automática configurada (Cloud Functions)');
   }
 
   // ==========================================
@@ -373,22 +359,14 @@ export class PortfolioAggregationTriggers {
    * Llamar cuando se crea/actualiza/elimina un proyecto
    */
   static async onProjectChange(
-    projectId: string,
-    action: 'create' | 'update' | 'delete',
-    categoryId?: string
+    _projectId: string,
+    _action: 'create' | 'update' | 'delete',
+    _categoryId?: string
   ): Promise<void> {
     try {
-      console.log(`📊 Trigger: ${action} project ${projectId}`);
-
-      // Invalidar agregaciones relacionadas
       await PortfolioAggregationsService.invalidarAgregaciones();
-
-      // En producción, hacer actualización incremental en lugar de invalidación completa
-      // await this.updateCategoryAggregation(categoryId);
-      // await this.updateDashboardCounters(action);
-
-    } catch (error) {
-      console.error('Error en project change trigger:', error);
+    } catch {
+      // Silently fail trigger
     }
   }
 
@@ -396,17 +374,13 @@ export class PortfolioAggregationTriggers {
    * Llamar cuando se crea/actualiza/elimina una categoría
    */
   static async onCategoryChange(
-    categoryId: string,
-    action: 'create' | 'update' | 'delete'
+    _categoryId: string,
+    _action: 'create' | 'update' | 'delete'
   ): Promise<void> {
     try {
-      console.log(`📊 Trigger: ${action} category ${categoryId}`);
-
-      // Invalidar agregaciones
       await PortfolioAggregationsService.invalidarAgregaciones();
-
-    } catch (error) {
-      console.error('Error en category change trigger:', error);
+    } catch {
+      // Silently fail trigger
     }
   }
 
@@ -427,8 +401,8 @@ export class PortfolioAggregationTriggers {
         last_updated: new Date().toISOString()
       });
 
-    } catch (error) {
-      console.error('Error en image change trigger:', error);
+    } catch {
+      // Silently fail trigger
     }
   }
 }

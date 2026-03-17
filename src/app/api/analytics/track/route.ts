@@ -4,17 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Log analytics tracking data
-    console.log('[Analytics Track] Received data:', {
-      timestamp: new Date().toISOString(),
-      userAgent: request.headers.get('user-agent'),
-      ip: request.headers.get('x-forwarded-for') || 'unknown',
-      data: body
-    });
-
-    // In production, you would save this to your analytics database
-    // For now, we'll just acknowledge receipt
-
     return NextResponse.json({
       success: true,
       message: 'Analytics data tracked',

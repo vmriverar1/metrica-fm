@@ -6,10 +6,10 @@ import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 import { EmailConfig, EmailTemplate, EmailField } from '@/types/email';
 
-// Configuración de Gmail
+// Configuración de Gmail desde variables de entorno
 const GMAIL_CONFIG = {
-  user: 'jmorales@metrica-dip.com',
-  pass: 'chsb ofcu qlrq lhwf'
+  user: process.env.GMAIL_USER || '',
+  pass: process.env.GMAIL_APP_PASSWORD || ''
 };
 
 /**
@@ -269,7 +269,6 @@ export class EmailService {
       // Enviar email
       const info = await transporter.sendMail(mailOptions);
 
-      console.log('✅ [EMAIL] Enviado exitosamente:', info.messageId);
 
       return {
         success: true,
@@ -277,8 +276,6 @@ export class EmailService {
       };
 
     } catch (error: any) {
-      console.error('❌ [EMAIL] Error al enviar:', error);
-
       return {
         success: false,
         error: error.message || 'Error desconocido al enviar email'
@@ -293,10 +290,8 @@ export class EmailService {
     try {
       const transporter = this.getTransporter();
       await transporter.verify();
-      console.log('✅ [EMAIL] Conexión verificada con Gmail');
       return true;
     } catch (error) {
-      console.error('❌ [EMAIL] Error al verificar conexión:', error);
       return false;
     }
   }

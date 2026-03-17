@@ -46,15 +46,6 @@ export async function POST(request: NextRequest) {
     sessionMetrics.push(body);
     performanceData.set(body.sessionId, sessionMetrics);
 
-    // Log important metrics for monitoring
-    const { name, value, rating } = body.metric;
-    console.log(`[PERFORMANCE] ${name}: ${value.toFixed(2)} (${rating}) - Session: ${body.sessionId}`);
-
-    // If this is a poor metric, log for immediate attention
-    if (rating === 'poor') {
-      console.warn(`[PERFORMANCE ALERT] Poor ${name} score: ${value.toFixed(2)} at ${body.metric.url}`);
-    }
-
     // Firebase App Hosting cost tracking
     if (name === 'TTFB' || name === 'LCP') {
       // Track metrics that affect hosting costs
@@ -90,25 +81,6 @@ export async function PUT(request: NextRequest) {
 
     // Analyze the report for cost optimization insights
     const insights = analyzePerformanceReport(report);
-
-    console.log(`[PERFORMANCE REPORT] Session ${report.sessionId}:`, {
-      pageLoadTime: report.pageLoadTime,
-      customMetrics: Object.keys(report.customMetrics).length,
-      errors: report.errors.length,
-      insights: insights.length
-    });
-
-    // Log Firestore usage metrics
-    const firestoreMetrics = Object.entries(report.customMetrics)
-      .filter(([key]) => key.startsWith('firestore_'))
-      .reduce((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      }, {} as { [key: string]: number });
-
-    if (Object.keys(firestoreMetrics).length > 0) {
-      console.log('[FIRESTORE USAGE]', firestoreMetrics);
-    }
 
     return NextResponse.json({
       success: true,
@@ -158,10 +130,7 @@ function trackFirebaseHostingMetric(metricName: string, value: number, url: stri
   // Track metrics that impact Firebase App Hosting costs
   const costImpact = calculateCostImpact(metricName, value);
 
-  console.log(`[FIREBASE HOSTING COST] ${metricName}: ${value.toFixed(2)}ms - Impact: ${costImpact}`);
 
-  // Store for cost analysis
-  // In production, this would go to a proper analytics service
 }
 
 function calculateCostImpact(metricName: string, value: number): string {

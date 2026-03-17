@@ -1,28 +1,83 @@
- rules_version = '2';
-  service cloud.firestore {
-    match /databases/{database}/documents {
-      match /{document=**} {
-        allow read, write: if true;
-      }
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default: deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Public pages content (read-only)
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Dynamic content for components (read-only)
+    match /dynamic-content/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Config (read-only for public, write via Admin SDK)
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Portfolio categories and projects (read-only)
+    match /portfolio_categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /portfolio_projects/{projectId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Blog content (read-only)
+    match /blog_articles/{articleId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /blog_categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /blog_authors/{authorId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Careers content (read-only)
+    match /careers_departments/{deptId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /careers_positions/{positionId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Newsletter subscribers (read-only public, write via Admin SDK)
+    match /subscribers/{subscriberId} {
+      allow read: if false;
+      allow write: if false;
+    }
+
+    // Contact form submissions (write via Admin SDK only)
+    match /contact_submissions/{submissionId} {
+      allow read, write: if false;
+    }
+
+    // Applications (write via Admin SDK only)
+    match /applications/{applicationId} {
+      allow read, write: if false;
+    }
+
+    // Mega menu configuration (read-only)
+    match /mega_menu/{menuId} {
+      allow read: if true;
+      allow write: if false;
     }
   }
-
-// rules_version = '2';
-
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-
-//     // This rule allows anyone with your Firestore database reference to view, edit,
-//     // and delete all data in your Firestore database. It is useful for getting
-//     // started, but it is configured to expire after 30 days because it
-//     // leaves your app open to attackers. At that time, all client
-//     // requests to your Firestore database will be denied.
-//     //
-//     // Make sure to write security rules for your app before that time, or else
-//     // all client requests to your Firestore database will be denied until you Update
-//     // your rules
-//     match /{document=**} {
-//       allow read, write: if request.time < timestamp.date(2025, 10, 11);
-//     }
-//   }
-// }
+}

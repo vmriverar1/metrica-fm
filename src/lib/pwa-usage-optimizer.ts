@@ -303,8 +303,6 @@ class PWAUsageOptimizer {
       }
     }
 
-    console.log(`[UsageOptimizer] Applied ${applied} optimizations, ${skipped} skipped, ${errors} errors`);
-    
     this.lastOptimization = Date.now();
     this.saveUsageData();
 
@@ -378,8 +376,8 @@ class PWAUsageOptimizer {
         lastOptimization: this.lastOptimization,
         timestamp: Date.now()
       }));
-    } catch (error) {
-      console.warn('[UsageOptimizer] Failed to save usage data:', error);
+    } catch {
+      // Non-critical: usage data persistence failed
     }
   }
 
@@ -396,8 +394,8 @@ class PWAUsageOptimizer {
         this.usageData = new Map(Object.entries(parsed.data));
         this.lastOptimization = parsed.lastOptimization || 0;
       }
-    } catch (error) {
-      console.warn('[UsageOptimizer] Failed to load usage data:', error);
+    } catch {
+      // Non-critical: usage data load failed
     }
   }
 

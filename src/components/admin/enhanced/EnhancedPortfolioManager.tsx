@@ -83,7 +83,7 @@ export default function EnhancedPortfolioManager({
     const loadCategories = async () => {
       setCategoriesLoading(true);
       try {
-        console.log('🔥 [FIRESTORE] Loading portfolio categories...');
+
         const response = await fetch('/api/portfolio/categories');
         const result = await response.json();
 
@@ -91,9 +91,9 @@ export default function EnhancedPortfolioManager({
           // Extraer solo los nombres de las categorías
           const categoryNames = result.data.map((category: any) => category.name);
           setDynamicCategories(categoryNames);
-          console.log('✅ [FIRESTORE] Categories loaded:', categoryNames);
+
         } else {
-          console.warn('⚠️ [FIRESTORE] Failed to load categories, using fallback:', result.error);
+
           setDynamicCategories(categories);
         }
       } catch (error) {

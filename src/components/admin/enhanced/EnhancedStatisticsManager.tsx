@@ -68,23 +68,6 @@ export default function EnhancedStatisticsManager({
   loading = false,
   className = ''
 }: EnhancedStatisticsManagerProps) {
-  console.log('🔄 [ENHANCED STATS] Recibiendo statistics:', statistics);
-  console.log('🔄 [ENHANCED STATS] Tipo y longitud:', typeof statistics, Array.isArray(statistics) ? statistics.length : 'no es array');
-
-  // Debugging específico de cada item
-  if (Array.isArray(statistics)) {
-    statistics.forEach((stat, index) => {
-      console.log(`🔍 [ENHANCED STATS] Item ${index}:`, {
-        raw: stat,
-        hasId: !!stat?.id,
-        idValue: stat?.id,
-        idType: typeof stat?.id,
-        hasLabel: !!stat?.label,
-        hasValue: !!stat?.value,
-      });
-    });
-  }
-
   const [previewMode, setPreviewMode] = useState(false);
   const [errors, setErrors] = useState<StatisticValidationErrors>({});
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -94,36 +77,18 @@ export default function EnhancedStatisticsManager({
   const cleanedStatistics = useMemo(() => {
     // Asegurar que siempre tenemos un array
     const safeStatistics = Array.isArray(statistics) ? statistics : [];
-    console.log('🔄 [STATS CLEAN] Procesando:', safeStatistics.length, 'estadísticas');
-    console.log('🔄 [STATS CLEAN] Datos de entrada:', safeStatistics);
 
-    const cleaned = safeStatistics.filter((stat, index) => {
+    const cleaned = safeStatistics.filter((stat) => {
       const hasStatObject = !!stat;
       const hasId = !!stat?.id;
       const isStringId = typeof stat?.id === 'string';
       const isNotEmpty = stat?.id?.trim() !== '';
 
-      const isValid = hasStatObject && hasId && isStringId && isNotEmpty;
-
-      console.log(`🔍 [STATS CLEAN] Filtro item ${index}:`, {
-        stat,
-        hasStatObject,
-        hasId,
-        isStringId,
-        isNotEmpty,
-        idValue: stat?.id,
-        isValid,
-        willPass: isValid ? '✅ PASS' : '❌ FILTERED OUT'
-      });
-
-      return isValid;
+      return hasStatObject && hasId && isStringId && isNotEmpty;
     }).map((stat, index) => ({
       ...stat,
       id: stat.id || `stat-fallback-${index}-${Date.now()}`
     }));
-
-    console.log('🔄 [STATS CLEAN] Resultado:', cleaned.length, 'estadísticas limpias de', safeStatistics.length, 'originales');
-    console.log('🔄 [STATS CLEAN] Estadísticas limpias:', cleaned);
 
     return cleaned;
   }, [statistics]);
@@ -249,26 +214,16 @@ export default function EnhancedStatisticsManager({
 
   // Actualizar estadística
   const updateStatistic = (id: string, field: keyof StatisticItem, value: any) => {
-    console.log('🔧 updateStatistic called:', {
-      id,
-      field,
-      value,
-      currentStats: cleanedStatistics.find(s => s.id === id)
-    });
-
     const updatedStats = cleanedStatistics.map(stat => {
       if (stat.id === id) {
-        const updated = {
+        return {
           ...stat,
           [field]: field === 'value' ? Number(value) || 0 : value
         };
-        console.log('🔧 Updated stat:', updated);
-        return updated;
       }
       return stat;
     });
 
-    console.log('🔧 All updated statistics:', updatedStats);
     onChange(updatedStats);
   };
 
@@ -443,27 +398,11 @@ export default function EnhancedStatisticsManager({
                   ${snapshot.isDraggingOver ? 'bg-primary/5 border-2 border-dashed border-primary/20' : ''}
                 `}
               >
-                {(() => {
-                  console.log('🎯 [RENDER START] cleanedStatistics.length:', cleanedStatistics.length);
-                  console.log('🎯 [RENDER START] cleanedStatistics:', cleanedStatistics);
-                  return null;
-                })()}
                 {cleanedStatistics.map((stat, index) => {
-                  console.log(`🔍 [RENDER] Procesando stat ${index}:`, {
-                    stat,
-                    hasStat: !!stat,
-                    hasId: !!stat?.id,
-                    idType: typeof stat?.id,
-                    idValue: stat?.id
-                  });
-
                   // Asegurar que stat.id existe y es válido
                   if (!stat || !stat.id || typeof stat.id !== 'string') {
-                    console.error('🚨 [DRAG ERROR] Estadística sin ID válido, skipping render:', stat);
                     return null;
                   }
-
-                  console.log(`✅ [RENDER] Stat ${index} pasó validación, renderizando:`, stat);
 
                   const statErrors = errors[stat.id] || [];
                   const isEditing = editingId === stat.id;
@@ -610,7 +549,6 @@ export default function EnhancedStatisticsManager({
                                     key={`icon-select-${stat.id}-${stat.icon}`}
                                     value={stat.icon || 'Award'}
                                     onValueChange={(value) => {
-                                      console.log('🎨 Cambiando icono de', stat.icon, 'a', value, 'para stat.id:', stat.id);
                                       updateStatistic(stat.id, 'icon', value);
                                     }}
                                   >

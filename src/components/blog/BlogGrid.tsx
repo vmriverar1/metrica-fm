@@ -18,14 +18,6 @@ interface BlogGridProps {
 export default function BlogGrid({ className }: BlogGridProps) {
   const { filteredPosts, allPosts, isLoading, error } = useBlog();
 
-  // Debug logging
-  console.log('BlogGrid Debug:', {
-    filteredPosts: filteredPosts?.length || 0,
-    allPosts: allPosts?.length || 0,
-    isLoading,
-    error,
-    actualFilteredPosts: filteredPosts?.slice(0, 2) // Show first 2 for debugging
-  });
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [gridSize, setGridSize] = useState<GridSize>('comfortable');
   const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');

@@ -317,7 +317,7 @@ export const ProgressiveEnhancementProvider: React.FC<{
       
       updateFeature(featureId, { enabled: true, loading: false });
       
-      console.log(`✅ Feature loaded: ${feature.name}`);
+
     } catch (error) {
       updateFeature(featureId, { 
         loading: false, 
@@ -329,7 +329,7 @@ export const ProgressiveEnhancementProvider: React.FC<{
 
   const unloadFeature = useCallback((featureId: string): void => {
     updateFeature(featureId, { enabled: false, loading: false });
-    console.log(`🔻 Feature unloaded: ${config.features[featureId]?.name}`);
+
   }, [config.features, updateFeature]);
 
   const getActiveLevel = useCallback((): EnhancementLevel => {
@@ -594,7 +594,6 @@ export const ProgressiveControlPanel: React.FC<ProgressiveControlPanelProps> = (
                 checked={config.enableAutoUpgrade}
                 onCheckedChange={(enabled) => {
                   // Update config
-                  console.log('Auto-upgrade:', enabled);
                 }}
               />
             </div>
@@ -608,7 +607,6 @@ export const ProgressiveControlPanel: React.FC<ProgressiveControlPanelProps> = (
                 value={config.maxConcurrentLoads}
                 className="w-full"
                 onChange={(e) => {
-                  console.log('Max concurrent loads:', e.target.value);
                 }}
               />
               <span className="text-sm text-gray-600">{config.maxConcurrentLoads}</span>

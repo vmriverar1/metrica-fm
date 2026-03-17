@@ -7,8 +7,6 @@ const COLLECTION_NAME = 'portfolio_projects';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🚀 [UploadProjects] Iniciando carga masiva de proyectos...');
-
     // Leer todos los archivos JSON de la carpeta viviendas
     const viviendasFolderPath = path.join(process.cwd(), 'viviendas');
 
@@ -22,8 +20,6 @@ export async function POST(request: NextRequest) {
     const jsonFiles = fs.readdirSync(viviendasFolderPath)
       .filter(file => file.endsWith('.json'));
 
-    console.log(`📁 [UploadProjects] Encontrados ${jsonFiles.length} archivos JSON`);
-
     const results = {
       success: [],
       errors: [],
@@ -36,8 +32,6 @@ export async function POST(request: NextRequest) {
         const filePath = path.join(viviendasFolderPath, fileName);
         const fileContent = fs.readFileSync(filePath, 'utf-8');
         const projectData = JSON.parse(fileContent);
-
-        console.log(`📄 [UploadProjects] Procesando: ${fileName} - ID: ${projectData.id}`);
 
         // Limpiar datos antes de subir
         const cleanData = { ...projectData };
@@ -64,14 +58,12 @@ export async function POST(request: NextRequest) {
         );
 
         if (result.success) {
-          console.log(`✅ [UploadProjects] Proyecto subido: ${projectData.id}`);
           results.success.push({
             id: projectData.id,
             title: projectData.title,
             fileName
           });
         } else {
-          console.error(`❌ [UploadProjects] Error subiendo ${projectData.id}:`, result.error);
           results.errors.push({
             id: projectData.id,
             fileName,
@@ -80,15 +72,12 @@ export async function POST(request: NextRequest) {
         }
 
       } catch (fileError) {
-        console.error(`❌ [UploadProjects] Error procesando archivo ${fileName}:`, fileError);
         results.errors.push({
           fileName,
           error: fileError instanceof Error ? fileError.message : 'Error desconocido'
         });
       }
     }
-
-    console.log(`🎉 [UploadProjects] Carga completada: ${results.success.length} éxitos, ${results.errors.length} errores`);
 
     return NextResponse.json({
       success: true,

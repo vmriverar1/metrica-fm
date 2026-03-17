@@ -704,15 +704,15 @@ export default function AuditLogManager() {
   }
 
   const handleExport = (format: 'csv' | 'json' | 'pdf') => {
-    console.log(`Exporting audit logs as ${format}`)
+
   }
 
   const handleCreateComplianceReport = () => {
-    console.log('Creating new compliance report')
+
   }
 
   const handleApplyRetentionPolicy = (policyId: string) => {
-    console.log(`Applying retention policy: ${policyId}`)
+
   }
 
   const getLevelIcon = (level: string) => {

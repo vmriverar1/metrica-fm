@@ -13,15 +13,6 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Log newsletter subscription
-    console.log('[Newsletter API] New subscription:', {
-      timestamp: new Date().toISOString(),
-      email: body.email,
-      userAgent: request.headers.get('user-agent'),
-      ip: request.headers.get('x-forwarded-for') || 'unknown',
-      source: body.source || 'website'
-    });
-
     // In production, you would:
     // 1. Check if email is already subscribed
     // 2. Save to newsletter database

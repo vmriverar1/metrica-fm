@@ -9,8 +9,6 @@ import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firesto
 
 export async function GET(request: NextRequest) {
   try {
-    console.log(`[${new Date().toISOString()}] BLOG RELATIONS API: GET ${request.url} from ${request.ip || 'unknown'}`);
-
     const { searchParams } = new URL(request.url);
 
     // Parámetros de filtrado
@@ -126,20 +124,6 @@ export async function GET(request: NextRequest) {
       return dateB.getTime() - dateA.getTime();
     });
 
-    // Debug: mostrar las fechas después del ordenamiento
-    console.log('📅 Articles after sorting (first 3):', articles.slice(0, 3).map((a: any) => ({
-      title: a.title,
-      updated_at: a.updated_at?.seconds ? new Date(a.updated_at.seconds * 1000).toISOString() :
-                  a.updated_at?.toDate ? a.updated_at.toDate().toISOString() :
-                  a.updated_at || 'N/A',
-      created_at: a.created_at?.seconds ? new Date(a.created_at.seconds * 1000).toISOString() :
-                  a.created_at?.toDate ? a.created_at.toDate().toISOString() :
-                  a.created_at || 'N/A',
-      published_at: a.published_at?.seconds ? new Date(a.published_at.seconds * 1000).toISOString() :
-                    a.published_at?.toDate ? a.published_at.toDate().toISOString() :
-                    a.published_at || 'N/A'
-    })));
-
     // Aplicar límite si existe
     if (filters.limit) {
       articles = articles.slice(0, filters.limit);
@@ -161,8 +145,8 @@ export async function GET(request: NextRequest) {
               ...authorDoc.data()
             });
           }
-        } catch (error) {
-          console.warn(`Failed to load author ${id}:`, error);
+        } catch {
+          // Non-critical: author lookup failed
         }
       }
     }
@@ -179,8 +163,8 @@ export async function GET(request: NextRequest) {
               ...categoryDoc.data()
             });
           }
-        } catch (error) {
-          console.warn(`Failed to load category ${id}:`, error);
+        } catch {
+          // Non-critical: category lookup failed
         }
       }
     }
@@ -191,8 +175,6 @@ export async function GET(request: NextRequest) {
       author: authorsMap.get(article.author_id) || null,
       category: categoriesMap.get(article.category_id) || null
     }));
-
-    console.log(`📰 Blog articles with relations found: ${articlesWithRelations.length}`);
 
     return NextResponse.json({
       success: true,

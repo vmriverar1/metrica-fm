@@ -193,7 +193,6 @@ export class ApplicationsService {
       }
       application.activities.push(activity);
       
-      console.log(`Application ${applicationId} status updated to ${status}`);
       return true;
     }
     return false;

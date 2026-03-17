@@ -50,6 +50,14 @@ next-env.d.ts
 # credenciales de servicio
 credencials/
 service-account.json
+CREDENTIALS_MAP.md
+nuevas_credenciales.md
+
+# archivos temporales de testing/debug
+test-firebase-connection.js
+test-recaptcha-connection.js
+imagen_corregida.jpg
+imagen_problematica.jpg
 
 # directus
 docker-compose.override.yml

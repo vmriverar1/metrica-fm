@@ -67,7 +67,7 @@ export function ActionButtons({ buttons, certificatePdfUrl, onShowDetails }: Act
         handleViewDetails()
         break
       default:
-        console.log('Unknown action:', action)
+        break
     }
   }
 

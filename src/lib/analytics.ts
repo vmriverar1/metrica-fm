@@ -73,7 +73,6 @@ export async function logEvent(eventName: string, params?: EventParams): Promise
     const analytics = await getAnalytics();
 
     if (!analytics) {
-      console.log('[Analytics] Not available, skipping event:', eventName);
       if (typeof window !== 'undefined') {
         import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
           analyticsDebugger.log(eventName, params, 'error', 'Analytics not available');
@@ -83,7 +82,6 @@ export async function logEvent(eventName: string, params?: EventParams): Promise
     }
 
     firebaseLogEvent(analytics, eventName, params);
-    console.log('[Analytics] Event logged:', eventName, params);
 
     if (typeof window !== 'undefined') {
       import('@/lib/analytics-debug').then(({ analyticsDebugger }) => {
@@ -159,12 +157,10 @@ export async function setUserProps(properties: EventParams): Promise<void> {
     const analytics = await getAnalytics();
 
     if (!analytics) {
-      console.log('[Analytics] Not available, skipping user properties');
       return;
     }
 
     setUserProperties(analytics, properties);
-    console.log('[Analytics] User properties set:', properties);
   } catch (error) {
     console.error('[Analytics] Error setting user properties:', error);
   }
@@ -178,12 +174,10 @@ export async function setAnalyticsUserId(userId: string): Promise<void> {
     const analytics = await getAnalytics();
 
     if (!analytics) {
-      console.log('[Analytics] Not available, skipping user ID');
       return;
     }
 
     setUserId(analytics, userId);
-    console.log('[Analytics] User ID set:', userId);
   } catch (error) {
     console.error('[Analytics] Error setting user ID:', error);
   }

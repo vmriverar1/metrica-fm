@@ -88,8 +88,6 @@ export default function ContactForm() {
         throw new Error(result.error || 'Error al enviar el mensaje');
       }
 
-      console.log('Contact form submitted successfully:', result);
-
       // Track successful submission
       analytics.formSubmit('contact_form', true);
       analytics.logEvent('contact_form_success', {

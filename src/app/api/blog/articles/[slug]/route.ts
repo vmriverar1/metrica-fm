@@ -12,8 +12,6 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    console.log(`[${new Date().toISOString()}] BLOG ARTICLE BY SLUG API: GET ${request.url} from ${request.ip || 'unknown'}`);
-
     const { slug } = params;
 
     if (!slug) {
@@ -54,8 +52,8 @@ export async function GET(
             ...authorDoc.data()
           };
         }
-      } catch (error) {
-        console.warn(`Failed to load author ${articleData.author_id}:`, error);
+      } catch {
+        // Non-critical: author enrichment failed
       }
     }
 
@@ -70,8 +68,8 @@ export async function GET(
             ...categoryDoc.data()
           };
         }
-      } catch (error) {
-        console.warn(`Failed to load category ${articleData.category_id}:`, error);
+      } catch {
+        // Non-critical: category enrichment failed
       }
     }
 
@@ -80,8 +78,6 @@ export async function GET(
       author,
       category
     };
-
-    console.log(`📰 Article found by slug "${slug}": ${article.title}`);
 
     return NextResponse.json({
       success: true,

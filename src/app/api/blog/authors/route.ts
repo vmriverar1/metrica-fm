@@ -9,8 +9,6 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log(`[${new Date().toISOString()}] BLOG AUTHORS API: GET ${request.url} from ${request.ip || 'unknown'}`);
-
     // Obtener autores usando Firestore client SDK (público)
     const authorsRef = collection(db, 'blog_authors');
     const authorsQuery = query(authorsRef, orderBy('name'));
@@ -20,8 +18,6 @@ export async function GET(request: NextRequest) {
       id: doc.id,
       ...doc.data()
     }));
-
-    console.log(`👥 Blog authors found: ${authors.length}`);
 
     return NextResponse.json({
       success: true,
