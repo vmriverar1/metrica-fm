@@ -44,7 +44,9 @@ export interface SubscriberData {
 
 export interface EmailConfig {
   id: string;
-  recipients: string[]; // Emails que recibirán notificaciones
+  recipients: string[];
+  employment_recipients: string[];
+  ethics_recipients: string[];
   notify_on_subscribe: boolean;
   notify_on_unsubscribe: boolean;
   updated_at: Timestamp;
@@ -277,6 +279,8 @@ export class SubscribersService {
       return {
         id: this.CONFIG_DOC,
         recipients: [],
+        employment_recipients: [],
+        ethics_recipients: [],
         notify_on_subscribe: true,
         notify_on_unsubscribe: false,
         updated_at: Timestamp.now()
@@ -294,6 +298,8 @@ export class SubscribersService {
     try {
       const configData = {
         recipients: data.recipients || [],
+        employment_recipients: data.employment_recipients || [],
+        ethics_recipients: data.ethics_recipients || [],
         notify_on_subscribe: data.notify_on_subscribe ?? true,
         notify_on_unsubscribe: data.notify_on_unsubscribe ?? false,
         updated_at: Timestamp.now()

@@ -22,6 +22,10 @@ export default function SubscriptionsConfigPage() {
   const [config, setConfig] = useState<EmailConfig | null>(null);
   const [recipients, setRecipients] = useState<string[]>([]);
   const [newRecipient, setNewRecipient] = useState('');
+  const [employmentRecipients, setEmploymentRecipients] = useState<string[]>([]);
+  const [newEmploymentRecipient, setNewEmploymentRecipient] = useState('');
+  const [ethicsRecipients, setEthicsRecipients] = useState<string[]>([]);
+  const [newEthicsRecipient, setNewEthicsRecipient] = useState('');
   const [notifyOnSubscribe, setNotifyOnSubscribe] = useState(true);
   const [notifyOnUnsubscribe, setNotifyOnUnsubscribe] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -42,6 +46,8 @@ export default function SubscriptionsConfigPage() {
       if (emailConfig) {
         setConfig(emailConfig);
         setRecipients(emailConfig.recipients || []);
+        setEmploymentRecipients(emailConfig.employment_recipients || []);
+        setEthicsRecipients(emailConfig.ethics_recipients || []);
         setNotifyOnSubscribe(emailConfig.notify_on_subscribe);
         setNotifyOnUnsubscribe(emailConfig.notify_on_unsubscribe);
       }
@@ -85,6 +91,60 @@ export default function SubscriptionsConfigPage() {
     setRecipients(recipients.filter(r => r !== email));
   };
 
+  const handleAddEmploymentRecipient = () => {
+    const email = newEmploymentRecipient.trim().toLowerCase();
+
+    if (!email) {
+      setErrorMessage('Ingresa un email');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorMessage('Email inválido');
+      return;
+    }
+
+    if (employmentRecipients.includes(email)) {
+      setErrorMessage('Este email ya está en la lista de empleo');
+      return;
+    }
+
+    setEmploymentRecipients([...employmentRecipients, email]);
+    setNewEmploymentRecipient('');
+    setErrorMessage('');
+  };
+
+  const handleRemoveEmploymentRecipient = (email: string) => {
+    setEmploymentRecipients(employmentRecipients.filter(r => r !== email));
+  };
+
+  const handleAddEthicsRecipient = () => {
+    const email = newEthicsRecipient.trim().toLowerCase();
+
+    if (!email) {
+      setErrorMessage('Ingresa un email');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorMessage('Email inválido');
+      return;
+    }
+
+    if (ethicsRecipients.includes(email)) {
+      setErrorMessage('Este email ya está en la lista de ética');
+      return;
+    }
+
+    setEthicsRecipients([...ethicsRecipients, email]);
+    setNewEthicsRecipient('');
+    setErrorMessage('');
+  };
+
+  const handleRemoveEthicsRecipient = (email: string) => {
+    setEthicsRecipients(ethicsRecipients.filter(r => r !== email));
+  };
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -92,6 +152,8 @@ export default function SubscriptionsConfigPage() {
 
       const configData = {
         recipients,
+        employment_recipients: employmentRecipients,
+        ethics_recipients: ethicsRecipients,
         notify_on_subscribe: notifyOnSubscribe,
         notify_on_unsubscribe: notifyOnUnsubscribe
       };
@@ -177,12 +239,12 @@ export default function SubscriptionsConfigPage() {
         </Alert>
       )}
 
-      {/* Destinatarios Card */}
+      {/* Destinatarios Formularios Generales Card */}
       <Card>
         <CardHeader>
-          <CardTitle>Destinatarios de Notificaciones</CardTitle>
+          <CardTitle>Destinatarios - Formularios Generales</CardTitle>
           <CardDescription>
-            Emails que recibirán notificaciones sobre nuevos suscriptores
+            Emails que recibirán notificaciones de formularios de contacto, denuncias, etc.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -231,6 +293,137 @@ export default function SubscriptionsConfigPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRemoveRecipient(email)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Destinatarios Aplicaciones de Empleo Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Destinatarios - Aplicaciones de Empleo</CardTitle>
+          <CardDescription>
+            Emails que recibirán notificaciones de aplicaciones laborales
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Add Employment Recipient */}
+          <div className="flex items-end gap-2">
+            <div className="flex-1">
+              <Label htmlFor="new-employment-recipient">Agregar Email</Label>
+              <Input
+                id="new-employment-recipient"
+                type="email"
+                placeholder="rrhh@example.com"
+                value={newEmploymentRecipient}
+                onChange={(e) => setNewEmploymentRecipient(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleAddEmploymentRecipient();
+                  }
+                }}
+              />
+            </div>
+            <Button onClick={handleAddEmploymentRecipient}>
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar
+            </Button>
+          </div>
+
+          {/* Employment Recipients List */}
+          <div className="space-y-2">
+            <Label>Destinatarios ({employmentRecipients.length})</Label>
+            {employmentRecipients.length === 0 ? (
+              <div className="text-sm text-muted-foreground border border-dashed rounded-lg p-8 text-center">
+                No hay destinatarios configurados
+              </div>
+            ) : (
+              <div className="border rounded-lg divide-y">
+                {employmentRecipients.map((email, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 hover:bg-muted/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{email}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveEmploymentRecipient(email)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Destinatarios Denuncias y Reclamaciones Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Destinatarios - Denuncias y Reclamaciones</CardTitle>
+          <CardDescription>
+            Emails del Comité de Ética que recibirán denuncias del Canal de Denuncias y reclamaciones del Libro de Reclamaciones.
+            Si esta lista está vacía, se usará la lista de formularios generales como respaldo.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Add Ethics Recipient */}
+          <div className="flex items-end gap-2">
+            <div className="flex-1">
+              <Label htmlFor="new-ethics-recipient">Agregar Email</Label>
+              <Input
+                id="new-ethics-recipient"
+                type="email"
+                placeholder="etica@example.com"
+                value={newEthicsRecipient}
+                onChange={(e) => setNewEthicsRecipient(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleAddEthicsRecipient();
+                  }
+                }}
+              />
+            </div>
+            <Button onClick={handleAddEthicsRecipient}>
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar
+            </Button>
+          </div>
+
+          {/* Ethics Recipients List */}
+          <div className="space-y-2">
+            <Label>Destinatarios ({ethicsRecipients.length})</Label>
+            {ethicsRecipients.length === 0 ? (
+              <div className="text-sm text-muted-foreground border border-dashed rounded-lg p-8 text-center">
+                No hay destinatarios configurados — las denuncias y reclamaciones llegarán a los destinatarios de formularios generales
+              </div>
+            ) : (
+              <div className="border rounded-lg divide-y">
+                {ethicsRecipients.map((email, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 hover:bg-muted/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{email}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveEthicsRecipient(email)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -310,7 +503,8 @@ export default function SubscriptionsConfigPage() {
               <p className="font-medium">Información importante:</p>
               <ul className="list-disc list-inside space-y-1 ml-2">
                 <li>Las notificaciones se enviarán desde el correo configurado en el sistema</li>
-                <li>Puedes agregar múltiples destinatarios para recibir las notificaciones</li>
+                <li>Puedes configurar destinatarios diferentes para formularios generales y aplicaciones de empleo</li>
+                <li>Puedes agregar múltiples destinatarios en cada lista</li>
                 <li>Los cambios se aplican inmediatamente después de guardar</li>
               </ul>
             </div>

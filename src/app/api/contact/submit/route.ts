@@ -293,7 +293,7 @@ export async function POST(request: NextRequest) {
                   sanitizedData.mail ||
                   sanitizedData.user_email;
 
-    const isAnonymous = formData.anonimo === true;
+    const isAnonymous = formData.anonimo === true || formData.anonimo === 'true';
 
     // No exigir email en denuncias anónimas
     if (!isAnonymous && (!email || !DataSanitizer.isValidEmail(email))) {
@@ -355,7 +355,10 @@ export async function POST(request: NextRequest) {
       // Obtener configuración de destinatarios
       const config = await SubscribersService.getEmailConfig();
 
-      if (!config || config.recipients.length === 0) {
+      const hasAnyRecipients = config &&
+        (config.recipients.length > 0 || config.ethics_recipients?.length > 0 || config.employment_recipients?.length > 0);
+
+      if (!hasAnyRecipients) {
         return NextResponse.json({
           success: true,
           message: 'Formulario recibido correctamente',
@@ -365,9 +368,16 @@ export async function POST(request: NextRequest) {
 
       // Determinar destinatarios según tipo de formulario
       const isEthicsForm = formType === 'denuncia' || formType === 'reclamacion';
-      const recipients = isEthicsForm && (config as any).ethics_recipients?.length > 0
-        ? (config as any).ethics_recipients
-        : config.recipients;
+      const isEmploymentForm = formType === 'application';
+      let recipients: string[];
+
+      if (isEthicsForm && config.ethics_recipients?.length > 0) {
+        recipients = config.ethics_recipients;
+      } else if (isEmploymentForm && config.employment_recipients?.length > 0) {
+        recipients = config.employment_recipients;
+      } else {
+        recipients = config.recipients;
+      }
 
       // Configuración del email
       const emailConfig = {
