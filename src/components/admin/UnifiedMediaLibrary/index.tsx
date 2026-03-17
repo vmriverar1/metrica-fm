@@ -140,6 +140,7 @@ const UnifiedMediaLibrary: React.FC<UnifiedMediaLibraryProps> = ({
   // ========== EFFECTS ==========
 
   // Fetch images when modal opens
+  const selectedImagesKey = JSON.stringify(selectedImages);
   useEffect(() => {
     if (isOpen) {
       fetchImages();
@@ -147,7 +148,8 @@ const UnifiedMediaLibrary: React.FC<UnifiedMediaLibraryProps> = ({
       setCurrentPage(1);
       setActiveTab('library');
     }
-  }, [isOpen, selectedImages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, selectedImagesKey]);
 
   // Reset to page 1 when search changes
   useEffect(() => {
