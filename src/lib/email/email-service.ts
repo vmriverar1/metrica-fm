@@ -104,14 +104,14 @@ export class EmailService {
             word-wrap: break-word;
           }
           .field-value.email {
-            color: #003F6F;
+            color: #00A8E8;
           }
           .field-value.phone {
             color: #003F6F;
             font-weight: 500;
           }
           .field-value.url a {
-            color: #003F6F;
+            color: #00A8E8;
             text-decoration: none;
           }
           .field-value.url a:hover {
@@ -174,7 +174,7 @@ export class EmailService {
         else if (val.includes('coverletter') || val.includes('carta')) linkText = '📄 Descargar Carta de Presentación';
         else if (val.includes('linkedin.com')) linkText = '🔗 Ver perfil de LinkedIn';
         else if (val.startsWith('http')) linkText = '🔗 Ver enlace';
-        valueHtml = `<a href="${field.value}" target="_blank" style="color:#003F6F;font-weight:500;text-decoration:none;">${linkText}</a>`;
+        valueHtml = `<a href="${field.value}" target="_blank" style="color:#00A8E8;font-weight:500;text-decoration:none;">${linkText}</a>`;
       } else if (field.type === 'email') {
         valueHtml = `<a href="mailto:${field.value}">${field.value}</a>`;
       } else if (field.type === 'phone') {
