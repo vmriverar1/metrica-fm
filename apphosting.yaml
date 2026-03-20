@@ -94,12 +94,12 @@ env:
 
   # Gmail SMTP credentials
   - variable: GMAIL_USER
-    value: jmorales@metrica-dip.com
+    value: marketing@metrica-dip.com
     availability:
       - RUNTIME
 
   - variable: GMAIL_APP_PASSWORD
-    value: chsb ofcu qlrq lhwf
+    value: ievy qqmu tkks byff
     availability:
       - RUNTIME
 

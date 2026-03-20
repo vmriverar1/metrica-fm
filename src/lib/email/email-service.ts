@@ -8,7 +8,7 @@ import { EmailConfig, EmailTemplate, EmailField } from '@/types/email';
 
 // Configuración de Gmail desde variables de entorno
 const GMAIL_CONFIG = {
-  user: process.env.GMAIL_USER || '',
+  user: process.env.GMAIL_USER || 'marketing@metrica-dip.com',
   pass: process.env.GMAIL_APP_PASSWORD || ''
 };
 
