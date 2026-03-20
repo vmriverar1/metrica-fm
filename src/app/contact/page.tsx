@@ -8,8 +8,7 @@ import { FirestoreCore } from '@/lib/firestore/firestore-core';
 import { Metadata } from 'next';
 
 
-// ISR: revalidar cada hora
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {

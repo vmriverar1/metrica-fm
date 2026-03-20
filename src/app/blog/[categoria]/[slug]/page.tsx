@@ -11,8 +11,7 @@ import { ArticleLoadingState } from '@/components/loading/OptimizedLoading';
 import SectionTransition from '@/components/portfolio/SectionTransition';
 import { BlogContentData } from '@/types/blog-page';
 
-// ISR: revalidar cada hora
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 interface ArticlePageProps {
   params: {

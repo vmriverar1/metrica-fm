@@ -2,8 +2,7 @@ import { Metadata } from 'next';
 import Header from '@/components/landing/header';
 import Footer from '@/components/landing/footer';
 
-// ISR: revalidar cada hora
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 // import HeroEquipo from '@/components/cultura/HeroEquipo'; // Comentado temporalmente
 import UniversalHero from '@/components/ui/universal-hero';
 import MissionVision from '@/components/historia/MissionVision';
