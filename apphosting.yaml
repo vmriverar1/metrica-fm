@@ -57,13 +57,13 @@ env:
 
   # Google reCAPTCHA v3 - Para protección de formularios
   - variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-    value: 6Lc13_0rAAAAAGtNImO3exEbFVFpJfnopbGM-sp3
+    value: 6Lf3Q7ssAAAAAEUqCz3jxp319DtlmbtYJMn8gB_Q
     availability:
       - BUILD
       - RUNTIME
 
   - variable: RECAPTCHA_SECRET_KEY
-    value: 6Lc13_0rAAAAAPDUaL3hu4pOfscis5btWkyDbQLd
+    value: 6Lf3Q7ssAAAAAPlc0P6GmPJB9WH9MuTS4D1oiK9F
     availability:
       - RUNTIME
 
