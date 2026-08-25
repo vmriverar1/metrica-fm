@@ -31,9 +31,7 @@ async function initializeServices() {
   }
 }
 
-// ==========================================
 // HOOK PÚBLICO PARA ARTÍCULOS
-// ==========================================
 
 export interface UsePublicArticulosOptions {
   filters?: NewsletterFilters;
@@ -214,9 +212,7 @@ export function usePublicArticulos(options: UsePublicArticulosOptions = {}): Use
   };
 }
 
-// ==========================================
 // HOOK PÚBLICO PARA CATEGORÍAS
-// ==========================================
 
 export interface UsePublicCategoriasResult {
   categorias: Categoria[];
@@ -280,9 +276,7 @@ export function usePublicCategorias(): UsePublicCategoriasResult {
   };
 }
 
-// ==========================================
 // HOOK PÚBLICO PARA AUTORES
-// ==========================================
 
 export interface UsePublicAutoresResult {
   autores: Autor[];
@@ -346,9 +340,7 @@ export function usePublicAutores(): UsePublicAutoresResult {
   };
 }
 
-// ==========================================
 // HOOK COMBINADO PARA BLOG PÚBLICO
-// ==========================================
 
 export interface UsePublicBlogResult {
   // Data
@@ -453,9 +445,7 @@ export function usePublicBlog(options: UsePublicArticulosOptions = {}): UsePubli
   };
 }
 
-// ==========================================
 // HOOK DE CONVERSIÓN PARA COMPATIBILIDAD
-// ==========================================
 
 export interface BlogPostCompatible {
   id: string;

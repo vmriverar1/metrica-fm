@@ -40,9 +40,7 @@ import {
 
 import { PortfolioCache } from './portfolio-service-optimized';
 
-// ==========================================
 // FIRESTORE LITE CONFIGURATION
-// ==========================================
 
 class FirestoreLiteConfig {
   private static db: FirestoreLite | null = null;
@@ -93,9 +91,7 @@ class FirestoreLiteConfig {
   }
 }
 
-// ==========================================
 // PORTFOLIO LITE SERVICES (READ-ONLY)
-// ==========================================
 
 export class PortfolioLiteService {
   private static get db() {
@@ -460,9 +456,7 @@ export class PortfolioLiteService {
   }
 }
 
-// ==========================================
 // BUNDLE SIZE UTILITIES
-// ==========================================
 
 export class FirestoreBundleUtils {
   /**

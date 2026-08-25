@@ -1,10 +1,6 @@
 // Barrel export for specialized components (específicos por página)
 
 // Cultura specialized components
-// export { TeamManagementSection } from './cultura/TeamManagementSection'
-// export { CultureGalleryManager } from './cultura/CultureGalleryManager'
-// export { SocialImpactDashboard } from './cultura/SocialImpactDashboard'
-// export { VisionRoadmapSection } from './cultura/VisionRoadmapSection'
 
 // Services specialized components
 // export { ProcessMethodologyEditor } from './services/ProcessMethodologyEditor'

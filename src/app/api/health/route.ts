@@ -207,7 +207,7 @@ function checkMemoryHealth(memoryUsage: NodeJS.MemoryUsage): 'up' | 'down' | 'de
   try {
     const heapUsedMB = memoryUsage.heapUsed / 1024 / 1024;
     const heapTotalMB = memoryUsage.heapTotal / 1024 / 1024;
-    const heapUsagePercent = (heapUsed / heapTotal) * 100;
+    const heapUsagePercent = (heapUsedMB / heapTotalMB) * 100;
     
     // Umbrales de memoria
     if (heapUsagePercent > 90 || heapUsedMB > 1024) { // > 90% o > 1GB

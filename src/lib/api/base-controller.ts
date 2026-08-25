@@ -69,9 +69,7 @@ export class BaseAPIController<T extends BaseEntity, TData extends BaseData = Ba
     this.systemName = options.systemName || 'unknown';
   }
 
-  // ==========================================
   // HANDLERS HTTP
-  // ==========================================
 
   /**
    * GET - Listar documentos con filtros, búsqueda y paginación
@@ -364,9 +362,7 @@ export class BaseAPIController<T extends BaseEntity, TData extends BaseData = Ba
     }, `${this.systemName} GET by ID handler`);
   }
 
-  // ==========================================
   // UTILIDADES PRIVADAS
-  // ==========================================
 
   private parseQueryParams(searchParams: URLSearchParams): QueryParams {
     const params: QueryParams = {};

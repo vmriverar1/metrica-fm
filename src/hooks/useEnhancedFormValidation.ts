@@ -54,18 +54,11 @@ export interface FormConfig {
 }
 
 /**
- * Hook mejorado para validación de formularios con validadores de Fase 1
+ * Validación de formularios en tiempo real (onChange con debounce) y al enviar,
+ * con mensajes en español y los validadores anti-spam de Fase 1.
  *
- * Características:
- * - Validación en tiempo real (onChange con debounce)
- * - Validación al enviar (onSubmit)
- * - Feedback visual (valid/invalid)
- * - Mensajes de error en español
- * - Integra validadores anti-spam de Fase 1
- *
- * @param config - Configuración de campos del formulario
- * @param debounceMs - Tiempo de debounce para validación onChange (default: 500ms)
- * @returns Estado y funciones de validación
+ * @param config - Campos del formulario
+ * @param debounceMs - Debounce de la validación onChange (default: 500ms)
  */
 export function useEnhancedFormValidation(
   config: FormConfig,

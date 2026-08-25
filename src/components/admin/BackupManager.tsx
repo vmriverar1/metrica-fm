@@ -62,24 +62,6 @@ const BackupManager: React.FC<BackupManagerProps> = ({
   onRestore,
   className = ''
 }) => {
-  // const {
-  //   backups,
-  //   config,
-  //   isScheduleActive,
-  //   lastBackup,
-  //   nextBackup,
-  //   storageUsed,
-  //   storageLimit,
-  //   createBackup,
-  //   restoreBackup,
-  //   deleteBackup,
-  //   updateConfig,
-  //   startSchedule,
-  //   stopSchedule,
-  //   cleanupOldBackups,
-  //   exportBackup,
-  //   importBackup
-  // } = useBackupSystem(resource);
 
   // Mock data for build
   const backups: any[] = [];

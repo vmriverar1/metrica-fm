@@ -26,9 +26,7 @@ import {
   parseArea
 } from '@/types/portfolio-firestore';
 
-// ==========================================
 // INTERFACES PARA AGREGACIONES
-// ==========================================
 
 export interface PortfolioAggregatedStats extends PortfolioStats {
   last_updated: string;
@@ -88,9 +86,7 @@ export interface DashboardAggregation {
   version: number;
 }
 
-// ==========================================
 // PORTFOLIO AGGREGATIONS SERVICE
-// ==========================================
 
 export class PortfolioAggregationsService {
   private static aggregationsCollection = 'portfolio_aggregations';
@@ -280,9 +276,7 @@ export class PortfolioAggregationsService {
     // Ejecutar cada 2 horas para mantener agregaciones frescas
   }
 
-  // ==========================================
   // MÉTODOS AUXILIARES
-  // ==========================================
 
   private static calculateAvgDuration(projects: any[]): number {
     const durationsInMonths = projects
@@ -350,9 +344,7 @@ export class PortfolioAggregationsService {
   }
 }
 
-// ==========================================
 // TRIGGERS PARA MANTENER AGREGACIONES
-// ==========================================
 
 export class PortfolioAggregationTriggers {
   /**

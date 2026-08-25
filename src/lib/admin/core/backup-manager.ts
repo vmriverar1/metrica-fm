@@ -1,15 +1,6 @@
 /**
- * BackupManager - Sistema de backups automáticos
- * 
- * Características:
- * - Backups incrementales y completos
- * - Programación automática (cron-like)
- * - Retención configurable de backups
- * - Verificación de integridad
- * - Restauración de backups
- * - Compresión de archivos antiguos
- * - Monitoreo y alertas
- * - Exportación a diferentes destinos
+ * Backups incrementales y completos con programación, retención,
+ * verificación de integridad y restauración.
  */
 
 import fs from 'fs/promises';

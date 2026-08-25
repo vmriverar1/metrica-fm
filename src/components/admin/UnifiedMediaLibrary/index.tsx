@@ -1,18 +1,6 @@
 /**
- * UnifiedMediaLibrary - Unified media library component
- * Combines best features from WordPressMediaLibrary and MediaLibrary
- *
- * Features:
- * - Modal dialog with tabs (Library/Upload)
- * - Advanced filtering (search, folder, type, sort)
- * - Grid and List views
- * - Pagination
- * - Upload with drag & drop
- * - Duplicate validation
- * - Image resize and WebP conversion
- * - Statistics
- * - Preview modal
- * - Multi-select support
+ * Biblioteca de medios unificada: modal con pestañas de librería y subida,
+ * filtrado, paginación, conversión a WebP y selección múltiple.
  */
 
 'use client';

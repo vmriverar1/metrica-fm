@@ -1,11 +1,6 @@
 /**
- * API Route - Applications Management
- * GET/POST /api/applications
- *
- * Endpoints para gestión de aplicaciones laborales via API REST.
- *
- * NOTA: Autenticación simplificada. Para sistema completo de roles/permisos,
- * integrar con Firebase Auth Admin SDK y Firestore.
+ * GET/POST /api/applications — gestión de aplicaciones laborales.
+ * Autenticación simplificada: falta integrar Firebase Auth Admin + roles.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

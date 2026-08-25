@@ -1,10 +1,6 @@
 /**
- * API Route: /api/admin/media/images
- * Media Library - Gestión de imágenes del proyecto
- *
- * Sistema Dual: Lee imágenes de ambas fuentes:
- * - Local: /public/images/
- * - Firebase Storage: gs://bucket/images/
+ * Media Library: lee imágenes de dos fuentes, /public/images/ local
+ * y Firebase Storage.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

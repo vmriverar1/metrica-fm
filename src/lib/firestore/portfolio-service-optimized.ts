@@ -49,9 +49,7 @@ import {
   parseArea
 } from '@/types/portfolio-firestore';
 
-// ==========================================
 // PAGINATION INTERFACES
-// ==========================================
 
 export interface PaginationOptions {
   limit?: number;
@@ -73,9 +71,7 @@ export interface CacheOptions {
   forceRefresh?: boolean;
 }
 
-// ==========================================
 // CACHE LAYER OPTIMIZADO
-// ==========================================
 
 class PortfolioCache {
   private static cache = new Map<string, { data: any; expires: number }>();
@@ -118,9 +114,7 @@ class PortfolioCache {
   }
 }
 
-// ==========================================
 // SERVICIO DE CATEGORÍAS OPTIMIZADO
-// ==========================================
 
 export class OptimizedPortfolioCategoriesService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_CATEGORIES);
@@ -226,9 +220,7 @@ export class OptimizedPortfolioCategoriesService {
   }
 }
 
-// ==========================================
 // SERVICIO DE PROYECTOS OPTIMIZADO
-// ==========================================
 
 export class OptimizedPortfolioProjectsService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_PROJECTS);
@@ -453,9 +445,7 @@ export class OptimizedPortfolioProjectsService {
   }
 }
 
-// ==========================================
 // SERVICIO DE IMÁGENES OPTIMIZADO
-// ==========================================
 
 export class OptimizedPortfolioImagesService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_IMAGES);
@@ -529,9 +519,7 @@ export class OptimizedPortfolioImagesService {
   }
 }
 
-// ==========================================
 // SERVICIO DE AGREGACIONES Y ESTADÍSTICAS
-// ==========================================
 
 export class OptimizedPortfolioStatsService {
   /**
@@ -599,9 +587,7 @@ export class OptimizedPortfolioStatsService {
   }
 }
 
-// ==========================================
 // SERVICIO DE BATCH OPERATIONS
-// ==========================================
 
 export class OptimizedPortfolioBatchService {
   /**

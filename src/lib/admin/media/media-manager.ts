@@ -1,14 +1,6 @@
 /**
- * MediaManager - Sistema de gestión de archivos multimedia
- * 
- * Características:
- * - Upload de archivos con validación
- * - Optimización automática de imágenes
- * - Generación de thumbnails
- * - Validación de URLs externas
- * - Organización por tipo y fecha
- * - Control de tamaño y formato
- * - Metadata y etiquetado
+ * Gestión de multimedia: upload validado, optimización de imágenes,
+ * thumbnails y metadata.
  */
 
 import fs from 'fs/promises';

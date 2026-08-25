@@ -5,20 +5,6 @@
  */
 
 // Note: This service is currently disabled as the types are not available
-// import {
-//   JobApplication,
-//   ApplicationStatus,
-//   ApplicationFilters,
-//   RecruitmentStats,
-//   RecruiterProfile,
-//   ApplicationActivity,
-//   ApplicationScore,
-//   sampleApplications,
-//   sampleRecruiters,
-//   getSampleApplications,
-//   getSampleApplicationsByJob,
-//   getSampleApplicationsByStatus
-// } from '@/types/careers';
 
 // Temporary minimal types to prevent compilation errors
 type ApplicationStatus = 'pending' | 'reviewing' | 'interviewed' | 'hired' | 'rejected';

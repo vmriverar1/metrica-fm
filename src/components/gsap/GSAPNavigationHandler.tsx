@@ -6,16 +6,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { gsap } from 'gsap';
 
 /**
- * Componente que maneja la limpieza y reinicio de animaciones GSAP
- * cuando el usuario navega usando back/forward del navegador.
- *
- * Problema: Next.js App Router usa navegación del cliente que no desmonta
- * completamente los componentes, causando que ScrollTrigger quede en estados
- * inconsistentes. Además, el bfcache (back-forward cache) del navegador
- * puede restaurar páginas sin ejecutar JavaScript.
- *
- * Solución: Detectar navegación popstate Y restauración desde bfcache,
- * forzando recarga completa para reiniciar todas las animaciones.
+ * Reinicia las animaciones GSAP al navegar con back/forward.
+ * La navegación de cliente del App Router no desmonta los componentes y el
+ * bfcache restaura la página sin ejecutar JS, dejando ScrollTrigger
+ * inconsistente; se detecta popstate y bfcache y se fuerza recarga.
  */
 export default function GSAPNavigationHandler() {
   const pathname = usePathname();

@@ -1,23 +1,10 @@
 /**
- * Servicio de sanitización de datos
- * Limpia caracteres extraños permitiendo solo:
- * - Letras (a-z, A-Z)
- * - Números (0-9)
- * - Letras con tildes (á, é, í, ó, ú, Á, É, Í, Ó, Ú)
- * - Ñ y ñ
- * - Signos: + $ S/. (soles) y espacios
- * - Puntuación básica: . , ; : ? ! - ( ) [ ]
+ * Sanitiza texto dejando solo letras (con tildes y ñ), números, espacios,
+ * puntuación básica y símbolos monetarios.
  */
 
 export class DataSanitizer {
-  /**
-   * Patrón regex que permite:
-   * - Letras básicas y con tildes
-   * - Números
-   * - Espacios
-   * - Puntuación básica
-   * - Símbolos monetarios
-   */
+  /** Caracteres permitidos: letras con tildes, números, espacios, puntuación y moneda. */
   private static readonly ALLOWED_PATTERN = /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\+\$\.,;:\?!\-\(\)\[\]@\/]/g;
 
   /**

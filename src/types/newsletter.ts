@@ -5,9 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 
-// ==========================================
 // INTERFACES PRINCIPALES
-// ==========================================
 
 export interface Autor {
   id: string;
@@ -73,9 +71,7 @@ export interface Articulo {
   updated_at: Timestamp;
 }
 
-// ==========================================
 // DATA TRANSFER OBJECTS (DTOs)
-// ==========================================
 
 export interface AutorData {
   name: string;
@@ -116,9 +112,7 @@ export interface ArticuloData {
   gallery?: GalleryItem[];
 }
 
-// ==========================================
 // INTERFACES EXTENDIDAS CON RELACIONES
-// ==========================================
 
 export interface ArticuloConRelaciones extends Articulo {
   author?: Autor;
@@ -126,9 +120,7 @@ export interface ArticuloConRelaciones extends Articulo {
   related?: Articulo[];
 }
 
-// ==========================================
 // FILTROS Y BÚSQUEDA
-// ==========================================
 
 export interface NewsletterFilters {
   category?: string;
@@ -140,9 +132,7 @@ export interface NewsletterFilters {
   offset?: number;
 }
 
-// ==========================================
 // ESTADÍSTICAS
-// ==========================================
 
 export interface NewsletterStats {
   total_articles: number;
@@ -157,9 +147,7 @@ export interface NewsletterStats {
   articles_by_author: { author: string; count: number }[];
 }
 
-// ==========================================
 // RESPUESTAS DE CRUD
-// ==========================================
 
 export interface CRUDResponse<T = any> {
   success: boolean;
@@ -168,9 +156,7 @@ export interface CRUDResponse<T = any> {
   error?: string;
 }
 
-// ==========================================
 // COMPATIBILIDAD CON BLOG TYPES EXISTENTES
-// ==========================================
 
 // Para mantener compatibilidad con el sistema existente
 export interface BlogPostCompatible {
@@ -201,9 +187,7 @@ export interface BlogPostCompatible {
   status: 'published' | 'draft';
 }
 
-// ==========================================
 // UTILITIES Y HELPERS
-// ==========================================
 
 export function generateSlug(title: string): string {
   return title
@@ -273,9 +257,7 @@ export function generateURL(categorySlug: string, articleSlug: string): string {
   return `/blog/${categorySlug}/${articleSlug}`;
 }
 
-// ==========================================
 // VALIDACIONES
-// ==========================================
 
 export function validateAutorData(data: AutorData): string[] {
   const errors: string[] = [];
@@ -327,9 +309,7 @@ export function validateArticuloData(data: ArticuloData): string[] {
   return errors;
 }
 
-// ==========================================
 // CONVERSORES PARA COMPATIBILIDAD
-// ==========================================
 
 export function articuloToBlogPost(articulo: ArticuloConRelaciones): BlogPostCompatible {
   return {

@@ -1,13 +1,6 @@
 /**
- * AuthMiddleware - Middleware para autenticación y autorización
- * 
- * Características:
- * - Verificación automática de JWT tokens
- * - Control de permisos por endpoint
- * - Rate limiting y protección contra ataques
- * - Logging automático de accesos
- * - Manejo de errores estándar
- * - Compatible con Next.js App Router
+ * Middleware de Next.js App Router: verifica JWT, aplica permisos por
+ * endpoint, rate limiting y registro de accesos.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

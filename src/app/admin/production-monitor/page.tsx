@@ -107,13 +107,8 @@ export default function ProductionMonitor() {
       
       try {
         // Load configuration report
-        // const config = ProductionConfig.getInstance();
-        // const report = config.generateConfigReport();
-        // setConfigReport(report);
 
         // Load health status
-        // const health = await config.performHealthCheck();
-        // setHealthStatus(health);
 
         // Generate initial metrics
         const metrics = Array.from({ length: 60 }, generateMetrics);

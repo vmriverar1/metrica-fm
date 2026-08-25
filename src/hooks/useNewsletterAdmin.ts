@@ -36,9 +36,7 @@ async function initializeServices() {
   }
 }
 
-// ==========================================
 // HOOKS PARA AUTORES
-// ==========================================
 
 export interface UseAutoresResult {
   autores: Autor[];
@@ -163,9 +161,7 @@ export function useAutores(): UseAutoresResult {
   };
 }
 
-// ==========================================
 // HOOKS PARA CATEGORÍAS
-// ==========================================
 
 export interface UseCategoriasResult {
   categorias: Categoria[];
@@ -290,9 +286,7 @@ export function useCategorias(): UseCategoriasResult {
   };
 }
 
-// ==========================================
 // HOOKS PARA ARTÍCULOS
-// ==========================================
 
 export interface UseArticulosOptions {
   filters?: NewsletterFilters;
@@ -470,9 +464,7 @@ export function useArticulos(options: UseArticulosOptions = {}): UseArticulosRes
   };
 }
 
-// ==========================================
 // HOOKS PARA ESTADÍSTICAS
-// ==========================================
 
 export interface UseNewsletterStatsResult {
   stats: NewsletterStats | null;
@@ -515,9 +507,7 @@ export function useNewsletterStats(): UseNewsletterStatsResult {
   };
 }
 
-// ==========================================
 // HOOK COMBINADO PARA DASHBOARD
-// ==========================================
 
 export interface UseDashboardResult {
   // Data

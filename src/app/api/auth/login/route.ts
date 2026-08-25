@@ -1,16 +1,6 @@
 /**
- * API Route - Authentication Login
- * POST /api/auth/login
- *
- * Endpoint para autenticación via API REST.
- *
- * NOTA: El sistema actual de autenticación usa Google Sign-In únicamente.
- * Este endpoint retorna información sobre el método de autenticación disponible.
- *
- * Para autenticación via email/password, se requiere:
- * 1. Configurar Firebase Authentication con proveedores de email/password
- * 2. Implementar validación de tokens con Firebase Admin SDK
- * 3. Agregar sistema de roles/permisos en Firestore
+ * POST /api/auth/login — informa del método de autenticación disponible.
+ * La autenticación real es Google Sign-In; email/password no está implementado.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

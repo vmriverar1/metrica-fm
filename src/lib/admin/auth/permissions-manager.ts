@@ -1,13 +1,6 @@
 /**
- * PermissionsManager - Sistema de control de acceso basado en roles (RBAC)
- * 
- * Características:
- * - Control granular de permisos por recurso y acción
- * - Roles jerárquicos con herencia de permisos
- * - Permisos contextuales (ej: "editar solo mis artículos")
- * - Auditoría de accesos
- * - Caché de permisos para performance
- * - Configuración basada en JSON
+ * RBAC con permisos por recurso y acción, roles jerárquicos,
+ * permisos contextuales y caché.
  */
 
 import { fileManager } from '../core/file-manager';

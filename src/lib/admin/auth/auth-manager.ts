@@ -1,13 +1,6 @@
 /**
- * AuthManager - Sistema de autenticación con magic links
- * 
- * Características:
- * - Autenticación sin contraseñas usando magic links
- * - JWT para sesiones seguras
- * - Control de usuarios basado en JSON
- * - Integración con sistema de logging
- * - Rate limiting para prevenir abuso
- * - Expiración configurable de tokens
+ * Autenticación por magic link con sesiones JWT, usuarios en JSON
+ * y rate limiting.
  */
 
 import crypto from 'crypto';

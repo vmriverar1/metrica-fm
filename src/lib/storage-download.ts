@@ -15,16 +15,10 @@ export function generateDownloadToken(path: string): string {
 }
 
 /**
- * Genera una URL de descarga segura para un archivo de Storage
+ * Genera una URL de descarga segura y firmada para un archivo de Storage.
  *
- * @param storagePath - Path del archivo en Storage (ej: 'applications/cv_123.pdf')
+ * @param storagePath - Path en Storage (ej: 'applications/cv_123.pdf')
  * @param baseUrl - URL base del sitio (default: https://metricafm.com)
- * @returns URL de descarga segura
- *
- * @example
- * // En el servicio de email:
- * const cvUrl = generateSecureDownloadUrl('applications/cv_123.pdf');
- * // Resultado: https://metricafm.com/api/files/download?path=applications/cv_123.pdf&token=...
  */
 export function generateSecureDownloadUrl(
   storagePath: string,

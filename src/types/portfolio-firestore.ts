@@ -5,9 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 
-// ==========================================
 // FIRESTORE OPTIMIZED COLLECTIONS
-// ==========================================
 
 export interface PortfolioCategory {
   id: string;
@@ -120,9 +118,7 @@ export interface PortfolioImageData {
   size_bytes?: number;
 }
 
-// ==========================================
 // ENRICHED TYPES CON RELACIONES
-// ==========================================
 
 export interface PortfolioProjectWithCategory extends PortfolioProjectFirestore {
   category_info: {
@@ -146,9 +142,7 @@ export interface PortfolioCategoryWithProjects extends PortfolioCategory {
   projects: PortfolioProjectFirestore[];
 }
 
-// ==========================================
 // API & FILTERING
-// ==========================================
 
 export interface PortfolioFilters {
   category?: string;
@@ -181,9 +175,7 @@ export interface CRUDResponse<T = any> {
   message?: string;
 }
 
-// ==========================================
 // VALIDATION FUNCTIONS
-// ==========================================
 
 export function validateCategoryData(data: any): data is PortfolioCategoryData {
   return (
@@ -226,9 +218,7 @@ export function validateImageData(data: any): data is PortfolioImageData {
   );
 }
 
-// ==========================================
 // UTILITY FUNCTIONS
-// ==========================================
 
 export function generateSlug(text: string): string {
   return text

@@ -12,9 +12,7 @@ import {
   PortfolioStats
 } from '@/types/portfolio-firestore';
 
-// ==========================================
 // INTERFACES PARA BUNDLES
-// ==========================================
 
 export interface PortfolioBundle {
   id: string;
@@ -69,9 +67,7 @@ export interface HomepageBundle extends PortfolioBundle {
   };
 }
 
-// ==========================================
 // PORTFOLIO BUNDLING SERVICE
-// ==========================================
 
 export class PortfolioBundlingService {
   private static readonly BUNDLES_DIR = join(process.cwd(), 'public', 'bundles', 'portfolio');
@@ -461,9 +457,7 @@ export class PortfolioBundlingService {
   }
 }
 
-// ==========================================
 // BUNDLE AUTOMATION SERVICE
-// ==========================================
 
 export class PortfolioBundleAutomation {
   /**
@@ -472,8 +466,6 @@ export class PortfolioBundleAutomation {
   static async createAllBundles(): Promise<void> {
     try {
       // Aquí integraríamos con los servicios Firestore optimizados
-      // const categories = await OptimizedPortfolioCategoriesService.obtenerTodas({ forceRefresh: true });
-      // const projects = await OptimizedPortfolioProjectsService.obtenerTodos();
 
       // TODO: Implementar Cloud Function que ejecute esto periódicamente
 

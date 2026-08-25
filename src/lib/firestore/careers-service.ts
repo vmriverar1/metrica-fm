@@ -85,9 +85,7 @@ interface CRUDResponse {
   data?: any;
 }
 
-// ==========================================
 // SERVICIO DE DEPARTAMENTOS
-// ==========================================
 
 export class DepartmentsService {
   private collectionRef = collection(db, COLLECTIONS.CAREER_DEPARTMENTS);
@@ -263,9 +261,7 @@ export class DepartmentsService {
   }
 }
 
-// ==========================================
 // SERVICIO DE TRABAJOS
-// ==========================================
 
 export class JobsService {
   private collectionRef = collection(db, COLLECTIONS.CAREER_POSITIONS);

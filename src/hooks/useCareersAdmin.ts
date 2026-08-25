@@ -75,9 +75,7 @@ async function initializeServices() {
   }
 }
 
-// ==========================================
 // HOOKS PARA DEPARTAMENTOS
-// ==========================================
 
 export interface UseDepartmentsResult {
   departments: Department[];
@@ -193,9 +191,7 @@ export function useDepartments(): UseDepartmentsResult {
   };
 }
 
-// ==========================================
 // HOOKS PARA TRABAJOS
-// ==========================================
 
 export interface UseJobsResult {
   jobs: JobPosting[];
@@ -338,9 +334,7 @@ export function useJobs(): UseJobsResult {
   };
 }
 
-// ==========================================
 // HOOKS COMBINADOS PARA ADMINISTRACIÓN
-// ==========================================
 
 export interface UseCareersAdminResult {
   // Departamentos
@@ -421,9 +415,7 @@ export function useCareersAdmin(): UseCareersAdminResult {
   };
 }
 
-// ==========================================
 // HELPER HOOKS ESPECÍFICOS
-// ==========================================
 
 // Hook para obtener solo departamentos activos
 export function useActiveDepartments() {

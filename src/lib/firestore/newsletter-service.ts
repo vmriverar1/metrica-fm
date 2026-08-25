@@ -46,9 +46,7 @@ import {
 } from '@/types/newsletter';
 import { BLOG_AUTHORS_FALLBACK, BLOG_CATEGORIES_FALLBACK, BLOG_ARTICLES_FALLBACK, withFallback } from './fallbacks';
 
-// ==========================================
 // SERVICIO DE AUTORES
-// ==========================================
 
 export class AutoresService {
   private collectionRef = collection(db, COLLECTIONS.AUTHORS);
@@ -222,9 +220,7 @@ export class AutoresService {
   }
 }
 
-// ==========================================
 // SERVICIO DE CATEGORÍAS
-// ==========================================
 
 export class CategoriasService {
   private collectionRef = collection(db, COLLECTIONS.CATEGORIES);
@@ -423,9 +419,7 @@ export class CategoriasService {
   }
 }
 
-// ==========================================
 // SERVICIO DE ARTÍCULOS
-// ==========================================
 
 export class ArticulosService {
   private collectionRef = collection(db, COLLECTIONS.ARTICLES);
@@ -885,9 +879,7 @@ export class ArticulosService {
   }
 }
 
-// ==========================================
 // SERVICIO DE ESTADÍSTICAS
-// ==========================================
 
 export class NewsletterStatsService {
   // Alias para compatibilidad con los hooks
@@ -971,9 +963,7 @@ export class NewsletterStatsService {
   }
 }
 
-// ==========================================
 // INSTANCIAS DE LOS SERVICIOS
-// ==========================================
 
 export const autoresService = new AutoresService();
 export const categoriasService = new CategoriasService();

@@ -90,9 +90,7 @@ export class BaseFirestoreService<T extends BaseEntity, TData extends BaseData =
     this.collectionRef = collection(db, collectionName);
   }
 
-  // ==========================================
   // OPERACIONES CRUD BÁSICAS
-  // ==========================================
 
   /**
    * Obtener todos los documentos con filtros opcionales
@@ -239,9 +237,7 @@ export class BaseFirestoreService<T extends BaseEntity, TData extends BaseData =
     }
   }
 
-  // ==========================================
   // OPERACIONES AVANZADAS
-  // ==========================================
 
   /**
    * Búsqueda por campos múltiples (simulada)
@@ -371,9 +367,7 @@ export class BaseFirestoreService<T extends BaseEntity, TData extends BaseData =
     }
   }
 
-  // ==========================================
   // UTILIDADES
-  // ==========================================
 
   /**
    * Verificar si un documento existe

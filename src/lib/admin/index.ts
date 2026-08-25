@@ -1,13 +1,6 @@
 /**
- * JSON CRUD Admin System - Punto de entrada principal
- * 
- * Sistema completo de administración para archivos JSON con:
- * - Gestión segura de archivos con bloqueo atómico
- * - Sistema de caché en memoria con invalidación inteligente
- * - Validación flexible con schemas JSON
- * - Logs y auditoría completos
- * - Sistema de backups automáticos
- * - Tests de concurrencia y atomicidad
+ * Punto de entrada del admin de archivos JSON: acceso atómico, caché,
+ * validación por schema, auditoría y backups.
  */
 
 // Core components

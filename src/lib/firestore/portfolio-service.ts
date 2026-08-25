@@ -48,9 +48,7 @@ import {
 } from '@/types/portfolio-firestore';
 import { PORTFOLIO_CATEGORIES_FALLBACK, PORTFOLIO_PROJECTS_FALLBACK, withFallback } from './fallbacks';
 
-// ==========================================
 // SERVICIO DE CATEGORÍAS PORTFOLIO
-// ==========================================
 
 export class PortfolioCategoriesService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_CATEGORIES);
@@ -198,9 +196,7 @@ export class PortfolioCategoriesService {
   }
 }
 
-// ==========================================
 // SERVICIO DE PROYECTOS PORTFOLIO
-// ==========================================
 
 export class PortfolioProjectsService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_PROJECTS);
@@ -506,9 +502,7 @@ export class PortfolioProjectsService {
   }
 }
 
-// ==========================================
 // SERVICIO DE IMÁGENES PORTFOLIO
-// ==========================================
 
 export class PortfolioImagesService {
   private static collection = collection(db, COLLECTIONS.PORTFOLIO_IMAGES);
@@ -619,9 +613,7 @@ export class PortfolioImagesService {
   }
 }
 
-// ==========================================
 // SERVICIO DE ESTADÍSTICAS
-// ==========================================
 
 export class PortfolioStatsService {
   static async obtenerEstadisticas(): Promise<PortfolioStats> {

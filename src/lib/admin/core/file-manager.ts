@@ -1,12 +1,6 @@
 /**
- * FileManager - Sistema de gestión de archivos JSON con bloqueo atómico
- * 
- * Características:
- * - Bloqueo de archivos para evitar colisiones en escrituras concurrentes
- * - Escritura atómica (write + rename) para garantizar integridad
- * - Control de versiones con ETags para detectar cambios concurrentes
- * - Manejo de errores robusto con rollback automático
- * - Compatible con hosting compartido
+ * Gestión de archivos JSON con bloqueo, escritura atómica (write + rename)
+ * y ETags para detectar escrituras concurrentes.
  */
 
 import fs from 'fs/promises';

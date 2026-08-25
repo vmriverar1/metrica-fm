@@ -7,9 +7,7 @@ import { HomePageData } from '@/types/home';
 import { PortfolioCategory, PortfolioProjectFirestore } from '@/types/portfolio-firestore';
 import { Autor, Categoria, Articulo } from '@/types/newsletter';
 
-// ==========================================
 // HOME PAGE FALLBACKS
-// ==========================================
 
 export const HOME_PAGE_FALLBACK: HomePageData = {
   page: {
@@ -196,9 +194,7 @@ export const HOME_PAGE_FALLBACK: HomePageData = {
   }
 };
 
-// ==========================================
 // PORTFOLIO FALLBACKS
-// ==========================================
 
 export const PORTFOLIO_CATEGORIES_FALLBACK: PortfolioCategory[] = [
   {
@@ -273,9 +269,7 @@ export const PORTFOLIO_PROJECTS_FALLBACK: PortfolioProjectFirestore[] = [
   }
 ];
 
-// ==========================================
 // BLOG/NEWSLETTER FALLBACKS
-// ==========================================
 
 export const BLOG_AUTHORS_FALLBACK: Autor[] = [
   {
@@ -347,9 +341,7 @@ export const BLOG_ARTICLES_FALLBACK: Articulo[] = [
   }
 ];
 
-// ==========================================
 // CAREERS FALLBACKS
-// ==========================================
 
 export const CAREERS_FALLBACK = {
   departments: [
@@ -392,9 +384,7 @@ export const CAREERS_FALLBACK = {
   ]
 };
 
-// ==========================================
 // SERVICES FALLBACKS
-// ==========================================
 
 export const SERVICES_PAGE_FALLBACK = {
   hero: {
@@ -417,9 +407,7 @@ export const SERVICES_PAGE_FALLBACK = {
   ]
 };
 
-// ==========================================
 // MEGAMENU FALLBACKS
-// ==========================================
 
 export const MEGAMENU_FALLBACK = {
   settings: {
@@ -512,9 +500,7 @@ export const MEGAMENU_FALLBACK = {
   }
 };
 
-// ==========================================
 // CONSTANTES DE IMÁGENES POR DEFECTO
-// ==========================================
 
 /**
  * Imagen por defecto cuando no hay imagen disponible
@@ -526,9 +512,7 @@ export const DEFAULT_IMAGE = '/images/proyectos/hero-background.jpg';
  */
 export const DEFAULT_LOGO = '/images/proyectos/hero-background.jpg';
 
-// ==========================================
 // HELPER FUNCTIONS
-// ==========================================
 
 /**
  * Retorna fallback con mensaje explicativo

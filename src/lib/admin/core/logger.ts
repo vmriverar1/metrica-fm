@@ -1,14 +1,6 @@
 /**
- * Logger - Sistema de logs y auditoría completo
- * 
- * Características:
- * - Logs estructurados con metadatos
- * - Auditoría de cambios en archivos JSON
- * - Rotación automática de logs
- * - Niveles de log configurables
- * - Integración con FileManager para rastrear cambios
- * - Logs de performance y seguridad
- * - Exportación y análisis de logs
+ * Logs estructurados y auditoría de cambios en JSON, con rotación,
+ * niveles configurables y exportación.
  */
 
 import fs from 'fs/promises';

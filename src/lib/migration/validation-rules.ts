@@ -241,9 +241,7 @@ export class BaseValidator {
   }
 }
 
-// ==========================================
 // VALIDADORES ESPECÍFICOS POR SISTEMA
-// ==========================================
 
 /**
  * Esquemas de validación para Newsletter
@@ -431,9 +429,7 @@ export const CareersValidationSchemas = {
   } as ValidationSchema
 };
 
-// ==========================================
 // UTILIDADES DE CONVENIENCIA
-// ==========================================
 
 /**
  * Validar datos usando esquemas predefinidos

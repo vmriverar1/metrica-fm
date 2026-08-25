@@ -1,13 +1,6 @@
 /**
- * Validator - Sistema de validación flexible con schemas JSON
- * 
- * Características:
- * - Validación progresiva (estricta/flexible según configuración)
- * - Auto-corrección de errores menores
- * - Sugerencias de normalización
- * - Compatibilidad con datos existentes
- * - Reportes detallados de validación
- * - Modo de migración gradual
+ * Validación contra schemas JSON en modo estricto o flexible,
+ * con auto-corrección y sugerencias de normalización.
  */
 
 import Ajv, { JSONSchemaType, ErrorObject } from 'ajv';

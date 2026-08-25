@@ -10,12 +10,7 @@ const BlogAdminPage = () => {
         slug="blog"
         onSave={async (data) => {
           // TODO: Implementar llamada a API
-          // const response = await fetch('/api/admin/pages/blog', {
-          //   method: 'PUT',
-          //   headers: { 'Content-Type': 'application/json' },
           //   body: JSON.stringify(data)
-          // });
-          // if (!response.ok) throw new Error('Error al guardar');
         }}
         onPreview={(data) => {
           // TODO: Abrir preview en nueva ventana
