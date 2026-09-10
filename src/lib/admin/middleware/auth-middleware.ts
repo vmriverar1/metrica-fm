@@ -56,6 +56,26 @@ const DEFAULT_MIDDLEWARE_CONFIG: MiddlewareConfig = {
 /**
  * AuthMiddleware - Clase principal del middleware
  */
+/**
+ * Extrae IP y user-agent de la request.
+ *
+ * Función libre y no método: los helpers de permisos la necesitan sin tener una instancia
+ * de AuthMiddleware a mano, y construir una entera solo para leer una cabecera crea de paso
+ * su mapa de rate limiting.
+ */
+export function getClientInfo(request: NextRequest): { ip: string; userAgent: string } {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const ip = forwarded 
+    ? forwarded.split(',')[0].trim() 
+    : request.headers.get('x-real-ip') || 
+      request.headers.get('remote-addr') || 
+      '127.0.0.1';
+  
+  const userAgent = request.headers.get('user-agent') || 'Unknown';
+  
+  return { ip, userAgent };
+}
+
 export class AuthMiddleware {
   private config: MiddlewareConfig;
   private requestCounts: Map<string, { count: number; resetTime: number }> = new Map();
@@ -108,16 +128,7 @@ export class AuthMiddleware {
    * Obtener información del cliente
    */
   private getClientInfo(request: NextRequest): { ip: string; userAgent: string } {
-    const forwarded = request.headers.get('x-forwarded-for');
-    const ip = forwarded 
-      ? forwarded.split(',')[0].trim() 
-      : request.headers.get('x-real-ip') || 
-        request.headers.get('remote-addr') || 
-        '127.0.0.1';
-    
-    const userAgent = request.headers.get('user-agent') || 'Unknown';
-    
-    return { ip, userAgent };
+    return getClientInfo(request);
   }
 
   /**
@@ -556,7 +567,7 @@ export async function checkPermission(
     };
   }
 
-  const { ip, userAgent } = new AuthMiddleware().getClientInfo(request);
+  const { ip, userAgent } = getClientInfo(request);
   const permissionCheck = await permissionsManager.checkPermission({
     user: context.user,
     resource,
