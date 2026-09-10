@@ -14,6 +14,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { authManager } from '../auth/auth-manager';
 import { permissionsManager, Resource, Permission } from '../auth/permissions-manager';
+import { DEV_SESSION_TOKEN, DEV_SESSION_ID } from '@/lib/auth/session-constants';
 import { logger } from '../core/logger';
 
 // Tipos
@@ -233,7 +234,7 @@ export class AuthMiddleware {
       }
 
       // Mock token only allowed in development
-      if (token === 'mock-token' && process.env.NODE_ENV === 'development') {
+      if (token === DEV_SESSION_TOKEN && process.env.NODE_ENV === 'development') {
         const user = {
           id: '1',
           email: 'admin@metrica.pe',
@@ -250,7 +251,7 @@ export class AuthMiddleware {
 
         const session = {
           userId: user.id,
-          sessionId: 'mock-session',
+          sessionId: DEV_SESSION_ID,
           created_at: new Date().toISOString(),
           expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         };
@@ -396,7 +397,7 @@ export class AuthMiddleware {
       const permission = requiredPermission || this.config.requiredPermission;
       if (permission) {
         // Skip permission check for mock user (admin has all permissions)
-        if (context.user.role === 'admin' && context.session.sessionId === 'mock-session') {
+        if (context.user.role === 'admin' && context.session.sessionId === DEV_SESSION_ID) {
           return null; // Allow access
         }
 

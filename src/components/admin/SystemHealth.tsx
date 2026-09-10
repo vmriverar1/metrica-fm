@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { DEV_SESSION_TOKEN } from '@/lib/auth/session-constants';
 import { 
   Activity, 
   Server, 
@@ -126,8 +127,8 @@ export const SystemHealth: React.FC<SystemHealthProps> = ({ className }) => {
           try {
             // Get auth token (same logic as api-client.ts)
             const token = typeof window !== 'undefined' 
-              ? localStorage.getItem('auth-token') || 'mock-token'
-              : 'mock-token';
+              ? localStorage.getItem('auth-token') || DEV_SESSION_TOKEN
+              : DEV_SESSION_TOKEN;
             
             const response = await fetch(endpoint.url, { 
               method: 'HEAD',

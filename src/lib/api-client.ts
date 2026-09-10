@@ -4,15 +4,17 @@
  * Proporciona funciones helper para hacer llamadas API con autenticación
  */
 
+import { DEV_SESSION_TOKEN } from '@/lib/auth/session-constants';
+
 // Obtener token de autenticación desde localStorage
 function getAuthToken(): string | null {
   if (typeof window === 'undefined') return null;
   
   const token = localStorage.getItem('auth-token');
   
-  // DEVELOPMENT: Si no hay token y estamos en desarrollo, usar mock-token
+  // DEVELOPMENT: Si no hay token y estamos en desarrollo, usar la sesión de desarrollo
   if (!token && process.env.NODE_ENV === 'development') {
-    return 'mock-token';
+    return DEV_SESSION_TOKEN;
   }
   
   return token;
