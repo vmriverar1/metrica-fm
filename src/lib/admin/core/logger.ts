@@ -14,6 +14,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { EventEmitter } from 'events';
+import type { Logger } from './logger-contract';
 
 // Tipos
 export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
@@ -586,4 +587,4 @@ export function logPerformance(category: string = 'operation') {
 }
 
 // Instancia singleton del logger
-export const logger = new JSONCRUDLogger();
+export const logger: Logger = new JSONCRUDLogger();
