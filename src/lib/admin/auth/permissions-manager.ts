@@ -16,7 +16,7 @@ import { UserRole, User } from './auth-manager';
 
 // Tipos
 export type Permission = 'read' | 'write' | 'delete' | 'admin';
-export type Resource = 'pages' | 'portfolio' | 'careers' | 'newsletter' | 'users' | 'settings' | 'media' | 'backups';
+export type Resource = 'pages' | 'portfolio' | 'careers' | 'newsletter' | 'users' | 'settings' | 'media' | 'backups' | 'search';
 
 export interface PermissionRule {
   resource: Resource;
@@ -157,7 +157,8 @@ export class PermissionsManager {
             { resource: 'users', action: 'admin', description: 'Gestión de usuarios' },
             { resource: 'settings', action: 'admin', description: 'Configuración del sistema' },
             { resource: 'media', action: 'admin', description: 'Gestión de medios' },
-            { resource: 'backups', action: 'admin', description: 'Gestión de backups' }
+            { resource: 'backups', action: 'admin', description: 'Gestión de backups' },
+            { resource: 'search', action: 'admin', description: 'Búsqueda global' }
           ]
         },
         editor: {
@@ -170,7 +171,8 @@ export class PermissionsManager {
             { resource: 'newsletter', action: 'write', description: 'Editar newsletter' },
             { resource: 'media', action: 'write', description: 'Subir y gestionar medios' },
             { resource: 'users', action: 'read', description: 'Ver información de usuarios' },
-            { resource: 'settings', action: 'read', description: 'Ver configuración' }
+            { resource: 'settings', action: 'read', description: 'Ver configuración' },
+            { resource: 'search', action: 'read', description: 'Búsqueda global' }
           ],
           restrictions: {
             forbidden_fields: ['created_at', 'created_by', 'system_metadata'],
@@ -187,7 +189,8 @@ export class PermissionsManager {
             { resource: 'portfolio', action: 'read', description: 'Ver portfolio' },
             { resource: 'careers', action: 'read', description: 'Ver empleos' },
             { resource: 'newsletter', action: 'read', description: 'Ver newsletter' },
-            { resource: 'media', action: 'read', description: 'Ver medios' }
+            { resource: 'media', action: 'read', description: 'Ver medios' },
+            { resource: 'search', action: 'read', description: 'Búsqueda global' }
           ],
           restrictions: {
             max_items: 100,
@@ -274,6 +277,16 @@ export class PermissionsManager {
             write: 'Crear backups',
             delete: 'Eliminar backups',
             admin: 'Control total de backups'
+          }
+        },
+        search: {
+          name: 'Búsqueda',
+          description: 'Búsqueda global sobre el contenido del panel',
+          actions: {
+            read: 'Buscar contenido',
+            write: 'No aplicable',
+            delete: 'No aplicable',
+            admin: 'Control total de la búsqueda'
           }
         }
       },
