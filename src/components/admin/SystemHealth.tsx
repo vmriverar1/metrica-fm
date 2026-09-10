@@ -125,10 +125,13 @@ export const SystemHealth: React.FC<SystemHealthProps> = ({ className }) => {
         endpointsToCheck.map(async (endpoint) => {
           const startTime = Date.now();
           try {
-            // Get auth token (same logic as api-client.ts)
-            const token = typeof window !== 'undefined' 
-              ? localStorage.getItem('auth-token') || DEV_SESSION_TOKEN
-              : DEV_SESSION_TOKEN;
+            // Misma credencial que api-client: el ID token de Firebase. Antes mandaba
+            // el token de desarrollo también en producción, así que el servidor lo
+            // rechazaba y el panel reportaba todos los endpoints como caídos.
+            const { getIdToken } = await import('@/lib/firebase-auth');
+            const token = (await getIdToken())
+              ?? (typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null)
+              ?? (process.env.NODE_ENV === 'development' ? DEV_SESSION_TOKEN : '');
             
             const response = await fetch(endpoint.url, { 
               method: 'HEAD',
