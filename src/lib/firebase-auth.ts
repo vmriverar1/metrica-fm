@@ -170,6 +170,27 @@ export async function signOut(): Promise<void> {
 /**
  * Get current user
  */
+/**
+ * ID token de Firebase del usuario actual.
+ *
+ * Es la credencial que el servidor sabe verificar (auth-middleware la valida con verifyIdToken).
+ * El SDK lo cachea y lo renueva solo, así que pedirlo en cada request es barato y evita
+ * guardar tokens en localStorage, donde caducan sin que nadie se entere.
+ */
+export async function getIdToken(): Promise<string | null> {
+  const auth = await getAuth();
+  const user = auth?.currentUser;
+
+  if (!user) return null;
+
+  try {
+    return await user.getIdToken();
+  } catch (error) {
+    console.error('[Auth] No se pudo obtener el ID token:', error);
+    return null;
+  }
+}
+
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
     const auth = await getAuth();

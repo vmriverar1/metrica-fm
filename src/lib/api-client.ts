@@ -7,22 +7,34 @@
 import { DEV_SESSION_TOKEN } from '@/lib/auth/session-constants';
 
 // Obtener token de autenticación desde localStorage
-function getAuthToken(): string | null {
+async function getAuthToken(): Promise<string | null> {
   if (typeof window === 'undefined') return null;
-  
+
+  // El panel entra con Google, así que la credencial real es el ID token de Firebase.
+  // Sin esto el servidor no recibe nada que pueda verificar y toda ruta con withAuth
+  // responde 401, que es justo lo que pasaba antes de puentear ambos sistemas.
+  try {
+    const { getIdToken } = await import('@/lib/firebase-auth');
+    const firebaseToken = await getIdToken();
+    if (firebaseToken) return firebaseToken;
+  } catch (error) {
+    console.warn('[api-client] No se pudo obtener el ID token de Firebase:', error);
+  }
+
+  // Sistema legacy de magic link / JWT, que deja el token en localStorage.
   const token = localStorage.getItem('auth-token');
-  
+
   // DEVELOPMENT: Si no hay token y estamos en desarrollo, usar la sesión de desarrollo
   if (!token && process.env.NODE_ENV === 'development') {
     return DEV_SESSION_TOKEN;
   }
-  
+
   return token;
 }
 
 // Crear headers con autenticación
-function createAuthHeaders(): HeadersInit {
-  const token = getAuthToken();
+async function createAuthHeaders(): Promise<HeadersInit> {
+  const token = await getAuthToken();
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };
@@ -60,7 +72,7 @@ async function processJsonResponse(response: Response, url: string): Promise<any
 
 // Wrapper para fetch con autenticación
 export async function authenticatedFetch(url: string, options: RequestInit = {}): Promise<Response> {
-  const headers = createAuthHeaders();
+  const headers = await createAuthHeaders();
   
   return fetch(url, {
     ...options,
@@ -115,7 +127,7 @@ export async function apiPost(url: string, data: any): Promise<any> {
 // Helper para upload de archivos (FormData)
 export async function apiUpload(url: string, formData: FormData): Promise<any> {
   try {
-    const token = getAuthToken();
+    const token = await getAuthToken();
     const headers: HeadersInit = {};
 
     if (token) {
