@@ -121,7 +121,7 @@ export class FlexibleValidator {
       schemaType: 'array',
       compile: (schemaVal: string[]) => {
         return function validate(data: any, ctx?: any) {
-          const missing = [];
+          const missing: string[] = [];
           for (const field of schemaVal) {
             if (!(field in data)) {
               missing.push(field);
@@ -266,7 +266,7 @@ export class FlexibleValidator {
     }
 
     // Ejecutar validación
-    const isValid = validate(processedData);
+    const isValid = validate(processedData) as boolean;
     result.valid = isValid;
     result.data = processedData;
 
