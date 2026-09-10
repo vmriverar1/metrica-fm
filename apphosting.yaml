@@ -63,7 +63,7 @@ env:
       - RUNTIME
 
   - variable: RECAPTCHA_SECRET_KEY
-    value: 6Lf3Q7ssAAAAAPlc0P6GmPJB9WH9MuTS4D1oiK9F
+    secret: recaptcha-secret-key
     availability:
       - RUNTIME
 
@@ -99,7 +99,7 @@ env:
       - RUNTIME
 
   - variable: GMAIL_APP_PASSWORD
-    value: ievy qqmu tkks byff
+    secret: gmail-app-password
     availability:
       - RUNTIME
 
