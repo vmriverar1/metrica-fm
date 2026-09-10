@@ -86,6 +86,12 @@ env:
       - BUILD
       - RUNTIME
 
+  # Firma de los JWT del sistema legacy de magic link
+  - variable: JWT_SECRET
+    secret: jwt-secret
+    availability:
+      - RUNTIME
+
   - variable: FIREBASE_STORAGE_BUCKET
     value: metrica-fm.firebasestorage.app
     availability:
