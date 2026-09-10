@@ -816,9 +816,33 @@ export class AuthManager {
   }
 }
 
+/**
+ * Secreto de firma de los JWT.
+ *
+ * Fuera de desarrollo es obligatorio: con un valor por defecto conocido cualquiera puede
+ * firmarse un token válido, así que es preferible fallar al arrancar que arrancar inseguro.
+ */
+function resolveJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (secret) return secret;
+
+  if (process.env.NODE_ENV === 'production') {
+    // Sin JWT_SECRET configurado se usa uno aleatorio por arranque. Invalida las sesiones
+    // legacy en cada reinicio, que es molesto pero contenido: el acceso real va por Firebase.
+    // La alternativa era un literal en el código, y ese ya es público desde que se versionó.
+    console.error(
+      '[AUTH] JWT_SECRET no está configurado. Se usará un secreto efímero; ' +
+      'configúralo en Secret Manager para que las sesiones sobrevivan a los reinicios.'
+    );
+    return crypto.randomBytes(48).toString('hex');
+  }
+
+  return 'development-only-secret';
+}
+
 // Configuración por defecto del auth manager
 const authConfig: Partial<AuthConfig> = {
-  jwtSecret: process.env.JWT_SECRET || 'default-secret-change-in-production',
+  jwtSecret: resolveJwtSecret(),
   magicLinkTTL: 15,
   sessionTTL: 24,
   maxLoginAttempts: 5,
