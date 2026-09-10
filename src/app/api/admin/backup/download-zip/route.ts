@@ -48,7 +48,19 @@ export async function POST(request: NextRequest) {
 
     for (const image of images) {
       try {
-        const fullPath = path.join(publicDir, image.relativePath);
+        const relativePath = typeof image?.relativePath === 'string' ? image.relativePath : '';
+        if (!relativePath) {
+          continue;
+        }
+
+        // El path lo aporta el cliente: sin confinar, un '..' saca la lectura de public/
+        // y el ZIP acaba conteniendo cualquier archivo del servidor.
+        const fullPath = path.resolve(publicDir, relativePath);
+        if (fullPath !== publicDir && !fullPath.startsWith(publicDir + path.sep)) {
+          console.warn('[BACKUP] Ruta fuera de public/ descartada:', relativePath);
+          continue;
+        }
+
         const fileExists = await fs.access(fullPath).then(() => true).catch(() => false);
 
         if (fileExists) {
@@ -56,10 +68,10 @@ export async function POST(request: NextRequest) {
           const fileBuffer = await fs.readFile(fullPath);
 
           // Agregar al ZIP con su path relativo
-          archive.append(fileBuffer, { name: image.relativePath });
+          archive.append(fileBuffer, { name: relativePath });
         }
       } catch (error) {
-        console.error(`Error adding ${image.relativePath} to archive:`, error);
+        console.error(`Error adding ${image?.relativePath} to archive:`, error);
         // Continuar con los demás archivos
       }
     }
