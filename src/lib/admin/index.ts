@@ -279,13 +279,6 @@ export class JSONCRUDSystem {
   }
 
   /**
-   * Ejecutar tests de concurrencia
-   */
-  async runDiagnostics(): Promise<any> {
-    return { message: 'Diagnostics not available' };
-  }
-
-  /**
    * Determinar categoría de archivo para cache
    */
   private getFileCategory(filePath: string): string {
