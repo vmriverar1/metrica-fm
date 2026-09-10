@@ -277,6 +277,56 @@ export class AuthMiddleware {
         };
       }
 
+      // Verificar ID token de Firebase (login con Google del panel admin).
+      // Los ID tokens son JWT firmados por Google y siempre empiezan por 'eyJ';
+      // el sistema de JWT propio de abajo no sabe validarlos.
+      if (token.startsWith('eyJ')) {
+        try {
+          const { getFirebaseAdmin } = await import('@/lib/firebase-admin-safe');
+          const { app } = await getFirebaseAdmin();
+
+          if (app) {
+            const { getAuth } = await import('firebase-admin/auth');
+            const decodedToken = await getAuth(app).verifyIdToken(token);
+
+            const user = {
+              id: decodedToken.uid,
+              email: decodedToken.email || '',
+              name: decodedToken.name || decodedToken.email || 'Usuario',
+              role: 'admin',
+              status: 'active',
+              created_at: new Date().toISOString(),
+              login_attempts: 0,
+              metadata: {
+                avatar: decodedToken.picture || '',
+                preferences: {},
+                firebase_uid: decodedToken.uid
+              }
+            };
+
+            const session = {
+              userId: user.id,
+              sessionId: `firebase-${decodedToken.uid}`,
+              created_at: new Date().toISOString(),
+              expires_at: new Date(decodedToken.exp * 1000).toISOString()
+            };
+
+            return {
+              context: {
+                user,
+                session,
+                permissions: [{ resource: '*', action: '*' }],
+                isAuthenticated: true
+              }
+            };
+          }
+        } catch (firebaseError) {
+          // Token de Firebase inválido o expirado: cae al sistema de JWT propio,
+          // que devolverá INVALID_TOKEN si tampoco lo reconoce.
+          console.warn('[AUTH] Firebase token verification failed:', firebaseError);
+        }
+      }
+
       // Verificar JWT (sistema original)
       const jwtResult = authManager.verifyJWT(token);
       if (!jwtResult.valid) {
