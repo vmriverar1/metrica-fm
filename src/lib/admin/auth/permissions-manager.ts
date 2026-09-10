@@ -688,15 +688,15 @@ export class PermissionsManager {
   /**
    * Obtener recursos disponibles
    */
-  getAvailableResources(): Record<Resource, any> {
-    return this.permissionMatrix?.resources || {};
+  getAvailableResources(): Partial<Record<Resource, any>> {
+    return this.permissionMatrix?.resources ?? {};
   }
 
   /**
    * Obtener definiciones de roles
    */
-  getRoleDefinitions(): Record<UserRole, RoleDefinition> {
-    return this.permissionMatrix?.roles || {};
+  getRoleDefinitions(): Partial<Record<UserRole, RoleDefinition>> {
+    return this.permissionMatrix?.roles ?? {};
   }
 
   /**
