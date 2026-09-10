@@ -498,11 +498,11 @@ export function createAuthMiddleware(config: MiddlewareConfig = {}): AuthMiddlew
 /**
  * Middleware helper para API routes de Next.js
  */
-export function withAuth(
-  handler: (request: NextRequest, context: AuthContext) => Promise<NextResponse>,
+export function withAuth<TRouteArgs = { params: Record<string, string> }>(
+  handler: (request: NextRequest, context: AuthContext, routeArgs: TRouteArgs) => Promise<NextResponse>,
   config: MiddlewareConfig = {}
 ) {
-  return async (request: NextRequest): Promise<NextResponse> => {
+  return async (request: NextRequest, routeArgs: TRouteArgs): Promise<NextResponse> => {
     const middleware = createAuthMiddleware(config);
     const result = await middleware.process(request);
     
@@ -510,7 +510,7 @@ export function withAuth(
       return result.response; // Error response
     }
     
-    return handler(request, result.context!);
+    return handler(request, result.context!, routeArgs);
   };
 }
 
