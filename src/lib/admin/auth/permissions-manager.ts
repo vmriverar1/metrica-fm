@@ -18,6 +18,19 @@ import { UserRole, User } from './auth-manager';
 export type Permission = 'read' | 'write' | 'delete' | 'admin';
 export type Resource = 'pages' | 'portfolio' | 'careers' | 'newsletter' | 'users' | 'settings' | 'media' | 'backups' | 'search';
 
+/**
+ * Jerarquía de permisos: un nivel superior incluye a los inferiores.
+ *
+ * Como Record y no como array + indexOf: indexOf devuelve -1 ante una acción desconocida,
+ * y -1 >= -1 concedía el permiso en vez de negarlo.
+ */
+const PERMISSION_LEVEL: Record<Permission, number> = {
+  read: 0,
+  write: 1,
+  delete: 2,
+  admin: 3,
+};
+
 export interface PermissionRule {
   resource: Resource;
   action: Permission;
@@ -476,9 +489,8 @@ export class PermissionsManager {
     }
 
     // Verificar jerarquía de permisos
-    const actionHierarchy: Permission[] = ['read', 'write', 'delete', 'admin'];
-    const requiredLevel = actionHierarchy.indexOf(action);
-    const grantedLevel = actionHierarchy.indexOf(permission.action);
+    const requiredLevel = PERMISSION_LEVEL[action];
+    const grantedLevel = PERMISSION_LEVEL[permission.action];
 
     if (grantedLevel >= requiredLevel) {
       return { 
